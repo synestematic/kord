@@ -76,7 +76,7 @@ _TONES = [
 
 class Fret(object):
 
-    def __init__(self, note='', fret=0):
+    def __init__(self, note='', fret=12):
         self.fret = fret
         self.note = Note() if not note else note
 
@@ -102,11 +102,11 @@ class String(object):
         octave = int(open_note[-1])
 
         open_note = Note(tone, alt, octave)
-        self.fret[0] = Fret(open_note)
+        self.fret[0] = Fret(open_note, fret=0)
 
     def init_frets(self):
         for n in range(12):
-            self.fret.append(None)
+            self.fret.append(Fret())
 
 
     def __repr__(self):
@@ -136,9 +136,9 @@ class Note(object):
 
         self.tone_index = None
         self.alt_index = None
-        self.get_indeces()
+        self.get_indices()
 
-    def get_indeces(self):
+    def get_indices(self):
         for t_i, _tones in enumerate(_TONES):
             for a_i, _tone in enumerate(_tones):
                 if self.tone == _tone[0] and self.alt == _tone[1]:
@@ -148,15 +148,11 @@ class Note(object):
 
     def next(self):
         my_index = self._ORDER.index(self.tone)
-        return looped_list_item(my_index +1, self._ORDER)
-
-    def previous(self):
-        my_index = self._ORDER.index(self.tone)
-        return looped_list_item(my_index -1, self._ORDER)
+        note_string = looped_list_item(my_index +1, self._ORDER)
+        return Note(note_string)
 
     def __repr__(self):
         return '{}{}'.format(self.tone, self.alt)
-
 
 
 class Scale(object):
@@ -166,8 +162,8 @@ class Scale(object):
         self.degree = []
         self.init_degrees()
 
-        self.tonic = Note(key, alt)
-        self.add_degree(1, self.tonic)
+        self.degree[1] = Note(key, alt)
+        self.tonic = self.degree[1]
 
         self.calculate_degrees()
 
@@ -178,16 +174,20 @@ class Scale(object):
         return str(spell_line)
 
     def init_degrees(self):
-        for n in range(13):
+        for n in range(self._PITCHES +2): # used to be static at 12... why ?
             self.degree.append(None)
 
-    def add_degree(self, n, note):
-        self.degree[n] = note
+    def add_degree(self, d, notes):
+        if len(notes) != 1:
+            echo('Failed to get degree[{}] of {} {}'.format(d, self.tonic, self.__class__.__name__), 'red')
+            expected_tone = self.degree[d -1].next().tone
+            self.degree[d] = Note(expected_tone, 'xx')
+        else:
+            self.degree[d] = Note(*notes[0])
 
     def calculate_degrees(self):
         for d in range(2, self._PITCHES +2):
             self.calculate_degree(d)
-
 
 
 class ChromaticScale(Scale):
@@ -217,19 +217,19 @@ class ChromaticScale(Scale):
         _OCTAVE,
     ]
 
-    def __init__(self):
-        pass
+    def calculate_degree(self, d):
+        row_index = self.tonic.tone_index +self.interval[d]
 
-    # def calculate_degree(self, d):
-    #     row_index = self.tonic.tone_index +self.interval[d]
-    #     next_degree = [t for t in looped_list_item(row_index, _TONES) if t[0] == self.degree[d -1].next()]
+        if self.tonic.alt == '':
+            next_degrees = [t for t in looped_list_item(row_index, _TONES) if t[1] == '']
+            if not next_degrees:
+                next_degrees = [t for t in looped_list_item(row_index, _TONES) if t[1] == '#']
+        else:
+            next_degrees = [t for t in looped_list_item(row_index, _TONES) if t[1] == self.tonic.alt[:-1]] # ''
+            if not next_degrees:
+                next_degrees = [t for t in looped_list_item(row_index, _TONES) if t[1] == self.tonic.alt]  # 'b'
 
-    #     if len(next_degree) != 1:
-    #         echo('Failed to get degree[{}] of {} {}'.format(d, self.tonic, self.__class__.__name__), 'red')
-    #         input()
-
-    #     self.add_degree(d, Note(*next_degree[0]))
-
+        self.add_degree(d, next_degrees)
 
 
 class DiatonicScale(Scale):
@@ -238,13 +238,8 @@ class DiatonicScale(Scale):
 
     def calculate_degree(self, d):
         row_index = self.tonic.tone_index +self.interval[d]
-        next_degree = [t for t in looped_list_item(row_index, _TONES) if t[0] == self.degree[d -1].next()]
-
-        if len(next_degree) != 1:
-            echo('Failed to get degree[{}] of {} {}'.format(d, self.tonic, self.__class__.__name__), 'red')
-            input()
-
-        self.add_degree(d, Note(*next_degree[0]))
+        next_degrees = [t for t in looped_list_item(row_index, _TONES) if t[0] == self.degree[d -1].next().tone]
+        self.add_degree(d, next_degrees)
 
 
 class MajorScale(DiatonicScale):
@@ -275,19 +270,11 @@ class MinorScale(DiatonicScale):
         _OCTAVE,
     ]
 
-class NaturalMinorScale(DiatonicScale):
+class NaturalMinorScale(MinorScale):
+    pass
 
-    interval = [
-        None,
-        _UNISON,
-        _MAJOR_SECOND,
-        _MINOR_THIRD,
-        _PERFECT_FOURTH,
-        _PERFECT_FIFTH,
-        _MINOR_SIXTH,
-        _MINOR_SEVENTH,
-        _OCTAVE,
-    ]
+class AeolianScale(MinorScale):
+    pass
 
 class MelodicMinorScale(DiatonicScale):
 
@@ -317,17 +304,27 @@ class HarmonicMinorScale(DiatonicScale):
         _OCTAVE,
     ]
 
+def unit_test(f):
+    for t in _TONES:
+        for a in t:
+            if a[0] == '?' or len(a[1]) >1:
+                continue
+            n = Note(a[0], a[1])
+            echo(n, 'blue')
+            n = f(a[0], a[1])
+            echo(n, 'cyan')
+
 if __name__ == '__main__':
 
     try:
-        b_minor = NaturalMinorScale('B')
-        print(b_minor)
+        # b_minor = NaturalMinorScale('B')
+        # print(b_minor)
 
-        a_minor = MelodicMinorScale('A')
-        print(a_minor)
+        # a_minor = MelodicMinorScale('A')
+        # print(a_minor)
 
-        d_minor = HarmonicMinorScale('D')
-        print(d_minor)
+        # d_minor = HarmonicMinorScale('D')
+        # print(d_minor)
 
         std_tuning = Tuning(
             string1='E4',
@@ -337,7 +334,7 @@ if __name__ == '__main__':
             string5='A2',
             string6='E2'
         )
-        echo(std_tuning.string3)
+        # echo(std_tuning.string5)
 
         empty_fret = Fret(fret=6)
         string1 = Row(
@@ -372,14 +369,17 @@ if __name__ == '__main__':
         # new_fret = Fret(Bb3, fret=12)
         # print(new_fret)
 
-        bla = ChromaticScale()
-        for w in bla.interval:
-            echo(w, 'yellow')
+        # unit_test(ChromaticScale)
+        unit_test(MajorScale)
+        unit_test(NaturalMinorScale)
+        unit_test(MelodicMinorScale)
+        unit_test(HarmonicMinorScale)
+
 
     except KeyboardInterrupt:
         echo()
 
 
 # JUST FINISHED BASIC CHROMATIC SCALE DEFINITION TO OUTPUT ALL FRETS OF STRING
-
+# IMPROVE DIATONIC SCALE CALCULATE DEGREES... INSTEAD OF USING NEXT MAYBE USE '' oR '#' LIKE IN CHROMATIC
 
