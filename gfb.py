@@ -124,7 +124,6 @@ class Tuning(object):
                 setattr(self, k, String(v))
 
 
-
 class Note(object):
 
     _ORDER = ('C', 'D', 'E', 'F', 'G', 'A', 'B')
@@ -219,16 +218,10 @@ class ChromaticScale(Scale):
 
     def calculate_degree(self, d):
         row_index = self.tonic.tone_index +self.interval[d]
-
-        if self.tonic.alt == '':
-            next_degrees = [t for t in looped_list_item(row_index, _TONES) if t[1] == '']
-            if not next_degrees:
-                next_degrees = [t for t in looped_list_item(row_index, _TONES) if t[1] == '#']
-        else:
-            next_degrees = [t for t in looped_list_item(row_index, _TONES) if t[1] == self.tonic.alt[:-1]] # ''
-            if not next_degrees:
-                next_degrees = [t for t in looped_list_item(row_index, _TONES) if t[1] == self.tonic.alt]  # 'b'
-
+        next_degrees = [t for t in looped_list_item(row_index, _TONES) if t[1] == self.tonic.alt[:-1]]
+        if not next_degrees:
+            chosen_alt = '#' if self.tonic.alt == '' else self.tonic.alt
+            next_degrees = [t for t in looped_list_item(row_index, _TONES) if t[1] == chosen_alt]
         self.add_degree(d, next_degrees)
 
 
@@ -256,6 +249,9 @@ class MajorScale(DiatonicScale):
         _OCTAVE,
     ]
 
+class IonianScale(MajorScale):
+    pass
+
 class MinorScale(DiatonicScale):
 
     interval = [
@@ -270,10 +266,10 @@ class MinorScale(DiatonicScale):
         _OCTAVE,
     ]
 
-class NaturalMinorScale(MinorScale):
+class AeolianScale(MinorScale):
     pass
 
-class AeolianScale(MinorScale):
+class NaturalMinorScale(MinorScale):
     pass
 
 class MelodicMinorScale(DiatonicScale):
@@ -369,11 +365,11 @@ if __name__ == '__main__':
         # new_fret = Fret(Bb3, fret=12)
         # print(new_fret)
 
-        # unit_test(ChromaticScale)
-        unit_test(MajorScale)
-        unit_test(NaturalMinorScale)
-        unit_test(MelodicMinorScale)
-        unit_test(HarmonicMinorScale)
+        unit_test(ChromaticScale)
+        # unit_test(MajorScale)
+        # unit_test(NaturalMinorScale)
+        # unit_test(MelodicMinorScale)
+        # unit_test(HarmonicMinorScale)
 
 
     except KeyboardInterrupt:
@@ -381,5 +377,3 @@ if __name__ == '__main__':
 
 
 # JUST FINISHED BASIC CHROMATIC SCALE DEFINITION TO OUTPUT ALL FRETS OF STRING
-# IMPROVE DIATONIC SCALE CALCULATE DEGREES... INSTEAD OF USING NEXT MAYBE USE '' oR '#' LIKE IN CHROMATIC
-
