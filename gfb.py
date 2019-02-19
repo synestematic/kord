@@ -46,61 +46,51 @@ _DIMINISHED_OCTAVE = 11
 _OCTAVE = 12
 _AUGMENTED_SEVENTH = 12
 
+
+class Note(object):
+
+    _ORDER = ('C', 'D', 'E', 'F', 'G', 'A', 'B')
+
+    def __init__(self, tone=' ', alt=' ', octave=' '):
+        self.tone = tone.upper()
+        self.alt = alt.lower()
+        self.octave = octave
+
+    def matrix_coordinates(self):
+        for t_i, _columns in enumerate(_NOTE_MATRIX):
+            for a_i, _rows in enumerate(_columns):
+                if self.tone == _rows.tone and self.alt == _rows.alt:
+                    return (t_i, a_i)
+
+    def tone_index(self):
+        return self.matrix_coordinates()[0]
+
+    def alt_index(self):
+        return self.matrix_coordinates()[1]
+
+    def next(self):
+        my_index = self._ORDER.index(self.tone)
+        note_string = looped_list_item(my_index +1, self._ORDER)
+        return Note(note_string)
+
+    def __repr__(self):
+        return '{}{}'.format(self.tone, self.alt)
+
 _NOTE_MATRIX = [
-
     [ Note('B', '#' ), Note('C', ''  ), Note('D', 'bb') ],
-
     [ Note('B', '##'), Note('C', '#' ), Note('D', 'b' ) ],
-
     [ Note('C', '##'), Note('D', ''  ), Note('E', 'bb') ],
-
     [ Note('F', 'bb'), Note('D', '#' ), Note('E', 'b' ) ],
-
     [ Note('D', '##'), Note('E', ''  ), Note('F', 'b' ) ],
-
     [ Note('G', 'bb'), Note('F', ''  ), Note('E', '#' ) ],
-
     [ Note('E', '##'), Note('F', '#' ), Note('G', 'b' ) ],
-
     [ Note('F', '##'), Note('G', ''  ), Note('A', 'bb') ],
-
     [ Note('?', '??'), Note('G', '#' ), Note('A', 'b' ) ],
-
     [ Note('G', '##'), Note('A', ''  ), Note('B', 'bb') ],
-
     [ Note('C', 'bb'), Note('A', '#' ), Note('B', 'b' ) ],
-
     [ Note('A', '##'), Note('B', ''  ), Note('C', 'b' ) ],
-
 ]
 
-_TONES = [
-
-    [ ('B', '#' ), ('C', '' ), ('D', 'bb') ],
-
-    [ ('B', '##'), ('C', '#'), ('D', 'b' ) ],
-
-    [ ('C', '##'), ('D', '' ), ('E', 'bb') ],
-
-    [ ('F', 'bb'), ('D', '#' ), ('E', 'b') ],
-
-    [ ('D', '##'), ('E', ''  ), ('F', 'b') ],
-
-    [ ('G', 'bb'), ('F', ''  ), ('E', '#') ],
-
-    [ ('E', '##'), ('F', '#' ), ('G', 'b') ],
-
-    [ ('F', '##'), ('G', '' ), ('A', 'bb') ],
-
-    [ ('?', '??'), ('G', '#'), ('A', 'b') ],
-
-    [ ('G', '##'), ('A', '' ), ('B', 'bb') ],
-
-    [ ('C', 'bb'), ('A', '#' ), ('B', 'b') ],
-
-    [ ('A', '##'), ('B', '' ), ('C', 'b') ],
-
-]
 
 class Fret(object):
 
@@ -152,36 +142,6 @@ class Tuning(object):
                 setattr(self, k, String(v))
 
 
-class Note(object):
-
-    _ORDER = ('C', 'D', 'E', 'F', 'G', 'A', 'B')
-
-    def __init__(self, tone=' ', alt=' ', octave=' '):
-        self.tone = tone.upper()
-        self.alt = alt.lower()
-        self.octave = octave
-
-        self.tone_index = None
-        self.alt_index = None
-        self.get_indices()
-
-    def get_indices(self):
-        for t_i, _tones in enumerate(_TONES):
-            for a_i, _tone in enumerate(_tones):
-                if self.tone == _tone[0] and self.alt == _tone[1]:
-                    self.tone_index = t_i
-                    self.alt_index = a_i
-                    break
-
-    def next(self):
-        my_index = self._ORDER.index(self.tone)
-        note_string = looped_list_item(my_index +1, self._ORDER)
-        return Note(note_string)
-
-    def __repr__(self):
-        return '{}{}'.format(self.tone, self.alt)
-
-
 class Scale(object):
 
     def __init__(self, key='C', alt=''):
@@ -205,12 +165,12 @@ class Scale(object):
             self.degree.append(None)
 
     def add_degree(self, d, notes):
-        if len(notes) != 1:
-            echo('Failed to get degree[{}] of {} {}'.format(d, self.tonic, self.__class__.__name__), 'red')
-            expected_tone = self.degree[d -1].next().tone
-            self.degree[d] = Note(expected_tone, 'xx')
+        if len(notes) == 1:
+            self.degree[d] = notes[0]
         else:
-            self.degree[d] = Note(*notes[0])
+            echo('Failed to get degree[{}] of {} {}'.format(d, self.tonic, self.__class__.__name__), 'red')
+            expected_tone = self.degree[d -1].next().tone # this assumes diatonic scale...
+            self.degree[d] = Note(expected_tone, 'xx')
 
     def calculate_degrees(self):
         for d in range(2, self._PITCHES +2):
@@ -245,11 +205,13 @@ class ChromaticScale(Scale):
     ]
 
     def calculate_degree(self, d):
-        row_index = self.tonic.tone_index +self.interval[d]
-        next_degrees = [t for t in looped_list_item(row_index, _TONES) if t[1] == self.tonic.alt[:-1]]
+        row_index = self.tonic.tone_index() +self.interval[d]
+
+        next_degrees = [note for note in looped_list_item(row_index, _NOTE_MATRIX) if note.alt == self.tonic.alt[:-1]]
         if not next_degrees:
             chosen_alt = '#' if self.tonic.alt == '' else self.tonic.alt
-            next_degrees = [t for t in looped_list_item(row_index, _TONES) if t[1] == chosen_alt]
+            next_degrees = [note for note in looped_list_item(row_index, _NOTE_MATRIX) if note.alt == chosen_alt]
+        
         self.add_degree(d, next_degrees)
 
 
@@ -258,8 +220,8 @@ class DiatonicScale(Scale):
     _PITCHES = 7
 
     def calculate_degree(self, d):
-        row_index = self.tonic.tone_index +self.interval[d]
-        next_degrees = [t for t in looped_list_item(row_index, _TONES) if t[0] == self.degree[d -1].next().tone]
+        row_index = self.tonic.tone_index() +self.interval[d]
+        next_degrees = [note for note in looped_list_item(row_index, _NOTE_MATRIX) if note.tone == self.degree[d -1].next().tone]
         self.add_degree(d, next_degrees)
 
 
@@ -328,15 +290,13 @@ class HarmonicMinorScale(DiatonicScale):
         _OCTAVE,
     ]
 
-def unit_test(f):
-    for t in _TONES:
-        for a in t:
-            if a[0] == '?' or len(a[1]) >1:
+def unit_test(s):
+    for _row in _NOTE_MATRIX:
+        for _column in _row:
+            if len(_column.alt) >1 or '?' in _column.alt:
                 continue
-            n = Note(a[0], a[1])
-            echo(n, 'blue')
-            n = f(a[0], a[1])
-            echo(n, 'cyan')
+            echo(_column, 'blue')
+            echo(s(_column.tone, _column.alt), 'cyan')
 
 if __name__ == '__main__':
 
@@ -394,10 +354,10 @@ if __name__ == '__main__':
         # print(new_fret)
 
         unit_test(ChromaticScale)
-        # unit_test(MajorScale)
-        # unit_test(NaturalMinorScale)
-        # unit_test(MelodicMinorScale)
-        # unit_test(HarmonicMinorScale)
+        unit_test(MajorScale)
+        unit_test(NaturalMinorScale)
+        unit_test(MelodicMinorScale)
+        unit_test(HarmonicMinorScale)
 
     except KeyboardInterrupt:
         echo()
