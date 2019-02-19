@@ -1,0 +1,5 @@
+*.*
+!.gitignore
+!gfb.py
+!notes.py
+!scales.py
