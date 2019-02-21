@@ -53,20 +53,30 @@ class Tuning(object):
         echo(cls.tuners + _binding * cls.longness)
 
     @classmethod
-    def fret_markers(cls):
+    def fret_markers(cls, complete=False):
+
+        i = 'I' if complete else ''
+        ii = 'II' if complete else ''
+        iv = 'IV' if complete else ''
+        vi = 'VI' if complete else ''
+        vi = 'VI' if complete else ''
+        viii = 'VIII' if complete else ''
+        x = 'X' if complete else ''
+        xi = 'XI' if complete else ''
+
         r = Row(
             FString('', size=5),
-            FString('I', size=7, align='cl', colors=['magenta'], pad=None),
-            FString('II', size=7, align='cl', colors=['magenta']),
+            FString(i, size=7, align='cl', colors=['magenta'], pad=None),
+            FString(ii, size=7, align='cl', colors=['magenta']),
             FString('III', size=7, align='cl', colors=['magenta']),
-            FString('IV', size=7, align='cl', colors=['magenta']),
+            FString(iv, size=7, align='cl', colors=['magenta']),
             FString('V', size=7, align='cl', colors=['magenta']),
-            FString('VI', size=7, align='cl', colors=['magenta']),
+            FString(vi, size=7, align='cl', colors=['magenta']),
             FString('VII', size=7, align='cl', colors=['magenta']),
-            FString('VIII', size=7, align='cl', colors=['magenta']),
+            FString(viii, size=7, align='cl', colors=['magenta']),
             FString('IX', size=7, align='cl', colors=['magenta']),
-            FString('X', size=7, align='cl', colors=['magenta']),
-            FString('XI', size=7, align='cl', colors=['magenta']),
+            FString(x, size=7, align='cl', colors=['magenta']),
+            FString(xi, size=7, align='cl', colors=['magenta']),
             FString('XII', size=7, align='cl', colors=['magenta']),
             width=len(cls.tuners) +cls.longness
         ).echo()
