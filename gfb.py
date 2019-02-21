@@ -33,7 +33,7 @@ class String(object):
             string_line.append(note)
 
             sep = FString(
-                '|' if fret == 0 else '¦'
+                '|' if fret == 0 or fret == 12 else '¦'
             )
             string_line.append(sep)
         
