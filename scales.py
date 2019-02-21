@@ -37,6 +37,9 @@ class Scale(object):
         for d in range(2, self._PITCHES +2):
             self.calculate_degree(d)
 
+    def spell(self):
+        for d in self.degree[1:]:
+            yield d
 
 class ChromaticScale(Scale):
 
