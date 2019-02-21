@@ -53,14 +53,15 @@ class Tuning(object):
                 setattr(self, k, String(v))
 
 
-
 def unit_test(s):
     for _row in NOTE_MATRIX:
-        for _column in _row:
-            if len(_column.alt) >1 or '?' in _column.alt:
+        echo(_row, 'green')
+
+        for _enharmonic_note in _row:
+            if len(_enharmonic_note.alt) >1 or '?' in _enharmonic_note.alt:
                 continue
-            echo(_column, 'blue')
-            echo(s(_column.tone, _column.alt), 'cyan')
+            echo(_enharmonic_note, 'blue')
+            echo(s(_enharmonic_note.tone, _enharmonic_note.alt), 'cyan')
 
 if __name__ == '__main__':
 
@@ -84,44 +85,44 @@ if __name__ == '__main__':
         )
         # echo(std_tuning.string5)
 
-        empty_fret = Fret(fret=6)
-        string1 = Row(
-            empty_fret, 
-            empty_fret, 
-            empty_fret, 
-            empty_fret, 
-            empty_fret, 
-            empty_fret, 
-            empty_fret, 
-            empty_fret, 
-            empty_fret, 
-            empty_fret, 
-            empty_fret, 
-            empty_fret, 
-            # FString(empty_fret, size=6, align='r'),
-            # FString(empty_fret, size=6, align='r'),
-            # FString(empty_fret, size=6, align='r'),
-            # FString(empty_fret, size=6, align='r'),
-            # FString(empty_fret, size=6, align='r'),
-            # FString(empty_fret, size=6, align='r'),
-            # FString(empty_fret, size=6, align='r'),
-            # FString(empty_fret, size=6, align='r'),
-            # FString(empty_fret, size=6, align='r'),
-            # FString(empty_fret, size=6, align='r'),
-            # FString(empty_fret, size=6, align='r'),
-            # FString(empty_fret, size=6, align='r'),
-            width=72
-        ).echo()
+        # empty_fret = Fret(fret=6)
+        # string1 = Row(
+        #     empty_fret, 
+        #     empty_fret, 
+        #     empty_fret, 
+        #     empty_fret, 
+        #     empty_fret, 
+        #     empty_fret, 
+        #     empty_fret, 
+        #     empty_fret, 
+        #     empty_fret, 
+        #     empty_fret, 
+        #     empty_fret, 
+        #     empty_fret, 
+        #     # FString(empty_fret, size=6, align='r'),
+        #     # FString(empty_fret, size=6, align='r'),
+        #     # FString(empty_fret, size=6, align='r'),
+        #     # FString(empty_fret, size=6, align='r'),
+        #     # FString(empty_fret, size=6, align='r'),
+        #     # FString(empty_fret, size=6, align='r'),
+        #     # FString(empty_fret, size=6, align='r'),
+        #     # FString(empty_fret, size=6, align='r'),
+        #     # FString(empty_fret, size=6, align='r'),
+        #     # FString(empty_fret, size=6, align='r'),
+        #     # FString(empty_fret, size=6, align='r'),
+        #     # FString(empty_fret, size=6, align='r'),
+        #     width=72
+        # ).echo()
 
         Bb3 = Note('B', 'b', 3)
         # new_fret = Fret(Bb3, fret=12)
         # print(new_fret)
 
         unit_test(ChromaticScale)
-        unit_test(MajorScale)
-        unit_test(NaturalMinorScale)
-        unit_test(MelodicMinorScale)
-        unit_test(HarmonicMinorScale)
+        # unit_test(MajorScale)
+        # unit_test(NaturalMinorScale)
+        # unit_test(MelodicMinorScale)
+        # unit_test(HarmonicMinorScale)
 
     except KeyboardInterrupt:
         echo()

@@ -55,10 +55,10 @@ class Note(object):
         self.octave = octave
 
     def matrix_coordinates(self):
-        for t_i, _columns in enumerate(NOTE_MATRIX):
-            for a_i, _rows in enumerate(_columns):
-                if self.tone == _rows.tone and self.alt == _rows.alt:
-                    return (t_i, a_i)
+        for _row_index, _row in enumerate(NOTE_MATRIX):
+            for _note_index, _enharmonic_note in enumerate(_row):
+                if self.tone == _enharmonic_note.tone and self.alt == _enharmonic_note.alt:
+                    return (_row_index, _note_index)
 
     def tone_index(self):
         return self.matrix_coordinates()[0]

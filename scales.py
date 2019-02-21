@@ -45,22 +45,20 @@ class ChromaticScale(Scale):
     interval = [
         None,
         UNISON,
-        AUGMENTED_UNISON,
-
+        # AUGMENTED_UNISON,
+        MINOR_SECOND,
         MAJOR_SECOND,
-        AUGMENTED_SECOND,
-
+        # AUGMENTED_SECOND,
+        MINOR_THIRD,
         MAJOR_THIRD,
-
         PERFECT_FOURTH,
         AUGMENTED_FOURTH,
-
         PERFECT_FIFTH,
-        AUGMENTED_FIFTH,
-
+        # AUGMENTED_FIFTH,
+        MINOR_SIXTH,
         MAJOR_SIXTH,
-        AUGMENTED_SIXTH,
-
+        # AUGMENTED_SIXTH,
+        MINOR_SEVENTH,
         MAJOR_SEVENTH,
         OCTAVE,
     ]
