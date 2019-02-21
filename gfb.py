@@ -13,7 +13,7 @@ class String(object):
         scale_generator = ChromaticScale(
             open_note.tone,
             open_note.alt
-        ).spell()
+        ).scale()
 
         self.fret = []
         for degree in scale_generator:
@@ -88,7 +88,7 @@ class Tuning(object):
 
 
 def unit_test(s):
-    for _row in NOTE_MATRIX:
+    for _row in ENHARMONIC_MATRIX:
         for _enharmonic_note in _row:
             if len(_enharmonic_note.alt) >1 or '?' in _enharmonic_note.alt:
                 continue
@@ -98,9 +98,6 @@ def unit_test(s):
 if __name__ == '__main__':
 
     try:
-        # b_minor = NaturalMinorScale('B')
-        # print(b_minor)
-
         # a_minor = MelodicMinorScale('A')
         # print(a_minor)
 
@@ -116,6 +113,7 @@ if __name__ == '__main__':
         #     string6='E2'
         # )
         # echo(std_tuning.string5)
+
 
         Tuning.fret_markers()
         Tuning.binding('upper')
@@ -134,6 +132,7 @@ if __name__ == '__main__':
         echo(s, 'green')
 
         Tuning.binding('lower')
+
 
         # empty_fret = Fret(fret=6)
         # string1 = Row(
@@ -173,6 +172,10 @@ if __name__ == '__main__':
         # unit_test(NaturalMinorScale)
         # unit_test(MelodicMinorScale)
         # unit_test(HarmonicMinorScale)
+
+        # a_major = MinorScale('A')
+        # for n in a_major.ninth():
+        #     print(n)
 
     except KeyboardInterrupt:
         echo()
