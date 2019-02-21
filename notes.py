@@ -55,7 +55,7 @@ class Note(object):
         self.octave = octave
 
     def matrix_coordinates(self):
-        for _row_index, _row in enumerate(NOTE_MATRIX):
+        for _row_index, _row in enumerate(ENHARMONIC_MATRIX):
             for _note_index, _enharmonic_note in enumerate(_row):
                 if self.tone == _enharmonic_note.tone and self.alt == _enharmonic_note.alt:
                     return (_row_index, _note_index)
@@ -74,7 +74,7 @@ class Note(object):
     def __repr__(self):
         return '{}{}'.format(self.tone, self.alt)
 
-NOTE_MATRIX = [
+ENHARMONIC_MATRIX = [
     [ Note('B', '#' ), Note('C', ''  ), Note('D', 'bb') ],
     [ Note('B', '##'), Note('C', '#' ), Note('D', 'b' ) ],
     [ Note('C', '##'), Note('D', ''  ), Note('E', 'bb') ],
