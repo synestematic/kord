@@ -24,7 +24,7 @@ class String(object):
 
         for fret, note in enumerate(self.fret):
 
-            sz = 8 if fret == 0 else 6
+            sz = 4 if fret == 0 else 6
             note = FString(
                 '{}{}{}'.format(note.tone, note.alt, note.octave),
                 size=sz, align='cr', colors=['blue']
@@ -42,7 +42,7 @@ class String(object):
 
 class Tuning(object):
 
-    tuners = '         '
+    tuners = '     '
     # tuners = 'O  O  O  '
 
     longness = 83
@@ -55,19 +55,19 @@ class Tuning(object):
     @classmethod
     def fret_markers(cls):
         r = Row(
-            FString('', size=9, pad='*'),
-            FString('I', size=7, align='cl', pad='-'),
-            FString('II', size=7, align='cl'),
-            FString('III', size=7, align='cl'),
-            FString('IV', size=7, align='cl'),
-            FString('V', size=7, align='cl'),
-            FString('VI', size=7, align='cl'),
-            FString('VII', size=7, align='cl'),
-            FString('VIII', size=7, align='cl'),
-            FString('IX', size=7, align='cl'),
-            FString('X', size=7, align='cl'),
-            FString('XI', size=7, align='cl'),
-            FString('XII', size=7, align='cl'),
+            FString('', size=5),
+            FString('I', size=7, align='cl', colors=['magenta'], pad=None),
+            FString('II', size=7, align='cl', colors=['magenta']),
+            FString('III', size=7, align='cl', colors=['magenta']),
+            FString('IV', size=7, align='cl', colors=['magenta']),
+            FString('V', size=7, align='cl', colors=['magenta']),
+            FString('VI', size=7, align='cl', colors=['magenta']),
+            FString('VII', size=7, align='cl', colors=['magenta']),
+            FString('VIII', size=7, align='cl', colors=['magenta']),
+            FString('IX', size=7, align='cl', colors=['magenta']),
+            FString('X', size=7, align='cl', colors=['magenta']),
+            FString('XI', size=7, align='cl', colors=['magenta']),
+            FString('XII', size=7, align='cl', colors=['magenta']),
             width=len(cls.tuners) +cls.longness
         ).echo()
 
@@ -112,7 +112,7 @@ if __name__ == '__main__':
 
         s = String('E', '', 4)
         echo(s, 'green')
-        d = String('B', 'bb', 3)
+        d = String('B', '', 3)
         echo(d, 'green')
         s = String('G', '', 3)
         echo(s, 'green')
