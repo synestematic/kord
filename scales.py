@@ -44,9 +44,9 @@ class Scale(object):
     def degree(self, d):
         return looped_list_item(d -1, self.degrees)
 
-    def scale(self):
-        for d in self.degrees:
-            yield d
+    def scale(self, notes=None):
+        for d in range(notes if notes else self._PITCHES):
+            yield looped_list_item(d, self.degrees)
 
 class ChromaticScale(Scale):
 

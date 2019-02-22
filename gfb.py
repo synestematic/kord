@@ -6,6 +6,7 @@ from scales import *
 class String(object):
 
     # fret = [] # WHY IS THIS SHARED BETWEEN MY STRING OBJECTS???
+    _DISPLAY_FRETS = 1 +12
 
     def __init__(self, tone, alt='', octave=0):
 
@@ -13,7 +14,7 @@ class String(object):
         scale_generator = ChromaticScale(
             open_note.tone,
             open_note.alt
-        ).scale()
+        ).scale(notes=self._DISPLAY_FRETS)
 
         self.fret = []
         for degree in scale_generator:
@@ -40,7 +41,7 @@ class String(object):
         return str(string_line)
 
 
-class Tuning(object):
+class Guitar(object):
 
     tuners = '     '
     # tuners = 'O  O  O  '
@@ -104,7 +105,7 @@ if __name__ == '__main__':
         # d_minor = HarmonicMinorScale('D')
         # print(d_minor)
 
-        # std_tuning = Tuning(
+        # std_tuning = Guitar(
         #     string1='E4',
         #     string2='B3',
         #     string3='G3',
@@ -115,8 +116,8 @@ if __name__ == '__main__':
         # echo(std_tuning.string5)
 
 
-        Tuning.fret_markers()
-        Tuning.binding('upper')
+        Guitar.fret_markers()
+        Guitar.binding('upper')
 
         s = String('E', '', 4)
         echo(s, 'green')
@@ -131,7 +132,7 @@ if __name__ == '__main__':
         s = String('E', '', 2)
         echo(s, 'green')
 
-        Tuning.binding('lower')
+        Guitar.binding('lower')
 
 
         # empty_fret = Fret(fret=6)
