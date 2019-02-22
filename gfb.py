@@ -83,10 +83,42 @@ class Guitar(object):
         ).echo()
 
     def __init__(self, *arg, **kwargs):
-        for k, v in kwargs.items():
-            if k.startswith('string'):
-                setattr(self, k, String(v))
 
+        self.strings = []
+
+        # FILTER STRING ARGS
+        string_args = dict( [(k.replace('string', ''), note) for k, note in kwargs.items() if k.startswith('string')] )
+
+        self._init_strings(len(string_args))
+        self._assign_strings(string_args)
+
+    ### INIT FUNCTIONS
+
+    def _init_strings(self, string_count):
+        for n in range(string_count):
+            self.strings.append(None)
+
+    def _assign_strings(self, string_args):
+        for k, note in string_args.items():
+            self.strings[int(k) -1] = String(
+                note.tone, note.alt, note.octave
+            )
+
+    ### REPR FUNCTIONS
+
+    def fretboard(self):
+        self.fret_markers()
+        self.binding('upper')
+        for s in self.strings:
+            echo(s)
+        self.binding('lower')
+
+
+    def string(self, s):
+        return self.strings[s -1]
+
+    # def echo_string(self, s):
+    #     echo(self.string(s))
 
 def unit_test(s):
     for _row in ENHARMONIC_MATRIX:
@@ -105,68 +137,30 @@ if __name__ == '__main__':
         # d_minor = HarmonicMinorScale('D')
         # print(d_minor)
 
-        # std_tuning = Guitar(
-        #     string1='E4',
-        #     string2='B3',
-        #     string3='G3',
-        #     string4='D3',
-        #     string5='A2',
-        #     string6='E2'
-        # )
-        # echo(std_tuning.string5)
+        std_tuning = Guitar(
+            string1=Note('G', 'b', 4),
+            string2=Note('B', '', 3),
+            string3=Note('G', '', 3),
+            string4=Note('D', '', 3),
+            string5=Note('A', '', 2),
+            string6=Note('E', '', 2),
+        )
+
+        std_tuning.fretboard()
+        # echo(std_tuning.string(4))
 
 
-        Guitar.fret_markers()
-        Guitar.binding('upper')
 
-        s = String('E', '', 4)
-        echo(s, 'green')
-        d = String('B', '', 3)
-        echo(d, 'green')
-        s = String('G', '', 3)
-        echo(s, 'green')
-        s = String('D', '', 3)
-        echo(s, 'green')
-        s = String('A', '', 2)
-        echo(s, 'green')
-        s = String('E', '', 2)
-        echo(s, 'green')
-
-        Guitar.binding('lower')
+        # s = String('E', '', 4)
+        # echo(s, 'green')
 
 
         # empty_fret = Fret(fret=6)
         # string1 = Row(
         #     empty_fret, 
-        #     empty_fret, 
-        #     empty_fret, 
-        #     empty_fret, 
-        #     empty_fret, 
-        #     empty_fret, 
-        #     empty_fret, 
-        #     empty_fret, 
-        #     empty_fret, 
-        #     empty_fret, 
-        #     empty_fret, 
-        #     empty_fret, 
-        #     # FString(empty_fret, size=6, align='r'),
-        #     # FString(empty_fret, size=6, align='r'),
-        #     # FString(empty_fret, size=6, align='r'),
-        #     # FString(empty_fret, size=6, align='r'),
-        #     # FString(empty_fret, size=6, align='r'),
-        #     # FString(empty_fret, size=6, align='r'),
-        #     # FString(empty_fret, size=6, align='r'),
-        #     # FString(empty_fret, size=6, align='r'),
-        #     # FString(empty_fret, size=6, align='r'),
-        #     # FString(empty_fret, size=6, align='r'),
-        #     # FString(empty_fret, size=6, align='r'),
         #     # FString(empty_fret, size=6, align='r'),
         #     width=72
         # ).echo()
-
-        # Bb3 = Note('B', 'b', 3)
-        # new_fret = Fret(Bb3, fret=12)
-        # print(new_fret)
 
         # unit_test(ChromaticScale)
         # unit_test(MajorScale)
