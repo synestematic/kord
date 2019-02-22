@@ -20,31 +20,41 @@ class String(object):
         for degree in scale_generator:
             self.fret.append(degree)
 
+        self.matching_scale = None
+        self.set_matching_scale()
+ 
     def __repr__(self):
+        ''' prints string notes matching given scale '''
         string_line = Row()
 
-        for fret, note in enumerate(self.fret):
+        for fret_n, fret_note in enumerate(self.fret):
 
-            sz = 4 if fret == 0 else 6
-            note = FString(
-                '{}{}{}'.format(note.tone, note.alt, note.octave),
+            tone = fret_note.tone if fret_note in self.match_scale.degrees else ''
+            alt = fret_note.alt if fret_note in self.match_scale.degrees else ''
+            octave = fret_note.octave if fret_note in self.match_scale.degrees else ''
+            sz = 4 if fret_n == 0 else 6
+
+            note_display = FString(
+                '{}{}{}'.format(tone, alt, octave),
                 size=sz, align='cr', colors=['blue']
             )
-
-            string_line.append(note)
+            string_line.append(note_display)
 
             sep = FString(
-                '|' if fret == 0 or fret == 12 else '¦'
+                '|' if fret_n == 0 or fret_n == 12 else '¦'
             )
             string_line.append(sep)
         
         return str(string_line)
 
+    def set_matching_scale(self, scale=None):
+        self.match_scale = ChromaticScale('C') if not scale else scale
+
 
 class Guitar(object):
 
+    tuners = 'O o .'
     tuners = '     '
-    # tuners = 'O  O  O  '
 
     longness = 83
 
@@ -106,13 +116,13 @@ class Guitar(object):
 
     ### REPR FUNCTIONS
 
-    def fretboard(self):
+    def fretboard(self, scale=None):
         self.fret_markers()
         self.binding('upper')
-        for s in self.strings:
-            echo(s)
+        for string in self.strings:
+            string.set_matching_scale(scale)
+            echo(string)
         self.binding('lower')
-
 
     def string(self, s):
         return self.strings[s -1]
@@ -134,33 +144,19 @@ if __name__ == '__main__':
         # a_minor = MelodicMinorScale('A')
         # print(a_minor)
 
-        # d_minor = HarmonicMinorScale('D')
-        # print(d_minor)
-
         std_tuning = Guitar(
-            string1=Note('G', 'b', 4),
+            string1=Note('E', '', 4),
             string2=Note('B', '', 3),
             string3=Note('G', '', 3),
             string4=Note('D', '', 3),
             string5=Note('A', '', 2),
             string6=Note('E', '', 2),
+            string7=Note('B', '', 2),
         )
 
-        std_tuning.fretboard()
+        c_major = MajorScale('E')
+        std_tuning.fretboard(scale=c_major)
         # echo(std_tuning.string(4))
-
-
-
-        # s = String('E', '', 4)
-        # echo(s, 'green')
-
-
-        # empty_fret = Fret(fret=6)
-        # string1 = Row(
-        #     empty_fret, 
-        #     # FString(empty_fret, size=6, align='r'),
-        #     width=72
-        # ).echo()
 
         # unit_test(ChromaticScale)
         # unit_test(MajorScale)
@@ -172,8 +168,13 @@ if __name__ == '__main__':
         # for n in a_major.ninth():
         #     print(n)
 
+        # a = Note('A', octave=1)
+        # b = Note('A', octave=2)
+        # if a == b:
+        #     echo('same')
+
+
     except KeyboardInterrupt:
         echo()
 
-
-# JUST FINISHED BASIC CHROMATIC SCALE DEFINITION TO OUTPUT ALL FRETS OF STRING
+# IMPLEMENT OCTAVES !!!
