@@ -74,6 +74,18 @@ class Note(object):
     def __repr__(self):
         return '{}{}'.format(self.tone, self.alt)
 
+    def __eq__(self, other):
+        if type(other) != self.__class__:
+            return False
+        if self.tone != other.tone:
+            return False
+        if self.alt != other.alt:
+            return False
+        # if self.octave != other.octave:
+        #     return False
+        return True
+
+
 ENHARMONIC_MATRIX = [
     [ Note('B', '#' ), Note('C', ''  ), Note('D', 'bb') ],
     [ Note('B', '##'), Note('C', '#' ), Note('D', 'b' ) ],
