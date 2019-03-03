@@ -1,4 +1,5 @@
 from bestia.iterate import looped_list_item
+from bestia.output import echo
 
 SHARP = 1
 FLAT = -1
@@ -49,11 +50,36 @@ NOTE_ORDER = ('C', 'D', 'E', 'F', 'G', 'A', 'B')
 
 class Note(object):
 
-    def __init__(self, tone, alt='', octave=0):
-        self.tone = tone.upper()
-        self.alt = alt.lower()
-        self.octave = octave
+    _ALTERATIONS = ('', '#', 'b', '##', 'bb')
 
+    def __init__(self, *args):
+        self.tone = args[0].upper()
+
+        self.alt = ''
+        for a in args:
+            if a in self._ALTERATIONS:
+                self.alt = a
+
+        self.octave = 3
+        for a in args:
+            if type(a) == int:
+                self.octave = a
+
+    def __repr__(self):
+        return '{}{}{}'.format(self.tone, self.alt, self.octave)
+
+    def __eq__(self, other):
+        if type(other) != self.__class__:
+            return False
+        if self.tone != other.tone:
+            return False
+        if self.alt != other.alt:
+            return False
+        if self.octave != other.octave:
+            return False
+        return True
+
+    ### MATRIX METHODS
     def matrix_coordinates(self):
         for _row_index, _row in enumerate(ENHARMONIC_MATRIX):
             for _note_index, _enharmonic_note in enumerate(_row):
@@ -66,37 +92,30 @@ class Note(object):
     def alt_index(self):
         return self.matrix_coordinates()[1]
 
-    def next(self):
+    ### NOTE_ORDER METHODS
+    def _relative_note(self, n):
         my_index = NOTE_ORDER.index(self.tone)
-        note_string = looped_list_item(my_index +1, NOTE_ORDER)
+        note_string = looped_list_item(my_index +n, NOTE_ORDER)
         return Note(note_string)
 
-    def __repr__(self):
-        return '{}{}'.format(self.tone, self.alt)
+    def next(self, n=1):
+        return self._relative_note(n)
 
-    def __eq__(self, other):
-        if type(other) != self.__class__:
-            return False
-        if self.tone != other.tone:
-            return False
-        if self.alt != other.alt:
-            return False
-        # if self.octave != other.octave:
-        #     return False
-        return True
+    def previous(self, n=1):
+        n = 0 - abs(n)
+        return self._relative_note(n)
 
-
-ENHARMONIC_MATRIX = [
-    [ Note('B', '#' ), Note('C', ''  ), Note('D', 'bb') ],
-    [ Note('B', '##'), Note('C', '#' ), Note('D', 'b' ) ],
-    [ Note('C', '##'), Note('D', ''  ), Note('E', 'bb') ],
-    [ Note('F', 'bb'), Note('D', '#' ), Note('E', 'b' ) ],
-    [ Note('D', '##'), Note('E', ''  ), Note('F', 'b' ) ],
-    [ Note('G', 'bb'), Note('F', ''  ), Note('E', '#' ) ],
-    [ Note('E', '##'), Note('F', '#' ), Note('G', 'b' ) ],
-    [ Note('F', '##'), Note('G', ''  ), Note('A', 'bb') ],
-    [ Note('?', '??'), Note('G', '#' ), Note('A', 'b' ) ],
-    [ Note('G', '##'), Note('A', ''  ), Note('B', 'bb') ],
-    [ Note('C', 'bb'), Note('A', '#' ), Note('B', 'b' ) ],
-    [ Note('A', '##'), Note('B', ''  ), Note('C', 'b' ) ],
-]
+ENHARMONIC_MATRIX = (
+    (  Note('B', '#' ), Note('C', ''  ), Note('D', 'bb')  ),
+    (  Note('B', '##'), Note('C', '#' ), Note('D', 'b' )  ),
+    (  Note('C', '##'), Note('D', ''  ), Note('E', 'bb')  ),
+    (  Note('F', 'bb'), Note('D', '#' ), Note('E', 'b' )  ),
+    (  Note('D', '##'), Note('E', ''  ), Note('F', 'b' )  ),
+    (  Note('G', 'bb'), Note('F', ''  ), Note('E', '#' )  ),
+    (  Note('E', '##'), Note('F', '#' ), Note('G', 'b' )  ),
+    (  Note('F', '##'), Note('G', ''  ), Note('A', 'bb')  ),
+    (  Note('G', '#' ), Note('A', 'b' ),                  ),
+    (  Note('G', '##'), Note('A', ''  ), Note('B', 'bb')  ),
+    (  Note('C', 'bb'), Note('A', '#' ), Note('B', 'b' )  ),
+    (  Note('A', '##'), Note('B', ''  ), Note('C', 'b' )  ),
+)
