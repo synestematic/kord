@@ -50,7 +50,24 @@ NOTE_ORDER = ('C', 'D', 'E', 'F', 'G', 'A', 'B')
 
 class Note(object):
 
+    _SHARPS = [
+        '#',
+        '♯',
+        '⌗',
+        '⋕',
+        'ₓ',
+        '𝄪',
+    ]
+
+    _FLATS = [
+        'ᵇ',
+        '♭'
+    ]
+
     _ALTERATIONS = ('', '#', 'b', '##', 'bb')
+
+    _REPR_ALTS = {'' : '', '#' : '♯', '##' : '𝄪', 'b' : '♭', 'bb' : '♭♭'}
+    _REPR_OCTS = ('⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹')
 
     def __init__(self, *args):
         self.tone = args[0].upper()
@@ -65,8 +82,14 @@ class Note(object):
             if type(a) == int:
                 self.octave = a
 
+    def repr_octave(self):
+        return self._REPR_OCTS[self.octave]
+
+    def repr_alt(self):
+        return self._REPR_ALTS[self.alt]
+
     def __repr__(self):
-        return '{}{}{}'.format(self.tone, self.alt, self.octave)
+        return '{}{}{}'.format(self.tone, self.repr_alt(), self.repr_octave())
 
     def __eq__(self, other):
         if type(other) != self.__class__:
