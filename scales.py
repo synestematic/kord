@@ -3,120 +3,151 @@ from bestia.iterate import looped_list_item
 
 from notes import *
 
+MAX_NOTES = 88
+
 class Scale(object):
 
-    def __init__(self, key, alt=''):
-
-        self.degrees = []
-
-        self.init_degrees()
-        self.degrees[0] = Note(key, alt)
-        self.tonic = self.degrees[0]
-
-        self.calculate_degrees()
+    def __init__(self, root_note):
+        # ALWAYS INIT NEW NOTe
+        self._degrees = [
+            Note(root_note.tone, root_note.alt, 0)
+        ]
+        self.current_octave = 0
+        self.reset_octave()
 
     def __repr__(self):
         spell_line = Row()
-        for i in range(self._PITCHES):
-            spell_line.append(FString(self.degrees[i], size=4, colors=['yellow']))
+        for d in self.scale():
+            spell_line.append(FString(d, size=5, colors=['yellow']))
         return str(spell_line)
 
-    ### INIT FUNCTIONS
+    def interval(self, i):
+        if i > len(self._intervals):
+            next_i = i -len(self._intervals)
+            v = self.interval(next_i)
+            return v + OCTAVE
 
-    def init_degrees(self):
-        for n in range(self._PITCHES):
-            self.degrees.append(None)
-
-    def add_degree(self, d, notes):
-        if len(notes) == 1:
-            self.degrees[d] = notes[0]
-        else:
-            echo('Failed to get degree[{}] of {} {}'.format(d, self.tonic, self.__class__.__name__), 'red')
-            expected_tone = self.degrees[d -1].next().tone # this assumes diatonic scale...
-            self.degrees[d] = Note(expected_tone, 'xx')
-
-    def calculate_degrees(self):
-        for d in range(1, self._PITCHES): # first degree added at init
-            self.calculate_degree(d)
-
-    ### SPELL FUNCTIONS
+        v = self._intervals[i -1]
+        return v
 
     def degree(self, d):
-        return looped_list_item(d -1, self.degrees)
+        return self._degrees[d -1]
 
-    def scale(self, notes=None):
-        for d in range(notes if notes else self._PITCHES):
-            yield looped_list_item(d, self.degrees)
+    def scale(self, notes=0, start_note=None):
+        if not notes:
+            notes = len(self._intervals)
+
+        if not start_note:
+            start_note = self.degree(1)
+
+        yield_enabled = False
+        for d in range(1, MAX_NOTES):   # ignore 0
+            if not notes:
+                break
+            degree = self.calc_degree(d)
+            if degree == start_note:
+                yield_enabled = True
+            if yield_enabled:
+                notes -= 1
+                yield degree
+
+        self.reset_octave()
+
+    def reset_octave(self):
+        self.current_octave = self._degrees[0].octave
 
 class ChromaticScale(Scale):
 
-    _PITCHES = 12
-
-    interval = [
+    _intervals = [
         UNISON,
-        # AUGMENTED_UNISON,
         MINOR_SECOND,
         MAJOR_SECOND,
-        # AUGMENTED_SECOND,
         MINOR_THIRD,
         MAJOR_THIRD,
         PERFECT_FOURTH,
         AUGMENTED_FOURTH,
         PERFECT_FIFTH,
-        # AUGMENTED_FIFTH,
         MINOR_SIXTH,
         MAJOR_SIXTH,
-        # AUGMENTED_SIXTH,
         MINOR_SEVENTH,
         MAJOR_SEVENTH,
-        OCTAVE,
+        # OCTAVE,
     ]
 
-    def calculate_degree(self, d):
-        row_index = self.tonic.tone_index() +self.interval[d]
+    def calc_degree(self, d):
+        if d == 1:
+            return self.degree(1)
 
-        next_degrees = [note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.alt == self.tonic.alt[:-1]]
+        row_index = self.degree(1).tone_index() + self.interval(d)
+
+        next_degrees = [note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.alt == self.degree(1).alt[:-1]]
         if not next_degrees:
-            chosen_alt = '#' if self.tonic.alt == '' else self.tonic.alt
+            chosen_alt = '#' if self.degree(1).alt == '' else self.degree(1).alt
             next_degrees = [note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.alt == chosen_alt]
-        
-        self.add_degree(d, next_degrees)
+
+        if len(next_degrees) == 1:
+            # init new note, DO NOT change octave of ENHARMONIC_MATRIX note !
+            degree = Note(next_degrees[0].tone, next_degrees[0].alt, next_degrees[0].octave)
+            return self.calc_degree_octave(degree)
+        # echo(next_degrees, 'red')
+        # input()
+
+    def calc_degree_octave(self, degree):
+        if degree.tone == 'C' and degree.alt == '':
+            self.current_octave += 1
+            
+        degree.octave = self.current_octave
+        return degree
 
 
 class DiatonicScale(Scale):
 
-    _PITCHES = 7
+    def calc_degree(self, d):
+        if d == 1:
+            return self.degree(1)
 
-    def calculate_degree(self, d):
-        row_index = self.tonic.tone_index() +self.interval[d]
-        next_degrees = [note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.tone == self.degrees[d -1].next().tone]
-        self.add_degree(d, next_degrees)
+        row_index = self.degree(1).tone_index() + self.interval(d)
+        expected_tone = self.degree(1).next(d-1).tone
 
-    def _chord(self, root=1, count=3):
-        n = root
-        for c in range(count):
-            yield self.degree(n)
-            n += 2
+        next_degrees = [note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.tone == expected_tone]
 
-    def triad(self, root=1):
-        return self._chord(root, count=3)
+        if len(next_degrees) == 1:
+            # init new note, DO NOT change octave of ENHARMONIC_MATRIX note ! maybe doing same mistake in String?
+            degree = Note(next_degrees[0].tone, next_degrees[0].alt, next_degrees[0].octave)
+            return self.calc_degree_octave(degree)
+        # echo(next_degrees, 'red')
+        # input()
 
-    def seventh(self, root=1):
-        return self._chord(root, count=4)
+    def calc_degree_octave(self, degree):
+        ''' large interval scales that NEVER have C ?
+            scales with Cb work good
 
-    def ninth(self, root=1):
-        return self._chord(root, count=5)
+            Cb0  Db0  Ebb0 Fb0  Gb0  Ab0  Bbb0 melodic minor...
 
-    def eleventh(self, root=1):
-        return self._chord(root, count=6)
+        '''
+        if degree.tone == 'C':
+            self.current_octave += 1
 
-    def thirteenth(self, root=1):
-        return self._chord(root, count=7)
+        degree.octave = self.current_octave
+        return degree
 
+    # def _chord(self, root=1, count=3):
+    #     while count > 0:
+    #         for n, degree in enumerate(self.scale()):
+    #             if n % 2 == 0:
+    #                 count -= 1
+    #                 input(count)
+    #                 yield degree
+
+
+    # def triad(self, root=1):
+    #     return self._chord(root, count=3)
+
+#####################################################
 
 class MajorScale(DiatonicScale):
 
-    interval = [
+    _intervals = [
         UNISON,
         MAJOR_SECOND,
         MAJOR_THIRD,
@@ -124,7 +155,7 @@ class MajorScale(DiatonicScale):
         PERFECT_FIFTH,
         MAJOR_SIXTH,
         MAJOR_SEVENTH,
-        OCTAVE,
+        # OCTAVE,
     ]
 
 class IonianScale(MajorScale):
@@ -132,7 +163,7 @@ class IonianScale(MajorScale):
 
 class MinorScale(DiatonicScale):
 
-    interval = [
+    _intervals = [
         UNISON,
         MAJOR_SECOND,
         MINOR_THIRD,
@@ -140,7 +171,7 @@ class MinorScale(DiatonicScale):
         PERFECT_FIFTH,
         MINOR_SIXTH,
         MINOR_SEVENTH,
-        OCTAVE,
+        # OCTAVE,
     ]
 
 class AeolianScale(MinorScale):
@@ -151,7 +182,7 @@ class NaturalMinorScale(MinorScale):
 
 class MelodicMinorScale(DiatonicScale):
 
-    interval = [
+    _intervals = [
         UNISON,
         MAJOR_SECOND,
         MINOR_THIRD,
@@ -159,12 +190,12 @@ class MelodicMinorScale(DiatonicScale):
         PERFECT_FIFTH,
         MAJOR_SIXTH,
         MINOR_SEVENTH,
-        OCTAVE,
+        # OCTAVE,
     ]
 
 class HarmonicMinorScale(DiatonicScale):
 
-    interval = [
+    _intervals = [
         UNISON,
         MAJOR_SECOND,
         MINOR_THIRD,
@@ -172,5 +203,5 @@ class HarmonicMinorScale(DiatonicScale):
         PERFECT_FIFTH,
         MINOR_SIXTH,
         MAJOR_SEVENTH,
-        OCTAVE,
+        # OCTAVE,
     ]
