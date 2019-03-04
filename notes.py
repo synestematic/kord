@@ -46,35 +46,46 @@ DIMINISHED_OCTAVE = 11
 OCTAVE = 12
 AUGMENTED_SEVENTH = 12
 
-NOTE_ORDER = ('C', 'D', 'E', 'F', 'G', 'A', 'B')
+TONE_HIERARCHY = (
+    'C', 
+    # None,
+    'D', 
+    # None,
+    'E', 
+    'F', 
+    # None,
+    'G', 
+    # None,
+    'A', 
+    # None,
+    'B',
+)
+
+_OCTS = ('⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹')
+_ALTS = {
+    'bb': 'ᵇᵇ',
+    'b': '♭', 
+    '': '', 
+    # '#': '♯', 
+    # '#': '⌗', 
+    '#': '⋕', 
+    '##': '𝄪', 
+}
+
+def input_alterations():
+    return list(_ALTS.keys())
+
+def output_alterations():
+    return list(_ALTS.values())
 
 class Note(object):
-
-    _SHARPS = [
-        '#',
-        '♯',
-        '⌗',
-        '⋕',
-        'ₓ',
-        '𝄪',
-    ]
-
-    _FLATS = [
-        'ᵇ',
-        '♭'
-    ]
-
-    _ALTERATIONS = ('', '#', 'b', '##', 'bb')
-
-    _REPR_ALTS = {'' : '', '#' : '♯', '##' : '𝄪', 'b' : '♭', 'bb' : '♭♭'}
-    _REPR_OCTS = ('⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹')
 
     def __init__(self, *args):
         self.tone = args[0].upper()
 
         self.alt = ''
         for a in args:
-            if a in self._ALTERATIONS:
+            if a in input_alterations():
                 self.alt = a
 
         self.octave = 3
@@ -82,16 +93,22 @@ class Note(object):
             if type(a) == int:
                 self.octave = a
 
-    def repr_octave(self):
-        return self._REPR_OCTS[self.octave]
+    def repr_oct(self, output=True):
+        out = ''
+        if output:
+            for char in str(self.octave):
+                out += _OCTS[int(char)]
+        return out
 
     def repr_alt(self):
-        return self._REPR_ALTS[self.alt]
+        return _ALTS[self.alt]
 
     def __repr__(self):
-        return '{}{}{}'.format(self.tone, self.repr_alt(), self.repr_octave())
+        return '{}{}{}'.format(self.tone, self.repr_alt(), self.repr_oct())
 
     def __eq__(self, other):
+        # what about enharmonic notes ?
+        # not eq ??
         if type(other) != self.__class__:
             return False
         if self.tone != other.tone:
@@ -115,10 +132,15 @@ class Note(object):
     def alt_index(self):
         return self.matrix_coordinates()[1]
 
-    ### NOTE_ORDER METHODS
+    ### TONE_HIERARCHY METHODS
     def _relative_note(self, n):
-        my_index = NOTE_ORDER.index(self.tone)
-        note_string = looped_list_item(my_index +n, NOTE_ORDER)
+        my_index = TONE_HIERARCHY.index(self.tone)
+        note_string = looped_list_item(my_index +n, TONE_HIERARCHY)
+
+        # if not note_string:
+        #     note_string = looped_list_item(my_index +n + 1, TONE_HIERARCHY)
+            # return self._relative_note(n +1)
+
         return Note(note_string)
 
     def next(self, n=1):
