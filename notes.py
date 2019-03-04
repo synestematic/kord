@@ -48,27 +48,28 @@ AUGMENTED_SEVENTH = 12
 
 TONE_HIERARCHY = (
     'C', 
-    # None,
+    None,
     'D', 
-    # None,
+    None,
     'E', 
     'F', 
-    # None,
+    None,
     'G', 
-    # None,
+    None,
     'A', 
-    # None,
+    None,
     'B',
 )
 
 _OCTS = ('⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹')
 _ALTS = {
     'bb': 'ᵇᵇ',
-    'b': '♭', 
+    'b': 'ᵇ', 
+    # 'b': '♭', 
     '': '', 
-    # '#': '♯', 
+    '#': '♯', 
     # '#': '⌗', 
-    '#': '⋕', 
+    # '#': '⋕', 
     '##': '𝄪', 
 }
 
@@ -93,12 +94,12 @@ class Note(object):
             if type(a) == int:
                 self.octave = a
 
-    def repr_oct(self, output=True):
-        out = ''
-        if output:
+    def repr_oct(self, verbose=1):
+        output = ''
+        if verbose:
             for char in str(self.octave):
-                out += _OCTS[int(char)]
-        return out
+                output += _OCTS[int(char)]
+        return output
 
     def repr_alt(self):
         return _ALTS[self.alt]
@@ -120,35 +121,40 @@ class Note(object):
         return True
 
     ### MATRIX METHODS
-    def matrix_coordinates(self):
+    def _matrix_coordinates(self):
         for _row_index, _row in enumerate(ENHARMONIC_MATRIX):
             for _note_index, _enharmonic_note in enumerate(_row):
                 if self.tone == _enharmonic_note.tone and self.alt == _enharmonic_note.alt:
                     return (_row_index, _note_index)
 
     def tone_index(self):
-        return self.matrix_coordinates()[0]
+        return self._matrix_coordinates()[0]
 
     def alt_index(self):
-        return self.matrix_coordinates()[1]
+        return self._matrix_coordinates()[1]
 
-    ### TONE_HIERARCHY METHODS
-    def _relative_note(self, n):
+    ### HIERARCHY METHODS
+    def _relative_tone(self, n):
         my_index = TONE_HIERARCHY.index(self.tone)
-        note_string = looped_list_item(my_index +n, TONE_HIERARCHY)
+        ns = looped_list_item(my_index +n, TONE_HIERARCHY)
+        return ns
+        # return Note(ns)
 
-        # if not note_string:
-        #     note_string = looped_list_item(my_index +n + 1, TONE_HIERARCHY)
-            # return self._relative_note(n +1)
+    def next_tone(self, n=1):
+        tone = None
+        tone_count = 0
+        iteration = 1
 
-        return Note(note_string)
+        while True:
+            if tone_count == n:
+                return tone
 
-    def next(self, n=1):
-        return self._relative_note(n)
+            tone = self._relative_tone(iteration)
+            if tone:
+                tone_count += 1
 
-    def previous(self, n=1):
-        n = 0 - abs(n)
-        return self._relative_note(n)
+            iteration += 1
+
 
 ENHARMONIC_MATRIX = (
     (  Note('B', '#' ), Note('C', ''  ), Note('D', 'bb')  ),
