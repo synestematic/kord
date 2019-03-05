@@ -45,7 +45,8 @@ class Scale(object):
             if not notes:
                 break
             degree = self.calc_degree(d)
-            if degree == start_note:
+            if degree.is_exact_note(start_note):
+            # if degree >= start_note:
                 yield_enabled = True
             if yield_enabled:
                 notes -= 1
@@ -86,7 +87,7 @@ class ChromaticScale(Scale):
             next_degrees = [note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.alt == chosen_alt]
 
         if len(next_degrees) == 1:
-            # init new note, DO NOT change octave of ENHARMONIC_MATRIX note !
+            # init new note, DO NOT change octave of ENHARMONIC_MATRIX note!
             degree = Note(next_degrees[0].tone, next_degrees[0].alt, next_degrees[0].octave)
             return self.calc_degree_octave(degree)
         # echo(next_degrees, 'red')
@@ -107,7 +108,7 @@ class DiatonicScale(Scale):
             return self.degree(1)
 
         row_index = self.degree(1).tone_index() + self.interval(d)
-        expected_tone = self.degree(1).next(d-1).tone
+        expected_tone = self.degree(1).next_tone(d-1)
 
         next_degrees = [note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.tone == expected_tone]
 
@@ -120,7 +121,7 @@ class DiatonicScale(Scale):
 
     def calc_degree_octave(self, degree):
         ''' large interval scales that NEVER have C ?
-            scales with Cb work good
+            scales with Cb work good?
 
             Cb0  Db0  Ebb0 Fb0  Gb0  Ab0  Bbb0 melodic minor...
 
@@ -130,18 +131,6 @@ class DiatonicScale(Scale):
 
         degree.octave = self.current_octave
         return degree
-
-    # def _chord(self, root=1, count=3):
-    #     while count > 0:
-    #         for n, degree in enumerate(self.scale()):
-    #             if n % 2 == 0:
-    #                 count -= 1
-    #                 input(count)
-    #                 yield degree
-
-
-    # def triad(self, root=1):
-    #     return self._chord(root, count=3)
 
 #####################################################
 
