@@ -46,7 +46,7 @@ DIMINISHED_OCTAVE = 11
 OCTAVE = 12
 AUGMENTED_SEVENTH = 12
 
-TONE_HIERARCHY = (
+_TONES = (
     'C', 
     None,
     'D', 
@@ -64,8 +64,8 @@ TONE_HIERARCHY = (
 _OCTS = ('⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹')
 _ALTS = {
     'bb': 'ᵇᵇ',
-    'b': 'ᵇ', 
-    # 'b': '♭', 
+    # 'b': 'ᵇ', 
+    'b': '♭', 
     '': '', 
     '#': '♯', 
     # '#': '⌗', 
@@ -83,14 +83,15 @@ class Note(object):
 
     def __init__(self, *args):
         self.tone = args[0].upper()
+        assert  self.tone in _TONES
 
         self.alt = ''
-        for a in args:
+        for a in args[1:]:
             if a in input_alterations():
                 self.alt = a
 
         self.octave = 3
-        for a in args:
+        for a in args[1:]:
             if type(a) == int:
                 self.octave = a
 
@@ -107,38 +108,93 @@ class Note(object):
     def __repr__(self):
         return '{}{}{}'.format(self.tone, self.repr_alt(), self.repr_oct())
 
+
     def __eq__(self, other):
-        # what about enharmonic notes ?
-        # not eq ??
-        if type(other) != self.__class__:
-            return False
-        if self.tone != other.tone:
-            return False
-        if self.alt != other.alt:
-            return False
-        if self.octave != other.octave:
-            return False
-        return True
+        if self.is_exact_note(other):
+            # C3 == C3
+            return 1
 
-    ### MATRIX METHODS
-    def _matrix_coordinates(self):
-        for _row_index, _row in enumerate(ENHARMONIC_MATRIX):
-            for _note_index, _enharmonic_note in enumerate(_row):
-                if self.tone == _enharmonic_note.tone and self.alt == _enharmonic_note.alt:
-                    return (_row_index, _note_index)
+        if not self.tone_is_enharmonic(other):
+            # C3 == D3
+            return False
 
-    def tone_index(self):
-        return self._matrix_coordinates()[0]
+        # enharmonic, but not equal
+        oct_delta = abs(self.octave - other.octave)
 
-    def alt_index(self):
-        return self._matrix_coordinates()[1]
+        ### notes in separate octaves ###
+        if oct_delta > 1:
+            # E#3 == F5
+            return False
+
+        ### notes in adjacent octaves ###
+        elif oct_delta == 1:
+            if not self.bioctave_enharmony():
+                # E#3 == F4
+                return False
+
+            if self.tone_index() in (8, 9):
+                if self.tone != 'C' and other.tone != 'C':
+                    # A#3 == Bb4 | A##3 == B4
+                    return False
+
+            elif self.tone_index() in (10, 11):
+                if self.tone != 'B' and other.tone != 'B':
+                    # C3 == Dbb4 | C#3 == Db4
+                    return False
+
+            # notes are in last 4 EHM rows
+            if self.octave < other.octave:
+                if input_alterations().index(self.alt) > input_alterations().index(other.alt):
+                    # B3 == Cb4
+                    return 2
+
+            elif self.octave > other.octave:
+                if input_alterations().index(self.alt) < input_alterations().index(other.alt):
+                    # Cb4 == B3
+                    return 3
+
+            # B4 == Cb3
+            return False
+
+        ### notes in same octave ###
+        elif not oct_delta:
+
+            if self.bioctave_enharmony():
+            
+                if self.tone_index() in (8, 9):
+                    if self.tone != 'C' and other.tone != 'C':
+                        # A#3 == Bb3 | A##3 == B3
+                        return True
+
+                elif self.tone_index() in (10, 11):
+                    if self.tone != 'B' and other.tone != 'B':
+                        # C3 == Dbb3 | C#3 == Db3
+                        return True
+
+                # B3 == Cb3
+                return False
+
+            # E#3 == F3
+            return 4
+
+    def bioctave_enharmony(self):
+        return self.tone_index() > 7
+
+    def tone_is_enharmonic(self, other):
+        return self.tone_index() == other.tone_index()
+
+    def is_exact_note(self, other):
+        if self.__class__ == type(other):
+            if self.octave == other.octave:
+                if self.tone == other.tone:
+                    if self.alt == other.alt:
+                        return True
+        return False
 
     ### HIERARCHY METHODS
     def _relative_tone(self, n):
-        my_index = TONE_HIERARCHY.index(self.tone)
-        ns = looped_list_item(my_index +n, TONE_HIERARCHY)
-        return ns
-        # return Note(ns)
+        my_index = _TONES.index(self.tone)
+        return looped_list_item(my_index +n, _TONES)
 
     def next_tone(self, n=1):
         tone = None
@@ -155,18 +211,35 @@ class Note(object):
 
             iteration += 1
 
+    ### ENHARMONIC METHODS
+    def _matrix_coordinates(self):
+        for _row_index, _row in enumerate(ENHARMONIC_MATRIX):
+            for _note_index, _enharmonic_note in enumerate(_row):
+                if self.tone == _enharmonic_note.tone and self.alt == _enharmonic_note.alt:
+                    return (_row_index, _note_index)
+
+    def tone_index(self):
+        return self._matrix_coordinates()[0]
+
+    def alt_index(self):
+        return self._matrix_coordinates()[1]
 
 ENHARMONIC_MATRIX = (
-    (  Note('B', '#' ), Note('C', ''  ), Note('D', 'bb')  ),
-    (  Note('B', '##'), Note('C', '#' ), Note('D', 'b' )  ),
-    (  Note('C', '##'), Note('D', ''  ), Note('E', 'bb')  ),
-    (  Note('F', 'bb'), Note('D', '#' ), Note('E', 'b' )  ),
-    (  Note('D', '##'), Note('E', ''  ), Note('F', 'b' )  ),
-    (  Note('G', 'bb'), Note('F', ''  ), Note('E', '#' )  ),
-    (  Note('E', '##'), Note('F', '#' ), Note('G', 'b' )  ),
-    (  Note('F', '##'), Note('G', ''  ), Note('A', 'bb')  ),
-    (  Note('G', '#' ), Note('A', 'b' ),                  ),
-    (  Note('G', '##'), Note('A', ''  ), Note('B', 'bb')  ),
-    (  Note('C', 'bb'), Note('A', '#' ), Note('B', 'b' )  ),
-    (  Note('A', '##'), Note('B', ''  ), Note('C', 'b' )  ),
+
+    ## 1-octave enharmonic relationships
+    (  Note('D',     ), Note('C', '##'), Note('E', 'bb')  ), # NHH
+    (  Note('D', '#' ), Note('E', 'b' ), Note('F', 'bb')  ), # AAH
+    (  Note('E',     ), Note('F', 'b' ), Note('D', '##')  ), # NAH
+    (  Note('F',     ), Note('E', '#' ), Note('G', 'bb')  ), # NAH
+    (  Note('F', '#' ), Note('G', 'b' ), Note('E', '##')  ), # AAH
+    (  Note('G',     ), Note('F', '##'), Note('A', 'bb')  ), # NHH
+    (  Note('G', '#' ), Note('A', 'b' ),                  ), # AA
+    (  Note('A',     ), Note('G', '##'), Note('B', 'bb')  ), # NHH
+    
+    ## 2-octave enharmonic relationships
+    (  Note('A', '#' ), Note('B', 'b' ), Note('C', 'bb')  ), # AAH
+    (  Note('B',     ), Note('C', 'b' ), Note('A', '##')  ), # NAH
+    (  Note('C',     ), Note('B', '#' ), Note('D', 'bb')  ), # NAH
+    (  Note('C', '#' ), Note('D', 'b' ), Note('B', '##')  ), # AAH
+
 )
