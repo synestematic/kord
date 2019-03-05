@@ -110,72 +110,58 @@ class Note(object):
 
 
     def __eq__(self, other):
-        if self.is_exact_note(other):
-            # C3 == C3
-            return 1
-
+        # if self.is_exact_note(other):
+        #     # C1 == C1
+        #     return True
         if not self.tone_is_enharmonic(other):
-            # C3 == D3
-            return False
+            return False    # C1 == D1
 
-        # enharmonic, but not equal
         oct_delta = abs(self.octave - other.octave)
 
-        ### notes in separate octaves ###
-        if oct_delta > 1:
-            # E#3 == F5
-            return False
+        ### notes in same octave ###
+        if not oct_delta:
 
-        ### notes in adjacent octaves ###
-        elif oct_delta == 1:
             if not self.bioctave_enharmony():
-                # E#3 == F4
-                return False
-
+                return 1        # E#1 == F1
+            
             if self.tone_index() in (8, 9):
                 if self.tone != 'C' and other.tone != 'C':
-                    # A#3 == Bb4 | A##3 == B4
-                    return False
+                    return 2    # A#1 == Bb1 | A##1 == B1
 
             elif self.tone_index() in (10, 11):
                 if self.tone != 'B' and other.tone != 'B':
-                    # C3 == Dbb4 | C#3 == Db4
-                    return False
+                    return 3    # C1 == Dbb1 | C#1 == Db1
 
-            # notes are in last 4 EHM rows
+            return False        # B1 == Cb1
+
+        ### notes in adjacent octaves ###
+        elif oct_delta == 1:
+
+            if not self.bioctave_enharmony():
+                return False        # E#1 == F2
+
+            if self.tone_index() in (8, 9):
+                if self.tone != 'C' and other.tone != 'C':
+                    return False    # A#1 == Bb2 | A##1 == B2
+
+            elif self.tone_index() in (10, 11):
+                if self.tone != 'B' and other.tone != 'B':
+                    return False    # C1 == Dbb2 | C#1 == Db2
+
             if self.octave < other.octave:
                 if input_alterations().index(self.alt) > input_alterations().index(other.alt):
-                    # B3 == Cb4
-                    return 2
+                    return 4        # B1 == Cb2
 
             elif self.octave > other.octave:
                 if input_alterations().index(self.alt) < input_alterations().index(other.alt):
-                    # Cb4 == B3
-                    return 3
+                    return 5        # Cb2 == B1
 
-            # B4 == Cb3
-            return False
+            return False   # B2 == Cb1
 
-        ### notes in same octave ###
-        elif not oct_delta:
+        ### notes in separate octaves ###
+        elif oct_delta > 1:
+            return False   # E#1 == F3
 
-            if self.bioctave_enharmony():
-            
-                if self.tone_index() in (8, 9):
-                    if self.tone != 'C' and other.tone != 'C':
-                        # A#3 == Bb3 | A##3 == B3
-                        return True
-
-                elif self.tone_index() in (10, 11):
-                    if self.tone != 'B' and other.tone != 'B':
-                        # C3 == Dbb3 | C#3 == Db3
-                        return True
-
-                # B3 == Cb3
-                return False
-
-            # E#3 == F3
-            return 4
 
     def bioctave_enharmony(self):
         return self.tone_index() > 7
@@ -225,21 +211,18 @@ class Note(object):
         return self._matrix_coordinates()[1]
 
 ENHARMONIC_MATRIX = (
-
     ## 1-octave enharmonic relationships
-    (  Note('D',     ), Note('C', '##'), Note('E', 'bb')  ), # NHH
-    (  Note('D', '#' ), Note('E', 'b' ), Note('F', 'bb')  ), # AAH
-    (  Note('E',     ), Note('F', 'b' ), Note('D', '##')  ), # NAH
-    (  Note('F',     ), Note('E', '#' ), Note('G', 'bb')  ), # NAH
-    (  Note('F', '#' ), Note('G', 'b' ), Note('E', '##')  ), # AAH
-    (  Note('G',     ), Note('F', '##'), Note('A', 'bb')  ), # NHH
-    (  Note('G', '#' ), Note('A', 'b' ),                  ), # AA
-    (  Note('A',     ), Note('G', '##'), Note('B', 'bb')  ), # NHH
-    
+    (  Note('D', '' , 1), Note('C', '##', 1), Note('E', 'bb', 1)  ), # NHH
+    (  Note('D', '#', 1), Note('E', 'b' , 1), Note('F', 'bb', 1)  ), # AAH
+    (  Note('E', '' , 1), Note('F', 'b' , 1), Note('D', '##', 1)  ), # NAH
+    (  Note('F', '' , 1), Note('E', '#' , 1), Note('G', 'bb', 1)  ), # NAH
+    (  Note('F', '#', 1), Note('G', 'b' , 1), Note('E', '##', 1)  ), # AAH
+    (  Note('G', '' , 1), Note('F', '##', 1), Note('A', 'bb', 1)  ), # NHH
+    (  Note('G', '#', 1), Note('A', 'b' , 1), Note('G', '#' , 1)  ), # AAa
+    (  Note('A', '' , 1), Note('G', '##', 1), Note('B', 'bb', 1)  ), # NHH
     ## 2-octave enharmonic relationships
-    (  Note('A', '#' ), Note('B', 'b' ), Note('C', 'bb')  ), # AAH
-    (  Note('B',     ), Note('C', 'b' ), Note('A', '##')  ), # NAH
-    (  Note('C',     ), Note('B', '#' ), Note('D', 'bb')  ), # NAH
-    (  Note('C', '#' ), Note('D', 'b' ), Note('B', '##')  ), # AAH
-
+    (  Note('A', '#', 1), Note('B', 'b' , 1), Note('C', 'bb', 2)  ), # AAH
+    (  Note('B', '' , 1), Note('C', 'b' , 2), Note('A', '##', 1)  ), # NAH
+    (  Note('C', '' , 2), Note('B', '#' , 1), Note('D', 'bb', 2)  ), # NAH
+    (  Note('C', '#', 2), Note('D', 'b' , 2), Note('B', '##', 1)  ), # AAH
 )
