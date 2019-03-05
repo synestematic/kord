@@ -26,12 +26,13 @@ class String(object):
         for fret_n, fret_note in enumerate(self.scale.scale(self._DISPLAY_FRETS, start_note=self.fret[0])):
 
             note_display = FString(
-                '{}{}{}'.format(fret_note.tone, fret_note.alt, fret_note.octave),
+                '{}{}{}'.format(fret_note.tone, fret_note.repr_alt(), fret_note.repr_oct()),
                 size=4 if fret_n == 0 else 6,
                 align='cl',
                 colors=['blue']
             )
             string_line.append(note_display)
+
 
             sep = FString(
                 '|' if fret_n == 0 or fret_n == 12 else '¦'
@@ -43,15 +44,19 @@ class String(object):
 
 class Guitar(object):
 
-    tuners = 'O o .'
-    tuners = '     '
+    tuners = 'O o . '
+    tuners = '      '
 
     longness = 83
 
+    _binding = {
+        'upper': '_', 'lower': '‾',
+        # 'upper': '=', 'lower': '=',
+    }
+
     @classmethod
     def binding(cls, side='lower'):
-        _binding = '_' if side == 'upper' else '‾'
-        echo(cls.tuners + _binding * cls.longness)
+        echo(cls.tuners + cls._binding[side] * cls.longness)
 
     @classmethod
     def fret_markers(cls, complete=False):
@@ -66,7 +71,7 @@ class Guitar(object):
         xi = 'XI' if complete else ''
 
         Row(
-            FString('', size=5),
+            FString('', size=6),
             FString(i, size=7, align='cl', colors=['magenta'], pad=None),
             FString(ii, size=7, align='cl', colors=['magenta']),
             FString('III', size=7, align='cl', colors=['magenta']),
@@ -103,8 +108,9 @@ class Guitar(object):
         self.fret_markers()
         self.binding('upper')
         for string in self.strings:
+            string_n = FString(self.strings.index(string) + 1, colors=['magenta'])
             string.set_scale(scale)
-            echo(string)
+            echo(str(string_n) + str(string))
         self.binding('lower')
 
     def string(self, s):
