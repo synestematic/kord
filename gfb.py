@@ -2,7 +2,38 @@ from bestia.output import echo
 
 from notes import *
 from scales import *
-from guitars import *
+from tunings import *
+
+def compare_delta(n1, n2):            
+    # 0    = equal
+    # 1..  = n1 > n2
+    # ..-1 = n1 < n2
+
+    oct_delta = n1.oct - n2.oct
+    tone_delta = n1.tone_delta(n2)
+    alt_delta  = n1.alt_delta(n2)
+    tone_alt_delta = tone_delta + alt_delta
+    # echo('oct  delta: {}'.format(oct_delta), 'green')
+    # echo('tone delta: {}'.format(tone_delta), 'blue')
+    # echo('alt  delta: {}'.format(alt_delta), 'yellow')
+    # echo('TOT  delta: {}'.format(tone_alt_delta), 'red')
+    # return tone_alt_delta + oct_delta * OCTAVE
+
+    if not oct_delta:
+        # same octave
+        return tone_alt_delta
+
+    elif abs(oct_delta) > 1:
+        echo('notes safely {} octs apart'.format(oct_delta))
+        bla = OCTAVE * oct_delta
+        # echo('D = {}'.format(bla))
+        return tone_alt_delta + bla
+
+    elif abs(oct_delta) == 1:
+        bla = OCTAVE * oct_delta
+        # echo('D = {}'.format(bla))
+        return tone_alt_delta + bla
+
 
 def unit_test(scale):
     for _row in ENHARMONIC_MATRIX:
@@ -35,68 +66,47 @@ def inequality_test(ls):
         assert l[0] != l[1]
         assert l[1] != l[0]
 
+def enh_test():
+    for row in ENHARMONIC_MATRIX:
+        if len(row) == 3:
+            l = [
+                [ row[0], row[1] ],
+                [ row[1], row[2] ],
+                [ row[0], row[2] ],
+            ]
+        elif len(row) == 2:
+            l = [
+                [ row[0], row[1] ],
+            ]
+        equality_test(l)
+
 if __name__ == '__main__':
     try:
-        # unit_test(ChromaticScale)
-        # unit_test(MajorScale)
-        # unit_test(NaturalMinorScale)
-        # unit_test(MelodicMinorScale)
-        # unit_test(HarmonicMinorScale)
+        unit_test(ChromaticScale)
+        unit_test(MajorScale)
+        unit_test(NaturalMinorScale)
+        unit_test(MelodicMinorScale)
+        unit_test(HarmonicMinorScale)
 
         eqs = [
-            # equal
             # (Note('c'), Note('c')),
-
-            # 1 octave
-            (Note('D', 'b'), Note('C', '#')),
-            (Note('E', 'b'), Note('D', '#')),
-            (Note('F', 'b'), Note('E')),
-            (Note('G', 'b'), Note('F', '#')),
-            (Note('A', 'b'), Note('G', '#')),
-            (Note('B', 'b'), Note('A', '#')),
-
-            (Note('D', 'bb'), Note('C', '')),
-            (Note('E', 'bb'), Note('D', '')),
-            (Note('F', 'bb'), Note('E', 'b')),
-            (Note('G', 'bb'), Note('F', '')),
-            (Note('A', 'bb'), Note('G', '')),
-            (Note('B', 'bb'), Note('A', '')),
-
-            (Note('D', ''), Note('C', '##')),
-            (Note('E', ''), Note('D', '##')),
-            (Note('F', '#'), Note('E', '##')),
-            (Note('G', ''), Note('F', '##')),
-            (Note('A', ''), Note('G', '##')),
-            (Note('B', ''), Note('A', '##')),
-
-            (Note('E', '#'), Note('G', 'bb')),
-
-
-            # 2 octave
-            (Note('B', 'b'), Note('C', 'bb', 4)),
-            (Note('A', '#'), Note('C', 'bb', 4)),
-
-            (Note('B'     ), Note('C', 'b', 4)),
-            (Note('A', '##'), Note('C', 'b', 4)),
-
-            (Note('B', '#'), Note('C', '', 4)),
-            (Note('B', '#'), Note('D', 'bb', 4)),
-
-            (Note('B', '##'), Note('C', '#', 4)),
-            (Note('B', '##'), Note('D', 'b', 4)),
+            # (Note('d'), Note('d')),
+            # (Note('e'), Note('e')),
+            # (Note('f'), Note('f')),
+            # (Note('g'), Note('g')),
+            # (Note('a'), Note('a')),
+            # (Note('b'), Note('b')),
 
             (Note('A', '#'), Note('B', 'b')),
             (Note('A', '##'), Note('B', '')),
             (Note('C', ''), Note('D', 'bb')),
             (Note('C', '#'), Note('D', 'b')),
 
-
-
         ]
 
         neqs = [
 
-            # (Note('c'), Note('c')),
+            (Note('C', 'b', 3), Note('B', '#', 3)),
 
             (Note('C', 'b', 3), Note('B', '#', 3)),
 
@@ -126,37 +136,38 @@ if __name__ == '__main__':
             (Note('C', ''), Note('D', 'bb', 4)),
             (Note('C', '#'), Note('D', 'b', 4)),
 
-
-
-
-
-
         ]
 
         equality_test(eqs)
         inequality_test(neqs)
+        enh_test()
 
-        # c_major = MajorScale(c)
-        # ebb = Note('E', 'bb', 3)
-        # ebb = Note('C', '#', 3)
-        # ebb_chrom = ChromaticScale(ebb)
-        # for n in c_major.scale(10):
+        c = Note('c', '', 1)
+        c_major = MajorScale(c)
+        ebb = Note('C', '', 1)
+        ebb_chrom = ChromaticScale(ebb)
+        # for n in c_major.scale(50):
         #     echo(n, 'cyan')
 
-        # std_tuning = Guitar(
-        #     string1=ebb,
-        #     string2=Note('B', 3),
-        #     string3=Note('G', 3),
-        #     string4=Note('D', 3),
-        #     string5=Note('A', 2),
-        #     string6=Note('E', 2),
-        #     string7=Note('B', 2),
-        # )
-        # std_tuning.fretboard()
-        # std_tuning.fretboard(scale=c_major)
+        guitar_std = Tuning(
+            string1=ebb,
+            string2=Note('B', 3),
+            string3=Note('G', 3),
+            string4=Note('D', 3),
+            string5=Note('A', 2),
+            string6=Note('E', 2),
+            string7=Note('B', 2),
+        )
+        # guitar_std.fretboard()
+        # guitar_std.fretboard(scale=c_major)
 
-        # for n in ebb_chrom.scale():
-        #     echo(n, 'cyan')
+        ukulele_std = Tuning(
+            string1=Note('A', 3),
+            string2=Note('E', 3),
+            string3=Note('C', 3),
+            string4=Note('G', 3),
+        )
+        # ukulele_std.fretboard()
 
     except KeyboardInterrupt:
         echo()
