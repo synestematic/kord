@@ -11,14 +11,14 @@ class String(object):
     def __init__(self, open_note):
         self.fret = [
             # ALWAYS INIT NEW NOTe
-            Note(open_note.tone, open_note.alt, open_note.octave)
+            Note(open_note.tone, open_note.alt, open_note.oct)
         ]
-        self.scale = None
-        self.set_scale()
+        self.scale = ChromaticScale(self.fret[0])
  
-    def set_scale(self, scale=None):
-        self.scale = ChromaticScale(self.fret[0]) if not scale else scale
- 
+    def set_scale(self, scale):
+        if scale:
+            self.scale = scale
+
     def __repr__(self):
         ''' prints string notes matching given scale '''
         string_line = Row()
@@ -42,7 +42,7 @@ class String(object):
         return str(string_line)
 
 
-class Guitar(object):
+class Tuning(object):
 
     tuners = 'O o . '
     tuners = '      '
@@ -71,7 +71,7 @@ class Guitar(object):
         xi = 'XI' if complete else ''
 
         Row(
-            FString('', size=6),
+            FString('0', size=6, align='cl', colors=['magenta']),
             FString(i, size=7, align='cl', colors=['magenta'], pad=None),
             FString(ii, size=7, align='cl', colors=['magenta']),
             FString('III', size=7, align='cl', colors=['magenta']),
