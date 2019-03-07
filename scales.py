@@ -12,8 +12,8 @@ class Scale(object):
         self._degrees = [
             Note(root_note.tone, root_note.alt, 0)
         ]
-        self.current_octave = 0
-        self.reset_octave()
+        self.current_oct = 0
+        self.reset_oct()
 
     def __repr__(self):
         spell_line = Row()
@@ -52,10 +52,10 @@ class Scale(object):
                 notes -= 1
                 yield degree
 
-        self.reset_octave()
+        self.reset_oct()
 
-    def reset_octave(self):
-        self.current_octave = self._degrees[0].octave
+    def reset_oct(self):
+        self.current_oct = self._degrees[0].oct
 
 class ChromaticScale(Scale):
 
@@ -88,16 +88,16 @@ class ChromaticScale(Scale):
 
         if len(next_degrees) == 1:
             # init new note, DO NOT change octave of ENHARMONIC_MATRIX note!
-            degree = Note(next_degrees[0].tone, next_degrees[0].alt, next_degrees[0].octave)
-            return self.calc_degree_octave(degree)
+            degree = Note(next_degrees[0].tone, next_degrees[0].alt, next_degrees[0].oct)
+            return self.calc_degree_oct(degree)
         # echo(next_degrees, 'red')
         # input()
 
-    def calc_degree_octave(self, degree):
+    def calc_degree_oct(self, degree):
         if degree.tone == 'C' and degree.alt == '':
-            self.current_octave += 1
+            self.current_oct += 1
             
-        degree.octave = self.current_octave
+        degree.oct = self.current_oct
         return degree
 
 
@@ -114,12 +114,12 @@ class DiatonicScale(Scale):
 
         if len(next_degrees) == 1:
             # init new note, DO NOT change octave of ENHARMONIC_MATRIX note ! maybe doing same mistake in String?
-            degree = Note(next_degrees[0].tone, next_degrees[0].alt, next_degrees[0].octave)
-            return self.calc_degree_octave(degree)
+            degree = Note(next_degrees[0].tone, next_degrees[0].alt, next_degrees[0].oct)
+            return self.calc_degree_oct(degree)
         # echo(next_degrees, 'red')
         # input()
 
-    def calc_degree_octave(self, degree):
+    def calc_degree_oct(self, degree):
         ''' large interval scales that NEVER have C ?
             scales with Cb work good?
 
@@ -127,9 +127,9 @@ class DiatonicScale(Scale):
 
         '''
         if degree.tone == 'C':
-            self.current_octave += 1
+            self.current_oct += 1
 
-        degree.octave = self.current_octave
+        degree.oct = self.current_oct
         return degree
 
 #####################################################
