@@ -89,13 +89,13 @@ if __name__ == '__main__':
         unit_test(HarmonicMinorScale)
 
         eqs = [
-            # (Note('c'), Note('c')),
-            # (Note('d'), Note('d')),
-            # (Note('e'), Note('e')),
-            # (Note('f'), Note('f')),
-            # (Note('g'), Note('g')),
-            # (Note('a'), Note('a')),
-            # (Note('b'), Note('b')),
+            (Note('c'), Note('c')),
+            (Note('d'), Note('d')),
+            (Note('e'), Note('e')),
+            (Note('f'), Note('f')),
+            (Note('g'), Note('g')),
+            (Note('a'), Note('a')),
+            (Note('b'), Note('b')),
 
             (Note('A', '#'), Note('B', 'b')),
             (Note('A', '##'), Note('B', '')),

@@ -79,7 +79,7 @@ class ChromaticScale(Scale):
         if d == 1:
             return self.degree(1)
 
-        row_index = self.degree(1).tone_index() + self.interval(d)
+        row_index = self.degree(1).enharmonic_row() + self.interval(d)
 
         next_degrees = [note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.alt == self.degree(1).alt[:-1]]
         if not next_degrees:
@@ -107,8 +107,8 @@ class DiatonicScale(Scale):
         if d == 1:
             return self.degree(1)
 
-        row_index = self.degree(1).tone_index() + self.interval(d)
-        expected_tone = self.degree(1).next_tone(d-1)
+        row_index = self.degree(1).enharmonic_row() + self.interval(d)
+        expected_tone = self.degree(1).next_tone(d -1)
 
         next_degrees = [note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.tone == expected_tone]
 

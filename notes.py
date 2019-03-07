@@ -47,30 +47,55 @@ OCTAVE = 12
 AUGMENTED_SEVENTH = 12
 
 _TONES = (
-    'C', 
+    'C',
     None,
-    'D', 
+    'D',
     None,
-    'E', 
-    'F', 
+    'E',
+    'F',
     None,
-    'G', 
+    'G',
     None,
-    'A', 
+    'A',
     None,
     'B',
 )
 
-_OCTS = ('⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹')
+_OCTS = (
+    '₀',
+    '₁',
+    '₂',
+    '₃',
+    '₄',
+    '₅',
+    '₆',
+    '₇',
+    '₈',
+    '₉',
+)
+
+# _OCTS = (
+#     '⁰',
+#     '¹',
+#     '²',
+#     '³',
+#     '⁴',
+#     '⁵',
+#     '⁶',
+#     '⁷',
+#     '⁸',
+#     '⁹'
+# )
+
 _ALTS = {
     'bb': 'ᵇᵇ',
-    # 'b': 'ᵇ', 
-    'b': '♭', 
-    '': '', 
-    '#': '♯', 
-    # '#': '⌗', 
-    # '#': '⋕', 
-    '##': '𝄪', 
+    'b': 'ᵇ',
+    # 'b': '♭',
+    '': '',
+    '#': '♯',
+    # '#': '⌗',
+    # '#': '⋕',
+    '##': '𝄪',
 }
 
 def input_alterations():
@@ -81,103 +106,52 @@ def output_alterations():
 
 class Note(object):
 
+    ### INIT METHODS
     def __init__(self, *args):
         self.tone = args[0].upper()
-        assert  self.tone in _TONES
+        assert self.tone in _TONES
 
         self.alt = ''
         for a in args[1:]:
             if a in input_alterations():
                 self.alt = a
+        # assert self.alt in input_alterations()
 
-        self.octave = 3
+        self.oct = 3
         for a in args[1:]:
             if type(a) == int:
-                self.octave = a
+                self.oct = a
+
+    ### REPR METHODS
+    def __repr__(self):
+        return '{}{}{}'.format(self.tone, self.repr_alt(), self.repr_oct())
 
     def repr_oct(self, verbose=1):
         output = ''
         if verbose:
-            for char in str(self.octave):
+            for char in str(self.oct):
                 output += _OCTS[int(char)]
         return output
 
     def repr_alt(self):
         return _ALTS[self.alt]
 
-    def __repr__(self):
-        return '{}{}{}'.format(self.tone, self.repr_alt(), self.repr_oct())
-
-
+    ### EQUALITY METHODS
     def __eq__(self, other):
-        # if self.is_exact_note(other):
-        #     # C1 == C1
-        #     return True
-        if not self.tone_is_enharmonic(other):
-            return False    # C1 == D1
-
-        oct_delta = abs(self.octave - other.octave)
-
-        ### notes in same octave ###
-        if not oct_delta:
-
-            if not self.bioctave_enharmony():
-                return 1        # E#1 == F1
-            
-            if self.tone_index() in (8, 9):
-                if self.tone != 'C' and other.tone != 'C':
-                    return 2    # A#1 == Bb1 | A##1 == B1
-
-            elif self.tone_index() in (10, 11):
-                if self.tone != 'B' and other.tone != 'B':
-                    return 3    # C1 == Dbb1 | C#1 == Db1
-
-            return False        # B1 == Cb1
-
-        ### notes in adjacent octaves ###
-        elif oct_delta == 1:
-
-            if not self.bioctave_enharmony():
-                return False        # E#1 == F2
-
-            if self.tone_index() in (8, 9):
-                if self.tone != 'C' and other.tone != 'C':
-                    return False    # A#1 == Bb2 | A##1 == B2
-
-            elif self.tone_index() in (10, 11):
-                if self.tone != 'B' and other.tone != 'B':
-                    return False    # C1 == Dbb2 | C#1 == Db2
-
-            if self.octave < other.octave:
-                if input_alterations().index(self.alt) > input_alterations().index(other.alt):
-                    return 4        # B1 == Cb2
-
-            elif self.octave > other.octave:
-                if input_alterations().index(self.alt) < input_alterations().index(other.alt):
-                    return 5        # Cb2 == B1
-
-            return False   # B2 == Cb1
-
-        ### notes in separate octaves ###
-        elif oct_delta > 1:
-            return False   # E#1 == F3
-
-
-    def bioctave_enharmony(self):
-        return self.tone_index() > 7
-
-    def tone_is_enharmonic(self, other):
-        return self.tone_index() == other.tone_index()
+        return self.delta_semitones(other) == 0
 
     def is_exact_note(self, other):
         if self.__class__ == type(other):
-            if self.octave == other.octave:
+            if self.oct == other.oct:
                 if self.tone == other.tone:
                     if self.alt == other.alt:
                         return True
         return False
 
-    ### HIERARCHY METHODS
+    def __gt__(self, other):
+        return self.delta_semitones(other) > 0
+
+    ### TONE METHODS
     def _relative_tone(self, n):
         my_index = _TONES.index(self.tone)
         return looped_list_item(my_index +n, _TONES)
@@ -197,6 +171,22 @@ class Note(object):
 
             iteration += 1
 
+    def delta_semitones(self, other):
+        # 0  :  self == other
+        # >1 :  self >  other
+        # <1 :  self  < other
+        oct_delta = self.oct - other.oct
+        tone_delta = self.tone_delta(other)
+        alt_delta  = self.alt_delta(other)
+        tone_alt_delta = tone_delta + alt_delta
+        return tone_alt_delta + oct_delta * OCTAVE
+
+    def tone_delta(self, other):
+        return _TONES.index(self.tone) - _TONES.index(other.tone)
+
+    def alt_delta(self, other):
+        return input_alterations().index(self.alt) - input_alterations().index(other.alt)
+
     ### ENHARMONIC METHODS
     def _matrix_coordinates(self):
         for _row_index, _row in enumerate(ENHARMONIC_MATRIX):
@@ -204,11 +194,21 @@ class Note(object):
                 if self.tone == _enharmonic_note.tone and self.alt == _enharmonic_note.alt:
                     return (_row_index, _note_index)
 
-    def tone_index(self):
+    def enharmonic_row(self):
         return self._matrix_coordinates()[0]
 
-    def alt_index(self):
-        return self._matrix_coordinates()[1]
+    def has_adjacent_oct_enharmony(self):
+        ''' only  Cbb, Cb, B#, B##  return True
+            these notes lay on adjacent octaves
+            relative to their 2 enharmonic notes
+        '''
+        if self.enharmonic_row() < 8:
+            return False
+        if self.enharmonic_row() in (8, 9) and self.tone != 'C':
+            return False
+        if self.enharmonic_row() in (10, 11) and self.tone != 'B':
+            return False
+        return True
 
 ENHARMONIC_MATRIX = (
     ## 1-octave enharmonic relationships
@@ -218,7 +218,7 @@ ENHARMONIC_MATRIX = (
     (  Note('F', '' , 1), Note('E', '#' , 1), Note('G', 'bb', 1)  ), # NAH
     (  Note('F', '#', 1), Note('G', 'b' , 1), Note('E', '##', 1)  ), # AAH
     (  Note('G', '' , 1), Note('F', '##', 1), Note('A', 'bb', 1)  ), # NHH
-    (  Note('G', '#', 1), Note('A', 'b' , 1), Note('G', '#' , 1)  ), # AAa
+    (  Note('G', '#', 1), Note('A', 'b' , 1)                      ), # AA
     (  Note('A', '' , 1), Note('G', '##', 1), Note('B', 'bb', 1)  ), # NHH
     ## 2-octave enharmonic relationships
     (  Note('A', '#', 1), Note('B', 'b' , 1), Note('C', 'bb', 2)  ), # AAH
@@ -226,3 +226,5 @@ ENHARMONIC_MATRIX = (
     (  Note('C', '' , 2), Note('B', '#' , 1), Note('D', 'bb', 2)  ), # NAH
     (  Note('C', '#', 2), Note('D', 'b' , 2), Note('B', '##', 1)  ), # AAH
 )
+
+# notes need to be unique so that calc_degrees finds 1 exact match!
