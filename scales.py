@@ -9,6 +9,10 @@ class Scale(object):
 
     def __init__(self, root_note):
         # ALWAYS INIT NEW NOTe
+
+        # ACCEPT ONLY SINGLE ALT NOTES?
+        # Major F##, C## work - G## dies...
+
         self._degrees = [
             Note(root_note.tone, root_note.alt, 0)
         ]
@@ -24,11 +28,9 @@ class Scale(object):
     def interval(self, i):
         if i > len(self._intervals):
             next_i = i -len(self._intervals)
-            v = self.interval(next_i)
-            return v + OCTAVE
+            return self.interval(next_i) + OCTAVE
 
-        v = self._intervals[i -1]
-        return v
+        return self._intervals[i -1]
 
     def degree(self, d):
         return self._degrees[d -1]
@@ -71,7 +73,6 @@ class ChromaticScale(Scale):
         MAJOR_SIXTH,
         MINOR_SEVENTH,
         MAJOR_SEVENTH,
-        # OCTAVE,
     ]
 
     def calc_degree(self, d):
@@ -121,12 +122,7 @@ class DiatonicScale(Scale):
         input()
 
     def calc_degree_oct(self, degree):
-        ''' large interval scales that NEVER have C ?
-            scales with Cb work good?
-
-            Cb0  Db0  Ebb0 Fb0  Gb0  Ab0  Bbb0 melodic minor...
-
-        '''
+        ''' large interval scales that NEVER have C ? '''
         if degree.tone == 'C':
             self.current_oct += 1
 
@@ -145,7 +141,6 @@ class MajorScale(DiatonicScale):
         PERFECT_FIFTH,
         MAJOR_SIXTH,
         MAJOR_SEVENTH,
-        # OCTAVE,
     ]
 
 class IonianScale(MajorScale):
@@ -161,7 +156,6 @@ class MinorScale(DiatonicScale):
         PERFECT_FIFTH,
         MINOR_SIXTH,
         MINOR_SEVENTH,
-        # OCTAVE,
     ]
 
 class AeolianScale(MinorScale):
@@ -179,8 +173,7 @@ class MelodicMinorScale(DiatonicScale):
         PERFECT_FOURTH,
         PERFECT_FIFTH,
         MAJOR_SIXTH,
-        MINOR_SEVENTH,
-        # OCTAVE,
+        MAJOR_SEVENTH,
     ]
 
 class HarmonicMinorScale(DiatonicScale):
@@ -193,5 +186,4 @@ class HarmonicMinorScale(DiatonicScale):
         PERFECT_FIFTH,
         MINOR_SIXTH,
         MAJOR_SEVENTH,
-        # OCTAVE,
     ]

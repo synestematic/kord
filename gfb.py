@@ -37,13 +37,11 @@ def compare_delta(n1, n2):
 
 def unit_test(scale):
     for _row in ENHARMONIC_MATRIX:
-        # echo(_row, 'green')
         for _enharmonic_note in _row:
             if len(_enharmonic_note.alt) >1: # ignore double alteration notes
                 continue
             echo('{} {}'.format(scale.__name__, _enharmonic_note), 'blue')
             echo(scale(_enharmonic_note), 'cyan')
-        # echo(_row, 'red')
     echo()
 
 def equality_test(ls):
@@ -146,8 +144,8 @@ if __name__ == '__main__':
 
         c_major = MajorScale(c)
         ebb_chrom = ChromaticScale(ebb)
-        for n in c_major.scale(20, start_note=ebb):
-            echo(n, 'cyan')
+        # for n in c_major.scale(20, start_note=ebb):
+        #     echo(n, 'cyan')
 
         guitar_std = Tuning(
             string1=Note('E', 4),
@@ -168,6 +166,11 @@ if __name__ == '__main__':
             string4=Note('G', 3),
         )
         # ukulele_std.fretboard()
+
+        mel = MajorScale(Note('G', '##'))
+        for n in mel.scale(9):
+            echo(n, 'cyan')
+
 
     except KeyboardInterrupt:
         echo()
