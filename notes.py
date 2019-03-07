@@ -151,6 +151,9 @@ class Note(object):
     def __gt__(self, other):
         return self.delta_semitones(other) > 0
 
+    def __ge__(self, other):
+        return self.delta_semitones(other) >= 0
+
     ### TONE METHODS
     def _relative_tone(self, n):
         my_index = _TONES.index(self.tone)

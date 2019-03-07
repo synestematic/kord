@@ -45,8 +45,7 @@ class Scale(object):
             if not notes:
                 break
             degree = self.calc_degree(d)
-            if degree.is_exact_note(start_note):
-            # if degree >= start_note:
+            if degree >= start_note:
                 yield_enabled = True
             if yield_enabled:
                 notes -= 1
@@ -90,8 +89,9 @@ class ChromaticScale(Scale):
             # init new note, DO NOT change octave of ENHARMONIC_MATRIX note!
             degree = Note(next_degrees[0].tone, next_degrees[0].alt, next_degrees[0].oct)
             return self.calc_degree_oct(degree)
-        # echo(next_degrees, 'red')
-        # input()
+
+        echo(next_degrees, 'red')
+        input()
 
     def calc_degree_oct(self, degree):
         if degree.tone == 'C' and degree.alt == '':
@@ -116,8 +116,9 @@ class DiatonicScale(Scale):
             # init new note, DO NOT change octave of ENHARMONIC_MATRIX note ! maybe doing same mistake in String?
             degree = Note(next_degrees[0].tone, next_degrees[0].alt, next_degrees[0].oct)
             return self.calc_degree_oct(degree)
-        # echo(next_degrees, 'red')
-        # input()
+
+        echo(next_degrees, 'red')
+        input()
 
     def calc_degree_oct(self, degree):
         ''' large interval scales that NEVER have C ?

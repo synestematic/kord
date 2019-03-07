@@ -82,12 +82,6 @@ def enh_test():
 
 if __name__ == '__main__':
     try:
-        unit_test(ChromaticScale)
-        unit_test(MajorScale)
-        unit_test(NaturalMinorScale)
-        unit_test(MelodicMinorScale)
-        unit_test(HarmonicMinorScale)
-
         eqs = [
             (Note('c'), Note('c')),
             (Note('d'), Note('d')),
@@ -138,25 +132,31 @@ if __name__ == '__main__':
 
         ]
 
-        equality_test(eqs)
-        inequality_test(neqs)
-        enh_test()
+        # equality_test(eqs)
+        # inequality_test(neqs)
+        # enh_test()
 
-        c = Note('c', '', 1)
+        # unit_test(ChromaticScale)
+        # unit_test(MajorScale)
+        # unit_test(NaturalMinorScale)
+        # unit_test(MelodicMinorScale)
+        # unit_test(HarmonicMinorScale)
+        c = Note('C')
+        ebb = Note('E', 'bb')
+
         c_major = MajorScale(c)
-        ebb = Note('C', '', 1)
         ebb_chrom = ChromaticScale(ebb)
-        # for n in c_major.scale(50):
-        #     echo(n, 'cyan')
+        for n in c_major.scale(20, start_note=ebb):
+            echo(n, 'cyan')
 
         guitar_std = Tuning(
-            string1=ebb,
+            string1=Note('E', 4),
             string2=Note('B', 3),
             string3=Note('G', 3),
             string4=Note('D', 3),
             string5=Note('A', 2),
             string6=Note('E', 2),
-            string7=Note('B', 2),
+            # string7=Note('B', 2),
         )
         # guitar_std.fretboard()
         # guitar_std.fretboard(scale=c_major)
