@@ -137,8 +137,8 @@ if __name__ == '__main__':
         ukulele_std.fretboard()
 
         mel = ChromaticScale(Note('E', '#'))
-        for n in mel.scale(9, start_note=Note('E', '#', 3)):
-            echo(n, 'cyan')
+        # for n in mel.scale(9, start_note=Note('E', '#', 3)):
+        #     echo(n, 'cyan')
 
 
     except KeyboardInterrupt:

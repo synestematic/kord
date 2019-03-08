@@ -60,6 +60,8 @@ class Tuning(object):
     @classmethod
     def fret_markers(cls, complete=False):
 
+        fret_n_color = ['blue']
+
         i = 'I' if complete else ''
         ii = 'II' if complete else ''
         iv = 'IV' if complete else ''
@@ -70,19 +72,19 @@ class Tuning(object):
         xi = 'XI' if complete else ''
 
         Row(
-            FString('', size=6, align='cl', colors=['magenta']),
-            FString(i, size=7, align='cl', colors=['magenta'], pad=None),
-            FString(ii, size=7, align='cl', colors=['magenta']),
-            FString('III', size=7, align='cl', colors=['magenta']),
-            FString(iv, size=7, align='cl', colors=['magenta']),
-            FString('V', size=7, align='cl', colors=['magenta']),
-            FString(vi, size=7, align='cl', colors=['magenta']),
-            FString('VII', size=7, align='cl', colors=['magenta']),
-            FString(viii, size=7, align='cl', colors=['magenta']),
-            FString('IX', size=7, align='cl', colors=['magenta']),
-            FString(x, size=7, align='cl', colors=['magenta']),
-            FString(xi, size=7, align='cl', colors=['magenta']),
-            FString('XII', size=7, align='cl', colors=['magenta']),
+            FString('', size=6, align='cl', colors=fret_n_color),
+            FString(i, size=7, align='cl', colors=fret_n_color, pad=None),
+            FString(ii, size=7, align='cl', colors=fret_n_color),
+            FString('III', size=7, align='cl', colors=fret_n_color),
+            FString(iv, size=7, align='cl', colors=fret_n_color),
+            FString('V', size=7, align='cl', colors=fret_n_color),
+            FString(vi, size=7, align='cl', colors=fret_n_color),
+            FString('VII', size=7, align='cl', colors=fret_n_color),
+            FString(viii, size=7, align='cl', colors=fret_n_color),
+            FString('IX', size=7, align='cl', colors=fret_n_color),
+            FString(x, size=7, align='cl', colors=fret_n_color),
+            FString(xi, size=7, align='cl', colors=fret_n_color),
+            FString('XII', size=7, align='cl', colors=fret_n_color),
             width=len(cls.tuners) +cls.longness
         ).echo()
 
@@ -104,10 +106,13 @@ class Tuning(object):
 
     ### REPR FUNCTIONS
     def fretboard(self, scale=None):
+
+        string_n_color = ['blue']
+
         self.fret_markers()
         self.binding('upper')
         for string in self.strings:
-            string_n = FString(self.strings.index(string) + 1, colors=['magenta'])
+            string_n = FString(self.strings.index(string) + 1, colors=string_n_color)
             string.set_scale(scale)
             echo(str(string_n) + str(string))
         self.binding('lower')
