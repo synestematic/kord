@@ -28,16 +28,15 @@ class String(object):
             note_display = FString(
                 '{}{}{}'.format(fret_note.tone, fret_note.repr_alt(), fret_note.repr_oct()),
                 size=4 if fret_n == 0 else 6,
-                align='cl',
-                colors=['blue']
+                align='cr',
+                colors=['green'] if fret_note.tone == self.scale.degree(1).tone and fret_note.alt == self.scale.degree(1).alt else ['yellow']
             )
             string_line.append(note_display)
 
-
-            sep = FString(
+            fret_separator = FString(
                 '|' if fret_n == 0 or fret_n == 12 else '¦'
             )
-            string_line.append(sep)
+            string_line.append(fret_separator)
 
         return str(string_line)
 
@@ -71,7 +70,7 @@ class Tuning(object):
         xi = 'XI' if complete else ''
 
         Row(
-            FString('0', size=6, align='cl', colors=['magenta']),
+            FString('', size=6, align='cl', colors=['magenta']),
             FString(i, size=7, align='cl', colors=['magenta'], pad=None),
             FString(ii, size=7, align='cl', colors=['magenta']),
             FString('III', size=7, align='cl', colors=['magenta']),

@@ -126,7 +126,7 @@ class Note(object):
     def __repr__(self):
         return '{}{}{}'.format(self.tone, self.repr_alt(), self.repr_oct())
 
-    def repr_oct(self, verbose=1):
+    def repr_oct(self, verbose=True):
         output = ''
         if verbose:
             for char in str(self.oct):
@@ -136,17 +136,15 @@ class Note(object):
     def repr_alt(self):
         return _ALTS[self.alt]
 
-    ### EQUALITY METHODS
+    ### COMPARE METHODS
+    def is_note(self, other, ignore_oct=False):
+        if self.__class__ == type(other):
+            if self.tone == other.tone:
+                if self.alt == other.alt:
+                    return True if ignore_oct else self.oct == other.oct
+    
     def __eq__(self, other):
         return self.delta_semitones(other) == 0
-
-    def is_exact_note(self, other):
-        if self.__class__ == type(other):
-            if self.oct == other.oct:
-                if self.tone == other.tone:
-                    if self.alt == other.alt:
-                        return True
-        return False
 
     def __gt__(self, other):
         return self.delta_semitones(other) > 0

@@ -4,37 +4,6 @@ from notes import *
 from scales import *
 from tunings import *
 
-def compare_delta(n1, n2):            
-    # 0    = equal
-    # 1..  = n1 > n2
-    # ..-1 = n1 < n2
-
-    oct_delta = n1.oct - n2.oct
-    tone_delta = n1.tone_delta(n2)
-    alt_delta  = n1.alt_delta(n2)
-    tone_alt_delta = tone_delta + alt_delta
-    # echo('oct  delta: {}'.format(oct_delta), 'green')
-    # echo('tone delta: {}'.format(tone_delta), 'blue')
-    # echo('alt  delta: {}'.format(alt_delta), 'yellow')
-    # echo('TOT  delta: {}'.format(tone_alt_delta), 'red')
-    # return tone_alt_delta + oct_delta * OCTAVE
-
-    if not oct_delta:
-        # same octave
-        return tone_alt_delta
-
-    elif abs(oct_delta) > 1:
-        echo('notes safely {} octs apart'.format(oct_delta))
-        bla = OCTAVE * oct_delta
-        # echo('D = {}'.format(bla))
-        return tone_alt_delta + bla
-
-    elif abs(oct_delta) == 1:
-        bla = OCTAVE * oct_delta
-        # echo('D = {}'.format(bla))
-        return tone_alt_delta + bla
-
-
 def unit_test(scale):
     for _row in ENHARMONIC_MATRIX:
         for _enharmonic_note in _row:
@@ -139,7 +108,7 @@ if __name__ == '__main__':
         # unit_test(NaturalMinorScale)
         # unit_test(MelodicMinorScale)
         # unit_test(HarmonicMinorScale)
-        c = Note('C')
+        c = Note('e')
         ebb = Note('E', 'bb')
 
         c_major = MajorScale(c)
@@ -157,23 +126,21 @@ if __name__ == '__main__':
             # string7=Note('B', 2),
         )
         # guitar_std.fretboard()
-        # guitar_std.fretboard(scale=c_major)
+        guitar_std.fretboard(scale=c_major)
 
         ukulele_std = Tuning(
-            string1=Note('A', 3),
-            string2=Note('E', 3),
+            string1=Note('E', '#', 3),
+            string2=Note('b', 'b', 3),
             string3=Note('C', 3),
             string4=Note('G', 3),
         )
-        # ukulele_std.fretboard()
+        ukulele_std.fretboard()
 
-        mel = MajorScale(Note('G', '##'))
-        for n in mel.scale(9):
+        mel = ChromaticScale(Note('E', '#'))
+        for n in mel.scale(9, start_note=Note('E', '#', 3)):
             echo(n, 'cyan')
 
 
     except KeyboardInterrupt:
         echo()
 
-# if start_note is not in scale it yields no notes
-# string with ebb0 not repr, ebb_chrom works though...
