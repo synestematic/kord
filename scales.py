@@ -81,10 +81,12 @@ class ChromaticScale(Scale):
 
         row_index = self.degree(1).enharmonic_row() + self.interval(d)
 
-        next_degrees = [note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.alt == self.degree(1).alt[:-1]]
+        next_degrees = [note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.is_note(self.degree(1), ignore_oct=True) ]
         if not next_degrees:
-            chosen_alt = '#' if self.degree(1).alt == '' else self.degree(1).alt
-            next_degrees = [note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.alt == chosen_alt]
+            next_degrees = [note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.alt == self.degree(1).alt[:-1]]
+            if not next_degrees:
+                chosen_alt = '#' if self.degree(1).alt == '' else self.degree(1).alt
+                next_degrees = [note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.alt == chosen_alt]
 
         if len(next_degrees) == 1:
             # init new note, DO NOT change octave of ENHARMONIC_MATRIX note!
