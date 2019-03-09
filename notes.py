@@ -72,9 +72,6 @@ _OCTS = (
     '₇',
     '₈',
     '₉',
-)
-
-# _OCTS = (
 #     '⁰',
 #     '¹',
 #     '²',
@@ -84,8 +81,8 @@ _OCTS = (
 #     '⁶',
 #     '⁷',
 #     '⁸',
-#     '⁹'
-# )
+#     '⁹',
+)
 
 _ALTS = {
     'bb': 'ᵇᵇ',
@@ -177,16 +174,10 @@ class Note(object):
         # >1 :  self >  other
         # <1 :  self  < other
         oct_delta = self.oct - other.oct
-        tone_delta = self.tone_delta(other)
-        alt_delta  = self.alt_delta(other)
-        tone_alt_delta = tone_delta + alt_delta
-        return tone_alt_delta + oct_delta * OCTAVE
-
-    def tone_delta(self, other):
-        return _TONES.index(self.tone) - _TONES.index(other.tone)
-
-    def alt_delta(self, other):
-        return input_alterations().index(self.alt) - input_alterations().index(other.alt)
+        oct_delta_st = oct_delta * OCTAVE
+        tone_delta_st = _TONES.index(self.tone) - _TONES.index(other.tone)
+        alt_delta_st  = input_alterations().index(self.alt) - input_alterations().index(other.alt)
+        return oct_delta_st + tone_delta_st + alt_delta_st
 
     ### ENHARMONIC METHODS
     def _matrix_coordinates(self):
