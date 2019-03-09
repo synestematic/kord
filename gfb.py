@@ -144,3 +144,21 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         echo()
 
+
+# gfb E --chord 7
+
+# seventh chords
+# 7
+# M7
+# m7
+# D7
+# d7
+
+# gfb G --scale M
+
+# scales
+# major
+# minor
+    
+
+

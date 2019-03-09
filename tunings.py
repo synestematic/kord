@@ -23,7 +23,7 @@ class String(object):
         ''' prints string notes matching given scale '''
         string_line = Row()
 
-        for fret_n, fret_note in enumerate(self.scale.scale(self._DISPLAY_FRETS, start_note=self.fret[0])):
+        for fret_n, fret_note in enumerate(self.scale.scale(notes=self._DISPLAY_FRETS, start_note=self.fret[0])):
 
             note_display = FString(
                 '{}{}{}'.format(fret_note.tone, fret_note.repr_alt(), fret_note.repr_oct()),
@@ -34,7 +34,7 @@ class String(object):
             string_line.append(note_display)
 
             fret_separator = FString(
-                '|' if fret_n == 0 or fret_n == 12 else '¦'
+                '|' if fret_n % 12 == 0 else '¦'
             )
             string_line.append(fret_separator)
 
