@@ -49,6 +49,9 @@ def enh_test():
 
 if __name__ == '__main__':
     try:
+
+        DISPLAY_FRETS = 12
+
         eqs = [
             (Note('c'), Note('c')),
             (Note('d'), Note('d')),
@@ -125,8 +128,8 @@ if __name__ == '__main__':
             string6=Note('E', 2),
             # string7=Note('B', 2),
         )
-        # guitar_std.fretboard()
-        guitar_std.fretboard(scale=c_major)
+        # guitar_std.fretboard(frets=DISPLAY_FRETS)
+        guitar_std.fretboard(scale=c_major, frets=DISPLAY_FRETS)
 
         ukulele_std = Tuning(
             string1=Note('E', '#', 3),
@@ -134,7 +137,7 @@ if __name__ == '__main__':
             string3=Note('C', 3),
             string4=Note('G', 3),
         )
-        ukulele_std.fretboard()
+        ukulele_std.fretboard(frets=DISPLAY_FRETS)
 
         mel = ChromaticScale(Note('E', '#'))
         # for n in mel.scale(9, start_note=Note('E', '#', 3)):

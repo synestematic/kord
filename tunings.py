@@ -43,10 +43,7 @@ class String(object):
 
 class Tuning(object):
 
-    tuners = 'O o . '
-    tuners = '      '
-
-    longness = 83
+    fret_size = 7
 
     _binding = {
         'upper': '_', 'lower': '‾',
@@ -54,39 +51,50 @@ class Tuning(object):
     }
 
     @classmethod
-    def binding(cls, side='lower'):
-        echo(cls.tuners + cls._binding[side] * cls.longness)
+    def binding(cls, side='lower', frets=12):
+        tuners = '      ' # 'O o . '
+        fret_binding = cls._binding[side] * cls.fret_size
+        output = tuners + fret_binding * frets
+        echo(output[:-1])
 
     @classmethod
-    def fret_markers(cls, complete=False):
+    def fret_inlays(cls, verbose=1, frets=12):
+
+        if not verbose:
+            return
 
         fret_n_color = ['blue']
 
-        i = 'I' if complete else ''
-        ii = 'II' if complete else ''
-        iv = 'IV' if complete else ''
-        vi = 'VI' if complete else ''
-        vi = 'VI' if complete else ''
-        viii = 'VIII' if complete else ''
-        x = 'X' if complete else ''
-        xi = 'XI' if complete else ''
+        inlays = [
+            '',
+            'I' if verbose == 2 else '',
+            'II' if verbose == 2 else '',
+            'III',
+            'IV' if verbose == 2 else '',
+            'V',
+            'VI' if verbose == 2 else '',
+            'VII',
+            'VIII' if verbose == 2 else '',
+            'IX',
+            'X' if verbose == 2 else '',
+            'XI' if verbose == 2 else '',
+            'XII',
+        ]
 
-        Row(
-            FString('', size=6, align='cl', colors=fret_n_color),
-            FString(i, size=7, align='cl', colors=fret_n_color, pad=None),
-            FString(ii, size=7, align='cl', colors=fret_n_color),
-            FString('III', size=7, align='cl', colors=fret_n_color),
-            FString(iv, size=7, align='cl', colors=fret_n_color),
-            FString('V', size=7, align='cl', colors=fret_n_color),
-            FString(vi, size=7, align='cl', colors=fret_n_color),
-            FString('VII', size=7, align='cl', colors=fret_n_color),
-            FString(viii, size=7, align='cl', colors=fret_n_color),
-            FString('IX', size=7, align='cl', colors=fret_n_color),
-            FString(x, size=7, align='cl', colors=fret_n_color),
-            FString(xi, size=7, align='cl', colors=fret_n_color),
-            FString('XII', size=7, align='cl', colors=fret_n_color),
-            width=len(cls.tuners) +cls.longness
-        ).echo()
+        inlay_row = Row(
+            FString(inlays[0], size=6, align='cl', colors=fret_n_color),
+            # width=6 +83
+        )
+
+        i = 1
+        while frets:
+            inlay_row.append(
+                FString(inlays[i], size=cls.fret_size, align='cl', colors=fret_n_color)
+            )
+            frets -= 1
+            i += 1
+
+        inlay_row.echo()
 
     def __init__(self, *arg, **kwargs):
         self.strings = []
@@ -105,17 +113,17 @@ class Tuning(object):
             self.strings[int(k) -1] = String(note)
 
     ### REPR FUNCTIONS
-    def fretboard(self, scale=None):
+    def fretboard(self, scale=None, frets=None):
 
         string_n_color = ['blue']
 
-        self.fret_markers()
-        self.binding('upper')
+        self.fret_inlays(verbose=2, frets=frets)
+        self.binding('upper', frets=frets)
         for string in self.strings:
             string_n = FString(self.strings.index(string) + 1, colors=string_n_color)
             string.set_scale(scale)
             echo(str(string_n) + str(string))
-        self.binding('lower')
+        self.binding('lower', frets=frets)
 
     def string(self, s):
         return self.strings[s -1]
