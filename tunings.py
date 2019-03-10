@@ -6,7 +6,6 @@ from scales import *
 class String(object):
 
     # fret = [] # WHY IS THIS SHARED BETWEEN MY STRING OBJECTS???
-    _DISPLAY_FRETS = 1 +12
 
     def __init__(self, open_note):
         self.fret = [
@@ -14,16 +13,21 @@ class String(object):
             Note(open_note.tone, open_note.alt, open_note.oct)
         ]
         self.scale = ChromaticScale(self.fret[0])
+        self.display_frets = 1 +12
  
     def set_scale(self, scale):
         if scale:
             self.scale = scale
 
+    def set_display_frets(self, frets):
+        if frets:
+            self.display_frets = 1 +frets
+
     def __repr__(self):
         ''' prints string notes matching given scale '''
         string_line = Row()
 
-        for fret_n, fret_note in enumerate(self.scale.scale(notes=self._DISPLAY_FRETS, start_note=self.fret[0])):
+        for fret_n, fret_note in enumerate(self.scale.scale(notes=self.display_frets, start_note=self.fret[0])):
 
             note_display = FString(
                 '{}{}{}'.format(fret_note.tone, fret_note.repr_alt(), fret_note.repr_oct()),
@@ -122,6 +126,7 @@ class Tuning(object):
         for string in self.strings:
             string_n = FString(self.strings.index(string) + 1, colors=string_n_color)
             string.set_scale(scale)
+            string.set_display_frets(frets)
             echo(str(string_n) + str(string))
         self.binding('lower', frets=frets)
 

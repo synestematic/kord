@@ -50,7 +50,7 @@ def enh_test():
 if __name__ == '__main__':
     try:
 
-        DISPLAY_FRETS = 12
+        DISPLAY_FRETS = 3
 
         eqs = [
             (Note('c'), Note('c')),
