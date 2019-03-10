@@ -29,11 +29,17 @@ class String(object):
 
         for fret_n, fret_note in enumerate(self.scale.scale(notes=self.display_frets, start_note=self.fret[0])):
 
+            note = ''
+            note_color = []
+            if fret_note:
+                note = '{}{}{}'.format(fret_note.tone, fret_note.repr_alt(), fret_note.repr_oct())
+                note_color = ['green'] if fret_note.tone == self.scale.degree(1).tone and fret_note.alt == self.scale.degree(1).alt else ['yellow']
+
             note_display = FString(
-                '{}{}{}'.format(fret_note.tone, fret_note.repr_alt(), fret_note.repr_oct()),
+                note,
                 size=4 if fret_n == 0 else 6,
                 align='cr',
-                colors=['green'] if fret_note.tone == self.scale.degree(1).tone and fret_note.alt == self.scale.degree(1).alt else ['yellow']
+                colors=note_color,
             )
             string_line.append(note_display)
 
