@@ -50,7 +50,8 @@ def enh_test():
 if __name__ == '__main__':
     try:
 
-        DISPLAY_FRETS = 3
+        DISPLAY_FRETS = 12
+        VERBOSE = 1
 
         eqs = [
             (Note('c'), Note('c')),
@@ -129,20 +130,32 @@ if __name__ == '__main__':
             # string7=Note('B', 2),
         )
         # guitar_std.fretboard(frets=DISPLAY_FRETS)
-        guitar_std.fretboard(scale=c_major, frets=DISPLAY_FRETS)
+        # guitar_std.fretboard(scale=c_major, frets=DISPLAY_FRETS)
 
         ukulele_std = Tuning(
             string1=Note('E', '#', 3),
-            string2=Note('b', 'b', 3),
+            string2=Note('B', 'b', 3),
             string3=Note('C', 3),
             string4=Note('G', 3),
         )
-        ukulele_std.fretboard(frets=DISPLAY_FRETS)
+        # ukulele_std.fretboard(frets=DISPLAY_FRETS)
 
-        mel = ChromaticScale(Note('E', '#'))
-        # for n in mel.scale(9, start_note=Note('E', '#', 3)):
-        #     echo(n, 'cyan')
 
+        mel = MelodicMinorScale(Note('A', ''))
+        e = Note('E', 3)
+        # e = None
+        for n in mel.scale(13, start_note=e):
+        # for n in mel.scale(13):
+            echo(n, 'cyan')
+
+        echo(mel)
+        echo()
+
+
+        # c = Note('C', 3)
+        # s1 = String(c)
+        # s1.set_scale(MajorScale(c))
+        # echo(s1)
 
     except KeyboardInterrupt:
         echo()

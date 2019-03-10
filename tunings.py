@@ -123,11 +123,11 @@ class Tuning(object):
             self.strings[int(k) -1] = String(note)
 
     ### REPR FUNCTIONS
-    def fretboard(self, scale=None, frets=None):
+    def fretboard(self, scale=None, frets=None, verbose=1):
 
         string_n_color = ['blue']
 
-        self.fret_inlays(verbose=2, frets=frets)
+        self.fret_inlays(verbose=verbose, frets=frets)
         self.binding('upper', frets=frets)
         for string in self.strings:
             string_n = FString(self.strings.index(string) + 1, colors=string_n_color)
