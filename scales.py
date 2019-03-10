@@ -95,18 +95,16 @@ class ChromaticScale(Scale):
                 next_degrees = [note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.alt == chosen_alt]
 
         if len(next_degrees) == 1:
+            deg = next_degrees[0]
+            if deg.tone == 'C' and deg.alt == '':
+                self.current_oct += 1
+
             # init new note, DO NOT change octave of ENHARMONIC_MATRIX note!
-            self.current_note = Note(next_degrees[0].tone, next_degrees[0].alt, next_degrees[0].oct)
-            self.calc_degree_oct()
+            self.current_note = Note(deg.tone, deg.alt, self.current_oct)
             return self.current_note
 
         echo(next_degrees, 'red')
         input()
-
-    def calc_degree_oct(self):
-        if self.current_note.tone == 'C' and self.current_note.alt == '':
-            self.current_oct += 1
-        self.current_note.oct = self.current_oct
 
 
 class DiatonicScale(Scale):
@@ -123,19 +121,17 @@ class DiatonicScale(Scale):
         # input(next_degrees)
 
         if len(next_degrees) == 1:
+            deg = next_degrees[0]
+            if deg.tone == 'C': # large intervals that do not hace C will need to compare last and next
+                self.current_oct += 1
+
             # init new note, DO NOT change octave of ENHARMONIC_MATRIX note ! maybe doing same mistake in String?
-            self.current_note = Note(next_degrees[0].tone, next_degrees[0].alt, next_degrees[0].oct)
-            self.calc_degree_oct()
+            self.current_note = Note(deg.tone, deg.alt, self.current_oct)
             return self.current_note
 
         echo(next_degrees, 'red')
         input()
 
-    def calc_degree_oct(self):
-        ''' large interval scales that NEVER have C ? '''
-        if self.current_note.tone == 'C':
-            self.current_oct += 1
-        self.current_note.oct = self.current_oct
 
 #####################################################
 
