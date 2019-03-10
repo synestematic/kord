@@ -3,8 +3,6 @@ from bestia.iterate import looped_list_item
 
 from notes import *
 
-MAX_NOTES = 88
-
 class Scale(object):
 
     def __init__(self, root_note):
@@ -13,7 +11,7 @@ class Scale(object):
         self.current_oct = 0
 
         self.current_note = Note(
-            # ALWAYS init a new note
+            # ALWAYS init new note
             root_note.tone, 
             root_note.alt, 
             self.current_oct
@@ -26,20 +24,23 @@ class Scale(object):
     def __repr__(self):
         spell_line = Row()
         for d in self.scale():
+            if not d:
+                continue
             spell_line.append(FString(d, size=5, colors=['yellow']))
         return str(spell_line)
 
     def interval(self, i):
+        ''' returns delta semitones from scale root note '''
         if i > len(self._intervals):
             next_i = i -len(self._intervals)
             return self.interval(next_i) + OCTAVE
-
         return self._intervals[i -1]
 
     def degree(self, d):
         return self._degrees[d -1]
 
     def scale(self, notes=0, start_note=None):
+
         if not notes:
             notes = len(self._intervals)
 
@@ -47,9 +48,18 @@ class Scale(object):
             start_note = self.degree(1)
 
         yield_enabled = False
-        for d in range(1, MAX_NOTES):   # ignore 0
+        d = 1 # ignore 0
+        while True:
+
             if not notes:
-                break
+                self.reset_oct()
+                return
+
+            last_note_delta = self.interval(d) -self.interval(d -1)
+            if last_note_delta > SEMITONE:
+                for st in range(last_note_delta -1):
+                    yield None
+
             degree = self.calc_degree(d)
             if degree >= start_note:
                 yield_enabled = True
@@ -57,7 +67,7 @@ class Scale(object):
                 notes -= 1
                 yield degree
 
-        self.reset_oct()
+            d += 1
 
     def reset_oct(self):
         self.current_oct = 0
@@ -125,7 +135,7 @@ class DiatonicScale(Scale):
             if deg.tone == 'C': # large intervals that do not hace C will need to compare last and next
                 self.current_oct += 1
 
-            # init new note, DO NOT change octave of ENHARMONIC_MATRIX note ! maybe doing same mistake in String?
+            # init new note, DO NOT change octave of ENHARMONIC_MATRIX note!
             self.current_note = Note(deg.tone, deg.alt, self.current_oct)
             return self.current_note
 
