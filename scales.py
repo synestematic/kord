@@ -26,7 +26,7 @@ class Scale(object):
         for d in self.scale():
             if not d:
                 continue
-            spell_line.append(FString(d, size=5, colors=['yellow']))
+            spell_line.append(FString(d, size=5, fg='yellow'))
         return str(spell_line)
 
     def interval(self, i):
@@ -125,10 +125,8 @@ class DiatonicScale(Scale):
 
         row_index = self.degree(1).enharmonic_row() + self.interval(d)
         expected_tone = self.degree(1).next_tone(d -1)
-        # input(row_index)
 
         next_degrees = [note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.tone == expected_tone]
-        # input(next_degrees)
 
         if len(next_degrees) == 1:
             deg = next_degrees[0]

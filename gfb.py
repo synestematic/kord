@@ -107,11 +107,11 @@ if __name__ == '__main__':
         # inequality_test(neqs)
         # enh_test()
 
-        # unit_test(ChromaticScale)
-        # unit_test(MajorScale)
-        # unit_test(NaturalMinorScale)
-        # unit_test(MelodicMinorScale)
-        # unit_test(HarmonicMinorScale)
+        unit_test(ChromaticScale)
+        unit_test(MajorScale)
+        unit_test(NaturalMinorScale)
+        unit_test(MelodicMinorScale)
+        unit_test(HarmonicMinorScale)
         c = Note('e')
         ebb = Note('E', 'bb')
 
@@ -129,7 +129,7 @@ if __name__ == '__main__':
             string6=Note('E', 2),
             # string7=Note('B', 2),
         )
-        # guitar_std.fretboard(frets=DISPLAY_FRETS)
+        guitar_std.fretboard(frets=DISPLAY_FRETS)
         # guitar_std.fretboard(scale=c_major, frets=DISPLAY_FRETS)
 
         ukulele_std = Tuning(
@@ -143,13 +143,13 @@ if __name__ == '__main__':
 
         mel = MelodicMinorScale(Note('A', ''))
         e = Note('E', 3)
-        # e = None
+        # # e = None
         for n in mel.scale(13, start_note=e):
         # for n in mel.scale(13):
             echo(n, 'cyan')
 
-        echo(mel)
-        echo()
+        # echo(mel)
+        # echo()
 
 
         # c = Note('C', 3)

@@ -6,7 +6,6 @@ from scales import *
 class String(object):
 
     # fret = [] # WHY IS THIS SHARED BETWEEN MY STRING OBJECTS???
-
     def __init__(self, open_note):
         self.fret = [
             # ALWAYS INIT NEW NOTe
@@ -39,12 +38,13 @@ class String(object):
                 note,
                 size=4 if fret_n == 0 else 6,
                 align='cr',
-                colors=note_color,
+                fg='blue',
             )
             string_line.append(note_display)
 
             fret_separator = FString(
-                '|' if fret_n % 12 == 0 else '¦'
+                '|' if fret_n % 12 == 0 else '¦',
+                # fg='yellow',
             )
             string_line.append(fret_separator)
 
@@ -73,7 +73,8 @@ class Tuning(object):
         if not verbose:
             return
 
-        fret_n_color = ['blue']
+        fret_n_color = 'blue'
+        # input(fret_n_color)
 
         inlays = [
             '',
@@ -91,15 +92,18 @@ class Tuning(object):
             'XII',
         ]
 
+
         inlay_row = Row(
-            FString(inlays[0], size=6, align='cl', colors=fret_n_color),
+            # FString(inlays[0], size=6, align='cl', fg=fret_n_color),
             # width=6 +83
         )
+
+        # input(fret_n_color)
 
         i = 1
         while frets:
             inlay_row.append(
-                FString(inlays[i], size=cls.fret_size, align='cl', colors=fret_n_color)
+                FString(inlays[i], size=cls.fret_size, align='cl', fg=fret_n_color)
             )
             frets -= 1
             i += 1
@@ -125,12 +129,12 @@ class Tuning(object):
     ### REPR FUNCTIONS
     def fretboard(self, scale=None, frets=None, verbose=1):
 
-        string_n_color = ['blue']
+        string_n_color = 'blue'
 
         self.fret_inlays(verbose=verbose, frets=frets)
         self.binding('upper', frets=frets)
         for string in self.strings:
-            string_n = FString(self.strings.index(string) + 1, colors=string_n_color)
+            string_n = FString(self.strings.index(string) + 1, fg=string_n_color)
             string.set_scale(scale)
             string.set_display_frets(frets)
             echo(str(string_n) + str(string))
