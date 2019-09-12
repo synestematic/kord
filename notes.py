@@ -85,9 +85,10 @@ _OCTS = (
 )
 
 _ALTS = {
-    'bb': 'ᵇᵇ',
-    'b': 'ᵇ',
-    # 'b': '♭',
+    'bb': '𝄫',
+    'b': '♭',
+    # 'bb': 'ᵇᵇ',
+    # 'b': 'ᵇ',
     '': '',
     '#': '♯',
     # '#': '⌗',
@@ -202,7 +203,9 @@ class Note(object):
             return False
         return True
 
+
 ENHARMONIC_MATRIX = (
+
     ## 1-octave enharmonic relationships
     (  Note('D', '' , 1), Note('C', '##', 1), Note('E', 'bb', 1)  ), # NHH
     (  Note('D', '#', 1), Note('E', 'b' , 1), Note('F', 'bb', 1)  ), # AAH
@@ -212,11 +215,13 @@ ENHARMONIC_MATRIX = (
     (  Note('G', '' , 1), Note('F', '##', 1), Note('A', 'bb', 1)  ), # NHH
     (  Note('G', '#', 1), Note('A', 'b' , 1)                      ), # AA
     (  Note('A', '' , 1), Note('G', '##', 1), Note('B', 'bb', 1)  ), # NHH
+
     ## 2-octave enharmonic relationships
     (  Note('A', '#', 1), Note('B', 'b' , 1), Note('C', 'bb', 2)  ), # AAH
     (  Note('B', '' , 1), Note('C', 'b' , 2), Note('A', '##', 1)  ), # NAH
     (  Note('C', '' , 2), Note('B', '#' , 1), Note('D', 'bb', 2)  ), # NAH
     (  Note('C', '#', 2), Note('D', 'b' , 2), Note('B', '##', 1)  ), # AAH
+
 )
 
 # notes need to be unique so that calc_degrees finds 1 exact match!
