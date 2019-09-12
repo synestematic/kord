@@ -40,6 +40,7 @@ class Scale(object):
         return self._degrees[d -1]
 
     def scale(self, notes=0, start_note=None):
+        ''' yields Notes for degrees and Nones for empty semi-tones '''
 
         if not notes:
             notes = len(self._intervals)
@@ -58,7 +59,8 @@ class Scale(object):
             last_note_delta = self.interval(d) -self.interval(d -1)
             if last_note_delta > SEMITONE:
                 for st in range(last_note_delta -1):
-                    yield None
+                    if yield_enabled:
+                        yield None
 
             degree = self.calc_degree(d)
             if degree >= start_note:
