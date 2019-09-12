@@ -26,7 +26,7 @@ class String(object):
         ''' prints string notes matching given scale '''
         string_line = Row()
 
-        for fret_n, fret_note in enumerate(self.scale.scale(notes=self.display_frets, start_note=self.fret[0])):
+        for fret_n, fret_note in enumerate(self.scale.scale(notes=self.display_frets, start=self.fret[0])):
 
             note = ''
             note_color = []
@@ -44,8 +44,9 @@ class String(object):
             )
 
             string_line.append(
-                FString(
-                    '|' if fret_n % 12 == 0 else '¦',
+                FString(                    
+                    '║' if fret_n % 12 == 0 else '|',
+                    # '|' if fret_n % 12 == 0 else '¦',
                     size=1,
                 )
             )
@@ -58,7 +59,8 @@ class Tuning(object):
     fret_size = 7
 
     _binding = {
-        'upper': '_', 'lower': '‾',
+        'upper': '═', 'lower': '═',
+        # 'upper': '_', 'lower': '‾',
         # 'upper': '=', 'lower': '=',
     }
 
@@ -76,7 +78,6 @@ class Tuning(object):
             return
 
         fret_n_color = 'blue'
-        # input(fret_n_color)
 
         inlays = [
             '',
@@ -94,13 +95,10 @@ class Tuning(object):
             'XII',
         ]
 
-
         inlay_row = Row(
-            # FString(inlays[0], size=6, align='cl', fg=fret_n_color),
-            # width=6 +83
+            FString(inlays[0], size=6, align='cl', fg=fret_n_color),
+            width=6 +83 # why this??
         )
-
-        # input(fret_n_color)
 
         i = 1
         while frets:
@@ -114,7 +112,9 @@ class Tuning(object):
 
     def __init__(self, *arg, **kwargs):
         self.strings = []
-        string_args = dict( [(k.replace('string', ''), note) for k, note in kwargs.items() if k.startswith('string')] )
+        string_args = dict(
+            [ (k.replace('string', ''), note) for k, note in kwargs.items() if k.startswith('string') ]
+        )
 
         self._init_strings(len(string_args))
         self._assign_strings(string_args)
@@ -129,7 +129,7 @@ class Tuning(object):
             self.strings[int(k) -1] = String(note)
 
     ### REPR FUNCTIONS
-    def fretboard(self, scale=None, frets=None, verbose=1):
+    def fretboard(self, scale=None, frets=12, verbose=1):
 
         string_n_color = 'blue'
 
