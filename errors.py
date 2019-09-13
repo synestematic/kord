@@ -1,0 +1,2 @@
+class InvalidScale(Exception):
+    pass

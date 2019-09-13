@@ -2,6 +2,7 @@ from bestia.output import Row, FString, echo
 from bestia.iterate import looped_list_item
 
 from notes import *
+from errors import *
 
 class Scale(object):
 
@@ -131,7 +132,7 @@ class ChromaticScale(Scale):
             return self.current_note
 
         echo(next_degrees, 'red')
-        input()
+        raise InvalidScale(self.degree(1))
 
 
 class DiatonicScale(Scale):
@@ -157,7 +158,7 @@ class DiatonicScale(Scale):
             return self.current_note
 
         echo(next_degrees, 'red')
-        input()
+        raise InvalidScale(self.degree(1))
 
 
 #####################################################
