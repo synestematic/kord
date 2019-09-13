@@ -2,7 +2,7 @@ from bestia.output import echo
 
 from tests import *
 
-DISPLAY_FRETS = 12
+DISPLAY_FRETS = 14
 VERBOSE = 1
 
 if __name__ == '__main__':

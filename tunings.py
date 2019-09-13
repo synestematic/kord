@@ -9,7 +9,7 @@ class String(object):
 
     def __init__(self, open_note):
         self.fret = [
-            # ALWAYS INIT NEW NOTe
+            # ALWAYS INIT NEW Note()
             Note(open_note.tone, open_note.alt, open_note.oct)
         ]
         self.__scale = ChromaticScale(self.fret[0])
@@ -39,7 +39,7 @@ class String(object):
         frets_displayed = self.frets
         # input(self.fret[0])
 
-        for fret_n, fret_note in enumerate(self.scale.scale(notes=self.frets, start=self.fret[0])):
+        for fret_n, fret_note in enumerate(self.scale.scale(notes=self.frets, start=self.fret[0], all=True)):
 
             # if not frets_displayed:
             #     break
@@ -66,7 +66,7 @@ class String(object):
 
             string_line.append(
                 FString(                    
-                    '║' if fret_n % 12 == 0 else '|',
+                    '║' if fret_n % 12 == 0 or fret_n == self.frets -1 else '|',
                     # '|' if fret_n % 12 == 0 else '¦',
                     size=1,
                     # fg='blue',
@@ -90,16 +90,22 @@ class Tuning(object):
         # 'upper': '=', 'lower': '=',
     }
 
+    _capo = {
+        'upper': '     ╔', 'lower': '     ╚',
+    }
+
+    _fine = {
+        'upper': '╗', 'lower': '╝',
+    }
+
     @classmethod
     def binding(cls, side='lower', frets=12):
-        tuners = '      ' # 'O o . '
-        fret_binding = cls._binding[side] * cls.fret_size
-        output = tuners + fret_binding * frets
+        fret_binding = cls._binding[side] * frets * cls.fret_size
         echo(
-            output[:-1],
+            cls._capo[side] + fret_binding[:-1] + cls._fine[side],
             # 'blue',
             'faint',
-            )
+        )
 
     @classmethod
     def fret_inlays(cls, verbose=1, frets=12):
