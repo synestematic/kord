@@ -12,24 +12,34 @@ class String(object):
             # ALWAYS INIT NEW NOTe
             Note(open_note.tone, open_note.alt, open_note.oct)
         ]
-        self.scale = ChromaticScale(self.fret[0])
-        self.display_frets = 1 +12
+        self.__scale = ChromaticScale(self.fret[0])
+        self.__display_frets = 1 +12
  
-    def set_scale(self, scale):
-        if scale:
-            self.scale = scale
+    @property
+    def scale(self):
+        return self.__scale
 
-    def set_display_frets(self, frets):
-        if frets:
-            self.display_frets = 1 +frets
+    @scale.setter
+    def scale(self, s):
+        self.__scale = s
+
+    @property
+    def frets(self):
+        return self.__display_frets
+
+    @frets.setter
+    def frets(self, f):
+        self.__display_frets = int(f) +1
+
 
     def __repr__(self):
         ''' prints string notes matching given scale '''
         string_line = Row()
 
-        # frets_displayed = self.display_frets
+        frets_displayed = self.frets
+        # input(self.fret[0])
 
-        for fret_n, fret_note in enumerate(self.scale.scale(notes=self.display_frets, start=self.fret[0])):
+        for fret_n, fret_note in enumerate(self.scale.scale(notes=self.frets, start=self.fret[0])):
 
             # if not frets_displayed:
             #     break
@@ -64,8 +74,9 @@ class String(object):
                 )
             )
 
-            # frets_displayed -= 1
+            frets_displayed -= 1
 
+        # input(frets_displayed)
         return str(string_line)
 
 
@@ -168,20 +179,24 @@ class Tuning(object):
     ### REPR FUNCTIONS
     def fretboard(self, scale=None, frets=12, verbose=1):
 
+        # INIT A NEW SCALE, OTHERWISE YOU USE THE SAME OBJECT!!!
+
         self.fret_inlays(verbose=verbose, frets=frets)
         self.binding('upper', frets=frets)
+
         for string in self.strings:
+
             string_n = FString(
                 self.strings.index(string) + 1,
                 fg='magenta', 
                 fx=['faint'],
             )
-            string.set_scale(scale)
 
-
-            string.set_display_frets(frets)
+            string.scale = scale
+            string.frets = frets
 
             echo(str(string_n) + str(string))
+        
         self.binding('lower', frets=frets)
 
     def string(self, s):

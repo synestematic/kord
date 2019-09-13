@@ -8,20 +8,6 @@ VERBOSE = 1
 if __name__ == '__main__':
 
     try:
-                
-        n = Note('D', '')
-        sn = Note('F', '', 2)
-        # sn = None
-
-        # sc = MajorScale(n)
-        sc = ChromaticScale(n)
-        echo(sc)
-
-        for d in sc.scale(notes=10, all=1, start=sn):
-            echo(d, 'cyan', mode='raw')
-            echo('  ', mode='raw')
-        print()
-
         guitar_std = Tuning(
             string1=Note('E', 4),
             string2=Note('B', 3),
@@ -34,7 +20,7 @@ if __name__ == '__main__':
 
         guitar_std.fretboard(
             scale= MajorScale(
-                Note('B', '')
+                Note('C', '')
             ),
             frets=DISPLAY_FRETS,
             verbose=VERBOSE,
@@ -53,8 +39,6 @@ if __name__ == '__main__':
         #     frets=DISPLAY_FRETS,
         #     verbose=VERBOSE,
         # )
-
-
 
         ### Strings......
         # c = Note('C', 5)
