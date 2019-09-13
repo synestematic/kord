@@ -1,6 +1,8 @@
 from bestia.iterate import looped_list_item
 from bestia.output import echo
 
+from errors import *
+
 SHARP = 1
 FLAT = -1
 
@@ -107,18 +109,21 @@ class Note(object):
     ### INIT METHODS
     def __init__(self, *args):
         self.tone = args[0].upper()
-        assert self.tone in _TONES
+        if self.tone not in _TONES:
+            raise InvalidTone(args[0])
 
         self.alt = ''
         for a in args[1:]:
             if a in input_alterations():
                 self.alt = a
-        # assert self.alt in input_alterations()
+        if self.alt not in input_alterations():
+            raise InvalidAlteration(self.alt)
 
         self.oct = 3
         for a in args[1:]:
             if type(a) == int:
                 self.oct = a
+            # raise InvalidOctave(self.oct)
 
     ### REPR METHODS
     def __repr__(self):

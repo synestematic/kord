@@ -2,7 +2,7 @@ from bestia.output import Row, FString, echo
 from bestia.iterate import looped_list_item
 
 from notes import *
-from errors import *
+# from errors import *
 
 class Scale(object):
 

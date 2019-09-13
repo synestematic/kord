@@ -8,7 +8,7 @@ VERBOSE = 1
 if __name__ == '__main__':
 
     try:
-        # a = Note('A')
+        a = Note('a')
         # input(a.adjacent_tone(-1))
         # solve this...
 
