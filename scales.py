@@ -23,7 +23,7 @@ class Scale(object):
 
     def __repr__(self):
         spell_line = Row()
-        for d in self.scale(diatonic=True):
+        for d in self.scale(all=False):
             spell_line.append(
                 FString(d, size=5, fg='yellow')
             )
@@ -39,8 +39,9 @@ class Scale(object):
     def degree(self, d):
         return self._degrees[d -1]
 
-    def scale(self, notes=0, start=None, diatonic=False):
-        ''' yields Notes for diatonic degrees and Nones for empty semi-tones '''
+    def scale(self, notes=0, start=None, all=True):
+        ''' yields Notes for diatonic degrees
+        if all is set, Nones are yield for empty semi-tones '''
 
         notes_to_yield = notes if notes else len(self._intervals)
         start_note = start if start else self.degree(1)
@@ -52,9 +53,8 @@ class Scale(object):
             last_note_delta = self.interval(d) - self.interval(d -1)
             if last_note_delta > SEMITONE:
                 for st in range(last_note_delta -1):
-                    if yield_enabled:
-                        if not diatonic:
-                            yield None
+                    if yield_enabled and all:
+                        yield None
 
             degree = self.calc_degree(d)
 
