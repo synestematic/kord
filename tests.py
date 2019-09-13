@@ -1,14 +1,60 @@
 from bestia.output import echo
-from gfb import *
 
-def scale_test(scale):
-    for _row in ENHARMONIC_MATRIX:
-        for _enharmonic_note in _row:
-            if len(_enharmonic_note.alt) >1: # ignore double alteration notes
-                continue
-            echo('{} {}'.format(scale.__name__, _enharmonic_note), 'blue')
-            echo(scale(_enharmonic_note), 'cyan')
-    echo()
+from notes import *
+from scales import *
+from tunings import *
+
+EQUALS = (
+
+    (Note('c'), Note('c')),
+    (Note('d'), Note('d')),
+    (Note('e'), Note('e')),
+    (Note('f'), Note('f')),
+    (Note('g'), Note('g')),
+    (Note('a'), Note('a')),
+    (Note('b'), Note('b')),
+
+    (Note('A', '#'), Note('B', 'b')),
+    (Note('A', '##'), Note('B', '')),
+    (Note('C', ''), Note('D', 'bb')),
+    (Note('C', '#'), Note('D', 'b')),
+
+)
+
+
+NON_EQUALS = (
+
+    (Note('C', 'b', 3), Note('B', '#', 3)),
+
+    (Note('C', 'b', 3), Note('B', '#', 3)),
+
+    (Note('E', 'b', 5), Note('D', '#', 4)),
+
+    (Note('B', '', 5), Note('C', 'b', 4)),
+
+    (Note('E', '#', 3), Note('F', '', 4)),
+
+
+    (Note('B', 'b'), Note('C', 'bb')),
+    (Note('A', '#'), Note('C', 'bb')),
+
+    (Note('B'     ), Note('C', 'b')),
+    (Note('A', '##'), Note('C', 'b')),
+
+    (Note('B', '#'), Note('C', '')),
+    (Note('B', '#'), Note('D', 'bb')),
+
+    (Note('B', '##'), Note('C', '#')),
+    (Note('B', '##'), Note('D', 'b')),
+
+
+    # these should eval False OK
+    (Note('A', '#'), Note('B', 'b', 4)),
+    (Note('A', '##'), Note('B', '', 4)),
+    (Note('C', ''), Note('D', 'bb', 4)),
+    (Note('C', '#'), Note('D', 'b', 4)),
+)
+
 
 def equality_test(ls):
     for l in ls:
@@ -44,75 +90,40 @@ def enh_test():
             ]
         equality_test(l)
 
+
+def scale_test(scale_class):
+    for _row in ENHARMONIC_MATRIX:
+        for _enharmonic_note in _row:
+            if len(_enharmonic_note.alt) >1: # ignore double alteration notes
+                continue
+            echo(
+                '{} {}'.format(
+                    scale_class.__name__, _enharmonic_note
+                ), 'blue'
+            )
+            echo(
+                scale_class(_enharmonic_note),
+                'cyan'
+            )
+
+
 if __name__ == '__main__':
 
     try:
-
-        equal_notes = [
-            (Note('c'), Note('c')),
-            (Note('d'), Note('d')),
-            (Note('e'), Note('e')),
-            (Note('f'), Note('f')),
-            (Note('g'), Note('g')),
-            (Note('a'), Note('a')),
-            (Note('b'), Note('b')),
-
-            (Note('A', '#'), Note('B', 'b')),
-            (Note('A', '##'), Note('B', '')),
-            (Note('C', ''), Note('D', 'bb')),
-            (Note('C', '#'), Note('D', 'b')),
-
-        ]
-
-        not_equal_notes = [
-
-            (Note('C', 'b', 3), Note('B', '#', 3)),
-
-            (Note('C', 'b', 3), Note('B', '#', 3)),
-
-            (Note('E', 'b', 5), Note('D', '#', 4)),
-
-            (Note('B', '', 5), Note('C', 'b', 4)),
-
-            (Note('E', '#', 3), Note('F', '', 4)),
-
-
-            (Note('B', 'b'), Note('C', 'bb')),
-            (Note('A', '#'), Note('C', 'bb')),
-
-            (Note('B'     ), Note('C', 'b')),
-            (Note('A', '##'), Note('C', 'b')),
-
-            (Note('B', '#'), Note('C', '')),
-            (Note('B', '#'), Note('D', 'bb')),
-
-            (Note('B', '##'), Note('C', '#')),
-            (Note('B', '##'), Note('D', 'b')),
-
-
-            # these should eval False OK
-            (Note('A', '#'), Note('B', 'b', 4)),
-            (Note('A', '##'), Note('B', '', 4)),
-            (Note('C', ''), Note('D', 'bb', 4)),
-            (Note('C', '#'), Note('D', 'b', 4)),
-
-        ]
-
-
-        equality_test(equal_notes)
-        inequality_test(not_equal_notes)
+        ### NOTES TESTS
+        equality_test(EQUALS)
+        inequality_test(NON_EQUALS)
         enh_test()
 
-        # TEST SCALES
+        ### SCALES TESTS
         scale_test(ChromaticScale)
         scale_test(MajorScale)
         scale_test(NaturalMinorScale)
         scale_test(MelodicMinorScale)
         scale_test(HarmonicMinorScale)
 
-
     except KeyboardInterrupt:
         pass
 
     finally:
-        echo('Done')
+        echo('Done', 'green')

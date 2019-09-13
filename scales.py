@@ -24,7 +24,9 @@ class Scale(object):
     def __repr__(self):
         spell_line = Row()
         for d in self.scale(diatonic=True):
-            spell_line.append(FString(d, size=5, fg='yellow'))
+            spell_line.append(
+                FString(d, size=5, fg='yellow')
+            )
         return str(spell_line)
 
     def interval(self, i):
@@ -38,18 +40,14 @@ class Scale(object):
         return self._degrees[d -1]
 
     def scale(self, notes=0, start=None, diatonic=False):
-        ''' yields Notes for degrees and Nones for empty semi-tones '''
+        ''' yields Notes for diatonic degrees and Nones for empty semi-tones '''
 
-        if not notes:
-            notes = len(self._intervals)
-
-        if not start:
-            start = self.degree(1)
+        notes_to_yield = notes if notes else len(self._intervals)
+        start_note = start if start else self.degree(1)
 
         yield_enabled = False
         d = 1 # ignore 0
-
-        while notes:
+        while notes_to_yield:
 
             last_note_delta = self.interval(d) - self.interval(d -1)
             if last_note_delta > SEMITONE:
@@ -58,20 +56,13 @@ class Scale(object):
                         if not diatonic:
                             yield None
 
-
             degree = self.calc_degree(d)
 
-            # echo(degree, 'red')  # octave not increasing for Dbb...
-            # input()
-
-            if not yield_enabled and degree >= start:
-                # degree that enables yield
+            if not yield_enabled and degree >= start_note:
                 yield_enabled = True
-                # echo(degree, 'green')
-                # input()
 
             if yield_enabled:
-                notes -= 1
+                notes_to_yield -= 1
                 yield degree
 
             d += 1
@@ -183,7 +174,7 @@ class MajorScale(DiatonicScale):
         MAJOR_SEVENTH,
     )
 
-class IonianScale(MajorScale):
+class IonianMode(MajorScale):
     pass
 
 class MinorScale(DiatonicScale):
@@ -198,7 +189,7 @@ class MinorScale(DiatonicScale):
         MINOR_SEVENTH,
     )
     
-class AeolianScale(MinorScale):
+class AeolianMode(MinorScale):
     pass
 
 class NaturalMinorScale(MinorScale):
