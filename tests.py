@@ -61,7 +61,7 @@ def equality_test(ls):
         echo('{} == {}\t{}\t{} == {}\t{}'.format(
             l[0], l[1], l[0] == l[1],
             l[1], l[0], l[1] == l[0]),            
-            'cyan'
+            'green'
         )
         assert l[0] == l[1]
         assert l[1] == l[0]
@@ -71,7 +71,7 @@ def inequality_test(ls):
         echo('{} != {}\t{}\t{} != {}\t{}'.format(
             l[0], l[1], l[0] != l[1],
             l[1], l[0], l[1] != l[0]),            
-            'magenta'
+            'red'
         )
         assert l[0] != l[1]
         assert l[1] != l[0]
@@ -96,8 +96,8 @@ def scale_test(scale_class):
         for _enharmonic_note in _row:
 
             # ignore double alteration notes
-            # if len(_enharmonic_note.alt) >1:
-            #     continue
+            if len(_enharmonic_note.alt) >1:
+                continue
 
             echo(
                 '{} {}'.format(
@@ -115,12 +115,11 @@ inequality_test(NON_EQUALS)
 enh_test()
 
 ### SCALES TESTS
-# scale_test(ChromaticScale) ## all are good
-
-# scale_test(MajorScale)
-# scale_test(NaturalMinorScale)
-# scale_test(MelodicMinorScale)
-# scale_test(HarmonicMinorScale)
+scale_test(ChromaticScale)
+scale_test(MajorScale)
+scale_test(NaturalMinorScale)
+scale_test(MelodicMinorScale)
+scale_test(HarmonicMinorScale)
 
 
 

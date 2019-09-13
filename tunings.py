@@ -70,7 +70,7 @@ class String(object):
                     # '|' if fret_n % 12 == 0 else '¦',
                     size=1,
                     # fg='blue',
-                    fx=['faint'],
+                    # fx=['faint'],
                 )
             )
 
@@ -99,12 +99,12 @@ class Tuning(object):
     }
 
     @classmethod
-    def binding(cls, side='lower', frets=12):
+    def binding(cls, side, frets=12):
         fret_binding = cls._binding[side] * frets * cls.fret_size
         echo(
             cls._capo[side] + fret_binding[:-1] + cls._fine[side],
             # 'blue',
-            'faint',
+            # 'faint',
         )
 
     @classmethod
@@ -164,23 +164,14 @@ class Tuning(object):
 
         inlay_row.echo()
 
-    def __init__(self, *arg, **kwargs):
-        self.strings = []
-        string_args = dict(
-            [ (k.replace('string', ''), note) for k, note in kwargs.items() if k.startswith('string') ]
-        )
-
-        self._init_strings(len(string_args))
-        self._assign_strings(string_args)
-
     ### INIT FUNCTIONS
-    def _init_strings(self, string_count):
-        for n in range(string_count):
-            self.strings.append(None)
+    def __init__(self, *notes):
+        self.strings = []
+        for n in notes:
+            self.strings.append(
+                String(n)
+            )
 
-    def _assign_strings(self, string_args):
-        for k, note in string_args.items():
-            self.strings[int(k) -1] = String(note)
 
     ### REPR FUNCTIONS
     def fretboard(self, scale=None, frets=12, verbose=1):

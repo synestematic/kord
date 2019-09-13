@@ -9,16 +9,17 @@ if __name__ == '__main__':
 
     try:
         guitar_std = Tuning(
-            string1=Note('E', 4),
-            string2=Note('B', 3),
-            string3=Note('G', 3),
-            string4=Note('D', 3),
-            string5=Note('A', 2),
-            string6=Note('E', 2),
-            # string7=Note('B', 2),
+            Note('E', 4),
+            Note('B', 3),
+            Note('G', 3),
+            Note('D', 3),
+            Note('A', 2),
+            Note('E', 2),
+            # Note('B', 2),
         )
 
         guitar_std.fretboard(
+            # open strings for 3, 4, 5 are wrong
             scale= MajorScale(
                 Note('C', '')
             ),
