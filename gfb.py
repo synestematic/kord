@@ -2,8 +2,8 @@ from bestia.output import echo
 
 from tests import *
 
-DISPLAY_FRETS = 12
-VERBOSE = 1
+DISPLAY_FRETS = 24
+VERBOSE = 2
 
 if __name__ == '__main__':
 
@@ -33,10 +33,11 @@ if __name__ == '__main__':
         )
 
         guitar_std.fretboard(
-            scale= MajorScale(
+            scale= ChromaticScale(
                 Note('G', '')
             ),
             frets=DISPLAY_FRETS,
+            verbose=VERBOSE,
         )
 
         # ukulele = Tuning(
@@ -50,7 +51,7 @@ if __name__ == '__main__':
         #         Note('C')
         #     ),
         #     frets=DISPLAY_FRETS,
-        #     verbose=2,
+        #     verbose=VERBOSE,
         # )
 
 

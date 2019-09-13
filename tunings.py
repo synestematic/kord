@@ -54,6 +54,8 @@ class String(object):
                     '║' if fret_n % 12 == 0 else '|',
                     # '|' if fret_n % 12 == 0 else '¦',
                     size=1,
+                    # fg='blue',
+                    fx=['faint'],
                 )
             )
 
@@ -75,7 +77,11 @@ class Tuning(object):
         tuners = '      ' # 'O o . '
         fret_binding = cls._binding[side] * cls.fret_size
         output = tuners + fret_binding * frets
-        echo(output[:-1])
+        echo(
+            output[:-1],
+            # 'blue',
+            'faint',
+            )
 
     @classmethod
     def fret_inlays(cls, verbose=1, frets=12):
@@ -103,7 +109,6 @@ class Tuning(object):
             'XV',
             'XVI' if verbose == 2 else '',
             'XVII',
-
             'XVIII' if verbose == 2 else '',
             'XIX',
             'XX' if verbose == 2 else '',
@@ -115,7 +120,7 @@ class Tuning(object):
         )
 
         inlay_row = Row(
-            FString(inlays[0], size=6, align='cl'),
+            FString(inlays[0], size=6, align='l'),
             width=6 +83 # why this??
         )
 
@@ -165,6 +170,7 @@ class Tuning(object):
                 fx=['faint'],
             )
             string.set_scale(scale)
+
 
             string.set_display_frets(frets)
 
