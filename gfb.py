@@ -8,6 +8,10 @@ VERBOSE = 1
 if __name__ == '__main__':
 
     try:
+        # a = Note('A')
+        # input(a.adjacent_tone(-1))
+        # solve this...
+
         guitar_std = Tuning(
             Note('E', 4),
             Note('B', 3),
@@ -28,10 +32,10 @@ if __name__ == '__main__':
         )
 
         # ukulele = Tuning(
-        #     string1=Note('E', 3),
-        #     string2=Note('A', 3),
-        #     string3=Note('C', 3),
-        #     string4=Note('G', 3),
+        #     Note('E', 3),
+        #     Note('A', 3),
+        #     Note('C', 3),
+        #     Note('G', 3),
         # )
         # ukulele.fretboard(
         #     scale= MajorScale(

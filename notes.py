@@ -90,9 +90,9 @@ _ALTS = {
     # 'bb': 'ᵇᵇ',
     # 'b': 'ᵇ',
     '': '',
-    '#': '♯',
     # '#': '⌗',
     # '#': '⋕',
+    '#': '♯',
     '##': '𝄪',
 }
 
@@ -162,44 +162,30 @@ class Note(object):
                     if ignore_oct:
                         return True
                     return self.oct == other.oct
-    
 
 
     ### TONE METHODS
-    def _relative_tone(self, n):
+    def relative_tone(self, n):
         my_index = _TONES.index(self.tone)
         return looped_list_item(my_index +n, _TONES)
 
-    def next_tone(self, n=1):
+    def adjacent_tone(self, n=1):
+        ''' returns next adjacent tone of self
+            negative fails...
+        '''
         tone = None
         tone_count = 0
-        iteration = 1
+        i = 1
 
         while True:
             if tone_count == n:
                 return tone
 
-            tone = self._relative_tone(iteration)
+            tone = self.relative_tone(i)
             if tone:
                 tone_count += 1
 
-            iteration += 1
-
-    # def next_tone(self, n=1):
-    #     tone = None
-
-    #     tone_count = 0
-    #     i = 1
-
-    #     while tone_count != n:
-    #         tone = self._relative_tone(i)
-    #         if tone:
-    #             tone_count += 1
-    #         i += 1
-
-    #     return tone
-
-
+            i += 1
 
 
     def delta_semitones(self, other):
@@ -212,28 +198,18 @@ class Note(object):
         alt_delta_st  = input_alterations().index(self.alt) - input_alterations().index(other.alt)
         return oct_delta_st + tone_delta_st + alt_delta_st
 
-    ### ENHARMONIC METHODS
-    def _matrix_coordinates(self):
+    # ENHARMONIC ATTRIBUTES
+    @property
+    def enharmonic_row(self):
+        return self.matrix_coordinates[0]
+
+    @property
+    def matrix_coordinates(self):
         for _row_index, _row in enumerate(ENHARMONIC_MATRIX):
             for _note_index, _enharmonic_note in enumerate(_row):
                 if self.tone == _enharmonic_note.tone and self.alt == _enharmonic_note.alt:
                     return (_row_index, _note_index)
 
-    def enharmonic_row(self):
-        return self._matrix_coordinates()[0]
-
-    def has_adjacent_oct_enharmony(self):
-        ''' only  Cbb, Cb, B#, B##  return True
-            these notes lay on adjacent octaves
-            relative to their 2 enharmonic notes
-        '''
-        if self.enharmonic_row() < 8:
-            return False
-        if self.enharmonic_row() in (8, 9) and self.tone != 'C':
-            return False
-        if self.enharmonic_row() in (10, 11) and self.tone != 'B':
-            return False
-        return True
 
 
 ENHARMONIC_MATRIX = (
