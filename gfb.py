@@ -22,28 +22,28 @@ if __name__ == '__main__':
             # Note('B', 2),
         )
 
-        guitar_std.fretboard(
-            # open strings for 3, 4, 5 are wrong
-            scale= MajorScale(
-                Note('C', '')
-            ),
-            frets=DISPLAY_FRETS,
-            verbose=VERBOSE,
-        )
-
-        # ukulele = Tuning(
-        #     Note('E', 3),
-        #     Note('A', 3),
-        #     Note('C', 3),
-        #     Note('G', 3),
-        # )
-        # ukulele.fretboard(
+        # guitar_std.fretboard(
+        #     # open strings for 3, 4, 5 are wrong
         #     scale= MajorScale(
-        #         Note('C')
+        #         Note('C', '')
         #     ),
         #     frets=DISPLAY_FRETS,
         #     verbose=VERBOSE,
         # )
+
+        ukulele = Tuning(
+            Note('A', 3),
+            Note('E', 3),
+            Note('C', 3),
+            Note('G', 3),
+        )
+        ukulele.fretboard(
+            scale= MajorScale(
+                Note('C')
+            ),
+            frets=DISPLAY_FRETS,
+            verbose=VERBOSE,
+        )
 
         ### Strings......
         # c = Note('C', 5)
