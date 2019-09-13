@@ -27,7 +27,12 @@ class String(object):
         ''' prints string notes matching given scale '''
         string_line = Row()
 
+        # frets_displayed = self.display_frets
+
         for fret_n, fret_note in enumerate(self.scale.scale(notes=self.display_frets, start=self.fret[0])):
+
+            # if not frets_displayed:
+            #     break
 
             note = ''
             note_color = []
@@ -37,7 +42,7 @@ class String(object):
                     fret_note.repr_alt(),
                     fret_note.repr_oct()
                 )
-                note_color = ['green'] if fret_note.tone == self.scale.degree(1).tone and fret_note.alt == self.scale.degree(1).alt else ['yellow']
+                note_color = 'magenta' if fret_note.tone == self.scale.degree(1).tone and fret_note.alt == self.scale.degree(1).alt else 'cyan'
 
             string_line.append(
                 FString(
@@ -45,7 +50,7 @@ class String(object):
                     # fret_note,
                     size=4 if fret_n == 0 else 6,
                     align='cr',
-                    fg='cyan',
+                    fg=note_color,
                 )
             )
 
@@ -58,6 +63,8 @@ class String(object):
                     fx=['faint'],
                 )
             )
+
+            # frets_displayed -= 1
 
         return str(string_line)
 
@@ -91,30 +98,30 @@ class Tuning(object):
 
         inlays = (
             '',
-            'I' if verbose == 2 else '',
-            'II' if verbose == 2 else '',
+            'I' if verbose > 1 else '',
+            'II' if verbose > 1 else '',
             'III',
-            'IV' if verbose == 2 else '',
+            'IV' if verbose > 1 else '',
             'V',
-            'VI' if verbose == 2 else '',
+            'VI' if verbose > 1 else '',
             'VII',
-            'VIII' if verbose == 2 else '',
+            'VIII' if verbose > 1 else '',
             'IX',
-            'X' if verbose == 2 else '',
-            'XI' if verbose == 2 else '',
+            'X' if verbose > 1 else '',
+            'XI' if verbose > 1 else '',
 
             'XII',
-            'XIII' if verbose == 2 else '',
-            'XIV' if verbose == 2 else '',
+            'XIII' if verbose > 1 else '',
+            'XIV' if verbose > 1 else '',
             'XV',
-            'XVI' if verbose == 2 else '',
+            'XVI' if verbose > 1 else '',
             'XVII',
-            'XVIII' if verbose == 2 else '',
+            'XVIII' if verbose > 1 else '',
             'XIX',
-            'XX' if verbose == 2 else '',
+            'XX' if verbose > 1 else '',
             'XXI',
-            'XXII' if verbose == 2 else '',
-            'XXIII' if verbose == 2 else '',
+            'XXII' if verbose > 1 else '',
+            'XXIII' if verbose > 1 else '',
 
             'XXIV'
         )
