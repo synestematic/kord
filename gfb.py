@@ -4,19 +4,23 @@ from notes import *
 from scales import *
 from tunings import *
 
-DISPLAY_FRETS = 3
+DISPLAY_FRETS = 12
 VERBOSE = 1
 
 if __name__ == '__main__':
 
     try:
-        c = Note('c')
-        ebb = Note('E', 'bb')
 
-        c_major = MajorScale(c)
-        ebb_chrom = ChromaticScale(ebb)
-        # for n in c_major.scale(20, start_note=ebb):
-        #     echo(n, 'cyan')
+        n = Note('D', 'bb')  # works not
+        sn = Note('F', '', 2)   # works NOT
+ 
+        # sc = MajorScale(n)
+        sc = ChromaticScale(n)
+        for d in sc.scale(notes=10, diatonic=0, start=sn):
+            echo(d, 'cyan', mode='raw')
+            echo('  ', mode='raw')
+        print()
+
 
         guitar_std = Tuning(
             string1=Note('E', 4),
@@ -27,32 +31,45 @@ if __name__ == '__main__':
             string6=Note('E', 2),
             # string7=Note('B', 2),
         )
-        guitar_std.fretboard(frets=DISPLAY_FRETS)
-        # guitar_std.fretboard(scale=c_major, frets=DISPLAY_FRETS)
 
-        # ukulele_std = Tuning(
+        # guitar_std.fretboard(
+        #     scale= MajorScale(
+        #         Note('E')
+        #     ),
+        #     frets=DISPLAY_FRETS,
+        # )
+
+
+        # ukulele = Tuning(
         #     string1=Note('E', 3),
         #     string2=Note('A', 3),
         #     string3=Note('C', 3),
         #     string4=Note('G', 3),
         # )
-        # ukulele_std.fretboard(frets=DISPLAY_FRETS)
+        # ukulele.fretboard(
+        #     scale= MajorScale(
+        #         Note('C')
+        #     ),
+        #     frets=DISPLAY_FRETS,
+        #     verbose=2,
+        # )
 
 
-        mel = MelodicMinorScale(Note('A', ''))
-        e = Note('E', 3)
-        # # e = None
-        for n in mel.scale(13, start_note=e):
-        # for n in mel.scale(13):
-            echo(n, 'cyan')
+        # mel = MelodicMinorScale(Note('A', ''))
+        # e = Note('E', 3)
+        # for n in mel.scale(13, start=e):
+        #     echo(n, 'cyan')
 
         # echo(mel)
         # echo()
 
 
+
         # c = Note('C', 3)
         # s1 = String(c)
-        # s1.set_scale(MajorScale(c))
+        # s1.set_scale(
+        #     MajorScale(c)
+        # )
         # echo(s1)
 
     except KeyboardInterrupt:

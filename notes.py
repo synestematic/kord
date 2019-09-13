@@ -134,13 +134,8 @@ class Note(object):
     def repr_alt(self):
         return _ALTS[self.alt]
 
+
     ### COMPARE METHODS
-    def is_note(self, other, ignore_oct=False):
-        if self.__class__ == type(other):
-            if self.tone == other.tone:
-                if self.alt == other.alt:
-                    return True if ignore_oct else self.oct == other.oct
-    
     def __eq__(self, other):
         return self.delta_semitones(other) == 0
 
@@ -149,6 +144,22 @@ class Note(object):
 
     def __ge__(self, other):
         return self.delta_semitones(other) >= 0
+
+    def is_note(self, other, ignore_oct=False):
+        ''' while the arithmetic methods above strictly compare
+            delta semitones, this method compares Note attributes:
+                * tone
+                * alt
+                * oct (optional)
+        '''
+        if self.__class__ == type(other):
+            if self.tone == other.tone:
+                if self.alt == other.alt:
+                    if ignore_oct:
+                        return True
+                    return self.oct == other.oct
+    
+
 
     ### TONE METHODS
     def _relative_tone(self, n):

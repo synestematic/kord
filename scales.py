@@ -23,9 +23,7 @@ class Scale(object):
 
     def __repr__(self):
         spell_line = Row()
-        for d in self.scale():
-            if not d:
-                continue
+        for d in self.scale(diatonic=True):
             spell_line.append(FString(d, size=5, fg='yellow'))
         return str(spell_line)
 
@@ -39,37 +37,47 @@ class Scale(object):
     def degree(self, d):
         return self._degrees[d -1]
 
-    def scale(self, notes=0, start_note=None):
+    def scale(self, notes=0, start=None, diatonic=False):
         ''' yields Notes for degrees and Nones for empty semi-tones '''
 
         if not notes:
             notes = len(self._intervals)
 
-        if not start_note:
-            start_note = self.degree(1)
+        if not start:
+            start = self.degree(1)
 
         yield_enabled = False
         d = 1 # ignore 0
-        while True:
 
-            if not notes:
-                self.reset_oct()
-                return
+        while notes:
 
-            last_note_delta = self.interval(d) -self.interval(d -1)
+            last_note_delta = self.interval(d) - self.interval(d -1)
             if last_note_delta > SEMITONE:
                 for st in range(last_note_delta -1):
                     if yield_enabled:
-                        yield None
+                        if not diatonic:
+                            yield None
+
 
             degree = self.calc_degree(d)
-            if degree >= start_note:
+
+            # echo(degree, 'red')  # octave not increasing for Dbb...
+            # input()
+
+            if not yield_enabled and degree >= start:
+                # degree that enables yield
                 yield_enabled = True
+                # echo(degree, 'green')
+                # input()
+
             if yield_enabled:
                 notes -= 1
                 yield degree
 
             d += 1
+
+        self.reset_oct()
+
 
     def reset_oct(self):
         self.current_oct = 0
@@ -78,7 +86,7 @@ class Scale(object):
 
 class ChromaticScale(Scale):
 
-    _intervals = [
+    _intervals = (
         UNISON,
         MINOR_SECOND,
         MAJOR_SECOND,
@@ -91,28 +99,44 @@ class ChromaticScale(Scale):
         MAJOR_SIXTH,
         MINOR_SEVENTH,
         MAJOR_SEVENTH,
-    ]
+    )
 
     def calc_degree(self, d):
+
         if d == 1:
             return self.degree(1)
 
         row_index = self.degree(1).enharmonic_row() + self.interval(d)
 
-        next_degrees = [note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.is_note(self.degree(1), ignore_oct=True)]
+        #  DO I REALLY NEED THESE 3 CHECKS ?
+
+        next_degrees = [
+            note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.is_note(self.degree(1), ignore_oct=True)
+        ]
+
         if not next_degrees:
-            next_degrees = [note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.alt == self.degree(1).alt[:-1]]
+            next_degrees = [
+                note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.alt == self.degree(1).alt[:-1]
+            ]
+
             if not next_degrees:
                 chosen_alt = '#' if self.degree(1).alt == '' else self.degree(1).alt
-                next_degrees = [note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.alt == chosen_alt]
+                next_degrees = [
+                    note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.alt == chosen_alt
+                ]
 
         if len(next_degrees) == 1:
+
             deg = next_degrees[0]
-            if deg.tone == 'C' and deg.alt == '':
+            # got from ENH_MATRIX
+
+            if Note(deg.tone, deg.alt) == Note('C'):
                 self.current_oct += 1
 
             # init new note, DO NOT change octave of ENHARMONIC_MATRIX note!
-            self.current_note = Note(deg.tone, deg.alt, self.current_oct)
+            self.current_note = Note(
+                deg.tone, deg.alt, self.current_oct
+            )
             return self.current_note
 
         echo(next_degrees, 'red')
@@ -128,7 +152,9 @@ class DiatonicScale(Scale):
         row_index = self.degree(1).enharmonic_row() + self.interval(d)
         expected_tone = self.degree(1).next_tone(d -1)
 
-        next_degrees = [note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.tone == expected_tone]
+        next_degrees = [
+            note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.tone == expected_tone
+        ]
 
         if len(next_degrees) == 1:
             deg = next_degrees[0]
@@ -147,7 +173,7 @@ class DiatonicScale(Scale):
 
 class MajorScale(DiatonicScale):
 
-    _intervals = [
+    _intervals = (
         UNISON,
         MAJOR_SECOND,
         MAJOR_THIRD,
@@ -155,14 +181,14 @@ class MajorScale(DiatonicScale):
         PERFECT_FIFTH,
         MAJOR_SIXTH,
         MAJOR_SEVENTH,
-    ]
+    )
 
 class IonianScale(MajorScale):
     pass
 
 class MinorScale(DiatonicScale):
 
-    _intervals = [
+    _intervals = (
         UNISON,
         MAJOR_SECOND,
         MINOR_THIRD,
@@ -170,8 +196,8 @@ class MinorScale(DiatonicScale):
         PERFECT_FIFTH,
         MINOR_SIXTH,
         MINOR_SEVENTH,
-    ]
-
+    )
+    
 class AeolianScale(MinorScale):
     pass
 
@@ -180,7 +206,7 @@ class NaturalMinorScale(MinorScale):
 
 class MelodicMinorScale(DiatonicScale):
 
-    _intervals = [
+    _intervals = (
         UNISON,
         MAJOR_SECOND,
         MINOR_THIRD,
@@ -188,11 +214,11 @@ class MelodicMinorScale(DiatonicScale):
         PERFECT_FIFTH,
         MAJOR_SIXTH,
         MAJOR_SEVENTH,
-    ]
+    )
 
 class HarmonicMinorScale(DiatonicScale):
 
-    _intervals = [
+    _intervals = (
         UNISON,
         MAJOR_SECOND,
         MINOR_THIRD,
@@ -200,4 +226,4 @@ class HarmonicMinorScale(DiatonicScale):
         PERFECT_FIFTH,
         MINOR_SIXTH,
         MAJOR_SEVENTH,
-    ]
+    )

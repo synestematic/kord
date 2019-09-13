@@ -6,6 +6,7 @@ from scales import *
 class String(object):
 
     # fret = [] # WHY IS THIS SHARED BETWEEN MY STRING OBJECTS???
+
     def __init__(self, open_note):
         self.fret = [
             # ALWAYS INIT NEW NOTe
@@ -138,7 +139,9 @@ class Tuning(object):
         for string in self.strings:
             string_n = FString(self.strings.index(string) + 1, fg=string_n_color)
             string.set_scale(scale)
+
             string.set_display_frets(frets)
+
             echo(str(string_n) + str(string))
         self.binding('lower', frets=frets)
 
