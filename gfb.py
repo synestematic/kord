@@ -8,37 +8,45 @@ VERBOSE = 1
 if __name__ == '__main__':
 
     try:
+        
+        echo(
+            MajorScale(
+                Note('B', '##')
+            )
+        )
 
-        n = Note('D', '')  # works not
-        sn = Note('F', '', 2)   # works NOT
-        sn = None
+        input()
+        
+        
+        n = Note('D', '')
+        sn = Note('F', '', 2)
+        # sn = None
+
         # sc = MajorScale(n)
         sc = ChromaticScale(n)
         echo(sc)
 
-
-        for d in sc.scale(notes=10, diatonic=0, start=sn):
+        for d in sc.scale(notes=10, all=1, start=sn):
             echo(d, 'cyan', mode='raw')
             echo('  ', mode='raw')
         print()
 
-        # guitar_std = Tuning(
-        #     string1=Note('E', 4),
-        #     string2=Note('B', 3),
-        #     string3=Note('G', 3),
-        #     string4=Note('D', 3),
-        #     string5=Note('A', 2),
-        #     string6=Note('E', 2),
-        #     # string7=Note('B', 2),
-        # )
+        guitar_std = Tuning(
+            string1=Note('E', 4),
+            string2=Note('B', 3),
+            string3=Note('G', 3),
+            string4=Note('D', 3),
+            string5=Note('A', 2),
+            string6=Note('E', 2),
+            # string7=Note('B', 2),
+        )
 
-        # guitar_std.fretboard(
-        #     scale= MajorScale(
-        #         Note('G', '')
-        #     ),
-        #     frets=DISPLAY_FRETS,
-        # )
-
+        guitar_std.fretboard(
+            scale= MajorScale(
+                Note('G', '')
+            ),
+            frets=DISPLAY_FRETS,
+        )
 
         # ukulele = Tuning(
         #     string1=Note('E', 3),
@@ -55,17 +63,9 @@ if __name__ == '__main__':
         # )
 
 
-        # mel = MelodicMinorScale(Note('A', ''))
-        # e = Note('E', 3)
-        # for n in mel.scale(13, start=e):
-        #     echo(n, 'cyan')
 
-        # echo(mel)
-        # echo()
-
-
-
-        # c = Note('C', 3)
+        ### Strings......
+        # c = Note('C', 5)
         # s1 = String(c)
         # s1.set_scale(
         #     MajorScale(c)

@@ -32,12 +32,17 @@ class String(object):
             note = ''
             note_color = []
             if fret_note:
-                note = '{}{}{}'.format(fret_note.tone, fret_note.repr_alt(), fret_note.repr_oct())
+                # note = '{}{}{}'.format(
+                #     fret_note.tone,
+                #     fret_note.repr_alt(),
+                #     fret_note.repr_oct()
+                # )
                 note_color = ['green'] if fret_note.tone == self.scale.degree(1).tone and fret_note.alt == self.scale.degree(1).alt else ['yellow']
 
             string_line.append(
                 FString(
-                    note,
+                    # note,
+                    fret_note,
                     size=4 if fret_n == 0 else 6,
                     align='cr',
                     fg='blue',

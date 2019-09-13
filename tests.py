@@ -94,8 +94,11 @@ def enh_test():
 def scale_test(scale_class):
     for _row in ENHARMONIC_MATRIX:
         for _enharmonic_note in _row:
-            if len(_enharmonic_note.alt) >1: # ignore double alteration notes
-                continue
+
+            # ignore double alteration notes
+            # if len(_enharmonic_note.alt) >1:
+            #     continue
+
             echo(
                 '{} {}'.format(
                     scale_class.__name__, _enharmonic_note
@@ -107,23 +110,37 @@ def scale_test(scale_class):
             )
 
 
-if __name__ == '__main__':
+equality_test(EQUALS)
+inequality_test(NON_EQUALS)
+enh_test()
 
-    try:
-        ### NOTES TESTS
-        equality_test(EQUALS)
-        inequality_test(NON_EQUALS)
-        enh_test()
+### SCALES TESTS
+# scale_test(ChromaticScale) ## all are good
 
-        ### SCALES TESTS
-        scale_test(ChromaticScale)
-        scale_test(MajorScale)
-        scale_test(NaturalMinorScale)
-        scale_test(MelodicMinorScale)
-        scale_test(HarmonicMinorScale)
+# scale_test(MajorScale)
+# scale_test(NaturalMinorScale)
+# scale_test(MelodicMinorScale)
+# scale_test(HarmonicMinorScale)
 
-    except KeyboardInterrupt:
-        pass
 
-    finally:
-        echo('Done', 'green')
+
+# if __name__ == '__main__':
+
+#     try:
+#         ### NOTES TESTS
+#         equality_test(EQUALS)
+#         inequality_test(NON_EQUALS)
+#         enh_test()
+
+#         # ### SCALES TESTS
+#         scale_test(ChromaticScale)
+#         scale_test(MajorScale)
+#         scale_test(NaturalMinorScale)
+#         scale_test(MelodicMinorScale)
+#         scale_test(HarmonicMinorScale)
+
+#     except KeyboardInterrupt:
+#         pass
+
+#     finally:
+#         echo('Done', 'green')

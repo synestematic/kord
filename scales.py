@@ -132,7 +132,13 @@ class ChromaticScale(Scale):
             return self.current_note
 
         echo(next_degrees, 'red')
-        raise InvalidScale(self.degree(1))
+        raise InvalidScale(
+            '{}{} {}'.format(
+                self.degree(1).tone,
+                self.degree(1).repr_alt(),
+                self.__class__.__name__,
+            )
+        )
 
 
 class DiatonicScale(Scale):
@@ -158,7 +164,13 @@ class DiatonicScale(Scale):
             return self.current_note
 
         echo(next_degrees, 'red')
-        raise InvalidScale(self.degree(1))
+        raise InvalidScale(
+            '{}{} {}'.format(
+                self.degree(1).tone,
+                self.degree(1).repr_alt(),
+                self.__class__.__name__,
+            )
+        )
 
 
 #####################################################

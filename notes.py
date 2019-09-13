@@ -122,7 +122,11 @@ class Note(object):
 
     ### REPR METHODS
     def __repr__(self):
-        return '{}{}{}'.format(self.tone, self.repr_alt(), self.repr_oct())
+        return '{}{}{}'.format(
+            self.tone,
+            self.repr_alt(),
+            self.repr_oct()
+        )
 
     def repr_oct(self, verbose=True):
         output = ''
