@@ -8,16 +8,7 @@ VERBOSE = 1
 if __name__ == '__main__':
 
     try:
-        
-        echo(
-            MajorScale(
-                Note('B', '##')
-            )
-        )
-
-        input()
-        
-        
+                
         n = Note('D', '')
         sn = Note('F', '', 2)
         # sn = None

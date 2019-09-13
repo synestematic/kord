@@ -32,20 +32,20 @@ class String(object):
             note = ''
             note_color = []
             if fret_note:
-                # note = '{}{}{}'.format(
-                #     fret_note.tone,
-                #     fret_note.repr_alt(),
-                #     fret_note.repr_oct()
-                # )
+                note = '{}{}{}'.format(
+                    fret_note.tone,
+                    fret_note.repr_alt(),
+                    fret_note.repr_oct()
+                )
                 note_color = ['green'] if fret_note.tone == self.scale.degree(1).tone and fret_note.alt == self.scale.degree(1).alt else ['yellow']
 
             string_line.append(
                 FString(
-                    # note,
-                    fret_note,
+                    note,
+                    # fret_note,
                     size=4 if fret_n == 0 else 6,
                     align='cr',
-                    fg='blue',
+                    fg='cyan',
                 )
             )
 
@@ -83,9 +83,7 @@ class Tuning(object):
         if not verbose:
             return
 
-        fret_n_color = 'blue'
-
-        inlays = [
+        inlays = (
             '',
             'I' if verbose == 2 else '',
             'II' if verbose == 2 else '',
@@ -98,18 +96,39 @@ class Tuning(object):
             'IX',
             'X' if verbose == 2 else '',
             'XI' if verbose == 2 else '',
+
             'XII',
-        ]
+            'XIII' if verbose == 2 else '',
+            'XIV' if verbose == 2 else '',
+            'XV',
+            'XVI' if verbose == 2 else '',
+            'XVII',
+
+            'XVIII' if verbose == 2 else '',
+            'XIX',
+            'XX' if verbose == 2 else '',
+            'XXI',
+            'XXII' if verbose == 2 else '',
+            'XXIII' if verbose == 2 else '',
+
+            'XXIV'
+        )
 
         inlay_row = Row(
-            FString(inlays[0], size=6, align='cl', fg=fret_n_color),
+            FString(inlays[0], size=6, align='cl'),
             width=6 +83 # why this??
         )
 
         i = 1
         while frets:
             inlay_row.append(
-                FString(inlays[i], size=cls.fret_size, align='cl', fg=fret_n_color)
+                FString(
+                    inlays[i],
+                    size=cls.fret_size,
+                    align='cl',
+                    fg='magenta',
+                    fx=['faint'],
+                )
             )
             frets -= 1
             i += 1
@@ -137,12 +156,14 @@ class Tuning(object):
     ### REPR FUNCTIONS
     def fretboard(self, scale=None, frets=12, verbose=1):
 
-        string_n_color = 'blue'
-
         self.fret_inlays(verbose=verbose, frets=frets)
         self.binding('upper', frets=frets)
         for string in self.strings:
-            string_n = FString(self.strings.index(string) + 1, fg=string_n_color)
+            string_n = FString(
+                self.strings.index(string) + 1,
+                fg='magenta', 
+                fx=['faint'],
+            )
             string.set_scale(scale)
 
             string.set_display_frets(frets)

@@ -170,20 +170,37 @@ class Note(object):
         my_index = _TONES.index(self.tone)
         return looped_list_item(my_index +n, _TONES)
 
+    # def next_tone(self, n=1):
+    #     tone = None
+    #     tone_count = 0
+    #     iteration = 1
+
+    #     while True:
+    #         if tone_count == n:
+    #             return tone
+
+    #         tone = self._relative_tone(iteration)
+    #         if tone:
+    #             tone_count += 1
+
+    #         iteration += 1
+
     def next_tone(self, n=1):
         tone = None
+
         tone_count = 0
-        iteration = 1
+        i = 1
 
-        while True:
-            if tone_count == n:
-                return tone
-
-            tone = self._relative_tone(iteration)
+        while tone_count != n:
+            tone = self._relative_tone(i)
             if tone:
                 tone_count += 1
+            i += 1
 
-            iteration += 1
+        return tone
+
+
+
 
     def delta_semitones(self, other):
         # 0  :  self == other
