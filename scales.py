@@ -51,16 +51,20 @@ class Scale(object):
         d = 1 # ignore 0
         while notes_to_yield:
 
+            # IMMEDIATELY DETERMINE WHETHER YIELD MUST BE ENABLED
+            degree = self.calc_degree(d)
+            if not yield_enabled and degree >= start_note:
+                yield_enabled = True
+
             last_note_delta = self.interval(d) - self.interval(d -1)
             if last_note_delta > SEMITONE:
                 for st in range(last_note_delta -1):
                     if yield_enabled and all:
                         yield None
 
-            degree = self.calc_degree(d)
-
-            if not yield_enabled and degree >= start_note:
-                yield_enabled = True
+            # degree = self.calc_degree(d)
+            # if not yield_enabled and degree >= start_note:
+            #     yield_enabled = True
 
             if yield_enabled:
                 notes_to_yield -= 1

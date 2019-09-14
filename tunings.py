@@ -37,7 +37,6 @@ class String(object):
         string_line = Row()
 
         frets_displayed = self.frets
-        # input(self.fret[0])
 
         for fret_n, fret_note in enumerate(self.scale.scale(notes=self.frets, start=self.fret[0], all=True)):
 
@@ -66,7 +65,7 @@ class String(object):
 
             string_line.append(
                 FString(                    
-                    '║' if fret_n % 12 == 0 or fret_n == self.frets -1 else '|',
+                    '║' if fret_n % 12 == 0 or fret_n == self.frets -1 else '¦',
                     # '|' if fret_n % 12 == 0 else '¦',
                     size=1,
                     # fg='blue',
