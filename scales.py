@@ -56,19 +56,16 @@ class Scale(object):
             if not yield_enabled and degree >= start_note:
                 yield_enabled = True
 
+            if yield_enabled:
+                notes_to_yield -= 1
+                yield degree
+
             last_note_delta = self.interval(d) - self.interval(d -1)
             if last_note_delta > SEMITONE:
                 for st in range(last_note_delta -1):
                     if yield_enabled and all:
                         yield None
 
-            # degree = self.calc_degree(d)
-            # if not yield_enabled and degree >= start_note:
-            #     yield_enabled = True
-
-            if yield_enabled:
-                notes_to_yield -= 1
-                yield degree
 
             d += 1
 
@@ -140,7 +137,7 @@ class ChromaticScale(Scale):
         raise InvalidScale(
             '{}{} {}'.format(
                 self.degree(1).tone,
-                self.degree(1).repr_alt(),
+                self.degree(1).repr_alt,
                 self.__class__.__name__,
             )
         )
@@ -171,7 +168,7 @@ class DiatonicScale(Scale):
         raise InvalidScale(
             '{}{} {}'.format(
                 self.degree(1).tone,
-                self.degree(1).repr_alt(),
+                self.degree(1).repr_alt,
                 self.__class__.__name__,
             )
         )

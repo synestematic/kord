@@ -48,8 +48,8 @@ class String(object):
             if fret_note:
                 note = '{}{}{}'.format(
                     fret_note.tone,
-                    fret_note.repr_alt(),
-                    fret_note.repr_oct()
+                    fret_note.repr_alt,
+                    fret_note.repr_oct,
                 )
                 note_color = 'magenta' if fret_note.tone == self.scale.degree(1).tone and fret_note.alt == self.scale.degree(1).alt else 'cyan'
 

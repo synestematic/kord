@@ -15,7 +15,7 @@ if __name__ == '__main__':
             Note('D', 3),
             Note('A', 2),
             Note('E', 2),
-            Note('B', 1),
+            # Note('B', 1),
         )
 
         guitar_std.fretboard(

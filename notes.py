@@ -129,17 +129,18 @@ class Note(object):
     def __repr__(self):
         return '{}{}{}'.format(
             self.tone,
-            self.repr_alt(),
-            self.repr_oct()
+            self.repr_alt,
+            self.repr_oct
         )
 
-    def repr_oct(self, verbose=True):
+    @property
+    def repr_oct(self):
         output = ''
-        if verbose:
-            for char in str(self.oct):
-                output += _OCTS[int(char)]
+        for c in str(self.oct):
+            output += _OCTS[int(c)]
         return output
 
+    @property
     def repr_alt(self):
         return _ALTS[self.alt]
 
