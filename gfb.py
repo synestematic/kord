@@ -1,5 +1,9 @@
 from bestia.output import echo
 
+from notes import *
+from scales import *
+from tunings import *
+
 from tests import *
 
 DISPLAY_FRETS = 14
@@ -8,8 +12,17 @@ VERBOSE = 1
 if __name__ == '__main__':
 
     try:
+        sc = MajorScale(
+            Note('A')
+        )
+        echo(sc)
+
+        for d in sc.scale(5, start=Note('E', 4)):
+            print(d)
+
         guitar_std = Tuning(
-            Note('E', 4),
+            Note('E', 3),
+            # Note('D', 4),
             Note('B', 3),
             Note('G', 3),
             Note('D', 3),
@@ -20,8 +33,9 @@ if __name__ == '__main__':
 
         guitar_std.fretboard(
             # open strings for 3, 4, 5 are wrong
-            scale= MajorScale(
-                Note('A', '')
+            scale= ChromaticScale(
+            # scale= MajorScale(
+                Note('B', '')
             ),
             frets=DISPLAY_FRETS,
             verbose=VERBOSE,

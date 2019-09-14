@@ -41,7 +41,8 @@ class Scale(object):
         return self._degrees[d -1]
 
     def scale(self, notes=0, start=None, all=True):
-        ''' yields Notes for diatonic degrees
+        ''' document better........
+        yields Notes for diatonic degrees
         if all is set, Nones are yield for empty semi-tones '''
 
         notes_to_yield = notes if notes else len(self._intervals)
@@ -56,23 +57,26 @@ class Scale(object):
             if not yield_enabled and degree >= start_note:
                 yield_enabled = True
 
-            if yield_enabled:
-                notes_to_yield -= 1
-                yield degree
-
             last_note_delta = self.interval(d) - self.interval(d -1)
             if last_note_delta > SEMITONE:
                 for st in range(last_note_delta -1):
                     if yield_enabled and all:
-                        yield None
 
+                        if degree != start_note:
+                        # AVOID YIELDING EXTRA NONE @START_NOTE
+                        # WHEN SCALE DEG BEFORE IS > 1ST AWAY
+                            yield None
+
+            if yield_enabled:
+                notes_to_yield -= 1
+                yield degree
 
             d += 1
 
-        self.reset_oct()
+        self.reset()
 
 
-    def reset_oct(self):
+    def reset(self):
         self.current_oct = 0
         self.current_note = self.degree(1)
 
