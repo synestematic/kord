@@ -21,8 +21,8 @@ if __name__ == '__main__':
             print(d)
 
         guitar_std = Tuning(
-            Note('E', 3),
-            # Note('D', 4),
+            # Note('E', 3),
+            Note('A', 'b', 10),     # why is this displaying diesei? create a test for this...
             Note('B', 3),
             Note('G', 3),
             Note('D', 3),

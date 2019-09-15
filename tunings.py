@@ -60,7 +60,7 @@ class String(object):
                     fret_note.repr_alt,
                     fret_note.repr_oct,
                 )
-                note_color = 'magenta' if fret_note.tone == self.scale.degree(1).tone and fret_note.alt == self.scale.degree(1).alt else 'cyan'
+                note_fx = 'underline' if fret_note.is_note(self.scale.degree(1), ignore_oct=1) else ''
 
             string_line.append(
                 FString(
@@ -68,7 +68,9 @@ class String(object):
                     # fret_note,
                     size=_NOTE_WIDTH -1 if fret_n == 0 else _NOTE_WIDTH,
                     align='cr',
-                    fg=note_color,
+                    fg='cyan',
+                    # fg=note_color,
+                    fx=[note_fx],
                 )
             )
 
@@ -90,25 +92,16 @@ class String(object):
 
 class Tuning(object):
 
-    _binding = {
-        'upper': '═', 'lower': '═',
-        # 'upper': '_', 'lower': '‾',
-        # 'upper': '=', 'lower': '=',
-    }
+    @staticmethod
+    def binding(side, frets=12):
 
-    _capo = {
-        'upper': '     ╔', 'lower': '     ╚',
-    }
+        binding = {'upper': '═', 'lower': '═'}
+        capo = {'upper': '     ╔', 'lower': '     ╚'}
+        fine = {'upper': '╗', 'lower': '╝'}
 
-    _fine = {
-        'upper': '╗', 'lower': '╝',
-    }
-
-    @classmethod
-    def binding(cls, side, frets=12):
-        fret_binding = cls._binding[side] * frets * (_NOTE_WIDTH + _FRET_WIDTH)
+        fret_binding = binding[side] * frets * (_NOTE_WIDTH + _FRET_WIDTH)
         echo(
-            cls._capo[side] + fret_binding[:-1] + cls._fine[side],
+            capo[side] + fret_binding[:-1] + fine[side],
             # 'blue',
             # 'faint',
         )
@@ -150,7 +143,11 @@ class Tuning(object):
         )
 
         inlay_row = Row(
-            FString(inlays[0], size=6, align='l'),
+            FString(
+                inlays[0],
+                size=_NOTE_WIDTH + _FRET_WIDTH,
+                align='l'
+            ),
             width=6 +83 # why this??
         )
 
@@ -182,7 +179,7 @@ class Tuning(object):
     ### REPR FUNCTIONS
     def fretboard(self, scale=None, frets=12, verbose=1):
 
-        # INIT A NEW SCALE, OTHERWISE YOU USE THE SAME OBJECT!!!
+        # INIT A NEW SCALE, OTHERWISE YOU USE THE SAME OUTER OBJECT!!!
 
         self.fret_inlays(verbose=verbose, frets=frets)
         self.binding('upper', frets=frets)
