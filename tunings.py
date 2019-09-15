@@ -92,19 +92,41 @@ class String(object):
 
 class Tuning(object):
 
-    @staticmethod
-    def binding(side, frets=12):
 
-        binding = {'upper': '═', 'lower': '═'}
-        capo = {'upper': '     ╔', 'lower': '     ╚'}
-        fine = {'upper': '╗', 'lower': '╝'}
+    def __init__(self, *notes):
+        self.strings = []
+        for n in notes:
+            self.strings.append(
+                String(n)
+            )
 
-        fret_binding = binding[side] * frets * (_NOTE_WIDTH + _FRET_WIDTH)
-        echo(
-            capo[side] + fret_binding[:-1] + fine[side],
-            # 'blue',
-            # 'faint',
-        )
+
+    def string(self, s):
+        return self.strings[s -1]
+
+
+    def fretboard(self, scale=None, frets=12, verbose=1):
+
+        # INIT A NEW SCALE, OTHERWISE YOU USE THE SAME OUTER OBJECT!!!
+
+        echo(self.fret_inlays(verbose=verbose, frets=frets))
+        echo(self.binding('upper', frets=frets))
+
+        for string in self.strings:
+
+            string_n = FString(
+                self.strings.index(string) +1,
+                fg='magenta', 
+                fx=['faint'],
+            )
+
+            string.scale = scale
+            string.frets = frets
+
+            echo(str(string_n) + str(string))
+        
+        echo(self.binding('lower', frets=frets))
+
 
     @classmethod
     def fret_inlays(cls, verbose=1, frets=12):
@@ -165,39 +187,14 @@ class Tuning(object):
             frets -= 1
             i += 1
 
-        inlay_row.echo()
-
-    ### INIT FUNCTIONS
-    def __init__(self, *notes):
-        self.strings = []
-        for n in notes:
-            self.strings.append(
-                String(n)
-            )
+        return inlay_row
 
 
-    ### REPR FUNCTIONS
-    def fretboard(self, scale=None, frets=12, verbose=1):
+    @staticmethod
+    def binding(side, frets=12):
+        binding = {'upper': '═', 'lower': '═'}
+        capo = {'upper': '     ╔', 'lower': '     ╚'}
+        fine = {'upper': '╗', 'lower': '╝'}
+        fret_binding = binding[side] * frets * (_NOTE_WIDTH + _FRET_WIDTH)
+        return capo[side] + fret_binding[:-1] + fine[side]
 
-        # INIT A NEW SCALE, OTHERWISE YOU USE THE SAME OUTER OBJECT!!!
-
-        self.fret_inlays(verbose=verbose, frets=frets)
-        self.binding('upper', frets=frets)
-
-        for string in self.strings:
-
-            string_n = FString(
-                self.strings.index(string) + 1,
-                fg='magenta', 
-                fx=['faint'],
-            )
-
-            string.scale = scale
-            string.frets = frets
-
-            echo(str(string_n) + str(string))
-        
-        self.binding('lower', frets=frets)
-
-    def string(self, s):
-        return self.strings[s -1]
