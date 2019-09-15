@@ -1,10 +1,16 @@
-from bestia.output import Row, FString, echo
+from bestia.output import Row, FString, echo, tty_columns
 
 from notes import *
 from scales import *
 
 _NOTE_WIDTH = 5
 _FRET_WIDTH = 1
+
+def recommended_frets():
+    frets = int(
+        tty_columns() / ( _NOTE_WIDTH + _FRET_WIDTH )
+    ) - 1
+    return frets if frets <= 24 else 24
 
 class String(object):
 

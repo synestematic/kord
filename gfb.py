@@ -6,7 +6,7 @@ from tunings import *
 
 from tests import *
 
-DISPLAY_FRETS = 5
+DISPLAY_FRETS = recommended_frets()
 VERBOSE = 1
 
 if __name__ == '__main__':
@@ -33,8 +33,8 @@ if __name__ == '__main__':
 
         guitar_std.fretboard(
             # open strings for 3, 4, 5 are wrong
-            # scale= ChromaticScale(
-            scale= MajorScale(
+            scale= ChromaticScale(
+            # scale= MajorScale(
                 Note('B', '')
             ),
             frets=DISPLAY_FRETS,  # frets is NOT Notes
