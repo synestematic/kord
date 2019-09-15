@@ -3,6 +3,9 @@ from bestia.output import Row, FString, echo
 from notes import *
 from scales import *
 
+_NOTE_WIDTH = 5
+_FRET_WIDTH = 1
+
 class String(object):
 
     # fret = [] # WHY IS THIS SHARED BETWEEN MY STRING OBJECTS???
@@ -57,7 +60,7 @@ class String(object):
                 FString(
                     note,
                     # fret_note,
-                    size=4 if fret_n == 0 else 6,
+                    size=_NOTE_WIDTH -1 if fret_n == 0 else _NOTE_WIDTH,
                     align='cr',
                     fg=note_color,
                 )
@@ -67,7 +70,7 @@ class String(object):
                 FString(                    
                     '║' if fret_n % 12 == 0 or fret_n == self.frets -1 else '¦',
                     # '|' if fret_n % 12 == 0 else '¦',
-                    size=1,
+                    size=_FRET_WIDTH,
                     # fg='blue',
                     # fx=['faint'],
                 )
@@ -80,8 +83,6 @@ class String(object):
 
 
 class Tuning(object):
-
-    fret_size = 7
 
     _binding = {
         'upper': '═', 'lower': '═',
@@ -99,7 +100,7 @@ class Tuning(object):
 
     @classmethod
     def binding(cls, side, frets=12):
-        fret_binding = cls._binding[side] * frets * cls.fret_size
+        fret_binding = cls._binding[side] * frets * (_NOTE_WIDTH + _FRET_WIDTH)
         echo(
             cls._capo[side] + fret_binding[:-1] + cls._fine[side],
             # 'blue',
@@ -152,7 +153,7 @@ class Tuning(object):
             inlay_row.append(
                 FString(
                     inlays[i],
-                    size=cls.fret_size,
+                    size=_NOTE_WIDTH + _FRET_WIDTH,
                     align='cl',
                     fg='magenta',
                     fx=['faint'],

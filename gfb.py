@@ -6,14 +6,14 @@ from tunings import *
 
 from tests import *
 
-DISPLAY_FRETS = 14
+DISPLAY_FRETS = 5
 VERBOSE = 1
 
 if __name__ == '__main__':
 
     try:
         sc = MajorScale(
-            Note('A')
+            Note('B')
         )
         echo(sc)
 
@@ -33,11 +33,11 @@ if __name__ == '__main__':
 
         guitar_std.fretboard(
             # open strings for 3, 4, 5 are wrong
-            scale= ChromaticScale(
-            # scale= MajorScale(
+            # scale= ChromaticScale(
+            scale= MajorScale(
                 Note('B', '')
             ),
-            frets=DISPLAY_FRETS,
+            frets=DISPLAY_FRETS,  # frets is NOT Notes
             verbose=VERBOSE,
         )
 
