@@ -12,13 +12,14 @@ VERBOSE = 1
 if __name__ == '__main__':
 
     try:
-        sc = MajorScale(
-            Note('B')
-        )
+
+        sc = MajorScale('B')
         echo(sc)
 
         for d in sc.scale(5, start=Note('E', 4)):
             print(d)
+
+        # exit()
 
         guitar_std = Tuning(
             # Note('E', 3),
@@ -32,36 +33,28 @@ if __name__ == '__main__':
         )
 
         guitar_std.fretboard(
-            # open strings for 3, 4, 5 are wrong
-            scale= ChromaticScale(
-            # scale= MajorScale(
-                Note('B', '')
-            ),
+            scale= MajorScale('B'),
             frets=DISPLAY_FRETS,  # frets is NOT Notes
             verbose=VERBOSE,
         )
 
-        # ukulele = Tuning(
-        #     Note('A', 3),
-        #     Note('E', 3),
-        #     Note('C', 3),
-        #     Note('G', 3),
-        # )
-        # ukulele.fretboard(
-        #     scale= MajorScale(
-        #         Note('C')
-        #     ),
-        #     frets=DISPLAY_FRETS,
-        #     verbose=VERBOSE,
-        # )
+        ukulele = Tuning(
+            Note('A', 3),
+            Note('E', 3),
+            Note('C', 3),
+            Note('G', 3),
+        )
+        ukulele.fretboard(
+            scale= MajorScale('C'),
+            frets=DISPLAY_FRETS,
+            verbose=VERBOSE,
+        )
 
-        ### Strings......
-        # c = Note('C', 5)
-        # s1 = String(c)
-        # s1.set_scale(
-        #     MajorScale(c)
-        # )
-        # echo(s1)
+        ## Strings......
+        c = Note('C', 5)
+        s1 = String(*c)
+        s1.scale = MajorScale(*c)
+        echo(s1)
 
     except KeyboardInterrupt:
         echo()

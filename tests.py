@@ -105,7 +105,7 @@ def scale_test(scale_class):
                 ), 'blue'
             )
             echo(
-                scale_class(_enharmonic_note),
+                scale_class(*_enharmonic_note),
                 'cyan'
             )
 

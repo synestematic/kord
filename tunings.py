@@ -16,13 +16,16 @@ class String(object):
 
     # fret = [] # WHY IS THIS SHARED BETWEEN MY STRING OBJECTS???
 
-    def __init__(self, open_note):
+    def __init__(self, tone, alt='', oct=0, frets=0):
+
         self.fret = [
             # ALWAYS INIT NEW Note()
-            Note(open_note.tone, open_note.alt, open_note.oct)
+            Note(tone, alt, oct)
         ]
-        self.__scale = ChromaticScale(self.fret[0])
-        self.__display_frets = 1 +12
+
+        self.__scale = ChromaticScale(*self.fret[0])
+
+        self.frets = 12 if not frets else frets
  
     @property
     def scale(self):
@@ -53,7 +56,8 @@ class String(object):
             #     break
 
             note = ''
-            note_color = []
+            note_color = ''
+            note_fx = ''
             if fret_note:
                 note = '{}{}{}'.format(
                     fret_note.tone,
@@ -84,7 +88,8 @@ class String(object):
                 )
             )
 
-            frets_displayed -= 1
+            # if fret_note:
+            #     frets_displayed -= 1
 
         # input(frets_displayed)
         return str(string_line)
@@ -97,7 +102,7 @@ class Tuning(object):
         self.strings = []
         for n in notes:
             self.strings.append(
-                String(n)
+                String(*n)
             )
 
 

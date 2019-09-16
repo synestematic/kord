@@ -6,15 +6,16 @@ from notes import *
 
 class Scale(object):
 
-    def __init__(self, root_note):
+    def __init__(self, tone, alt='', oct=0):
+
         # ACCEPT ONLY SINGLE ALT NOTES?
         # Major F##, C## work - G## dies...
         self.current_oct = 0
 
         self.current_note = Note(
             # ALWAYS init new note
-            root_note.tone, 
-            root_note.alt, 
+            tone, 
+            alt, 
             self.current_oct
         )
 
