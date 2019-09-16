@@ -1,7 +1,7 @@
 from bestia.output import echo
 
 from notes import *
-from scales import *
+from keys import *
 from tunings import *
 
 EQUALS = (
@@ -91,7 +91,7 @@ def enh_test():
         equality_test(l)
 
 
-def scale_test(scale_class):
+def key_test(key_class):
     for _row in ENHARMONIC_MATRIX:
         for _enharmonic_note in _row:
 
@@ -101,11 +101,11 @@ def scale_test(scale_class):
 
             echo(
                 '{} {}'.format(
-                    scale_class.__name__, _enharmonic_note
+                    key_class.__name__, _enharmonic_note
                 ), 'blue'
             )
             echo(
-                scale_class(*_enharmonic_note),
+                key_class(*_enharmonic_note),
                 'cyan'
             )
 
@@ -115,11 +115,11 @@ inequality_test(NON_EQUALS)
 enh_test()
 
 ### SCALES TESTS
-scale_test(ChromaticScale)
-scale_test(MajorScale)
-scale_test(NaturalMinorScale)
-scale_test(MelodicMinorScale)
-scale_test(HarmonicMinorScale)
+key_test(ChromaticKey)
+key_test(MajorKey)
+key_test(NaturalMinorKey)
+key_test(MelodicMinorKey)
+key_test(HarmonicMinorKey)
 
 
 
@@ -132,11 +132,11 @@ scale_test(HarmonicMinorScale)
 #         enh_test()
 
 #         # ### SCALES TESTS
-#         scale_test(ChromaticScale)
-#         scale_test(MajorScale)
-#         scale_test(NaturalMinorScale)
-#         scale_test(MelodicMinorScale)
-#         scale_test(HarmonicMinorScale)
+#         key_test(ChromaticKey)
+#         key_test(MajorKey)
+#         key_test(NaturalMinorKey)
+#         key_test(MelodicMinorKey)
+#         key_test(HarmonicMinorKey)
 
 #     except KeyboardInterrupt:
 #         pass

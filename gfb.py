@@ -2,7 +2,7 @@ from argparse import ArgumentParser
 from bestia.output import echo
 
 from notes import *
-from scales import *
+from keys import *
 from tunings import *
 
 from tests import *
@@ -45,8 +45,8 @@ if __name__ == '__main__':
         )
 
         guitar_std.fretboard(
-            scale= MajorScale('C'),
-            frets=DISPLAY_FRETS,  # frets is NOT Notes
+            key= MajorKey('C'),
+            frets=DISPLAY_FRETS,
             verbose=VERBOSE,
         )
 
@@ -57,7 +57,7 @@ if __name__ == '__main__':
         #     Note('G', 3),
         # )
         # ukulele.fretboard(
-        #     scale= MajorScale('C'),
+        #     key= MajorKey('C'),
         #     frets=DISPLAY_FRETS,
         #     verbose=VERBOSE,
         # )
@@ -65,11 +65,14 @@ if __name__ == '__main__':
         ## Strings......
         # c = Note('F', 5)
         # s1 = String(*c)
-        # s1.scale = MajorScale(*c)
+        # s1.key = MajorKey(*c)
         # echo(s1)
 
     except KeyboardInterrupt:
         echo()
+
+    finally:
+        exit(0)
 
 
 # BUGS TO FIX:

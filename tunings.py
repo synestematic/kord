@@ -1,7 +1,7 @@
 from bestia.output import Row, FString, echo, tty_columns
 
 from notes import *
-from scales import *
+from keys import *
 
 _NOTE_WIDTH = 5
 _FRET_WIDTH = 1
@@ -14,8 +14,6 @@ def recommended_frets():
 
 class String(object):
 
-    # fret = [] # WHY IS THIS SHARED BETWEEN MY STRING OBJECTS???
-
     def __init__(self, tone, alt='', oct=0, frets=0):
 
         self.fret = [
@@ -23,17 +21,17 @@ class String(object):
             Note(tone, alt, oct)
         ]
 
-        self.__scale = ChromaticScale(*self.fret[0])
+        self.__key = ChromaticKey(*self.fret[0])
 
         self.frets = 12 if not frets else frets
  
     @property
-    def scale(self):
-        return self.__scale
+    def key(self):
+        return self.__key
 
-    @scale.setter
-    def scale(self, s):
-        self.__scale = s
+    @key.setter
+    def key(self, s):
+        self.__key = s
 
     @property
     def frets(self):
@@ -45,10 +43,10 @@ class String(object):
 
 
     def __repr__(self):
-        ''' prints string notes matching given scale '''
+        ''' prints string notes matching given key '''
         string_line = Row()
 
-        for fret_n, fret_note in enumerate(self.scale.scale(notes=self.frets, start=self.fret[0], all=True)):
+        for fret_n, fret_note in enumerate(self.key.scale(notes=self.frets, start=self.fret[0], all=True)):
 
             note = ''
             note_fx = ''
@@ -58,8 +56,9 @@ class String(object):
                     fret_note.repr_alt,
                     fret_note.repr_oct,
                 )
-                note_fx = 'underline' if fret_note.is_note(self.scale.degree(1), ignore_oct=1) else ''
+                note_fx = 'underline' if fret_note.is_note(self.key.degree(1), ignore_oct=1) else ''
 
+            # APPEND NOTE INFO
             string_line.append(
                 FString(
                     note,
@@ -70,6 +69,7 @@ class String(object):
                 )
             )
 
+            # APPEND FRET
             string_line.append(
                 FString(                    
                     '║' if fret_n % 12 == 0 or fret_n == self.frets -1 else '¦',
@@ -79,7 +79,7 @@ class String(object):
                 )
             )
 
-            if fret_n == (self.frets - 1):
+            if fret_n == self.frets -1:
                 break
 
         return str(string_line)
@@ -100,7 +100,7 @@ class Tuning(object):
         return self.strings[s -1]
 
 
-    def fretboard(self, scale=None, frets=12, verbose=1):
+    def fretboard(self, key=None, frets=12, verbose=1):
 
         # INIT A NEW SCALE, OTHERWISE YOU USE THE SAME OUTER OBJECT!!!
 
@@ -108,14 +108,14 @@ class Tuning(object):
         echo(self.binding('upper', frets=frets))
 
         for string in self.strings:
-
+            # string number display
             string_n = FString(
                 self.strings.index(string) +1,
                 fg='magenta', 
                 fx=['faint'],
             )
 
-            string.scale = scale
+            string.key = key
             string.frets = frets
 
             echo(str(string_n) + str(string))
