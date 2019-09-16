@@ -1,3 +1,4 @@
+from argparse import ArgumentParser
 from bestia.output import echo
 
 from notes import *
@@ -6,11 +7,31 @@ from tunings import *
 
 from tests import *
 
-DISPLAY_FRETS = recommended_frets()
-# DISPLAY_FRETS = 3
-VERBOSE = 1
+def parse_arguments():
+    parser = ArgumentParser(
+        description = 'guitar fretboard',
+    )
+    parser.add_argument(
+        '-f', '--frets',
+        help = 'number of frets to display',
+        type = int,
+        default=recommended_frets()
+    )
+    parser.add_argument(
+        '-v', '--verbosity',
+        help = 'amount of verbosity',
+        type = int,
+        default=1
+    )
+    return parser.parse_args()
+
 
 if __name__ == '__main__':
+
+    argv = parse_arguments()
+
+    DISPLAY_FRETS = argv.frets
+    VERBOSE = argv.verbosity
 
     try:
         guitar_std = Tuning(
@@ -52,8 +73,6 @@ if __name__ == '__main__':
 
 
 # BUGS TO FIX:
-    # fret notes are not yielded notes...
-
 
 
 
