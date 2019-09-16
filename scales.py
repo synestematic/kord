@@ -46,6 +46,8 @@ class Scale(object):
         yields Notes for diatonic degrees
         if all is set, Nones are yield for empty semi-tones '''
 
+        self.reset()
+
         notes_to_yield = notes if notes else len(self._intervals)
         start_note = start if start else self.degree(1)
 
