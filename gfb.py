@@ -33,6 +33,10 @@ if __name__ == '__main__':
     VERBOSE = argv.verbosity
     try:
 
+        echo(
+            PhrygianMode('A')
+        )
+
         k = MinorKey('A')
         for n in k.thirteenth():
             echo(n)
@@ -51,7 +55,7 @@ if __name__ == '__main__':
         )
 
         guitar_std.fretboard(
-            key= MajorKey('C'),
+            key= DorianMode('A'),
             frets=DISPLAY_FRETS,
             verbose=VERBOSE,
         )

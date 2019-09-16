@@ -233,7 +233,7 @@ class MixolydianMode(MajorKey):
         PERFECT_FOURTH,
         PERFECT_FIFTH,
         MAJOR_SIXTH,
-        MINOR_SEVENTH,
+        MINOR_SEVENTH, # <<<
     )
 
 class LydianMode(MajorKey):
@@ -242,7 +242,7 @@ class LydianMode(MajorKey):
         UNISON,
         MAJOR_SECOND,
         MAJOR_THIRD,
-        AUGMENTED_FOURTH,
+        AUGMENTED_FOURTH, # <<<
         PERFECT_FIFTH,
         MAJOR_SIXTH,
         MAJOR_SEVENTH,
@@ -281,8 +281,8 @@ class MelodicMinorKey(MinorKey):
         MINOR_THIRD,
         PERFECT_FOURTH,
         PERFECT_FIFTH,
-        MAJOR_SIXTH,
-        MAJOR_SEVENTH,
+        MAJOR_SIXTH, # <<<
+        MAJOR_SEVENTH, # <<<
     )
 
 class HarmonicMinorKey(MinorKey):
@@ -294,8 +294,32 @@ class HarmonicMinorKey(MinorKey):
         PERFECT_FOURTH,
         PERFECT_FIFTH,
         MINOR_SIXTH,
-        MAJOR_SEVENTH,
+        MAJOR_SEVENTH, # <<<
     )
 
 class AeolianMode(MinorKey):
     pass
+
+class DorianMode(MinorKey):
+
+    _intervals = (
+        UNISON,
+        MAJOR_SECOND,
+        MINOR_THIRD,
+        PERFECT_FOURTH,
+        PERFECT_FIFTH,
+        MAJOR_SIXTH, # <<<
+        MINOR_SEVENTH,
+    )
+
+class PhrygianMode(MinorKey):
+
+    _intervals = (
+        UNISON,
+        MINOR_SECOND, # <<<
+        MINOR_THIRD,
+        PERFECT_FOURTH,
+        PERFECT_FIFTH,
+        MINOR_SIXTH,
+        MINOR_SEVENTH,
+    )
