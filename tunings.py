@@ -48,15 +48,9 @@ class String(object):
         ''' prints string notes matching given scale '''
         string_line = Row()
 
-        frets_displayed = self.frets
-
         for fret_n, fret_note in enumerate(self.scale.scale(notes=self.frets, start=self.fret[0], all=True)):
 
-            # if not frets_displayed:
-            #     break
-
             note = ''
-            note_color = ''
             note_fx = ''
             if fret_note:
                 note = '{}{}{}'.format(
@@ -69,11 +63,9 @@ class String(object):
             string_line.append(
                 FString(
                     note,
-                    # fret_note,
                     size=_NOTE_WIDTH -1 if fret_n == 0 else _NOTE_WIDTH,
                     align='cr',
                     fg='cyan',
-                    # fg=note_color,
                     fx=[note_fx],
                 )
             )
@@ -81,17 +73,15 @@ class String(object):
             string_line.append(
                 FString(                    
                     '║' if fret_n % 12 == 0 or fret_n == self.frets -1 else '¦',
-                    # '|' if fret_n % 12 == 0 else '¦',
                     size=_FRET_WIDTH,
                     # fg='blue',
                     # fx=['faint'],
                 )
             )
 
-            # if fret_note:
-            #     frets_displayed -= 1
+            if fret_n == (self.frets - 1):
+                break
 
-        # input(frets_displayed)
         return str(string_line)
 
 
