@@ -37,7 +37,7 @@ if __name__ == '__main__':
         for n in k.thirteenth():
             echo(n)
         # exit()
-        # broken ...
+        # broken, not increasing last octave....
 
         print()
         guitar_std = Tuning(

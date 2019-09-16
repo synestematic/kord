@@ -205,7 +205,9 @@ class DiatonicKey(Key):
         )
 
 
-#####################################################
+########################
+### MAJOR KEYS/MODES ###
+########################
 
 class MajorKey(DiatonicKey):
 
@@ -222,6 +224,40 @@ class MajorKey(DiatonicKey):
 class IonianMode(MajorKey):
     pass
 
+class MixolydianMode(MajorKey):
+
+    _intervals = (
+        UNISON,
+        MAJOR_SECOND,
+        MAJOR_THIRD,
+        PERFECT_FOURTH,
+        PERFECT_FIFTH,
+        MAJOR_SIXTH,
+        MINOR_SEVENTH,
+    )
+
+class LydianMode(MajorKey):
+
+    _intervals = (
+        UNISON,
+        MAJOR_SECOND,
+        MAJOR_THIRD,
+        AUGMENTED_FOURTH,
+        PERFECT_FIFTH,
+        MAJOR_SIXTH,
+        MAJOR_SEVENTH,
+    )
+
+    # bla = [
+    #     TONE, 
+    #     SEMITONE,
+    #     TONE, 
+    # ]
+
+########################
+### MINOR KEYS/MODES ###
+########################
+
 class MinorKey(DiatonicKey):
 
     _intervals = (
@@ -234,13 +270,10 @@ class MinorKey(DiatonicKey):
         MINOR_SEVENTH,
     )
     
-class AeolianMode(MinorKey):
-    pass
-
 class NaturalMinorKey(MinorKey):
     pass
 
-class MelodicMinorKey(DiatonicKey):
+class MelodicMinorKey(MinorKey):
 
     _intervals = (
         UNISON,
@@ -252,7 +285,7 @@ class MelodicMinorKey(DiatonicKey):
         MAJOR_SEVENTH,
     )
 
-class HarmonicMinorKey(DiatonicKey):
+class HarmonicMinorKey(MinorKey):
 
     _intervals = (
         UNISON,
@@ -263,3 +296,6 @@ class HarmonicMinorKey(DiatonicKey):
         MINOR_SIXTH,
         MAJOR_SEVENTH,
     )
+
+class AeolianMode(MinorKey):
+    pass
