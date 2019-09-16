@@ -105,7 +105,7 @@ def output_alterations():
 
 class Note(object):
 
-    ### INIT METHODS
+
     def __init__(self, *args):
         self.tone = args[0].upper()
         if self.tone not in _TONES:
@@ -124,12 +124,17 @@ class Note(object):
                 self.oct = a
             # raise InvalidOctave(self.oct)
 
-    ### REPR METHODS
+
+    def __iter__(self):
+        for i in (self.tone, self.alt, self.oct):
+            yield i
+
+
     def __repr__(self):
         return '{}{}{}'.format(
             self.tone,
             self.repr_alt,
-            self.repr_oct
+            self.repr_oct,
         )
 
     @property
@@ -144,7 +149,6 @@ class Note(object):
         return _ALTS[self.alt]
 
 
-    ### COMPARE METHODS
     def __eq__(self, other):
         return self.delta_semitones(other) == 0
 
