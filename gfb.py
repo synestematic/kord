@@ -29,11 +29,17 @@ def parse_arguments():
 if __name__ == '__main__':
 
     argv = parse_arguments()
-
     DISPLAY_FRETS = argv.frets
     VERBOSE = argv.verbosity
-
     try:
+
+        k = MinorKey('A')
+        for n in k.thirteenth():
+            echo(n)
+        # exit()
+        # broken ...
+
+        print()
         guitar_std = Tuning(
             Note('E', 3),
             Note('B', 3),
@@ -50,17 +56,18 @@ if __name__ == '__main__':
             verbose=VERBOSE,
         )
 
-        # ukulele = Tuning(
-        #     Note('A', 3),
-        #     Note('E', 3),
-        #     Note('C', 3),
-        #     Note('G', 3),
-        # )
-        # ukulele.fretboard(
-        #     key= MajorKey('C'),
-        #     frets=DISPLAY_FRETS,
-        #     verbose=VERBOSE,
-        # )
+        print()
+        ukulele = Tuning(
+            Note('A', 3),
+            Note('E', 3),
+            Note('C', 3),
+            Note('G', 3),
+        )
+        ukulele.fretboard(
+            key= MajorKey('F'),
+            frets=DISPLAY_FRETS,
+            verbose=VERBOSE,
+        )
 
         ## Strings......
         # c = Note('F', 5)
