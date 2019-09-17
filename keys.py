@@ -167,20 +167,29 @@ class DiatonicKey(Key):
         if d == 1:
             return self._degrees[0]
 
-        row_index = self.root.enharmonic_row + self.interval(d)
-        expected_tone = self.root.adjacent_tone(d -1)
+        # GET DEGREE OCTAVE, and RELATIVE OFFSET FROM ROOT
+        deg_oct, deg_offset_from_root = divmod(
+            self.interval(d), OCTAVE
+        )
 
+        # GET DEGREE PROPERTIES FROM ENHARMONIC MATRIX
         next_degrees = [
-            note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.tone == expected_tone
+            n for n in looped_list_item(
+                self.root.enharmonic_row + deg_offset_from_root,
+                ENHARMONIC_MATRIX
+            ) if n.tone == self.root.adjacent_tone(d -1) # EXPECTED TONE
         ]
 
         if len(next_degrees) == 1:
+
             deg = next_degrees[0]
-            if deg.tone == 'C': # large intervals that do not hace C will need to compare last and next
+            # large intervals that do not hace C will need to compare last and next
+            if deg.tone == 'C':
                 self.current_oct += 1
 
-            # init new note, DO NOT change octave of ENHARMONIC_MATRIX note!
+            # RETURN NEW OBJECT, DO NOT CHANGE OCT OF ENHARMONIC_MATRIX ITEM!
             return Note(deg.tone, deg.alt, self.current_oct)
+            # return Note(deg.tone, deg.alt, deg_oct)
 
         raise InvalidScale(
             '{}{} {}'.format(
@@ -189,6 +198,7 @@ class DiatonicKey(Key):
                 self.__class__.__name__,
             )
         )
+
 
 
 ########################

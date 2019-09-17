@@ -5,7 +5,7 @@ from notes import *
 from keys import *
 from tunings import *
 
-from tests import *
+# from tests import *
 
 def parse_arguments():
     parser = ArgumentParser(
