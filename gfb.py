@@ -49,10 +49,10 @@ if __name__ == '__main__':
     #     PhrygianMode('A')
     # )
 
-    # c = MajorKey('C')
-    # echo(
-    #     c.degree(24)
-    # )
+    c = MajorKey('C')
+    echo(
+        c.degree(9)
+    )
     # echo(
     #     c
     # )
@@ -92,7 +92,7 @@ if __name__ == '__main__':
         Note('G', 3),
     )
     ukulele.fretboard(
-        key= MajorKey('F'),
+        key= ChromaticKey('F'),
         frets=DISPLAY_FRETS,
         verbose=VERBOSE,
     )

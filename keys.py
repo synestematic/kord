@@ -8,9 +8,7 @@ class Key(object):
     def __init__(self, tone, alt='', oct=0):
         # Major F##, C## work - G## dies...
         self.current_oct = 0
-        self._degrees = [
-            Note(tone, alt, 0)
-        ]
+        self.root = Note(tone, alt, 0)
 
     def __repr__(self):
         spell_line = Row()
@@ -20,9 +18,6 @@ class Key(object):
             )
         return str(spell_line)
 
-    @property
-    def root(self):
-        return self._degrees[0]
 
     def interval(self, i):
         ''' returns delta semitones from key's root note '''
@@ -36,7 +31,7 @@ class Key(object):
         yields Notes for diatonic degrees
         if all is set, Nones are yield for empty semi-tones '''
 
-        self.reset()
+        self.current_oct = 0
 
         notes_to_yield = notes if notes else len(self._intervals)
         start_note = start if start else self.root
@@ -66,11 +61,6 @@ class Key(object):
 
             d += 1
 
-        self.reset()
-
-
-    def reset(self):
-        self.current_oct = 0
 
 
     # def _chord(self, root=1, count=3):
@@ -95,77 +85,12 @@ class Key(object):
     #     return self._chord(root, count=7)
 
 
-
-class ChromaticKey(Key):
-
-    _intervals = (
-        UNISON,
-        MINOR_SECOND,
-        MAJOR_SECOND,
-        MINOR_THIRD,
-        MAJOR_THIRD,
-        PERFECT_FOURTH,
-        AUGMENTED_FOURTH,
-        PERFECT_FIFTH,
-        MINOR_SIXTH,
-        MAJOR_SIXTH,
-        MINOR_SEVENTH,
-        MAJOR_SEVENTH,
-    )
-
-    def degree(self, d):
-
-        if d == 1:
-            return self._degrees[0]
-
-        row_index = self.root.enharmonic_row + self.interval(d)
-
-        # better also here to get an "expected_tone"
-
-        #  DO I REALLY NEED THESE 3 CHECKS ?
-
-        next_degrees = [
-            note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.is_note(self.root, ignore_oct=True)
-        ]
-
-        if not next_degrees:
-            next_degrees = [
-                note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.alt == self.root.alt[:-1]
-            ]
-
-            if not next_degrees:
-                chosen_alt = '#' if self.root.alt == '' else self.root.alt
-                next_degrees = [
-                    note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.alt == chosen_alt
-                ]
-
-        if len(next_degrees) == 1:
-
-            deg = next_degrees[0] # got from ENH_MATRIX
-
-            if Note(deg.tone, deg.alt) == Note('C'):
-                self.current_oct += 1
-
-            # init new note, DO NOT change octave of ENHARMONIC_MATRIX note!
-            return Note(
-                deg.tone, deg.alt, self.current_oct
-            )
-
-        raise InvalidScale(
-            '{}{} {}'.format(
-                self.root.tone,
-                self.root.repr_alt,
-                self.__class__.__name__,
-            )
-        )
-
-
 class DiatonicKey(Key):
 
     def degree(self, d):
 
         if d == 1:
-            return self._degrees[0]
+            return self.root
 
         # GET DEGREE OCTAVE, and RELATIVE OFFSET FROM ROOT
         deg_oct, deg_offset_from_root = divmod(
@@ -319,3 +244,69 @@ class PhrygianMode(MinorKey):
         MINOR_SIXTH,
         MINOR_SEVENTH,
     )
+
+
+
+class ChromaticKey(Key):
+
+    _intervals = (
+        UNISON,
+        MINOR_SECOND,
+        MAJOR_SECOND,
+        MINOR_THIRD,
+        MAJOR_THIRD,
+        PERFECT_FOURTH,
+        AUGMENTED_FOURTH,
+        PERFECT_FIFTH,
+        MINOR_SIXTH,
+        MAJOR_SIXTH,
+        MINOR_SEVENTH,
+        MAJOR_SEVENTH,
+    )
+
+    def degree(self, d):
+
+        if d == 1:
+            return self.root
+
+        row_index = self.root.enharmonic_row + self.interval(d)
+
+        # better also here to get an "expected_tone"
+
+        #  DO I REALLY NEED THESE 3 CHECKS ?
+
+        next_degrees = [
+            note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.is_note(self.root, ignore_oct=True)
+        ]
+
+        if not next_degrees:
+            next_degrees = [
+                note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.alt == self.root.alt[:-1]
+            ]
+
+            if not next_degrees:
+                chosen_alt = '#' if self.root.alt == '' else self.root.alt
+                next_degrees = [
+                    note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.alt == chosen_alt
+                ]
+
+        if len(next_degrees) == 1:
+
+            deg = next_degrees[0] # got from ENH_MATRIX
+
+            if Note(deg.tone, deg.alt) == Note('C'):
+                self.current_oct += 1
+
+            # init new note, DO NOT change octave of ENHARMONIC_MATRIX note!
+            return Note(
+                deg.tone, deg.alt, self.current_oct
+            )
+
+        raise InvalidScale(
+            '{}{} {}'.format(
+                self.root.tone,
+                self.root.repr_alt,
+                self.__class__.__name__,
+            )
+        )
+
