@@ -10,16 +10,8 @@ class Key(object):
         # ACCEPT ONLY SINGLE ALT NOTES?
         # Major F##, C## work - G## dies...
         self.current_oct = 0
-
-        self.current_note = Note(
-            # ALWAYS init new note
-            tone, 
-            alt, 
-            self.current_oct
-        )
-
         self._degrees = [
-            self.current_note
+            Note(tone, alt, 0)
         ]
 
     def __repr__(self):
@@ -41,28 +33,6 @@ class Key(object):
         # if not self._degrees[d -1]:
         #     self._degrees[d -1] = self.calc_degree(d)
         return self._degrees[d -1]
-
-
-    def _chord(self, root=1, count=3):
-        n = root
-        for c in range(count):
-            yield self.calc_degree(n)
-            n += 2
-  
-    def triad(self, root=1):
-        return self._chord(root, count=3)
-
-    def seventh(self, root=1):
-        return self._chord(root, count=4)
-
-    def ninth(self, root=1):
-        return self._chord(root, count=5)
-
-    def eleventh(self, root=1):
-        return self._chord(root, count=6)
-
-    def thirteenth(self, root=1):
-        return self._chord(root, count=7)
 
 
     def scale(self, notes=0, start=None, all=True):
@@ -105,7 +75,29 @@ class Key(object):
 
     def reset(self):
         self.current_oct = 0
-        self.current_note = self.degree(1)
+
+
+    # def _chord(self, root=1, count=3):
+    #     n = root
+    #     for c in range(count):
+    #         yield self.calc_degree(n)
+    #         n += 2
+  
+    # def triad(self, root=1):
+    #     return self._chord(root, count=3)
+
+    # def seventh(self, root=1):
+    #     return self._chord(root, count=4)
+
+    # def ninth(self, root=1):
+    #     return self._chord(root, count=5)
+
+    # def eleventh(self, root=1):
+    #     return self._chord(root, count=6)
+
+    # def thirteenth(self, root=1):
+    #     return self._chord(root, count=7)
+
 
 
 class ChromaticKey(Key):
@@ -129,6 +121,7 @@ class ChromaticKey(Key):
 
         if d == 1:
             return self._degrees[0]
+
 
         row_index = self.degree(1).enharmonic_row + self.interval(d)
 
@@ -159,10 +152,9 @@ class ChromaticKey(Key):
                 self.current_oct += 1
 
             # init new note, DO NOT change octave of ENHARMONIC_MATRIX note!
-            self.current_note = Note(
+            return Note(
                 deg.tone, deg.alt, self.current_oct
             )
-            return self.current_note
 
         raise InvalidScale(
             '{}{} {}'.format(
@@ -193,8 +185,7 @@ class DiatonicKey(Key):
                 self.current_oct += 1
 
             # init new note, DO NOT change octave of ENHARMONIC_MATRIX note!
-            self.current_note = Note(deg.tone, deg.alt, self.current_oct)
-            return self.current_note
+            return Note(deg.tone, deg.alt, self.current_oct)
 
         raise InvalidScale(
             '{}{} {}'.format(
