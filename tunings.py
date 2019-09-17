@@ -49,13 +49,16 @@ class String(object):
         for fret_n, fret_note in enumerate(self.key.scale(notes=self.frets, start=self.fret[0], all=True)):
 
             note = ''
+            note_fg = ''
             note_fx = ''
             if fret_note:
                 note = '{}{}{}'.format(
                     fret_note.tone,
                     fret_note.repr_alt,
                     fret_note.repr_oct,
+                    # 3
                 )
+                note_fg = 'cyan' if fret_note.is_note(self.key.degree(1), ignore_oct=1) else 'magenta'
                 note_fx = 'underline' if fret_note.is_note(self.key.degree(1), ignore_oct=1) else ''
 
             # APPEND NOTE INFO
@@ -64,8 +67,8 @@ class String(object):
                     note,
                     size=_NOTE_WIDTH -1 if fret_n == 0 else _NOTE_WIDTH,
                     align='cr',
-                    fg='cyan',
-                    fx=[note_fx],
+                    fg=note_fg,
+                    # fx=[note_fx],
                 )
             )
 

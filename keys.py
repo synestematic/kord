@@ -31,12 +31,6 @@ class Key(object):
             return self.interval(next_i) + OCTAVE
         return self._intervals[i -1]
 
-    def degree(self, d):
-        # if not self._degrees[d -1]:
-        #     self._degrees[d -1] = self.calc_degree(d)
-        return self._degrees[d -1]
-
-
     def scale(self, notes=0, start=None, all=True):
         ''' document better........
         yields Notes for diatonic degrees
@@ -52,7 +46,7 @@ class Key(object):
         while notes_to_yield:
 
             # IMMEDIATELY DETERMINE WHETHER YIELD MUST BE ENABLED
-            degree = self.calc_degree(d)
+            degree = self.degree(d)
             if not yield_enabled and degree >= start_note:
                 yield_enabled = True
 
@@ -82,7 +76,7 @@ class Key(object):
     # def _chord(self, root=1, count=3):
     #     n = root
     #     for c in range(count):
-    #         yield self.calc_degree(n)
+    #         yield self.degree(n)
     #         n += 2
   
     # def triad(self, root=1):
@@ -119,11 +113,10 @@ class ChromaticKey(Key):
         MAJOR_SEVENTH,
     )
 
-    def calc_degree(self, d):
+    def degree(self, d):
 
         if d == 1:
             return self._degrees[0]
-
 
         row_index = self.root.enharmonic_row + self.interval(d)
 
@@ -169,7 +162,7 @@ class ChromaticKey(Key):
 
 class DiatonicKey(Key):
 
-    def calc_degree(self, d):
+    def degree(self, d):
 
         if d == 1:
             return self._degrees[0]

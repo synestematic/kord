@@ -241,4 +241,4 @@ ENHARMONIC_MATRIX = (
 
 )
 
-# notes need to be unique so that calc_degrees finds 1 exact match!
+# notes need to be unique so that Note.degree() finds 1 exact match!
