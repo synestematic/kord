@@ -19,12 +19,13 @@ class Key(object):
         return str(spell_line)
 
 
-    def interval(self, i):
-        ''' returns delta semitones from key's root note '''
-        if i > len(self._intervals):
-            next_i = i -len(self._intervals)
-            return self.interval(next_i) + OCTAVE
-        return self._intervals[i -1]
+    def interval_from_root(self, d):
+        ''' return degree's delta semitones from key's root '''
+        if d > len(self._intervals):
+            return self.interval_from_root(
+                d - len(self._intervals)
+            ) + OCTAVE
+        return self._intervals[d -1]
 
     def scale(self, notes=0, start=None, all=True):
         ''' document better........
@@ -45,7 +46,7 @@ class Key(object):
             if not yield_enabled and degree >= start_note:
                 yield_enabled = True
 
-            last_note_delta = self.interval(d) - self.interval(d -1)
+            last_note_delta = self.interval_from_root(d) - self.interval_from_root(d -1)
             if last_note_delta > SEMITONE:
                 for st in range(last_note_delta -1):
                     if yield_enabled and all:
@@ -94,7 +95,7 @@ class DiatonicKey(Key):
 
         # GET DEGREE OCTAVE, and RELATIVE OFFSET FROM ROOT
         deg_oct, deg_offset_from_root = divmod(
-            self.interval(d), OCTAVE
+            self.interval_from_root(d), OCTAVE
         )
 
         # GET DEGREE PROPERTIES FROM ENHARMONIC MATRIX
@@ -269,7 +270,7 @@ class ChromaticKey(Key):
         if d == 1:
             return self.root
 
-        row_index = self.root.enharmonic_row + self.interval(d)
+        row_index = self.root.enharmonic_row + self.interval_from_root(d)
 
         # better also here to get an "expected_tone"
 
