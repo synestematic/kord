@@ -6,8 +6,6 @@ from notes import *
 class Key(object):
 
     def __init__(self, tone, alt='', oct=0):
-
-        # ACCEPT ONLY SINGLE ALT NOTES?
         # Major F##, C## work - G## dies...
         self.current_oct = 0
         self._degrees = [
@@ -21,6 +19,10 @@ class Key(object):
                 FString(d, size=5, fg='yellow')
             )
         return str(spell_line)
+
+    @property
+    def root(self):
+        return self._degrees[0]
 
     def interval(self, i):
         ''' returns delta semitones from key's root note '''
@@ -43,7 +45,7 @@ class Key(object):
         self.reset()
 
         notes_to_yield = notes if notes else len(self._intervals)
-        start_note = start if start else self.degree(1)
+        start_note = start if start else self.root
 
         yield_enabled = False
         d = 1 # ignore 0
@@ -123,23 +125,23 @@ class ChromaticKey(Key):
             return self._degrees[0]
 
 
-        row_index = self.degree(1).enharmonic_row + self.interval(d)
+        row_index = self.root.enharmonic_row + self.interval(d)
 
         # better also here to get an "expected_tone"
 
         #  DO I REALLY NEED THESE 3 CHECKS ?
 
         next_degrees = [
-            note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.is_note(self.degree(1), ignore_oct=True)
+            note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.is_note(self.root, ignore_oct=True)
         ]
 
         if not next_degrees:
             next_degrees = [
-                note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.alt == self.degree(1).alt[:-1]
+                note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.alt == self.root.alt[:-1]
             ]
 
             if not next_degrees:
-                chosen_alt = '#' if self.degree(1).alt == '' else self.degree(1).alt
+                chosen_alt = '#' if self.root.alt == '' else self.root.alt
                 next_degrees = [
                     note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.alt == chosen_alt
                 ]
@@ -158,8 +160,8 @@ class ChromaticKey(Key):
 
         raise InvalidScale(
             '{}{} {}'.format(
-                self.degree(1).tone,
-                self.degree(1).repr_alt,
+                self.root.tone,
+                self.root.repr_alt,
                 self.__class__.__name__,
             )
         )
@@ -172,8 +174,8 @@ class DiatonicKey(Key):
         if d == 1:
             return self._degrees[0]
 
-        row_index = self.degree(1).enharmonic_row + self.interval(d)
-        expected_tone = self.degree(1).adjacent_tone(d -1)
+        row_index = self.root.enharmonic_row + self.interval(d)
+        expected_tone = self.root.adjacent_tone(d -1)
 
         next_degrees = [
             note for note in looped_list_item(row_index, ENHARMONIC_MATRIX) if note.tone == expected_tone
@@ -189,8 +191,8 @@ class DiatonicKey(Key):
 
         raise InvalidScale(
             '{}{} {}'.format(
-                self.degree(1).tone,
-                self.degree(1).repr_alt,
+                self.root.tone,
+                self.root.repr_alt,
                 self.__class__.__name__,
             )
         )
