@@ -1,5 +1,5 @@
-# gfb
-gfb is a python framework that exposes a simple api enabling programmers to create music-based applications.
+# kord
+kord is a python framework that exposes a simple api enabling programmers to create music-based applications. It focuses mainly on plucked-string, tempwered instruments such as guitars, basses, ukuleles and such...
 
 <hr/>
 
@@ -12,6 +12,7 @@ gfb is a python framework that exposes a simple api enabling programmers to crea
 ### ChromaticKey: (class)
 
 
+### String: (class)
 ### Tuning: (class)
 
 ```

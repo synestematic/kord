@@ -46,7 +46,9 @@ class String(object):
         ''' prints string notes matching given key '''
         string_line = Row()
 
-        for fret_n, fret_note in enumerate(self.key.scale(notes=self.frets, start=self.fret[0], all=True)):
+        for fret_n, fret_note in enumerate(
+            self.key.scale(notes=self.frets, start=self.fret[0], all=True)
+        ):
 
             note = ''
             note_fg = ''
