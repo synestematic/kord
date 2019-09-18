@@ -17,7 +17,7 @@ class String(object):
     def __init__(self, tone, alt='', oct=0, frets=0):
 
         self.fret = [
-            # ALWAYS INIT NEW Note()
+            # ALWAYS INIT NEW OBJECT
             Note(tone, alt, oct)
         ]
 
@@ -57,7 +57,7 @@ class String(object):
                     fret_note.repr_alt,
                     fret_note.repr_oct,
                 )
-                note_fg = 'cyan' if fret_note.is_note(self.key.degree(1), ignore_oct=1) else 'magenta'
+                note_fg = 'green' if fret_note.is_note(self.key.degree(1), ignore_oct=1) else 'magenta'
                 note_fx = 'underline' if fret_note.is_note(self.key.degree(1), ignore_oct=1) else ''
 
             # APPEND NOTE INFO
@@ -113,7 +113,7 @@ class Tuning(object):
             # string number display
             string_n = FString(
                 self.strings.index(string) +1,
-                fg='magenta', 
+                fg='cyan', 
                 fx=['faint'],
             )
 
@@ -177,7 +177,7 @@ class Tuning(object):
                     inlays[i],
                     size=_NOTE_WIDTH + _FRET_WIDTH,
                     align='cl',
-                    fg='magenta',
+                    fg='cyan',
                     fx=['faint'],
                 )
             )

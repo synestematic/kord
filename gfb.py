@@ -31,9 +31,6 @@ def parse_arguments():
         '-c', '--chord',
         help = 'chord to display',
     )
-
-
-
     return parser.parse_args()
 
 
@@ -44,58 +41,22 @@ if __name__ == '__main__':
     VERBOSE = argv.verbosity
     # try:
 
-    c = MajorKey('A')
-    echo(c)
-    echo(c.degree(2))
+    c = MajorKey('C', '')
+    echo(c, 'green')
     echo(c.degree(9))
     echo(c.degree(16))
     echo(c.degree(23))
     echo(c.degree(24))
 
+    for d in c.thirteenth():
+        echo(d, 'white')
 
-
-    exit()
-
-
-
-    rfx = DorianMode('A')
-    e = Note('E', 3)
-    for d in rfx.scale(start=e):
-        echo(d, 'red')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    # echo(
-    #     c
-    # )
-    # echo(
-    #     c.degree(1)
-    # )
-    
-    # exit()
-
-    # k = MinorKey('A')
-    # for n in k.thirteenth():
-    #     echo(n)
-    # broken, not increasing last octave....
+    c = ChromaticKey('D', '##')
+    echo(c, 'red')
+    echo(c.degree(9))
+    echo(c.degree(12))
+    echo(c.degree(13))
+    echo(c.degree(13 + 12))
 
     print()
     guitar_std = Tuning(
@@ -109,35 +70,29 @@ if __name__ == '__main__':
     )
 
     guitar_std.fretboard(
-        key= DorianMode('A'),
+        key=PhrygianMode('A'),
         frets=DISPLAY_FRETS,
         verbose=VERBOSE,
     )
 
     print()
-    # ukulele = Tuning(
-    #     Note('A', 3),
-    #     Note('E', 3),
-    #     Note('C', 3),
-    #     Note('G', 3),
-    # )
-    # ukulele.fretboard(
-    #     key= ChromaticKey('F'),
-    #     frets=DISPLAY_FRETS,
-    #     verbose=VERBOSE,
-    # )
+    ukulele = Tuning(
+        Note('A', 3),
+        Note('E', 3),
+        Note('C', 3),
+        Note('G', 3),
+    )
+    ukulele.fretboard(
+        key= ChromaticKey('F'),
+        frets=DISPLAY_FRETS,
+        verbose=VERBOSE,
+    )
 
     ## Strings......
-    # c = Note('F', 5)
-    # s1 = String(*c)
-    # s1.key = MajorKey(*c)
-    # echo(s1)
-
-
-
-
-
-
+    c = Note('F', 5)
+    s1 = String(*c)
+    s1.key = MajorKey(*Note('G'))
+    echo(s1)
 
 
 
@@ -155,7 +110,8 @@ if __name__ == '__main__':
 
 
 # BUGS TO FIX:
-
+    # octs_from_root if deg.enharmonic_row >= self.root.enharmonic_row else octs_from_root +1
+    # doing that to decide octs causes some conflicts with Cb and B# type notes...
 
 
 # gfb E --chord C7
