@@ -75,8 +75,8 @@ class String(object):
 
             # APPEND FRET
             string_line.append(
-                FString(                    
-                    '║' if fret_n % 12 == 0 or fret_n == self.frets -1 else '¦',
+                FString(                   
+                    '║' if fret_n % 12 == 0 or fret_n == self.frets -1 else '|', #¦
                     size=_FRET_WIDTH,
                     # fg='blue',
                     # fx=['faint'],
