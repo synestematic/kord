@@ -1,11 +1,10 @@
 from argparse import ArgumentParser
 from bestia.output import echo
 
-from notes import *
-from keys import *
-from tunings import *
-
-from tests import *
+# from notes import *
+# from keys import *
+# from tunings import *
+from universe import *
 
 def parse_arguments():
     parser = ArgumentParser(
