@@ -1,5 +1,6 @@
 *.*
 !.gitignore
+!README.md
 !errors.py
 !tests.py
 !gfb.py
