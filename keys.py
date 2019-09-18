@@ -13,7 +13,7 @@ class TonalKey(object):
 
     def __repr__(self):
         spell_line = Row()
-        for d in self.scale(notes=8, all=False):
+        for d in self.scale(notes=len(self._intervals) +1, all=False):
             spell_line.append(
                 FString(d, size=5)
             )
