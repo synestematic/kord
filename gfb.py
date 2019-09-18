@@ -5,7 +5,7 @@ from notes import *
 from keys import *
 from tunings import *
 
-# from tests import *
+from tests import *
 
 def parse_arguments():
     parser = ArgumentParser(
@@ -44,15 +44,45 @@ if __name__ == '__main__':
     VERBOSE = argv.verbosity
     # try:
 
-    print()
-    # echo(
-    #     PhrygianMode('A')
-    # )
+    c = MajorKey('A')
+    echo(c)
+    echo(c.degree(2))
+    echo(c.degree(9))
+    echo(c.degree(16))
+    echo(c.degree(23))
+    echo(c.degree(24))
 
-    c = MajorKey('C')
-    echo(
-        c.degree(9)
-    )
+
+
+    exit()
+
+
+
+    rfx = DorianMode('A')
+    e = Note('E', 3)
+    for d in rfx.scale(start=e):
+        echo(d, 'red')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     # echo(
     #     c
     # )
@@ -85,17 +115,17 @@ if __name__ == '__main__':
     )
 
     print()
-    ukulele = Tuning(
-        Note('A', 3),
-        Note('E', 3),
-        Note('C', 3),
-        Note('G', 3),
-    )
-    ukulele.fretboard(
-        key= ChromaticKey('F'),
-        frets=DISPLAY_FRETS,
-        verbose=VERBOSE,
-    )
+    # ukulele = Tuning(
+    #     Note('A', 3),
+    #     Note('E', 3),
+    #     Note('C', 3),
+    #     Note('G', 3),
+    # )
+    # ukulele.fretboard(
+    #     key= ChromaticKey('F'),
+    #     frets=DISPLAY_FRETS,
+    #     verbose=VERBOSE,
+    # )
 
     ## Strings......
     # c = Note('F', 5)

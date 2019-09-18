@@ -220,8 +220,16 @@ class Note(object):
                     return (_row_index, _note_index)
 
 
-
+### This is the heart of the whole project
+### indeces are used to determine:
+###   * when to change octs
+###   * delta_semitones between tones
+### notes MUST be unique so that Note.degree() finds 1 exact match!
 ENHARMONIC_MATRIX = (
+
+    ## 2-octave enharmonic relationships
+    (  Note('C', '' , 2), Note('B', '#' , 1), Note('D', 'bb', 2)  ), # NAH
+    (  Note('C', '#', 2), Note('D', 'b' , 2), Note('B', '##', 1)  ), # AAH
 
     ## 1-octave enharmonic relationships
     (  Note('D', '' , 1), Note('C', '##', 1), Note('E', 'bb', 1)  ), # NHH
@@ -236,9 +244,5 @@ ENHARMONIC_MATRIX = (
     ## 2-octave enharmonic relationships
     (  Note('A', '#', 1), Note('B', 'b' , 1), Note('C', 'bb', 2)  ), # AAH
     (  Note('B', '' , 1), Note('C', 'b' , 2), Note('A', '##', 1)  ), # NAH
-    (  Note('C', '' , 2), Note('B', '#' , 1), Note('D', 'bb', 2)  ), # NAH
-    (  Note('C', '#', 2), Note('D', 'b' , 2), Note('B', '##', 1)  ), # AAH
 
 )
-
-# notes need to be unique so that Note.degree() finds 1 exact match!

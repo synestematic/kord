@@ -56,7 +56,6 @@ class String(object):
                     fret_note.tone,
                     fret_note.repr_alt,
                     fret_note.repr_oct,
-                    # 3
                 )
                 note_fg = 'cyan' if fret_note.is_note(self.key.degree(1), ignore_oct=1) else 'magenta'
                 note_fx = 'underline' if fret_note.is_note(self.key.degree(1), ignore_oct=1) else ''
