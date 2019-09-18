@@ -105,28 +105,26 @@ class DiatonicKey(TonalKey):
             )
 
 
-
-    # def _chord(self, root=1, count=3):
-    #     n = root
-    #     for c in range(count):
-    #         yield self.degree(n)
-    #         n += 2
+    def chord(self, degree=1, notes=3):
+        n = degree
+        for c in range(notes):
+            yield self.degree(n)
+            n += 2
   
-    # def triad(self, root=1):
-    #     return self._chord(root, count=3)
+    def triad(self, degree=1):
+        return self.chord(degree, notes=3)
 
-    # def seventh(self, root=1):
-    #     return self._chord(root, count=4)
+    def seventh(self, degree=1):
+        return self.chord(degree, notes=4)
 
-    # def ninth(self, root=1):
-    #     return self._chord(root, count=5)
+    def ninth(self, degree=1):
+        return self.chord(degree, notes=5)
 
-    # def eleventh(self, root=1):
-    #     return self._chord(root, count=6)
+    def eleventh(self, degree=1):
+        return self.chord(degree, notes=6)
 
-    # def thirteenth(self, root=1):
-    #     return self._chord(root, count=7)
-
+    def thirteenth(self, degree=1):
+        return self.chord(degree, notes=7)
 
 
 
