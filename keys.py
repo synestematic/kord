@@ -3,18 +3,19 @@ from bestia.iterate import looped_list_item
 
 from notes import *
 
-class Key(object):
+class TonalKey(object):
 
     def __init__(self, tone, alt='', oct=0):
         # Major F##, C## work - G## dies...
         self.current_oct = 0
         self.root = Note(tone, alt, 0)
 
+
     def __repr__(self):
         spell_line = Row()
-        for d in self.scale(all=False):
+        for d in self.scale(notes=8, all=False):
             spell_line.append(
-                FString(d, size=5, fg='yellow')
+                FString(d, size=5)
             )
         return str(spell_line)
 
@@ -27,12 +28,13 @@ class Key(object):
             ) + OCTAVE
         return self._intervals[d -1]
 
+
     def scale(self, notes=0, start=None, all=True):
         ''' document better........
         yields Notes for diatonic degrees
         if all is set, Nones are yield for empty semi-tones '''
 
-        self.current_oct = 0
+        # self.current_oct = 0
 
         notes_to_yield = notes if notes else len(self._intervals)
         start_note = start if start else self.root
@@ -43,6 +45,7 @@ class Key(object):
 
             # IMMEDIATELY DETERMINE WHETHER YIELD MUST BE ENABLED
             degree = self.degree(d)
+            # echo(degree, mode='raw')
             if not yield_enabled and degree >= start_note:
                 yield_enabled = True
 
@@ -86,22 +89,22 @@ class Key(object):
     #     return self._chord(root, count=7)
 
 
-class DiatonicKey(Key):
+class DiatonicKey(TonalKey):
 
     def degree(self, d):
 
         if d == 1:
             return self.root
 
-        # GET DEGREE OCTAVE, and RELATIVE OFFSET FROM ROOT
-        deg_oct, deg_offset_from_root = divmod(
+        # GET DEGREE's ROOT OFFSETS = OCTAVE + SPARE_STS
+        octs_from_root, spare_sts = divmod(
             self.interval_from_root(d), OCTAVE
         )
 
         # GET DEGREE PROPERTIES FROM ENHARMONIC MATRIX
         next_degrees = [
             n for n in looped_list_item(
-                self.root.enharmonic_row + deg_offset_from_root,
+                self.root.enharmonic_row + spare_sts,
                 ENHARMONIC_MATRIX
             ) if n.tone == self.root.adjacent_tone(d -1) # EXPECTED TONE
         ]
@@ -110,12 +113,15 @@ class DiatonicKey(Key):
 
             deg = next_degrees[0]
             # large intervals that do not hace C will need to compare last and next
-            if deg.tone == 'C':
-                self.current_oct += 1
+            # if deg.tone == 'C':
+            #     self.current_oct += 1
 
             # RETURN NEW OBJECT, DO NOT CHANGE OCT OF ENHARMONIC_MATRIX ITEM!
-            return Note(deg.tone, deg.alt, self.current_oct)
-            # return Note(deg.tone, deg.alt, deg_oct)
+            return Note(
+                deg.tone,
+                deg.alt,
+                octs_from_root if deg.enharmonic_row >= self.root.enharmonic_row else octs_from_root +1
+            )
 
         raise InvalidScale(
             '{}{} {}'.format(
@@ -248,7 +254,7 @@ class PhrygianMode(MinorKey):
 
 
 
-class ChromaticKey(Key):
+class ChromaticKey(TonalKey):
 
     _intervals = (
         UNISON,
