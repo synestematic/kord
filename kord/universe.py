@@ -1,6 +1,7 @@
 # THESE MODULE APPROPRIATELY TESTS LOWER-LEVEL MODULES BEFORE HITTING RUN-TIME
 from bestia.output import echo
-from tunings import *
+
+from kord.tunings import *
 
 EQUALS = (
 

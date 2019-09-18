@@ -1,7 +1,7 @@
 from bestia.iterate import looped_list_item
 from bestia.output import echo
 
-from errors import *
+from kord.errors import *
 
 SHARP = 1
 FLAT = -1

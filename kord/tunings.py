@@ -1,6 +1,6 @@
 from bestia.output import Row, FString, echo, tty_columns
 
-from keys import *
+from kord.keys import *
 
 _NOTE_WIDTH = 5
 _FRET_WIDTH = 1

@@ -1,7 +1,7 @@
 from bestia.output import Row, FString, echo
 from bestia.iterate import looped_list_item
 
-from notes import *
+from kord.notes import *
 
 class TonalKey(object):
 
