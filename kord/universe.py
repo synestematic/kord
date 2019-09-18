@@ -1,7 +1,5 @@
+# THESE MODULE APPROPRIATELY TESTS LOWER-LEVEL MODULES BEFORE HITTING RUN-TIME
 from bestia.output import echo
-
-from notes import *
-from keys import *
 from tunings import *
 
 EQUALS = (

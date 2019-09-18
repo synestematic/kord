@@ -4,9 +4,10 @@
 !setup.py
 !LICENSE
 !README.md
-!kord/errors.py
-!kord/tests.py
 !kord/kord.py
-!kord/notes.py
-!kord/keys.py
+!kord/__init__.py
+!kord/universe.py
 !kord/tunings.py
+!kord/keys.py
+!kord/notes.py
+!kord/errors.py
