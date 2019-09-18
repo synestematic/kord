@@ -1,5 +1,7 @@
 *.*
 !.gitignore
+!Makefile
+!setup.py
 !LICENSE
 !README.md
 !kord/errors.py
