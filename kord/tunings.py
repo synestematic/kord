@@ -20,10 +20,21 @@ class String(object):
             Note(tone, alt, oct)
         ]
 
-        self.key = ChromaticKey(*self.fret[0])
+        self.__key = None
+        self.display = ChromaticKey(*self.fret[0]).scale
 
         self.frets = 12 if not frets else frets
  
+
+    @property
+    def key(self):
+        ''' inits an object of parent Key class from self.display method '''
+        if not self.__key:
+            Key = self.display.__self__.__class__
+            self.__key = Key(*self.fret[0])
+        return self.__key
+
+
     @property
     def frets(self):
         return self.__display_frets
@@ -38,7 +49,7 @@ class String(object):
         string_line = Row()
 
         for fret_n, fret_note in enumerate(
-            self.key.scale(
+            self.display(
                 notes=self.frets,
                 start_note=self.fret[0],
                 yield_all=True,
@@ -99,7 +110,7 @@ class Tuning(object):
         return self.strings[s -1]
 
 
-    def fretboard(self, key=None,frets=12, verbose=1):
+    def fretboard(self, display=None, frets=12, verbose=1):
 
         # INIT A NEW SCALE, OTHERWISE YOU USE THE SAME OUTER OBJECT!!!
 
@@ -114,7 +125,7 @@ class Tuning(object):
                 fx=['faint'],
             )
 
-            string.key = key
+            string.display = display
             string.frets = frets
 
             echo(str(string_n) + str(string))
