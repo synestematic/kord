@@ -12,7 +12,9 @@ class TonalKey(object):
 
     def __repr__(self):
         spell_line = Row()
-        for d in self.scale(notes=len(self._intervals) +1, all=False):
+        for d in self.scale(
+            notes=len(self._intervals) +1, yield_all=False
+        ):
             spell_line.append(
                 FString(d, size=5)
             )
@@ -28,13 +30,13 @@ class TonalKey(object):
         return self._intervals[d -1]
 
 
-    def scale(self, notes=0, start=None, all=True):
+    def scale(self, notes=0, start_note=None, yield_all=True):
         ''' document better........
         yields Notes for diatonic degrees
         if all is set, Nones are yield for empty semi-tones '''
 
         notes_to_yield = notes if notes else len(self._intervals)
-        start_note = start if start else self.root
+        start_note = start_note if start_note else self.root
 
         yield_enabled = False
         d = 1 # ignore 0
@@ -58,11 +60,10 @@ class TonalKey(object):
             last_note_delta = self.interval_from_root(d) - self.interval_from_root(d -1)
             if last_note_delta > SEMITONE:
                 for st in range(last_note_delta -1):
-                    if yield_enabled and all:
-
+                    if yield_enabled and yield_all:
                         if degree != start_note:
-                        # AVOID YIELDING EXTRA NONE @START_NOTE
-                        # WHEN SCALE DEG BEFORE IS > 1ST AWAY
+                            # AVOID YIELDING EXTRA NONE BEFORE START_NOTE
+                            # WHEN SCALE DEG BEFORE IS > 1ST AWAY
                             yield None
 
             if yield_enabled:
@@ -104,29 +105,58 @@ class DiatonicKey(TonalKey):
                 octs_from_root if deg.enharmonic_row >= self.root.enharmonic_row else octs_from_root +1
             )
 
-
-    def chord(self, degree=1, notes=3):
-        n = degree
-        for c in range(notes):
-            yield self.degree(n)
-            n += 2
+    # def kord(self, degree=1, notes=3):
+    #     for c in range(notes):
+    #         yield self.degree(
+    #             degree
+    #         )
+    #         degree += 2
   
-    def triad(self, degree=1):
+    def triad(self, degree=1, yield_all=True):
         return self.chord(degree, notes=3)
 
-    def seventh(self, degree=1):
+    def seventh(self, degree=1, yield_all=True):
         return self.chord(degree, notes=4)
 
-    def ninth(self, degree=1):
+    def ninth(self, degree=1, yield_all=True):
         return self.chord(degree, notes=5)
 
-    def eleventh(self, degree=1):
+    def eleventh(self, degree=1, yield_all=True):
         return self.chord(degree, notes=6)
 
-    def thirteenth(self, degree=1):
+    def thirteenth(self, degree=1, yield_all=True):
         return self.chord(degree, notes=7)
 
 
+    def chord(self, d=1, notes=3, yield_all=True):
+
+        chord_root = d
+        notes_to_yield = notes
+
+        yield_note = True
+        while notes_to_yield:
+
+            if not self.degree(d):
+                raise InvalidChord()
+
+            last_note_delta = self.interval_from_root(d) - self.interval_from_root(d -1)
+            if last_note_delta > SEMITONE:
+                for st in range(last_note_delta -1):
+                    if yield_all and d != chord_root:
+                        # AVOID YIELDING EXTRA NONE BEFORE CHORD_ROOT
+                        yield None
+
+            # YIELD, SKIP, YIELD, SKIP, YIELD...
+            if yield_note:
+                yield self.degree(d)
+                yield_note = False
+                notes_to_yield -= 1
+            else:
+                if all:
+                    yield None
+                yield_note = True
+
+            d += 1
 
 ########################
 ### MAJOR KEYS/MODES ###

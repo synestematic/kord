@@ -5,7 +5,7 @@ from kord.keys import *
 _NOTE_WIDTH = 5
 _FRET_WIDTH = 1
 
-def recommended_frets():
+def max_frets_on_screen():
     frets = int(
         tty_columns() / ( _NOTE_WIDTH + _FRET_WIDTH )
     ) - 1
