@@ -34,6 +34,10 @@ class String(object):
             self.__key = Key(*self.fret[0])
         return self.__key
 
+    # USERS DO NOT SET STRING.KEY... USE STRING.DISPLAY_METHOD
+    # @key.setter
+    # def key(self, k):
+    #     self.__key = k
 
     @property
     def display_method(self):
