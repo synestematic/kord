@@ -20,18 +20,10 @@ class String(object):
             Note(tone, alt, oct)
         ]
 
-        self.__key = ChromaticKey(*self.fret[0])
+        self.key = ChromaticKey(*self.fret[0])
 
         self.frets = 12 if not frets else frets
  
-    @property
-    def key(self):
-        return self.__key
-
-    @key.setter
-    def key(self, s):
-        self.__key = s
-
     @property
     def frets(self):
         return self.__display_frets
@@ -46,7 +38,11 @@ class String(object):
         string_line = Row()
 
         for fret_n, fret_note in enumerate(
-            self.key.scale(notes=self.frets, start=self.fret[0], all=True)
+            self.key.scale(
+                notes=self.frets,
+                start_note=self.fret[0],
+                yield_all=True,
+            )
         ):
 
             note = ''
@@ -103,7 +99,7 @@ class Tuning(object):
         return self.strings[s -1]
 
 
-    def fretboard(self, key=None, frets=12, verbose=1):
+    def fretboard(self, key=None,frets=12, verbose=1):
 
         # INIT A NEW SCALE, OTHERWISE YOU USE THE SAME OUTER OBJECT!!!
 
