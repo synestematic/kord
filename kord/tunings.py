@@ -13,16 +13,13 @@ def max_frets_on_screen():
 
 class String(object):
 
-    def __init__(self, tone, alt='', oct=0, frets=0):
-
-        self.fret = [
-            # ALWAYS INIT NEW OBJECT
-            Note(tone, alt, oct)
-        ]
+    def __init__(self, tone, alt='', oct=0, frets=0, display=None):
 
         self.__key = None
-        self.__display = None
 
+        # ALWAYS INIT NEW OBJECT
+        self.tuning = Note(tone, alt, oct)
+        self.display_method = display
         self.frets = 12 if not frets else frets
  
 
@@ -31,7 +28,7 @@ class String(object):
         ''' inits an object of parent Key class from self.display_method '''
         if not self.__key:
             Key = self.display_method.__self__.__class__
-            self.__key = Key(*self.fret[0])
+            self.__key = Key(*self.tuning)
         return self.__key
 
     # USERS DO NOT SET STRING.KEY... USE STRING.DISPLAY_METHOD
@@ -42,7 +39,7 @@ class String(object):
     @property
     def display_method(self):
         if not self.__display:
-            self.__display = ChromaticKey(*self.fret[0]).scale
+            self.__display = ChromaticKey(*self.tuning).scale
         return self.__display
 
     @display_method.setter
@@ -66,7 +63,7 @@ class String(object):
         for fret_n, fret_note in enumerate(
             self.display_method(
                 notes=self.frets,
-                start_note=self.fret[0],
+                start_note=self.tuning,
                 yield_all=True,
             )
         ):
