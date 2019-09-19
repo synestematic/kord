@@ -21,27 +21,38 @@ class String(object):
         ]
 
         self.__key = None
-        self.display = ChromaticKey(*self.fret[0]).scale
+        self.__display = None
 
         self.frets = 12 if not frets else frets
  
 
     @property
     def key(self):
-        ''' inits an object of parent Key class from self.display method '''
+        ''' inits an object of parent Key class from self.display_method '''
         if not self.__key:
-            Key = self.display.__self__.__class__
+            Key = self.display_method.__self__.__class__
             self.__key = Key(*self.fret[0])
         return self.__key
 
 
     @property
+    def display_method(self):
+        if not self.__display:
+            self.__display = ChromaticKey(*self.fret[0]).scale
+        return self.__display
+
+    @display_method.setter
+    def display_method(self, dm):
+        self.__display = dm
+
+
+    @property
     def frets(self):
-        return self.__display_frets
+        return self.__frets
 
     @frets.setter
     def frets(self, f):
-        self.__display_frets = int(f) +1
+        self.__frets = int(f) +1
 
 
     def __repr__(self):
@@ -49,7 +60,7 @@ class String(object):
         string_line = Row()
 
         for fret_n, fret_note in enumerate(
-            self.display(
+            self.display_method(
                 notes=self.frets,
                 start_note=self.fret[0],
                 yield_all=True,
@@ -125,7 +136,7 @@ class Tuning(object):
                 fx=['faint'],
             )
 
-            string.display = display
+            string.display_method = display
             string.frets = frets
 
             echo(str(string_n) + str(string))
