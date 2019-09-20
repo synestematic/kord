@@ -27,8 +27,12 @@ class String(object):
     def key(self):
         ''' inits an object of parent Key class from self.display_method '''
         if not self.__key:
-            Key = self.display_method.__self__.__class__
-            self.__key = Key(*self.tuning)
+            __key  = self.display_method.__self__
+            Key = __key.__class__
+            self.__key = Key(
+                __key.root.tone,
+                __key.root.alt,
+            )
         return self.__key
 
     # USERS DO NOT SET STRING.KEY... USE STRING.DISPLAY_METHOD
@@ -70,7 +74,6 @@ class String(object):
 
             note = ''
             note_fg = ''
-            note_fx = ''
             if fret_note:
                 note = '{}{}{}'.format(
                     fret_note.tone,
@@ -78,7 +81,6 @@ class String(object):
                     fret_note.repr_oct,
                 )
                 note_fg = 'green' if fret_note.is_note(self.key.degree(1), ignore_oct=1) else 'magenta'
-                note_fx = 'underline' if fret_note.is_note(self.key.degree(1), ignore_oct=1) else ''
 
             # APPEND NOTE INFO
             string_line.append(
@@ -87,7 +89,6 @@ class String(object):
                     size=_NOTE_WIDTH -1 if fret_n == 0 else _NOTE_WIDTH,
                     align='cr',
                     fg=note_fg,
-                    # fx=[note_fx],
                 )
             )
 
