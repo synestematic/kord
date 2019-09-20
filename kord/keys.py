@@ -88,49 +88,52 @@ class TonalKey(object):
                 if yield_all:
                     yield None
 
-
     def scale(self, notes=0, start_note=None, yield_all=True):
-        ''' document better........
-        yields Notes for diatonic degrees
-        if all is set, Nones are yield for empty semi-tones '''
+        return self._spell(
+            notes=notes, start_note=start_note,
+            yield_all=yield_all, filter_degrees=range(1, len(self._intervals) +1),
+        )
 
-        notes_to_yield = notes if notes else len(self._intervals)
-        start_note = start_note if start_note else self.root
+    # def scale(self, notes=0, start_note=None, yield_all=True):
+    #     ''' document better........
+    #     yields Notes for diatonic degrees
+    #     if all is set, Nones are yield for empty semi-tones '''
 
-        yield_enabled = False
-        d = 0
-        while notes_to_yield:
+    #     notes_to_yield = notes if notes else len(self._intervals)
+    #     start_note = start_note if start_note else self.root
 
-            d += 1 # ignore 0
+    #     yield_enabled = False
+    #     d = 0
+    #     while notes_to_yield:
 
-            degree = self.degree(d)
-            if not degree:
-                raise InvalidScale(
-                    '{}{} {}'.format(
-                        self.root.tone,
-                        self.root.repr_alt,
-                        self.__class__.__name__,
-                    )
-                )
+    #         d += 1 # ignore 0
 
-            if not yield_enabled and degree >= start_note:
-                yield_enabled = True
-            # DETERMINE WHETHER THRESHOLD_NOTE HAS BEEN REACHED
-            if not yield_enabled:
-                continue
+    #         degree = self.degree(d)
+    #         if not degree:
+    #             raise InvalidScale(
+    #                 '{}{} {}'.format(
+    #                     self.root.tone,
+    #                     self.root.repr_alt,
+    #                     self.__class__.__name__,
+    #                 )
+    #             )
 
-            last_note_delta = self.interval_from_root(d) - self.interval_from_root(d -1)
-            if last_note_delta > SEMITONE:
-                for st in range(last_note_delta -1):
-                    if yield_all and degree != start_note:
-                        # AVOID YIELDING EXTRA NONE BEFORE START_NOTE
-                        # WHEN SCALE DEG BEFORE IS > 1ST AWAY
-                        yield None
+    #         if not yield_enabled and degree >= start_note:
+    #             yield_enabled = True
+    #         # DETERMINE WHETHER THRESHOLD_NOTE HAS BEEN REACHED
+    #         if not yield_enabled:
+    #             continue
 
-            notes_to_yield -= 1
-            yield degree
+    #         last_note_delta = self.interval_from_root(d) - self.interval_from_root(d -1)
+    #         if last_note_delta > SEMITONE:
+    #             for st in range(last_note_delta -1):
+    #                 if yield_all and degree != start_note:
+    #                     # AVOID YIELDING EXTRA NONE BEFORE START_NOTE
+    #                     # WHEN SCALE DEG BEFORE IS > 1ST AWAY
+    #                     yield None
 
-
+    #         notes_to_yield -= 1
+    #         yield degree
 
 
 class DiatonicKey(TonalKey):
