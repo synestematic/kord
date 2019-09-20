@@ -1,3 +1,6 @@
+class InvalidInstrument(Exception):
+    pass
+
 class InvalidScale(Exception):
     pass
 
