@@ -50,9 +50,18 @@ class TonalKey(object):
             if not degree:
                 raise InvalidChord()
 
+            # DETERMINE WHETHER THRESHOLD_NOTE HAS BEEN REACHED
             if not yield_enabled and degree >= start_note:
                 yield_enabled = True
-            # DETERMINE WHETHER THRESHOLD_NOTE HAS BEEN REACHED
+
+                # ROTATE FILTER_DEGREES TO APPROPRIATE_NOTE
+                for fd in filter_degrees:
+                    if Note(fd.tone, fd.alt) >= Note(degree.tone, degree.alt):
+                        filter_degrees.rotate(
+                            0 - filter_degrees.index(fd)
+                        )
+                        break
+
             if not yield_enabled:
                 continue
 
