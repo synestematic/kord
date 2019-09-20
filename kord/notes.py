@@ -48,6 +48,7 @@ DIMINISHED_OCTAVE = 11
 OCTAVE = 12
 AUGMENTED_SEVENTH = 12
 
+
 _TONES = (
     'C',
     None,

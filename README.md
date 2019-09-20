@@ -74,13 +74,13 @@ False
 True
 ```
 
+### class DiatonicKey():
+### class ChromaticKey():
 
-### DiatonicKey: (class)
-### ChromaticKey: (class)
 
+### class String():
 
-### String: (class)
-### Tuning: (class)
+### class StringInstrument():
 
 
 ### Arguments

@@ -108,8 +108,7 @@ class String(object):
         return str(string_line)
 
 
-class Tuning(object):
-
+class StringInstrument(object):
 
     def __init__(self, *notes):
         self.strings = []
