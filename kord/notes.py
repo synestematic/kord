@@ -1,4 +1,4 @@
-from bestia.iterate import looped_list_item, LoopedList
+from bestia.iterate import LoopedList
 from bestia.output import echo
 
 from kord.errors import *
@@ -49,7 +49,7 @@ OCTAVE = 12
 AUGMENTED_SEVENTH = 12
 
 
-_TONES = (
+_TONES = LoopedList(
     'C',
     None,
     'D',
@@ -151,13 +151,13 @@ class Note(object):
 
 
     def __eq__(self, other):
-        return self.delta_semitones(other) == 0
+        return self.__delta_semitones(other) == 0
 
     def __gt__(self, other):
-        return self.delta_semitones(other) > 0
+        return self.__delta_semitones(other) > 0
 
     def __ge__(self, other):
-        return self.delta_semitones(other) >= 0
+        return self.__delta_semitones(other) >= 0
 
     def is_note(self, other, ignore_oct=False):
         ''' while the arithmetic methods above strictly compare
@@ -177,7 +177,7 @@ class Note(object):
     ### TONE METHODS
     def relative_tone(self, n):
         my_index = _TONES.index(self.tone)
-        return looped_list_item(my_index +n, _TONES)
+        return _TONES[my_index +n]
 
     def adjacent_tone(self, n=1):
         ''' returns next adjacent tone of self
@@ -198,12 +198,9 @@ class Note(object):
             i += 1
 
 
-    def delta_semitones(self, other):
-        # 0  :  self == other
-        # >1 :  self >  other
-        # <1 :  self  < other
-        oct_delta = self.oct - other.oct
-        oct_delta_st = oct_delta * OCTAVE
+    def __delta_semitones(self, other):
+        ''' used ONLY to implement comparison operators, do NOT call directly... '''
+        oct_delta_st = (self.oct - other.oct) * OCTAVE
         tone_delta_st = _TONES.index(self.tone) - _TONES.index(other.tone)
         alt_delta_st  = input_alterations().index(self.alt) - input_alterations().index(other.alt)
         return oct_delta_st + tone_delta_st + alt_delta_st
