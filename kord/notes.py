@@ -151,13 +151,13 @@ class Note(object):
 
 
     def __eq__(self, other):
-        return self.__delta_semitones(other) == 0
+        return self.__interval_from(other) == 0
 
     def __gt__(self, other):
-        return self.__delta_semitones(other) > 0
+        return self.__interval_from(other) > 0
 
     def __ge__(self, other):
-        return self.__delta_semitones(other) >= 0
+        return self.__interval_from(other) >= 0
 
     def is_note(self, other, ignore_oct=False):
         ''' while the arithmetic methods above strictly compare
@@ -198,7 +198,7 @@ class Note(object):
             i += 1
 
 
-    def __delta_semitones(self, other):
+    def __interval_from(self, other):
         ''' used ONLY to implement comparison operators, do NOT call directly... '''
         oct_delta_st = (self.oct - other.oct) * OCTAVE
         tone_delta_st = _TONES.index(self.tone) - _TONES.index(other.tone)

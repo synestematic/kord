@@ -14,7 +14,7 @@ class TonalKey(object):
     def __repr__(self):
         spell_line = Row()
         for d in self.scale(
-            notes=len(self._intervals) +1, yield_all=False
+            notes=len(self._root_intervals) +1, yield_all=False
         ):
             spell_line.append(
                 FString(d, size=5)
@@ -24,16 +24,16 @@ class TonalKey(object):
 
     def interval_from_root(self, d):
         ''' return degree's delta semitones from key's root '''
-        if d > len(self._intervals):
+        if d > len(self._root_intervals):
             return self.interval_from_root(
-                d - len(self._intervals)
+                d - len(self._root_intervals)
             ) + OCTAVE
-        return self._intervals[d -1]
+        return self._root_intervals[d -1]
 
 
     def _spell(self, notes=0, start_note=None, yield_all=True, filter_degrees=[]):
 
-        notes_to_yield = notes if notes else len(self._intervals)
+        notes_to_yield = notes if notes else len(self._root_intervals)
         start_note = start_note if start_note else self.root
         filter_degrees = deque(
             [ self.degree(d) for d in filter_degrees ]
@@ -90,7 +90,7 @@ class TonalKey(object):
     def scale(self, notes=0, start_note=None, yield_all=True):
         return self._spell(
             notes=notes, start_note=start_note,
-            yield_all=yield_all, filter_degrees=range(1, len(self._intervals) +1),
+            yield_all=yield_all, filter_degrees=range(1, len(self._root_intervals) +1),
         )
 
     # def scale(self, notes=0, start_note=None, yield_all=True):
@@ -98,7 +98,7 @@ class TonalKey(object):
     #     yields Notes for diatonic degrees
     #     if all is set, Nones are yield for empty semi-tones '''
 
-    #     notes_to_yield = notes if notes else len(self._intervals)
+    #     notes_to_yield = notes if notes else len(self._root_intervals)
     #     start_note = start_note if start_note else self.root
 
     #     yield_enabled = False
@@ -203,7 +203,7 @@ class DiatonicKey(TonalKey):
 
 class MajorKey(DiatonicKey):
 
-    _intervals = (
+    _root_intervals = (
         UNISON,
         MAJOR_SECOND,
         MAJOR_THIRD,
@@ -218,7 +218,7 @@ class IonianMode(MajorKey):
 
 class MixolydianMode(MajorKey):
 
-    _intervals = (
+    _root_intervals = (
         UNISON,
         MAJOR_SECOND,
         MAJOR_THIRD,
@@ -230,7 +230,7 @@ class MixolydianMode(MajorKey):
 
 class LydianMode(MajorKey):
 
-    _intervals = (
+    _root_intervals = (
         UNISON,
         MAJOR_SECOND,
         MAJOR_THIRD,
@@ -252,7 +252,7 @@ class LydianMode(MajorKey):
 
 class MinorKey(DiatonicKey):
 
-    _intervals = (
+    _root_intervals = (
         UNISON,
         MAJOR_SECOND,
         MINOR_THIRD,
@@ -267,7 +267,7 @@ class NaturalMinorKey(MinorKey):
 
 class MelodicMinorKey(MinorKey):
 
-    _intervals = (
+    _root_intervals = (
         UNISON,
         MAJOR_SECOND,
         MINOR_THIRD,
@@ -279,7 +279,7 @@ class MelodicMinorKey(MinorKey):
 
 class HarmonicMinorKey(MinorKey):
 
-    _intervals = (
+    _root_intervals = (
         UNISON,
         MAJOR_SECOND,
         MINOR_THIRD,
@@ -294,7 +294,7 @@ class AeolianMode(MinorKey):
 
 class DorianMode(MinorKey):
 
-    _intervals = (
+    _root_intervals = (
         UNISON,
         MAJOR_SECOND,
         MINOR_THIRD,
@@ -306,7 +306,7 @@ class DorianMode(MinorKey):
 
 class PhrygianMode(MinorKey):
 
-    _intervals = (
+    _root_intervals = (
         UNISON,
         MINOR_SECOND, # <<<
         MINOR_THIRD,
@@ -320,7 +320,7 @@ class PhrygianMode(MinorKey):
 
 class ChromaticKey(TonalKey):
 
-    _intervals = (
+    _root_intervals = (
         UNISON,
         MINOR_SECOND,
         MAJOR_SECOND,
