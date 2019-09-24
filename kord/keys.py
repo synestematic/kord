@@ -1,7 +1,6 @@
 from collections import deque
 
 from bestia.output import Row, FString, echo
-from bestia.iterate import looped_list_item
 
 from kord.notes import *
 
@@ -150,17 +149,16 @@ class DiatonicKey(TonalKey):
 
         # GET DEGREE PROPERTIES FROM ENHARMONIC MATRIX
         next_degrees = [
-            n for n in looped_list_item(
-                self.root.enharmonic_row + spare_sts,
-                ENHARMONIC_MATRIX
-            ) if n.tone == self.root.adjacent_tone(d -1) # EXPECTED TONE
+            n for n in EnharmonicMatrix[
+                self.root.enharmonic_row + spare_sts
+            ] if n.tone == self.root.adjacent_tone(d -1) # EXPECTED TONE
         ]
 
         if len(next_degrees) == 1:
             deg = next_degrees[0]
             # if deg.tone == 'C': increase_oct()
         
-            # RETURN NEW OBJECT, DO NOT CHANGE OCT OF ENHARMONIC_MATRIX ITEM!
+            # RETURN NEW OBJECT, DO NOT CHANGE OCT OF ENHARMONIC MATRIX ITEM!
             return Note(
                 deg.tone,
                 deg.alt,
@@ -351,29 +349,27 @@ class ChromaticKey(TonalKey):
         # DO I REALLY NEED THESE 3 CHECKS ?
         # MATCH ROOT_TONE
         next_degrees = [
-            n for n in looped_list_item(
-                self.root.enharmonic_row + spare_sts,
-                ENHARMONIC_MATRIX
-            ) if n.is_note(self.root, ignore_oct=True)
+            n for n in EnharmonicMatrix[
+                self.root.enharmonic_row + spare_sts
+            ] if n.is_note(self.root, ignore_oct=True)
         ]
 
         if not next_degrees:
             # MATCH ROOT_ALT
+
             next_degrees = [
-                n for n in looped_list_item(
-                    self.root.enharmonic_row + spare_sts,
-                    ENHARMONIC_MATRIX
-                ) if n.alt == self.root.alt[:-1]
+                n for n in EnharmonicMatrix[
+                    self.root.enharmonic_row + spare_sts
+                ] if n.alt == self.root.alt[:-1]
             ]
 
             if not next_degrees:
                 # CHOOSE "#" or ""
                 chosen_alt = '#' if self.root.alt == '' else self.root.alt
                 next_degrees = [
-                    n for n in looped_list_item(
-                        self.root.enharmonic_row + spare_sts,
-                        ENHARMONIC_MATRIX
-                    ) if n.alt == chosen_alt
+                    n for n in EnharmonicMatrix[
+                        self.root.enharmonic_row + spare_sts
+                    ] if n.alt == chosen_alt
                 ]
 
         if len(next_degrees) == 1:
@@ -381,7 +377,7 @@ class ChromaticKey(TonalKey):
             deg = next_degrees[0] # got from ENH_MATRIX
             # if Note(deg.tone, deg.alt) == Note('C'): increase_oct()
 
-            # RETURN NEW OBJECT, DO NOT CHANGE OCT OF ENHARMONIC_MATRIX ITEM!
+            # RETURN NEW OBJECT, DO NOT CHANGE OCT OF ENHARMONIC MATRIX ITEM!
             return Note(
                 deg.tone,
                 deg.alt,

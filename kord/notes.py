@@ -1,4 +1,4 @@
-from bestia.iterate import looped_list_item
+from bestia.iterate import looped_list_item, LoopedList
 from bestia.output import echo
 
 from kord.errors import *
@@ -215,7 +215,7 @@ class Note(object):
 
     @property
     def matrix_coordinates(self):
-        for _row_index, _row in enumerate(ENHARMONIC_MATRIX):
+        for _row_index, _row in enumerate(EnharmonicMatrix):
             for _note_index, _enharmonic_note in enumerate(_row):
                 if self.tone == _enharmonic_note.tone and self.alt == _enharmonic_note.alt:
                     return (_row_index, _note_index)
@@ -226,7 +226,7 @@ class Note(object):
 ###   * when to change octs
 ###   * delta_semitones between tones
 ### notes MUST be unique so that Note.degree() finds 1 exact match!
-ENHARMONIC_MATRIX = (
+EnharmonicMatrix = LoopedList(
 
     ## 2-octave enharmonic relationships
     (  Note('C', '' , 2), Note('B', '#' , 1), Note('D', 'bb', 2)  ), # NAH

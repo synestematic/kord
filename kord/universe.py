@@ -76,7 +76,7 @@ def inequality_test(ls):
         assert l[1] != l[0]
 
 def enh_test():
-    for row in ENHARMONIC_MATRIX:
+    for row in EnharmonicMatrix:
         if len(row) == 3:
             l = [
                 [ row[0], row[1] ],
@@ -91,7 +91,7 @@ def enh_test():
 
 
 def key_test(key_class):
-    for _row in ENHARMONIC_MATRIX:
+    for _row in EnharmonicMatrix:
         for _enharmonic_note in _row:
 
             # ignore double alteration notes
