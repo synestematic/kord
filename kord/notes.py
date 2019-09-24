@@ -108,8 +108,8 @@ class Note(object):
 
 
     def __init__(self, *args):
-        self.tone = args[0].upper()
-        if self.tone not in _TONES:
+        self.chr = args[0].upper()
+        if self.chr not in _TONES:
             raise InvalidTone(args[0])
 
         self.alt = ''
@@ -127,13 +127,13 @@ class Note(object):
 
 
     def __iter__(self):
-        for i in (self.tone, self.alt, self.oct):
+        for i in (self.chr, self.alt, self.oct):
             yield i
 
 
     def __repr__(self):
         return '{}{}{}'.format(
-            self.tone,
+            self.chr,
             self.repr_alt,
             self.repr_oct,
         )
@@ -160,14 +160,8 @@ class Note(object):
         return self.__interval_from(other) >= 0
 
     def is_note(self, other, ignore_oct=False):
-        ''' while the arithmetic methods above strictly compare
-            delta semitones, this method compares Note attributes:
-                * tone
-                * alt
-                * oct (optional)
-        '''
         if self.__class__ == type(other):
-            if self.tone == other.tone:
+            if self.chr == other.chr:
                 if self.alt == other.alt:
                     if ignore_oct:
                         return True
@@ -176,11 +170,11 @@ class Note(object):
 
     ### TONE METHODS
     def relative_tone(self, n):
-        my_index = _TONES.index(self.tone)
+        my_index = _TONES.index(self.chr)
         return _TONES[my_index +n]
 
     def adjacent_tone(self, n=1):
-        ''' returns next adjacent tone of self
+        ''' returns next adjacent chr of self
             negative fails...
         '''
         tone = None
@@ -200,10 +194,10 @@ class Note(object):
 
     def __interval_from(self, other):
         ''' used ONLY to implement comparison operators, do NOT call directly... '''
-        oct_delta_st = (self.oct - other.oct) * OCTAVE
-        tone_delta_st = _TONES.index(self.tone) - _TONES.index(other.tone)
-        alt_delta_st  = input_alterations().index(self.alt) - input_alterations().index(other.alt)
-        return oct_delta_st + tone_delta_st + alt_delta_st
+        oct_interval = (self.oct - other.oct) * OCTAVE
+        chr_interval = _TONES.index(self.chr) - _TONES.index(other.chr)
+        alt_interval  = input_alterations().index(self.alt) - input_alterations().index(other.alt)
+        return oct_interval + chr_interval + alt_interval
 
     # ENHARMONIC ATTRIBUTES
     @property
@@ -214,14 +208,14 @@ class Note(object):
     def matrix_coordinates(self):
         for _row_index, _row in enumerate(EnharmonicMatrix):
             for _note_index, _enharmonic_note in enumerate(_row):
-                if self.tone == _enharmonic_note.tone and self.alt == _enharmonic_note.alt:
+                if self.chr == _enharmonic_note.chr and self.alt == _enharmonic_note.alt:
                     return (_row_index, _note_index)
 
 
 ### This is the heart of the whole project
 ### indeces are used to determine:
 ###   * when to change octs
-###   * delta_semitones between tones
+###   * intervals between Note instances
 ### notes MUST be unique so that Note.degree() finds 1 exact match!
 EnharmonicMatrix = LoopedList(
 

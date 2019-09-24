@@ -30,7 +30,7 @@ class String(object):
             __key  = self.display_method.__self__
             Key = __key.__class__
             self.__key = Key(
-                __key.root.tone,
+                __key.root.chr,
                 __key.root.alt,
             )
         return self.__key
@@ -76,7 +76,7 @@ class String(object):
             note_fg = ''
             if fret_note:
                 note = '{}{}{}'.format(
-                    fret_note.tone,
+                    fret_note.chr,
                     fret_note.repr_alt,
                     fret_note.repr_oct,
                 )

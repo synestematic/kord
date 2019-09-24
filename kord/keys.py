@@ -6,9 +6,9 @@ from kord.notes import *
 
 class TonalKey(object):
 
-    def __init__(self, tone, alt='', oct=0):
+    def __init__(self, c, alt='', oct=0):
+        self.root = Note(c, alt, 0) # ignore note.oct
         # Major F##, C## work - G## dies...
-        self.root = Note(tone, alt, 0)
 
 
     def __repr__(self):
@@ -55,7 +55,7 @@ class TonalKey(object):
 
                 # ROTATE FILTER_DEGREES TO APPROPRIATE_NOTE
                 for fd in filter_degrees:
-                    if Note(fd.tone, fd.alt) >= Note(degree.tone, degree.alt):
+                    if Note(fd.chr, fd.alt) >= Note(degree.chr, degree.alt):
                         filter_degrees.rotate(
                             0 - filter_degrees.index(fd)
                         )
@@ -111,7 +111,7 @@ class TonalKey(object):
     #         if not degree:
     #             raise InvalidScale(
     #                 '{}{} {}'.format(
-    #                     self.root.tone,
+    #                     self.root.chr,
     #                     self.root.repr_alt,
     #                     self.__class__.__name__,
     #                 )
@@ -151,16 +151,16 @@ class DiatonicKey(TonalKey):
         next_degrees = [
             n for n in EnharmonicMatrix[
                 self.root.enharmonic_row + spare_sts
-            ] if n.tone == self.root.adjacent_tone(d -1) # EXPECTED TONE
+            ] if n.chr == self.root.adjacent_tone(d -1) # EXPECTED TONE
         ]
 
         if len(next_degrees) == 1:
             deg = next_degrees[0]
-            # if deg.tone == 'C': increase_oct()
+            # if deg.chr == 'C': increase_oct()
         
             # RETURN NEW OBJECT, DO NOT CHANGE OCT OF ENHARMONIC MATRIX ITEM!
             return Note(
-                deg.tone,
+                deg.chr,
                 deg.alt,
                 octs_from_root if deg.enharmonic_row >= self.root.enharmonic_row else octs_from_root +1
             )
@@ -375,11 +375,11 @@ class ChromaticKey(TonalKey):
         if len(next_degrees) == 1:
 
             deg = next_degrees[0] # got from ENH_MATRIX
-            # if Note(deg.tone, deg.alt) == Note('C'): increase_oct()
+            # if Note(deg.chr, deg.alt) == Note('C'): increase_oct()
 
             # RETURN NEW OBJECT, DO NOT CHANGE OCT OF ENHARMONIC MATRIX ITEM!
             return Note(
-                deg.tone,
+                deg.chr,
                 deg.alt,
                 octs_from_root if deg.enharmonic_row >= self.root.enharmonic_row else octs_from_root +1
             )

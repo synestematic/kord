@@ -8,11 +8,11 @@ kord is a python framework exposing a simple api that enables programmers to cre
 ### class Note():
 Note instances are the lowest-level objects of the framework and have 3 main attributes:
 
-* (str) tone
+* (str) chr
 * (str) alt
 * (int) oct
 
-Only the tone attribute is required to create an instance. Default values for .alt and .oct are "" and 3.
+Only the `chr` argument is required to create an instance. Arguments `alt` and `oct` will default to `''` and `3` respectively.
 
 ```
 >>> from kord import Note
@@ -63,7 +63,7 @@ True
 False
 ```
 
-This method compares the attributes of the notes directly (not the semitone interval between them). Set the `ignore_oct` argument appropriately for a less strict comparison:
+This method directly compares Note attributes instead of their semitone interval. Set the `ignore_oct` argument appropriately for a less strict comparison:
 
 ```
 >>> n1
