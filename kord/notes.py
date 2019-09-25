@@ -149,6 +149,12 @@ class Note(object):
     def repr_alt(self):
         return _ALTS[self.alt]
 
+    def __add__(self, other):
+        ''' this is kinda useless but keeping it just for compliance '''
+        return other.__interval_from(self)
+
+    def __sub__(self, other):
+        return self.__interval_from(other)
 
     def __eq__(self, other):
         return self.__interval_from(other) == 0
