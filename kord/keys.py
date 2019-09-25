@@ -21,6 +21,8 @@ class TonalKey(object):
             )
         return str(spell_line)
 
+    def __getitem__(self, i):
+        return self.degree(i)
 
     def interval_from_root(self, d):
         ''' return degree's delta semitones from key's root '''
@@ -49,6 +51,8 @@ class TonalKey(object):
             if not degree:
                 raise InvalidChord()
 
+            # echo('{} {}'.format(degree, start_note))
+
             # DETERMINE WHETHER THRESHOLD_NOTE HAS BEEN REACHED
             if not yield_enabled and degree >= start_note:
                 yield_enabled = True
@@ -56,9 +60,11 @@ class TonalKey(object):
                 # ROTATE FILTER_DEGREES TO APPROPRIATE_NOTE
                 for fd in filter_degrees:
                     if Note(fd.chr, fd.alt) >= Note(degree.chr, degree.alt):
+                        # input()
                         filter_degrees.rotate(
                             0 - filter_degrees.index(fd)
                         )
+                        # input(filter_degrees)
                         break
 
             if not yield_enabled:
@@ -93,7 +99,7 @@ class TonalKey(object):
             yield_all=yield_all, filter_degrees=range(1, len(self._root_intervals) +1),
         )
 
-    # def scale(self, notes=0, start_note=None, yield_all=True):
+    # def ascale(self, notes=0, start_note=None, yield_all=True):
     #     ''' document better........
     #     yields Notes for diatonic degrees
     #     if all is set, Nones are yield for empty semi-tones '''
@@ -138,6 +144,9 @@ class TonalKey(object):
 class DiatonicKey(TonalKey):
 
     def degree(self, d):
+
+        if d < 1:
+            return
 
         if d == 1:
             return self.root
@@ -336,6 +345,9 @@ class ChromaticKey(TonalKey):
     )
 
     def degree(self, d):
+
+        if d < 1:
+            return
 
         if d == 1:
             return self.root
