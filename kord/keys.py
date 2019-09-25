@@ -33,13 +33,13 @@ class TonalKey(object):
         return self._root_intervals[d -1]
 
 
-    def _spell(self, notes=0, start_note=None, yield_all=True, filter_degrees=[]):
+    def _spell(self, notes=0, start_note=None, yield_all=True, degree_order=[]):
 
         notes_to_yield = notes if notes else len(self._root_intervals)
         start_note = start_note if start_note else self.root
-        filter_degrees = deque(
-            [ self.degree(d) for d in filter_degrees ]
-        ) if filter_degrees else []
+        degree_order = deque(
+            [ self[d] for d in degree_order ]
+        ) if degree_order else []
 
         yield_enabled = False
         d = 0
@@ -47,47 +47,44 @@ class TonalKey(object):
 
             d += 1 # ignore 0
 
-            degree = self.degree(d)
-            if not degree:
+            if not self[d]:
                 raise InvalidChord()
 
-            # echo('{} {}'.format(degree, start_note))
-
             # DETERMINE WHETHER THRESHOLD_NOTE HAS BEEN REACHED
-            if not yield_enabled and degree >= start_note:
+            if not yield_enabled and self[d] >= start_note:
                 yield_enabled = True
 
                 # ROTATE FILTER_DEGREES TO APPROPRIATE_NOTE
-                for fd in filter_degrees:
-                    if Note(fd.chr, fd.alt) >= Note(degree.chr, degree.alt):
-                        # input()
-                        filter_degrees.rotate(
-                            0 - filter_degrees.index(fd)
+                for fd in degree_order:
+                    if Note(fd.chr, fd.alt) >= Note(self[d].chr, self[d].alt):
+                        degree_order.rotate(
+                            0 - degree_order.index(fd)
                         )
-                        # input(filter_degrees)
                         break
 
             if not yield_enabled:
                 continue
 
             # CALCULATE AND YIELD NON-DIATONIC SEMITONES
-            last_note_delta = self.interval_from_root(d) - self.interval_from_root(d -1)
-            if last_note_delta > SEMITONE:
-                for st in range(last_note_delta -1):
-                    if yield_all and degree != start_note:
-                        # AVOID YIELDING EXTRA NONE BEFORE START_NOTE
-                        # WHEN SCALE DEG BEFORE IS > 1ST AWAY
-                        yield None
+            previous_interval = 0
+            if self[d] != self.root:
+                previous_interval = self[d] - self[d -1]
+
+            # AVOID YIELDING EXTRA NONE BEFORE START_NOTE
+            # WHEN SCALE DEG BEFORE IS > 1ST AWAY
+            if yield_all and self[d] != start_note:
+                for st in range(previous_interval -1):
+                    yield None
 
             # DETERMINE WHETHER TO YIELD A DEGREE OR NOT
-            yield_note = False if filter_degrees else True
-            if filter_degrees:
-                if degree.is_note(filter_degrees[0], ignore_oct=True):
+            yield_note = False if degree_order else True
+            if degree_order:
+                if self[d].is_note(degree_order[0], ignore_oct=True):
                     yield_note = True
-                    filter_degrees.rotate(-1)
+                    degree_order.rotate(-1)
 
             if yield_note:
-                yield degree
+                yield self[d]
                 notes_to_yield -= 1
             else:
                 if yield_all:
@@ -96,10 +93,10 @@ class TonalKey(object):
     def scale(self, notes=0, start_note=None, yield_all=True):
         return self._spell(
             notes=notes, start_note=start_note,
-            yield_all=yield_all, filter_degrees=range(1, len(self._root_intervals) +1),
+            yield_all=yield_all, degree_order=range(1, len(self._root_intervals) +1),
         )
 
-    # def ascale(self, notes=0, start_note=None, yield_all=True):
+    # def scale(self, notes=0, start_note=None, yield_all=True):
     #     ''' document better........
     #     yields Notes for diatonic degrees
     #     if all is set, Nones are yield for empty semi-tones '''
@@ -113,7 +110,7 @@ class TonalKey(object):
 
     #         d += 1 # ignore 0
 
-    #         degree = self.degree(d)
+    #         degree = self[d]
     #         if not degree:
     #             raise InvalidScale(
     #                 '{}{} {}'.format(
@@ -129,9 +126,12 @@ class TonalKey(object):
     #         if not yield_enabled:
     #             continue
 
-    #         last_note_delta = self.interval_from_root(d) - self.interval_from_root(d -1)
-    #         if last_note_delta > SEMITONE:
-    #             for st in range(last_note_delta -1):
+    #         previous_interval = 0
+    #         if self[d] != self.root:
+    #             previous_interval = self[d] - self[d -1]
+
+    #         if previous_interval > SEMITONE:
+    #             for st in range(previous_interval -1):
     #                 if yield_all and degree != start_note:
     #                     # AVOID YIELDING EXTRA NONE BEFORE START_NOTE
     #                     # WHEN SCALE DEG BEFORE IS > 1ST AWAY
@@ -139,6 +139,7 @@ class TonalKey(object):
 
     #         notes_to_yield -= 1
     #         yield degree
+
 
 
 class DiatonicKey(TonalKey):
@@ -178,31 +179,31 @@ class DiatonicKey(TonalKey):
     def triad(self, notes=0, start_note=None, yield_all=True):
         return self._spell(
             notes=notes, start_note=start_note,
-            yield_all=yield_all, filter_degrees=(1, 3, 5),
+            yield_all=yield_all, degree_order=(1, 3, 5),
         )
 
     def seventh(self, notes=0, start_note=None, yield_all=True):
         return self._spell(
             notes=notes, start_note=start_note,
-            yield_all=yield_all, filter_degrees=(1, 3, 5, 7),
+            yield_all=yield_all, degree_order=(1, 3, 5, 7),
         )
 
     def ninth(self, notes=0, start_note=None, yield_all=True):
         return self._spell(
             notes=notes, start_note=start_note,
-            yield_all=yield_all, filter_degrees=(1, 3, 5, 7, 9),
+            yield_all=yield_all, degree_order=(1, 3, 5, 7, 9),
         )
 
     def eleventh(self, notes=0, start_note=None, yield_all=True):
         return self._spell(
             notes=notes, start_note=start_note,
-            yield_all=yield_all, filter_degrees=(1, 3, 5, 7, 9, 11),
+            yield_all=yield_all, degree_order=(1, 3, 5, 7, 9, 11),
         )
 
     def thirteenth(self, notes=0, start_note=None, yield_all=True):
         return self._spell(
             notes=notes, start_note=start_note,
-            yield_all=yield_all, filter_degrees=(1, 3, 5, 7, 9, 11, 13),
+            yield_all=yield_all, degree_order=(1, 3, 5, 7, 9, 11, 13),
         )
 
 
