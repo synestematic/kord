@@ -8,30 +8,32 @@ class TonalKey(object):
 
     def __init__(self, c, alt='', oct=0):
         self.root = Note(c, alt, 0) # ignore note.oct
-        # Major F##, C## work - G## dies...
-
 
     def __repr__(self):
         spell_line = Row()
         for d in self.scale(
-            notes=len(self._root_intervals) +1, yield_all=False
+            # notes=len(self._root_intervals) +1, yield_all=False
+            notes=len(self._root_intervals) +24, yield_all=False
         ):
             spell_line.append(
-                FString(d, size=5)
+                FString(
+                    d,
+                    size=5,
+                    fg='blue' if not (d.oct % 2) else 'red', 
+                )
             )
         return str(spell_line)
 
     def __getitem__(self, i):
         return self.degree(i)
 
-    def interval_from_root(self, d):
+    def degree_root_interval(self, d):
         ''' return degree's delta semitones from key's root '''
         if d > len(self._root_intervals):
-            return self.interval_from_root(
+            return self.degree_root_interval(
                 d - len(self._root_intervals)
             ) + OCTAVE
         return self._root_intervals[d -1]
-
 
     def _spell(self, notes=0, start_note=None, yield_all=True, degree_order=[]):
 
@@ -66,15 +68,14 @@ class TonalKey(object):
                 continue
 
             # CALCULATE AND YIELD NON-DIATONIC SEMITONES
-            previous_interval = 0
-            if self[d] != self.root:
-                previous_interval = self[d] - self[d -1]
+            # DO NOT CALCULATE PREV_INT ON ROOT DEGREE
+            previous_interval = 0 if d == 1 else self[d] - self[d -1]
 
             # AVOID YIELDING EXTRA NONE BEFORE START_NOTE
             # WHEN SCALE DEG BEFORE IS > 1ST AWAY
             if yield_all and self[d] != start_note:
                 for st in range(previous_interval -1):
-                    yield None
+                    yield
 
             # DETERMINE WHETHER TO YIELD A DEGREE OR NOT
             yield_note = False if degree_order else True
@@ -86,60 +87,14 @@ class TonalKey(object):
             if yield_note:
                 yield self[d]
                 notes_to_yield -= 1
-            else:
-                if yield_all:
-                    yield None
+            elif yield_all:
+                yield
 
     def scale(self, notes=0, start_note=None, yield_all=True):
         return self._spell(
             notes=notes, start_note=start_note,
             yield_all=yield_all, degree_order=range(1, len(self._root_intervals) +1),
         )
-
-    # def scale(self, notes=0, start_note=None, yield_all=True):
-    #     ''' document better........
-    #     yields Notes for diatonic degrees
-    #     if all is set, Nones are yield for empty semi-tones '''
-
-    #     notes_to_yield = notes if notes else len(self._root_intervals)
-    #     start_note = start_note if start_note else self.root
-
-    #     yield_enabled = False
-    #     d = 0
-    #     while notes_to_yield:
-
-    #         d += 1 # ignore 0
-
-    #         degree = self[d]
-    #         if not degree:
-    #             raise InvalidScale(
-    #                 '{}{} {}'.format(
-    #                     self.root.chr,
-    #                     self.root.repr_alt,
-    #                     self.__class__.__name__,
-    #                 )
-    #             )
-
-    #         if not yield_enabled and degree >= start_note:
-    #             yield_enabled = True
-    #         # DETERMINE WHETHER THRESHOLD_NOTE HAS BEEN REACHED
-    #         if not yield_enabled:
-    #             continue
-
-    #         previous_interval = 0
-    #         if self[d] != self.root:
-    #             previous_interval = self[d] - self[d -1]
-
-    #         if previous_interval > SEMITONE:
-    #             for st in range(previous_interval -1):
-    #                 if yield_all and degree != start_note:
-    #                     # AVOID YIELDING EXTRA NONE BEFORE START_NOTE
-    #                     # WHEN SCALE DEG BEFORE IS > 1ST AWAY
-    #                     yield None
-
-    #         notes_to_yield -= 1
-    #         yield degree
-
 
 
 class DiatonicKey(TonalKey):
@@ -154,25 +109,44 @@ class DiatonicKey(TonalKey):
 
         # GET DEGREE's ROOT OFFSETS = OCTAVE + SPARE_STS
         octs_from_root, spare_sts = divmod(
-            self.interval_from_root(d), OCTAVE
+            self.degree_root_interval(d), OCTAVE
         )
+        deg_oct = octs_from_root
 
         # GET DEGREE PROPERTIES FROM ENHARMONIC MATRIX
         next_degrees = [
             n for n in EnharmonicMatrix[
                 self.root.enharmonic_row + spare_sts
-            ] if n.chr == self.root.adjacent_tone(d -1) # EXPECTED TONE
+            ] if n.chr == self.root.adjacent_chr(d -1) # EXPECTED TONE
         ]
 
         if len(next_degrees) == 1:
             deg = next_degrees[0]
-            # if deg.chr == 'C': increase_oct()
-        
-            # RETURN NEW OBJECT, DO NOT CHANGE OCT OF ENHARMONIC MATRIX ITEM!
+
+            # at this point deg_oct can either stay | +1
+            if self.root.chr != 'C':
+
+                delta = deg.enharmonic_row - self.root.enharmonic_row
+
+                if deg.enharmonic_row < self.root.enharmonic_row:
+                    if not deg.is_note(Note('B', '#'), ignore_oct=1):
+                        deg_oct += 1
+
+                elif self.root.is_note(Note('B', '#'), 1):
+                    if not deg.is_note(self.root, 1):
+                        deg_oct += 1
+
+                elif deg.is_note(Note('C', 'bb'), ignore_oct=1):
+                        deg_oct += 1
+
+                elif deg.is_note(Note('C', 'b'), ignore_oct=1):
+                        deg_oct += 1
+
+            # RETURN NEW OBJECT, DO NOT CHANGE ENHARMONIC MATRIX ITEM!
             return Note(
                 deg.chr,
                 deg.alt,
-                octs_from_root if deg.enharmonic_row >= self.root.enharmonic_row else octs_from_root +1
+                deg_oct,
             )
 
 
@@ -272,6 +246,28 @@ class MinorKey(DiatonicKey):
         MINOR_SEVENTH,
     )
     
+class MinorPentatonicKey(MinorKey):
+
+    _root_intervals = (
+        UNISON,
+        MINOR_THIRD,
+        PERFECT_FOURTH,
+        PERFECT_FIFTH,
+        MINOR_SEVENTH,
+    )
+
+class Hokkaido(MinorKey):
+
+    _root_intervals = (
+        UNISON,
+        MAJOR_SECOND,
+        MINOR_THIRD,
+        PERFECT_FOURTH,
+        PERFECT_FIFTH,
+        MINOR_SIXTH,
+    )
+
+
 class NaturalMinorKey(MinorKey):
     pass
 
@@ -355,7 +351,7 @@ class ChromaticKey(TonalKey):
 
         # GET DEGREE's ROOT OFFSETS = OCTAVE + SPARE_STS
         octs_from_root, spare_sts = divmod(
-            self.interval_from_root(d), OCTAVE
+            self.degree_root_interval(d), OCTAVE
         )
 
         # GET DEGREE PROPERTIES FROM ENHARMONIC MATRIX
