@@ -49,7 +49,7 @@ OCTAVE = 12
 AUGMENTED_SEVENTH = 12
 
 
-_TONES = LoopedList(
+_NOTE_CHARS = LoopedList(
     'C',
     None,
     'D',
@@ -109,7 +109,7 @@ class Note(object):
 
     def __init__(self, *args):
         self.chr = args[0].upper()
-        if self.chr not in _TONES:
+        if self.chr not in _NOTE_CHARS:
             raise InvalidTone(args[0])
 
         self.alt = ''
@@ -175,33 +175,31 @@ class Note(object):
 
 
     ### TONE METHODS
-    def relative_tone(self, n):
-        my_index = _TONES.index(self.chr)
-        return _TONES[my_index +n]
+    def relative_chr(self, n):
+        my_index = _NOTE_CHARS.index(self.chr)
+        return _NOTE_CHARS[my_index +n]
 
-    def adjacent_tone(self, n=1):
+    def adjacent_chr(self, n=1):
         ''' returns next adjacent chr of self
             negative fails...
         '''
-        tone = None
-        tone_count = 0
+        c = ''
+        count = 0
         i = 1
 
-        while True:
-            if tone_count == n:
-                return tone
-
-            tone = self.relative_tone(i)
-            if tone:
-                tone_count += 1
-
+        while count != n:
+            c = self.relative_chr(i)
+            if c:
+                count += 1
             i += 1
+
+        return c
 
 
     def __interval_from(self, other):
         ''' used ONLY to implement comparison operators, do NOT call directly... '''
         oct_interval = (self.oct - other.oct) * OCTAVE
-        chr_interval = _TONES.index(self.chr) - _TONES.index(other.chr)
+        chr_interval = _NOTE_CHARS.index(self.chr) - _NOTE_CHARS.index(other.chr)
         alt_interval  = input_alterations().index(self.alt) - input_alterations().index(other.alt)
         return oct_interval + chr_interval + alt_interval
 
@@ -216,6 +214,7 @@ class Note(object):
             for _note_index, _enharmonic_note in enumerate(_row):
                 if self.chr == _enharmonic_note.chr and self.alt == _enharmonic_note.alt:
                     return (_row_index, _note_index)
+
 
 
 ### This is the heart of the whole project
