@@ -82,7 +82,7 @@ class String(object):
                 )
                 note_fg = 'green' if fret_note.is_note(self.key.degree(1), ignore_oct=1) else 'magenta'
 
-            # APPEND NOTE INFO
+            # APPEND NOTE_INFO
             string_line.append(
                 FString(
                     note,

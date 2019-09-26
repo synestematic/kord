@@ -55,27 +55,32 @@ NON_EQUALS = (
 )
 
 
-def equality_test(ls):
-    for l in ls:
-        echo('{} == {}\t{}\t{} == {}\t{}'.format(
-            l[0], l[1], l[0] == l[1],
-            l[1], l[0], l[1] == l[0]),            
-            'green'
-        )
+def equality_test(l=[]):
+    if not l:
+        l = EQUALS
+    for l in EQUALS:
+        # echo('{} == {}\t{}\t{} == {}\t{}'.format(
+        #     l[0], l[1], l[0] == l[1],
+        #     l[1], l[0], l[1] == l[0]),            
+        #     'green'
+        # )
         assert l[0] == l[1]
         assert l[1] == l[0]
 
-def inequality_test(ls):
-    for l in ls:
-        echo('{} != {}\t{}\t{} != {}\t{}'.format(
-            l[0], l[1], l[0] != l[1],
-            l[1], l[0], l[1] != l[0]),            
-            'red'
-        )
+def inequality_test(l=[]):
+    if not l:
+        l = NON_EQUALS
+    for l in NON_EQUALS:
+        # echo('{} != {}\t{}\t{} != {}\t{}'.format(
+        #     l[0], l[1], l[0] != l[1],
+        #     l[1], l[0], l[1] != l[0]),            
+        #     'red'
+        # )
         assert l[0] != l[1]
         assert l[1] != l[0]
 
-def enh_test():
+
+def enharmonic_test():
     for row in EnharmonicMatrix:
         if len(row) == 3:
             l = [
@@ -98,6 +103,10 @@ def key_test(key_class):
             if len(_enharmonic_note.alt) >1:
                 continue
 
+            # check_degree_root_intervals(
+            #     key_class(*_enharmonic_note)
+            # )
+
             echo(
                 '{} {}'.format(
                     key_class.__name__, _enharmonic_note
@@ -108,37 +117,89 @@ def key_test(key_class):
                 'cyan'
             )
 
-
-equality_test(EQUALS)
-inequality_test(NON_EQUALS)
-enh_test()
-
 ### SCALES TESTS
-key_test(ChromaticKey)
-key_test(MajorKey)
-key_test(NaturalMinorKey)
-key_test(MelodicMinorKey)
-key_test(HarmonicMinorKey)
+# key_test(ChromaticKey)
+# key_test(MajorKey)
+# key_test(NaturalMinorKey)
+# key_test(MelodicMinorKey)
+# key_test(HarmonicMinorKey)
 
 
+def note_subtraction():
+    assert Note('C') - Note('C') == 0
 
-# if __name__ == '__main__':
+note_subtraction()
 
-#     try:
-#         ### NOTES TESTS
-#         equality_test(EQUALS)
-#         inequality_test(NON_EQUALS)
-#         enh_test()
 
-#         # ### SCALES TESTS
-#         key_test(ChromaticKey)
-#         key_test(MajorKey)
-#         key_test(NaturalMinorKey)
-#         key_test(MelodicMinorKey)
-#         key_test(HarmonicMinorKey)
+def check_degree_root_intervals(s):
+    for n in range(1, 128):
+        a = s.degree_root_interval(n) == s[n] - s[1]
+        if not a:
+            echo(n, 'yellow')
+            echo(
+                '{} - {} == {}'.format(
+                    s[n],
+                    s[1],
+                    s.degree_root_interval(n),
+                    # s[n] - s[1]
+                ), 'red'
+            )
+        assert a
 
-#     except KeyboardInterrupt:
-#         pass
+check_degree_root_intervals(
+    MajorKey('C', '')
+)
 
-#     finally:
-#         echo('Done', 'green')
+def key_oct_change(Key=ChromaticKey):
+    print('NO ALTS:')
+    echo(Key('C', ''))
+    echo(Key('D', ''))
+    echo(Key('E', ''))
+    echo(Key('F', ''))
+    echo(Key('G', ''))
+    echo(Key('A', ''))
+    echo(Key('B', ''))
+    print('#:')
+    echo(Key('C', '#'))
+    echo(Key('D', '#'))
+    echo(Key('E', '#'))
+    echo(Key('F', '#'))
+    echo(Key('G', '#'))
+    echo(Key('A', '#'))
+    echo(Key('B', '#')) #####
+    print('b:')
+    echo(Key('C', 'b'))
+    echo(Key('D', 'b'))
+    echo(Key('E', 'b'))
+    echo(Key('F', 'b'))
+    echo(Key('G', 'b'))
+    echo(Key('A', 'b'))
+    echo(Key('B', 'b'))
+    print('##:')
+    echo(Key('C', '##'))
+    # echo(Key('D', '##'))
+    # echo(Key('E', '##'))
+    echo(Key('F', '##'))
+    # echo(Key('G', '##'))
+    # echo(Key('A', '##'))
+    # echo(Key('B', '##'))
+    print('bb:')
+    echo(Key('C', 'bb'))
+    echo(Key('D', 'bb'))
+    echo(Key('E', 'bb'))
+    # echo(Key('F', 'bb'))
+    echo(Key('G', 'bb')) ####
+    echo(Key('A', 'bb'))
+    echo(Key('B', 'bb'))
+
+    return
+
+    echo(Key('C', '#'))
+    echo(Key('D', 'bb'))
+
+key_oct_change(MajorKey)
+
+# equality_test()
+# inequality_test()
+# enharmonic_test()
+
