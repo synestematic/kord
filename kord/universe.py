@@ -3,25 +3,9 @@ from bestia.output import echo
 
 from kord.instruments import *
 
-EQUALS = (
 
-    (Note('c'), Note('c')),
-    (Note('d'), Note('d')),
-    (Note('e'), Note('e')),
-    (Note('f'), Note('f')),
-    (Note('g'), Note('g')),
-    (Note('a'), Note('a')),
-    (Note('b'), Note('b')),
-
-    (Note('A', '#'), Note('B', 'b')),
-    (Note('A', '##'), Note('B', '')),
-    (Note('C', ''), Note('D', 'bb')),
-    (Note('C', '#'), Note('D', 'b')),
-
-)
-
-
-NON_EQUALS = (
+DANGEROUS_NON_EQUALS = (
+    # ''' Used mainly to test B#, Cd, etc... '''
 
     (Note('C', 'b', 3), Note('B', '#', 3)),
 
@@ -55,51 +39,32 @@ NON_EQUALS = (
 )
 
 
-def equality_test(l=[]):
-    if not l:
-        l = EQUALS
-    for l in EQUALS:
-        # echo('{} == {}\t{}\t{} == {}\t{}'.format(
-        #     l[0], l[1], l[0] == l[1],
-        #     l[1], l[0], l[1] == l[0]),            
-        #     'green'
-        # )
-        assert l[0] == l[1]
-        assert l[1] == l[0]
+def notes_are_enharmonic(n1, n2):
+    assert n1 == n2
+    assert n2 == n1
 
-def inequality_test(l=[]):
-    if not l:
-        l = NON_EQUALS
-    for l in NON_EQUALS:
-        # echo('{} != {}\t{}\t{} != {}\t{}'.format(
-        #     l[0], l[1], l[0] != l[1],
-        #     l[1], l[0], l[1] != l[0]),            
-        #     'red'
-        # )
-        assert l[0] != l[1]
-        assert l[1] != l[0]
+def notes_not_enharmonic(n1, n2):
+    assert n1 != n2
+    assert n2 != n1
+
+def notes_subtraction(n1, n2):
+    assert n1 - n2 == 0
 
 
-def enharmonic_test():
-    for row in EnharmonicMatrix:
-        if len(row) == 3:
+def notes_arent_enharmonic(notes=[]):
+    for n in notes:
+        notes_not_enharmonic(*n)
+
+
+def all_notes_are_enharmonic():
+    ''' checks notes in same enharmonic row are equals '''
+    for enh_notes in EnharmonicMatrix:
+        for x in range(len(enh_notes)):
             l = [
-                [ row[0], row[1] ],
-                [ row[1], row[2] ],
-                [ row[0], row[2] ],
+                enh_notes[x], enh_notes[x-1]
             ]
-        elif len(row) == 2:
-            l = [
-                [ row[0], row[1] ],
-            ]
-        equality_test(l)
-
-
-
-def note_subtraction():
-    assert Note('C') - Note('C') == 0
-
-note_subtraction()
+            notes_are_enharmonic(*l)
+            notes_subtraction(*l)
 
 
 def check_degree_root_intervals(s):
@@ -125,7 +90,7 @@ check_degree_root_intervals(
 
 def allowed_keys(KeyClass=MajorKey):
     ''' yields only practical Key objects
-    for Notes that dont produce InvalidNotes
+    for Notes that dont produce InvalidNotes (any note with a triple alt)
         ie. C###, etc...
     '''
     for n in notes_by_alts():
@@ -143,7 +108,7 @@ def allowed_keys(KeyClass=MajorKey):
 
 
 
-def test_key(KeyClass):
+def key_is_valid(KeyClass):
     ''' for a given key, allows to verify:
             * invalid scales        
             * octave changes
@@ -163,15 +128,17 @@ def test_key(KeyClass):
             )
         line.echo()
 
+
+notes_arent_enharmonic(DANGEROUS_NON_EQUALS)
+
+all_notes_are_enharmonic()
+
 ### KEY TESTS
-test_key(MajorKey)
-test_key(NaturalMinorKey)
-test_key(MelodicMinorKey)
-test_key(HarmonicMinorKey)
-test_key(ChromaticKey)
+key_is_valid(MajorKey)
+key_is_valid(NaturalMinorKey)
+key_is_valid(MelodicMinorKey)
+key_is_valid(HarmonicMinorKey)
+key_is_valid(ChromaticKey)
 
 
-# equality_test()
-# inequality_test()
-# enharmonic_test()
 
