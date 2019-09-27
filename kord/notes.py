@@ -244,7 +244,7 @@ EnharmonicMatrix = LoopedList(
 
 )
 
-def notes_by_alteration(alts=[]):
+def notes_by_alts(alts=[]):
     ''' yields all 35 possible notes in following order:
         * 7 notes with no alt
         * 7 notes with alt '#'

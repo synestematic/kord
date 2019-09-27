@@ -95,35 +95,6 @@ def enharmonic_test():
         equality_test(l)
 
 
-def key_test(key_class):
-    for _row in EnharmonicMatrix:
-        for _enharmonic_note in _row:
-
-            # ignore double alteration notes
-            if len(_enharmonic_note.alt) >1:
-                continue
-
-            # check_degree_root_intervals(
-            #     key_class(*_enharmonic_note)
-            # )
-
-            echo(
-                '{} {}'.format(
-                    key_class.__name__, _enharmonic_note
-                ), 'blue'
-            )
-            echo(
-                key_class(*_enharmonic_note),
-                'cyan'
-            )
-
-### SCALES TESTS
-# key_test(ChromaticKey)
-# key_test(MajorKey)
-# key_test(NaturalMinorKey)
-# key_test(MelodicMinorKey)
-# key_test(HarmonicMinorKey)
-
 
 def note_subtraction():
     assert Note('C') - Note('C') == 0
@@ -150,54 +121,55 @@ check_degree_root_intervals(
     MajorKey('C', '')
 )
 
-def key_oct_change(Key=ChromaticKey):
-    print('NO ALTS:')
-    echo(Key('C', ''))
-    echo(Key('D', ''))
-    echo(Key('E', ''))
-    echo(Key('F', ''))
-    echo(Key('G', ''))
-    echo(Key('A', ''))
-    echo(Key('B', ''))
-    print('#:')
-    echo(Key('C', '#'))
-    echo(Key('D', '#'))
-    echo(Key('E', '#'))
-    echo(Key('F', '#'))
-    echo(Key('G', '#'))
-    echo(Key('A', '#'))
-    echo(Key('B', '#')) #####
-    print('b:')
-    echo(Key('C', 'b'))
-    echo(Key('D', 'b'))
-    echo(Key('E', 'b'))
-    echo(Key('F', 'b'))
-    echo(Key('G', 'b'))
-    echo(Key('A', 'b'))
-    echo(Key('B', 'b'))
-    print('##:')
-    echo(Key('C', '##'))
-    # echo(Key('D', '##'))
-    # echo(Key('E', '##'))
-    echo(Key('F', '##'))
-    # echo(Key('G', '##'))
-    # echo(Key('A', '##'))
-    # echo(Key('B', '##'))
-    print('bb:')
-    echo(Key('C', 'bb'))
-    echo(Key('D', 'bb'))
-    echo(Key('E', 'bb'))
-    # echo(Key('F', 'bb'))
-    echo(Key('G', 'bb')) ####
-    echo(Key('A', 'bb'))
-    echo(Key('B', 'bb'))
 
-    return
 
-    echo(Key('C', '#'))
-    echo(Key('D', 'bb'))
+def allowed_keys(KeyClass=MajorKey):
+    ''' yields only practical Key objects
+    for Notes that dont produce InvalidNotes
+        ie. C###, etc...
+    '''
+    for n in notes_by_alts():
+        try:
+            k = KeyClass(*n)
+            for d in k.scale():
+                pass
+            yield k
+        except InvalidNote:
+            pass
+            echo(
+                '{} invalid {}'.format(n, KeyClass.__name__),
+                'red', 'faint'
+            )
 
-key_oct_change(MajorKey)
+
+
+def test_key(KeyClass):
+    ''' for a given key, allows to verify:
+            * invalid scales        
+            * octave changes
+    '''
+    echo('Testing {}'.format(KeyClass.__name__), 'underline')
+    for key in allowed_keys(KeyClass):
+        line = Row()
+        for d in key.scale(
+            notes=len(key._root_intervals) +16, yield_all=False
+        ):
+            line.append(
+                FString(
+                    d,
+                    size=5,
+                    fg='blue' if not (d.oct % 2) else 'white', 
+                )
+            )
+        line.echo()
+
+### KEY TESTS
+test_key(MajorKey)
+test_key(NaturalMinorKey)
+test_key(MelodicMinorKey)
+test_key(HarmonicMinorKey)
+test_key(ChromaticKey)
+
 
 # equality_test()
 # inequality_test()
