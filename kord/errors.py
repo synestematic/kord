@@ -7,7 +7,7 @@ class InvalidScale(Exception):
 class InvalidChord(Exception):
     pass
 
-class InvalidTone(Exception):
+class InvalidNote(Exception):
     pass
 
 class InvalidAlteration(Exception):

@@ -110,7 +110,7 @@ class Note(object):
     def __init__(self, *args):
         self.chr = args[0].upper()
         if self.chr not in _NOTE_CHARS:
-            raise InvalidTone(args[0])
+            raise InvalidNote(args[0])
 
         self.alt = ''
         for a in args[1:]:
@@ -243,3 +243,29 @@ EnharmonicMatrix = LoopedList(
     (  Note('B', '' , 1), Note('C', 'b' , 2), Note('A', '##', 1)  ), # NAH
 
 )
+
+def all_notes():
+    notes = []
+    for ehns in EnharmonicMatrix:
+        for ehn in ehns:
+            notes.append(ehn)
+
+    for n in notes:
+        if not n.alt:
+            yield n
+
+    for n in notes:
+        if n.alt == '#':
+            yield n
+
+    for n in notes:
+        if n.alt == 'b':
+            yield n
+
+    for n in notes:
+        if n.alt == '#':
+            yield n
+
+    for n in notes:
+        if n.alt == 'bb':
+            yield n
