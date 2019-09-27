@@ -128,7 +128,6 @@ def key_is_valid(KeyClass):
             )
         line.echo()
 
-
 notes_arent_enharmonic(DANGEROUS_NON_EQUALS)
 
 all_notes_are_enharmonic()
@@ -139,6 +138,3 @@ key_is_valid(NaturalMinorKey)
 key_is_valid(MelodicMinorKey)
 key_is_valid(HarmonicMinorKey)
 key_is_valid(ChromaticKey)
-
-
-
