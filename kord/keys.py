@@ -72,7 +72,7 @@ class TonalKey(object):
             # DETERMINE WHETHER TO YIELD DEGREE OR NOT
             yield_note = False if degree_order else True
             if degree_order:
-                if self[d].is_note(degree_order[0], ignore_oct=True):
+                if self[d].is_a(degree_order[0].chr, degree_order[0].alt):
                     yield_note = True
                     degree_order.rotate(-1)
 
@@ -119,17 +119,17 @@ class DiatonicKey(TonalKey):
             if self.root.chr != 'C':
 
                 if deg.enharmonic_row < self.root.enharmonic_row:
-                    if not deg.is_note(Note('B', '#'), ignore_oct=1):
+                    if not deg.is_a('B', '#'):
                         deg_oct += 1
 
-                elif self.root.is_note(Note('B', '#'), 1):
-                    if not deg.is_note(self.root, 1):
+                elif self.root.is_a('B', '#'):
+                    if not deg.is_a(self.root.chr, self.root.alt):
                         deg_oct += 1
 
-                elif deg.is_note(Note('C', 'bb'), ignore_oct=1):
+                elif deg.is_a('C', 'bb'):
                         deg_oct += 1
 
-                elif deg.is_note(Note('C', 'b'), ignore_oct=1):
+                elif deg.is_a('C', 'b'):
                         deg_oct += 1
 
             # RETURN NEW OBJECT, DO NOT CHANGE ENHARMONIC MATRIX ITEM!
@@ -349,7 +349,7 @@ class ChromaticKey(TonalKey):
         next_degrees = [
             n for n in EnharmonicMatrix[
                 self.root.enharmonic_row + spare_sts
-            ] if n.is_note(self.root, ignore_oct=True)
+            ] if n.is_a(self.root.chr, self.root.alt)
         ]
 
         if not next_degrees:
@@ -382,22 +382,22 @@ class ChromaticKey(TonalKey):
             if self.root.chr != 'C':
 
                 if deg.enharmonic_row < self.root.enharmonic_row:
-                    if not deg.is_note(Note('B', '#'), ignore_oct=1):
+                    if not deg.is_a('B', '#'):
                         deg_oct += 1
 
-                elif self.root.is_note(Note('B', '#'), 1):
-                    if not deg.is_note(self.root, 1):
+                elif self.root.is_a('B', '#'):
+                    if not deg.is_a(self.root.chr, self.root.alt):
                         deg_oct += 1
 
                 # need to fix both B## and C##
-                elif self.root.is_note(Note('B', '##'), 1):
-                    if not deg.is_note(self.root, 1):
+                elif self.root.is_a('B', '##'):
+                    if not deg.is_a(self.root.chr, self.root.alt):
                         deg_oct += 1
 
-                elif deg.is_note(Note('C', 'bb'), ignore_oct=1):
+                elif deg.is_a('C', 'bb'):
                         deg_oct += 1
 
-                elif deg.is_note(Note('C', 'b'), ignore_oct=1):
+                elif deg.is_a('C', 'b'):
                         deg_oct += 1
 
             # RETURN NEW OBJECT, DO NOT CHANGE ENHARMONIC MATRIX ITEM!

@@ -173,6 +173,11 @@ class Note(object):
                         return True
                     return self.oct == other.oct
 
+    def is_a(self, chr, alt='', oct=None):
+        if self.chr == chr:
+            if self.alt == alt:
+                return True if oct is None else self.oct == oct
+
 
     ### TONE METHODS
     def relative_chr(self, n):

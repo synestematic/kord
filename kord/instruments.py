@@ -80,7 +80,7 @@ class String(object):
                     fret_note.repr_alt,
                     fret_note.repr_oct,
                 )
-                note_fg = 'green' if fret_note.is_note(self.key.degree(1), ignore_oct=1) else 'magenta'
+                note_fg = 'green' if fret_note.is_a(self.key.root.chr, self.key.root.alt) else 'magenta'
 
             # APPEND NOTE_INFO
             string_line.append(

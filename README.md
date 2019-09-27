@@ -54,12 +54,12 @@ F𝄪¹
 
 ```
 
-Given that python lacks a `===` operator, Notes can be compared for a "stricter" equality using their `is_note()` method:
+Given that python lacks a `===` operator, Notes can be compared for a "stricter" equality using their `is_a()` method:
 
 ```
 >>> n3 == n4
 True
->>> n3.is_note(n4)
+>>> n3.is_a(n4)
 False
 ```
 
@@ -68,9 +68,9 @@ This method directly compares Note attributes instead of their semitone interval
 ```
 >>> n1
 F♯⁵
->>> n1.is_note(Note('F', '#', 3))
+>>> n1.is_a(Note('F', '#', 3))
 False
->>> n1.is_note(Note('F', '#', 3), ignore_oct=False)
+>>> n1.is_a(Note('F', '#', 3), ignore_oct=False)
 True
 ```
 
