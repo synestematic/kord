@@ -12,15 +12,10 @@ class TonalKey(object):
     def __repr__(self):
         spell_line = Row()
         for d in self.scale(
-            # notes=len(self._root_intervals) +1, yield_all=False
-            notes=len(self._root_intervals) +24, yield_all=False
+            notes=len(self._root_intervals) +1, yield_all=False
         ):
             spell_line.append(
-                FString(
-                    d,
-                    size=5,
-                    fg='blue' if not (d.oct % 2) else 'red', 
-                )
+                FString(d, size=5)
             )
         return str(spell_line)
 
@@ -49,14 +44,11 @@ class TonalKey(object):
 
             d += 1 # ignore 0
 
-            if not self[d]:
-                raise InvalidChord()
-
             # DETERMINE WHETHER THRESHOLD_NOTE HAS BEEN REACHED
             if not yield_enabled and self[d] >= start_note:
                 yield_enabled = True
 
-                # ROTATE FILTER_DEGREES TO APPROPRIATE_NOTE
+                # ROTATE DEGREE_ORDER TO APPROPRIATE_NOTE
                 for fd in degree_order:
                     if Note(fd.chr, fd.alt) >= Note(self[d].chr, self[d].alt):
                         degree_order.rotate(
@@ -77,7 +69,7 @@ class TonalKey(object):
                 for st in range(previous_interval -1):
                     yield
 
-            # DETERMINE WHETHER TO YIELD A DEGREE OR NOT
+            # DETERMINE WHETHER TO YIELD DEGREE OR NOT
             yield_note = False if degree_order else True
             if degree_order:
                 if self[d].is_note(degree_order[0], ignore_oct=True):
@@ -148,6 +140,8 @@ class DiatonicKey(TonalKey):
                 deg.alt,
                 deg_oct,
             )
+
+        raise InvalidNote
 
 
     def triad(self, notes=0, start_note=None, yield_all=True):
@@ -392,3 +386,5 @@ class ChromaticKey(TonalKey):
                 deg.alt,
                 octs_from_root if deg.enharmonic_row >= self.root.enharmonic_row else octs_from_root +1
             )
+
+        raise InvalidNote
