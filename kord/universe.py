@@ -41,11 +41,11 @@ DANGEROUS_NON_EQUALS = (
 
 def notes_are_enharmonic(n1, n2):
     assert n1 == n2
-    assert n2 == n1
+    # assert n2 == n1
 
 def notes_not_enharmonic(n1, n2):
     assert n1 != n2
-    assert n2 != n1
+    # assert n2 != n1
 
 def notes_subtraction(n1, n2):
     assert n1 - n2 == 0
