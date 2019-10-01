@@ -179,7 +179,7 @@ class Note(object):
                 return True if oct is None else self.oct == oct
 
 
-    ### TONE METHODS
+    ### CHAR METHODS
     def relative_chr(self, n):
         my_index = _NOTE_CHARS.index(self.chr)
         return _NOTE_CHARS[my_index +n]
@@ -200,13 +200,21 @@ class Note(object):
 
         return c
 
+    ### OCT METHODS
+    def oversteps_oct(self, other):
+        ''' does NOT take oct attr into account '''
+        if self.chr != other.chr:
+            return _NOTE_CHARS.index(self.chr) > _NOTE_CHARS.index(other.chr)
+        return input_alterations().index(self.alt) > input_alterations().index(other.alt)
+
 
     def __interval_from(self, other):
         ''' used ONLY to implement comparison operators, do NOT call directly... '''
         oct_interval = (self.oct - other.oct) * OCTAVE
         chr_interval = _NOTE_CHARS.index(self.chr) - _NOTE_CHARS.index(other.chr)
-        alt_interval  = input_alterations().index(self.alt) - input_alterations().index(other.alt)
+        alt_interval = input_alterations().index(self.alt) - input_alterations().index(other.alt)
         return oct_interval + chr_interval + alt_interval
+
 
     # ENHARMONIC ATTRIBUTES
     @property
@@ -219,6 +227,7 @@ class Note(object):
             for _note_index, _enharmonic_note in enumerate(_row):
                 if self.chr == _enharmonic_note.chr and self.alt == _enharmonic_note.alt:
                     return (_row_index, _note_index)
+
 
 
 
@@ -251,11 +260,11 @@ EnharmonicMatrix = LoopedList(
 
 def notes_by_alts(alts=[]):
     ''' yields all 35 possible notes in following order:
-        * 7 notes with no alt
-        * 7 notes with alt '#'
+        * 7 notes with alt ''
         * 7 notes with alt 'b'
-        * 7 notes with alt '##'
+        * 7 notes with alt '#'
         * 7 notes with alt 'bb'
+        * 7 notes with alt '##'
     '''
     notes = []
     for ehns in EnharmonicMatrix:
@@ -267,17 +276,17 @@ def notes_by_alts(alts=[]):
             yield n
 
     for n in notes:
-        if n.alt == '#':
-            yield n
-
-    for n in notes:
         if n.alt == 'b':
             yield n
 
     for n in notes:
-        if n.alt == '##':
+        if n.alt == '#':
             yield n
 
     for n in notes:
         if n.alt == 'bb':
+            yield n
+
+    for n in notes:
+        if n.alt == '##':
             yield n
