@@ -115,22 +115,25 @@ class DiatonicKey(TonalKey):
         if len(next_degrees) == 1:
             deg = next_degrees[0]
 
-            # at this point deg_oct can either stay | +1
-            if self.root.chr != 'C':
+            # AT THIS POINT DEG_OCT CAN EITHER STAY | +1
+            if self.root.oversteps_oct(deg):
+                deg_oct += 1
 
-                if deg.enharmonic_row < self.root.enharmonic_row:
-                    if not deg.is_a('B', '#'):
-                        deg_oct += 1
+            # if self.root.chr != 'C':
 
-                elif self.root.is_a('B', '#'):
-                    if not deg.is_a(self.root.chr, self.root.alt):
-                        deg_oct += 1
+            #     if deg.enharmonic_row < self.root.enharmonic_row:
+            #         if not deg.is_a('B', '#'):
+            #             deg_oct += 1
 
-                elif deg.is_a('C', 'bb'):
-                        deg_oct += 1
+            #     elif self.root.is_a('B', '#'):
+            #         if not deg.is_a(self.root.chr, self.root.alt):
+            #             deg_oct += 1
 
-                elif deg.is_a('C', 'b'):
-                        deg_oct += 1
+            #     elif deg.is_a('C', 'bb'):
+            #             deg_oct += 1
+
+            #     elif deg.is_a('C', 'b'):
+            #             deg_oct += 1
 
             # RETURN NEW OBJECT, DO NOT CHANGE ENHARMONIC MATRIX ITEM!
             return Note(deg.chr, deg.alt, deg_oct)
@@ -374,31 +377,29 @@ class ChromaticKey(TonalKey):
 
             deg = next_degrees[0] # got from ENH_MATRIX
 
-            # at this point deg_oct can either stay | +1
+            # AT THIS POINT DEG_OCT CAN EITHER STAY | +1
 
             # if deg.enharmonic_row < self.root.enharmonic_row:
-            #     deg_oct += 1
+            #         deg_oct += 1
 
-            if self.root.chr != 'C':
+            # if self.root.chr != 'C':
+            #     if deg.enharmonic_row < self.root.enharmonic_row:
+            #         if not deg.is_a('B', '#'):
+            #             deg_oct += 1
+            #     elif self.root.is_a('B', '#'):
+            #         if not deg.is_a(self.root.chr, self.root.alt):
+            #             deg_oct += 1
+            #     # need to fix both B## and C##
+            #     elif self.root.is_a('B', '##'):
+            #         if not deg.is_a(self.root.chr, self.root.alt):
+            #             deg_oct += 1
+            #     elif deg.is_a('C', 'bb'):
+            #             deg_oct += 1
+            #     elif deg.is_a('C', 'b'):
+            #             deg_oct += 1
 
-                if deg.enharmonic_row < self.root.enharmonic_row:
-                    if not deg.is_a('B', '#'):
-                        deg_oct += 1
-
-                elif self.root.is_a('B', '#'):
-                    if not deg.is_a(self.root.chr, self.root.alt):
-                        deg_oct += 1
-
-                # need to fix both B## and C##
-                elif self.root.is_a('B', '##'):
-                    if not deg.is_a(self.root.chr, self.root.alt):
-                        deg_oct += 1
-
-                elif deg.is_a('C', 'bb'):
-                        deg_oct += 1
-
-                elif deg.is_a('C', 'b'):
-                        deg_oct += 1
+            if self.root.oversteps_oct(deg):
+                deg_oct += 1
 
             # RETURN NEW OBJECT, DO NOT CHANGE ENHARMONIC MATRIX ITEM!
             return Note(deg.chr, deg.alt, deg_oct)
