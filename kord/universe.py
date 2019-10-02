@@ -4,6 +4,7 @@ from bestia.output import echo
 from kord.instruments import *
 
 
+
 DANGEROUS_NON_EQUALS = (
     # ''' Used mainly to test B#, Cd, etc... '''
 
@@ -133,8 +134,8 @@ notes_arent_enharmonic(DANGEROUS_NON_EQUALS)
 all_notes_are_enharmonic()
 
 ### KEY TESTS
+key_is_valid(ChromaticKey)
 key_is_valid(MajorKey)
 key_is_valid(NaturalMinorKey)
 key_is_valid(MelodicMinorKey)
 key_is_valid(HarmonicMinorKey)
-key_is_valid(ChromaticKey)

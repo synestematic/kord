@@ -9,7 +9,7 @@ setuptools.setup(
     author="Federico Rizzo",
     author_email="foo@bar.com",
     description='a python framework for programming music applications',
-    #long_description=long_description,
+    long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/synestematic/kord",
     license="MIT",
