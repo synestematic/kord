@@ -106,23 +106,43 @@ def output_alterations():
 
 class Note(object):
 
-    def __init__(self, *args):
-        self.chr = args[0].upper()
+    def __init__(self, char, *args):
+
+        self.chr = char.upper()
         if self.chr not in _NOTE_CHARS:
-            raise InvalidNote(args[0])
+            raise InvalidNote(char)
 
         self.alt = ''
-        for a in args[1:]:
-            if a in input_alterations():
-                self.alt = a
-        if self.alt not in input_alterations():
-            raise InvalidAlteration(self.alt)
-
         self.oct = 3
-        for a in args[1:]:
-            if type(a) == int:
-                self.oct = a
-            raise InvalidOctave(self.oct)
+
+        if len(args) >  2:
+            raise InvalidNote('Too many arguments')
+
+        if len(args) == 2:
+            if args[0] in input_alterations():
+                self.alt = args[0]
+            else:
+                raise InvalidAlteration(args[0])
+
+            try:
+                self.oct = int(args[1])
+
+            except:
+                raise InvalidOctave(args[1])
+
+        if len(args) == 1:
+
+            if args[0] in input_alterations():
+                self.alt = args[0]
+
+            else:
+                try:
+                    self.oct = int(args[0])
+                except:
+                    raise InvalidNote(
+                        'Failed to parse argument: '.format(args[0])
+                    )
+
 
 
     def __iter__(self):
