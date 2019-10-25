@@ -106,7 +106,6 @@ def output_alterations():
 
 class Note(object):
 
-
     def __init__(self, *args):
         self.chr = args[0].upper()
         if self.chr not in _NOTE_CHARS:
@@ -123,10 +122,11 @@ class Note(object):
         for a in args[1:]:
             if type(a) == int:
                 self.oct = a
-            # raise InvalidOctave(self.oct)
+            raise InvalidOctave(self.oct)
 
 
     def __iter__(self):
+        ''' allows unpacking Note objects as args for other functions '''
         for i in (self.chr, self.alt, self.oct):
             yield i
 
@@ -179,7 +179,7 @@ class Note(object):
                 return True if oct is None else self.oct == oct
 
 
-    ### CHAR METHODS
+    ### CHR METHODS
     def relative_chr(self, n):
         my_index = _NOTE_CHARS.index(self.chr)
         return _NOTE_CHARS[my_index +n]
