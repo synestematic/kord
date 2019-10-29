@@ -30,6 +30,7 @@ class TonalKey(object):
             ) + OCTAVE
         return self._root_intervals[d -1]
 
+
     def _spell(self, notes=0, start_note=None, yield_all=True, degree_order=[]):
 
         notes_to_yield = notes if notes else len(self._root_intervals)
@@ -44,33 +45,26 @@ class TonalKey(object):
 
             d += 1 # ignore 0
 
-
             # DETERMINE WHETHER THRESHOLD_NOTE HAS BEEN REACHED
             if not yield_enabled and self[d] >= start_note:
 
                 yield_enabled = True
 
                 # ROTATE DEGREE_ORDER TO APPROPRIATE_NOTE
-                for fd in degree_order:
+                for o, _ in enumerate(degree_order):
 
-                    if Note(fd.chr, fd.alt) >= Note(self[d].chr, self[d].alt):
-
-                        # input(degree_order)
-
+                    if self.__check_degree_order(self[d].chr, o, degree_order):
                         degree_order.rotate(
-                            0 - degree_order.index(fd)
+                            0 - degree_order.index(
+                                degree_order[o]
+                            ) - 1
                         )
-
-                        # input(degree_order)
                         break
-
-
-
-
 
 
             if not yield_enabled:
                 continue
+
 
             # CALCULATE AND YIELD NON-DIATONIC SEMITONES
             # DO NOT CALCULATE PREV_INT ON ROOT DEGREE
@@ -94,6 +88,30 @@ class TonalKey(object):
                 notes_to_yield -= 1
             elif yield_all:
                 yield
+
+
+    def __check_degree_order(self, check_chr, o, degree_order):
+        ''' helper function to spell method
+            checks degree order items one at a time
+            to decide when it's time to rotate
+        '''
+
+        c = 1
+        while True:
+
+            d_next_char = degree_order[o].adjacent_chr(c)
+
+            if d_next_char  == check_chr:
+                # found rotate position
+                return True
+
+            if d_next_char == degree_order[o + 1].chr:
+                # reached next degree_order.chr
+                return
+
+            c += 1
+
+
 
     def scale(self, notes=0, start_note=None, yield_all=True):
         return self._spell(
@@ -427,3 +445,7 @@ class ChromaticKey(TonalKey):
             return Note(deg.chr, deg.alt, deg_oct)
 
         raise InvalidNote
+
+
+
+
