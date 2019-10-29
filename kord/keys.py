@@ -44,17 +44,30 @@ class TonalKey(object):
 
             d += 1 # ignore 0
 
+
             # DETERMINE WHETHER THRESHOLD_NOTE HAS BEEN REACHED
             if not yield_enabled and self[d] >= start_note:
+
                 yield_enabled = True
 
                 # ROTATE DEGREE_ORDER TO APPROPRIATE_NOTE
                 for fd in degree_order:
+
                     if Note(fd.chr, fd.alt) >= Note(self[d].chr, self[d].alt):
+
+                        # input(degree_order)
+
                         degree_order.rotate(
                             0 - degree_order.index(fd)
                         )
+
+                        # input(degree_order)
                         break
+
+
+
+
+
 
             if not yield_enabled:
                 continue
@@ -88,6 +101,15 @@ class TonalKey(object):
             yield_all=yield_all, degree_order=range(1, len(self._root_intervals) +1),
         )
 
+
+    def is_diatonic(self, note):
+        ''' checks if a note object is a degree in the scale,
+            returns degree number
+        '''
+        for d, degree in enumerate(self.scale(yield_all=False, notes=666)):
+            d += 1
+            if note == degree:
+                return d
 
 class DiatonicKey(TonalKey):
 
