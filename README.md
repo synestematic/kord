@@ -1,5 +1,5 @@
-# kord
-kord is a python framework exposing a simple api that enables programmers to create music-based applications. It focuses mainly on plucked-string, tempered instruments such as guitars, basses, ukuleles and such...
+# cFlat
+cFlat is a python framework exposing a simple api that enables programmers to create music-based applications. It focuses mainly on plucked-string, tempered instruments such as guitars, basses, ukuleles and such...
 
 <hr/>
 
@@ -15,7 +15,7 @@ Note instances are the lowest-level objects of the framework and have 3 main att
 Only the `chr` argument is required to create an instance. Arguments `alt` and `oct` will default to `''` and `3` respectively.
 
 ```
->>> from kord import Note
+>>> from cFlat import Note
 >>> e = Note('e')
 >>> e
 E³

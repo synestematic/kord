@@ -1,8 +1,7 @@
 # THESE MODULE APPROPRIATELY TESTS LOWER-LEVEL MODULES BEFORE HITTING RUN-TIME
 from bestia.output import echo
 
-from kord.instruments import *
-
+from cFlat.instruments import *
 
 
 DANGEROUS_NON_EQUALS = (

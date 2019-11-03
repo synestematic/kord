@@ -4,10 +4,9 @@
 !setup.py
 !LICENSE
 !README.md
-!kord/kord.py
-!kord/__init__.py
-!kord/universe.py
-!kord/instruments.py
-!kord/keys.py
-!kord/notes.py
-!kord/errors.py
+!cFlat/__init__.py
+!cFlat/universe.py
+!cFlat/instruments.py
+!cFlat/keys.py
+!cFlat/notes.py
+!cFlat/errors.py

@@ -2,7 +2,7 @@ from collections import deque
 
 from bestia.output import Row, FString, echo
 
-from kord.notes import *
+from cFlat.notes import *
 
 class TonalKey(object):
 
