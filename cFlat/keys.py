@@ -74,9 +74,10 @@ class TonalKey(object):
             # WHEN SCALE DEG BEFORE IS > 1ST AWAY
             if yield_all and self[d] != start_note:
                 for st in range(previous_interval -1):
+                    input(d)
                     yield
 
-            # DETERMINE WHETHER TO YIELD DEGREE OR NOT
+            # DETERMINE WHETHER TO YIELD DEGREE OR NONE
             yield_note = False if degree_order else True
             if degree_order:
                 if self[d].is_a(degree_order[0].chr, degree_order[0].alt):
@@ -128,6 +129,7 @@ class TonalKey(object):
             d += 1
             if note == degree:
                 return d
+
 
 class DiatonicKey(TonalKey):
 
@@ -445,7 +447,4 @@ class ChromaticKey(TonalKey):
             return Note(deg.chr, deg.alt, deg_oct)
 
         raise InvalidNote
-
-
-
 

@@ -1,5 +1,5 @@
 # cFlat
-cFlat is a python framework exposing a simple api that enables programmers to create music-based applications. It focuses mainly on plucked-string, tempered instruments such as guitars, basses, ukuleles and such...
+cFlat is a python framework that provides programmers with a simple api for the creation of music-based applications. While it focuses on theoretical purposes, some of it's more visually oriented features are tuned for the generation of tablature-style notation as such for guitars, basses, ukuleles and other similar plucked-string instruments.
 
 <hr/>
 
@@ -15,7 +15,7 @@ Note instances are the lowest-level objects of the framework and have 3 main att
 Only the `chr` argument is required to create an instance. Arguments `alt` and `oct` will default to `''` and `3` respectively.
 
 ```
->>> from cFlat import Note
+>>> from cFlat.notes import Note
 >>> e = Note('e')
 >>> e
 E³
@@ -74,13 +74,79 @@ False
 True
 ```
 
-### class DiatonicKey():
-### class ChromaticKey():
+<hr/>
 
 
-### class String():
+### class TonalKey(object):
 
-### class StringInstrument():
+The best way to describe a TonalKey object is basically as a Note object generator. You can use this class to create any theoretical arrangement of musical notes (ie. chords, scales).
+
+Let us take a look at 2 examples using the 2 main categories of child class that inherit from TonalKey class and how they are defined:
+
+
+### class ChromaticKey(TonalKey):
+
+The ChromaticKey class uses the TonalKey class as an interface while implementing it's own structure of intervals.
+
+```
+class ChromaticKey(TonalKey):
+
+    _root_intervals = (
+        UNISON,
+        MINOR_SECOND,
+        MAJOR_SECOND,
+        MINOR_THIRD,
+        MAJOR_THIRD,
+        PERFECT_FOURTH,
+        AUGMENTED_FOURTH,
+        PERFECT_FIFTH,
+        MINOR_SIXTH,
+        MAJOR_SIXTH,
+        MINOR_SEVENTH,
+        MAJOR_SEVENTH,
+    )
+```
+
+We can initialize ChromaticKey objects on any given note and use the ```degree()``` method to obtain one of it's degrees. Using list index notation will achieve a similar result:
+
+```
+>>> from cFlat.keys import ChromaticKey
+>>> ch = ChromaticKey('C')
+>>> ch.degree(2)
+C♯⁰
+
+>>> ch[12]
+B⁰
+```
+
+Perhaps the most interesting aspect of any TonalKey sub-class is it's ability to iterate over Note objects using one of their several generator methods. As an example, let's take a quick look at the ```scale()``` method:
+
+```
+>>> for note in ch.scale():
+...   print(note, end=' ')
+...
+C⁰ C♯⁰ D⁰ D♯⁰ E⁰ F⁰ F♯⁰ G⁰ G♯⁰ A⁰ A♯⁰ B⁰ C¹
+```
+
+
+
+### class DiatonicKey(TonalKey):
+
+```
+class MajorKey(DiatonicKey):
+
+    _root_intervals = (
+        UNISON,
+        MAJOR_SECOND,
+        MAJOR_THIRD,
+        PERFECT_FOURTH,
+        PERFECT_FIFTH,
+        MAJOR_SIXTH,
+        MAJOR_SEVENTH,
+    )
+```
+
+
 
 
 ### Arguments
