@@ -3,9 +3,10 @@ cFlat is a python framework that provides programmers with a simple api for the 
 
 <hr/>
 
-## API
+# API:
+## cFlat.notes module:
 
-### class Note():
+### Note() class
 Note instances are the lowest-level objects of the framework and have 3 main attributes:
 
 * (str) chr
@@ -76,6 +77,8 @@ True
 
 <hr/>
 
+## cFlat.keys module:
+
 
 ### class TonalKey(object):
 
@@ -111,21 +114,41 @@ We can initialize ChromaticKey objects on any given note and use the ```degree()
 
 ```
 >>> from cFlat.keys import ChromaticKey
->>> ch = ChromaticKey('C')
->>> ch.degree(2)
+>>> c_chromatic = ChromaticKey('C')
+>>> c_chromatic.degree(2)
 C♯⁰
 
->>> ch[12]
+>>> c_chromatic[12]
 B⁰
 ```
 
 Perhaps the most interesting aspect of any TonalKey sub-class is it's ability to iterate over Note objects using one of their several generator methods. As an example, let's take a quick look at the ```scale()``` method:
 
 ```
->>> for note in ch.scale():
+>>> for note in c_chromatic.scale()
 ...   print(note, end=' ')
 ...
-C⁰ C♯⁰ D⁰ D♯⁰ E⁰ F⁰ F♯⁰ G⁰ G♯⁰ A⁰ A♯⁰ B⁰ C¹
+C⁰ C♯⁰ D⁰ D♯⁰ E⁰ F⁰ F♯⁰ G⁰ G♯⁰ A⁰ A♯⁰ B⁰ C¹ 
+```
+
+We can use the ```notes=``` argument to specify to the scale generator the amount of notes to yield:
+
+```
+>>> for note in c_chromatic.scale(notes=4):
+...   print(note, end=' ')
+...
+C⁰ C♯⁰ D⁰ D♯⁰ 
+```
+
+The ```start_note=``` argument can be used to to start yielding from a specific note. This can be done even if the note is not part of the scale:
+
+```
+>>> from cFlat.notes import Note
+>>> Ab = Note('A', 'b', 0)
+>>> for note in c_chromatic.scale(notes=6, start_note=Ab):
+...   print(note, end=' ')
+...
+G♯⁰ A⁰ A♯⁰ B⁰ C¹ C♯¹ 
 ```
 
 
