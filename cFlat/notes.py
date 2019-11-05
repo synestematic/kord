@@ -310,3 +310,4 @@ def notes_by_alts(alts=[]):
     for n in notes:
         if n.alt == '##':
             yield n
+    

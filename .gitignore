@@ -6,6 +6,7 @@
 !README.md
 !cFlat/__init__.py
 !cFlat/universe.py
+!cFlat/tests.py
 !cFlat/instruments.py
 !cFlat/keys.py
 !cFlat/notes.py
