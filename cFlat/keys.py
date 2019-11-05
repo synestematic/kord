@@ -22,6 +22,7 @@ class TonalKey(object):
     def __getitem__(self, i):
         return self.degree(i)
 
+
     def degree_root_interval(self, d):
         ''' return degree's delta semitones from key's root '''
         if d > len(self._root_intervals):
@@ -74,7 +75,6 @@ class TonalKey(object):
             # WHEN SCALE DEG BEFORE IS > 1ST AWAY
             if yield_all and self[d] != start_note:
                 for st in range(previous_interval -1):
-                    input(d)
                     yield
 
             # DETERMINE WHETHER TO YIELD DEGREE OR NONE
@@ -161,22 +161,6 @@ class DiatonicKey(TonalKey):
             if self.root.oversteps_oct(deg):
                 deg_oct += 1
 
-            # if self.root.chr != 'C':
-
-            #     if deg.enharmonic_row < self.root.enharmonic_row:
-            #         if not deg.is_a('B', '#'):
-            #             deg_oct += 1
-
-            #     elif self.root.is_a('B', '#'):
-            #         if not deg.is_a(self.root.chr, self.root.alt):
-            #             deg_oct += 1
-
-            #     elif deg.is_a('C', 'bb'):
-            #             deg_oct += 1
-
-            #     elif deg.is_a('C', 'b'):
-            #             deg_oct += 1
-
             # RETURN NEW OBJECT, DO NOT CHANGE ENHARMONIC MATRIX ITEM!
             return Note(deg.chr, deg.alt, deg_oct)
 
@@ -257,11 +241,6 @@ class LydianMode(MajorKey):
         MAJOR_SEVENTH,
     )
 
-    # bla = [
-    #     TONE, 
-    #     SEMITONE,
-    #     TONE, 
-    # ]
 
 ########################
 ### MINOR KEYS/MODES ###
@@ -356,6 +335,9 @@ class PhrygianMode(MinorKey):
     )
 
 
+#####################
+### CHROMATIC KEY ###
+#####################
 
 class ChromaticKey(TonalKey):
 
@@ -420,26 +402,6 @@ class ChromaticKey(TonalKey):
             deg = next_degrees[0] # got from ENH_MATRIX
 
             # AT THIS POINT DEG_OCT CAN EITHER STAY | +1
-
-            # if deg.enharmonic_row < self.root.enharmonic_row:
-            #         deg_oct += 1
-
-            # if self.root.chr != 'C':
-            #     if deg.enharmonic_row < self.root.enharmonic_row:
-            #         if not deg.is_a('B', '#'):
-            #             deg_oct += 1
-            #     elif self.root.is_a('B', '#'):
-            #         if not deg.is_a(self.root.chr, self.root.alt):
-            #             deg_oct += 1
-            #     # need to fix both B## and C##
-            #     elif self.root.is_a('B', '##'):
-            #         if not deg.is_a(self.root.chr, self.root.alt):
-            #             deg_oct += 1
-            #     elif deg.is_a('C', 'bb'):
-            #             deg_oct += 1
-            #     elif deg.is_a('C', 'b'):
-            #             deg_oct += 1
-
             if self.root.oversteps_oct(deg):
                 deg_oct += 1
 
@@ -447,4 +409,3 @@ class ChromaticKey(TonalKey):
             return Note(deg.chr, deg.alt, deg_oct)
 
         raise InvalidNote
-

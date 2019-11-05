@@ -49,7 +49,7 @@ OCTAVE = 12
 AUGMENTED_SEVENTH = 12
 
 
-_NOTE_CHARS = LoopedList(
+_CHARS = LoopedList(
     'C',
     None,
     'D',
@@ -109,7 +109,7 @@ class Note(object):
     def __init__(self, char, *args):
 
         self.chr = char.upper()
-        if self.chr not in _NOTE_CHARS:
+        if self.chr not in _CHARS:
             raise InvalidNote(char)
 
         self.alt = ''
@@ -201,8 +201,8 @@ class Note(object):
 
     ### CHR METHODS
     def relative_chr(self, n):
-        my_index = _NOTE_CHARS.index(self.chr)
-        return _NOTE_CHARS[my_index +n]
+        my_index = _CHARS.index(self.chr)
+        return _CHARS[my_index +n]
 
     def adjacent_chr(self, n=1):
         ''' returns next adjacent chr of self
@@ -224,14 +224,14 @@ class Note(object):
     def oversteps_oct(self, other):
         ''' does NOT take oct attr into account '''
         if self.chr != other.chr:
-            return _NOTE_CHARS.index(self.chr) > _NOTE_CHARS.index(other.chr)
+            return _CHARS.index(self.chr) > _CHARS.index(other.chr)
         return input_alterations().index(self.alt) > input_alterations().index(other.alt)
 
 
     def __interval_from(self, other):
         ''' used ONLY to implement comparison operators, do NOT call directly... '''
         oct_interval = (self.oct - other.oct) * OCTAVE
-        chr_interval = _NOTE_CHARS.index(self.chr) - _NOTE_CHARS.index(other.chr)
+        chr_interval = _CHARS.index(self.chr) - _CHARS.index(other.chr)
         alt_interval = input_alterations().index(self.alt) - input_alterations().index(other.alt)
         return oct_interval + chr_interval + alt_interval
 
