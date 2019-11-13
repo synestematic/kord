@@ -7,6 +7,47 @@ from errors import *
 
 from uuid import uuid4
 
+class NoteEqualityTestCase(unittest.TestCase):
+
+    DANGEROUS_NON_EQUALS = (
+        # ''' Used mainly to test B#, Cd, etc... '''
+
+        (Note('C', 'b', 3), Note('B', '#', 3)),
+
+        (Note('C', 'b', 3), Note('B', '#', 3)),
+
+        (Note('E', 'b', 5), Note('D', '#', 4)),
+
+        (Note('B', '', 5), Note('C', 'b', 4)),
+
+        (Note('E', '#', 3), Note('F', '', 4)),
+
+
+        (Note('B', 'b'), Note('C', 'bb')),
+        (Note('A', '#'), Note('C', 'bb')),
+
+        (Note('B'     ), Note('C', 'b')),
+        (Note('A', '##'), Note('C', 'b')),
+
+        (Note('B', '#'), Note('C', '')),
+        (Note('B', '#'), Note('D', 'bb')),
+
+        (Note('B', '##'), Note('C', '#')),
+        (Note('B', '##'), Note('D', 'b')),
+
+
+        # these should eval False OK
+        (Note('A', '#'), Note('B', 'b', 4)),
+        (Note('A', '##'), Note('B', '', 4)),
+        (Note('C', ''), Note('D', 'bb', 4)),
+        (Note('C', '#'), Note('D', 'b', 4)),
+    )
+
+    def testNotEnharmonic(self):
+        for note_pair in self.DANGEROUS_NON_EQUALS:
+            assert note_pair[0] != note_pair[1]
+
+
 # class ChromaticKeyTestCase(unittest.TestCase):
 
 #     def setUp(self):
@@ -15,7 +56,6 @@ from uuid import uuid4
 #     # def testDegree1(self):
 #     #     assert self.c_chromatic.degree(1) == self.c_chromatic[1], 'degree() != __get_item__()'
 #     #     assert self.c_chromatic.degree(1).is_a('C'), 'diocane'
-
 
     # def testScaleGenerator(self):
 #         for i, note in enumerate(self.c_chromatic.scale()):
@@ -201,7 +241,6 @@ class MajorKeysTestCase(unittest.TestCase):
             )
         ):
             i += 1
-            print(note, end=' ')
             if i == 1:
                 assert note.is_a('D', 'b', 0), note
             elif i == 2:
@@ -277,13 +316,12 @@ class MajorKeysTestCase(unittest.TestCase):
         assert self.c_major.degree(1).is_a('C'), 'diocane'
 
 
-# TDD
-# write test
-# fail test RED
-# write code
-# pass test GREEN
-# remove duplication REFACTOR
-# pass test
-
 if __name__ == '__main__':
+    # TDD
+    # write test
+    # fail test RED
+    # write code
+    # pass test GREEN
+    # remove duplication REFACTOR
+    # pass test
     unittest.main()
