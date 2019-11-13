@@ -29,7 +29,7 @@ class MajorKeysTestCase(unittest.TestCase):
     def setUp(self):
         self.intervals = 7
         self.c_major = MajorKey('C')
-        self.b_major = MajorKey('B')       # 5 sharps
+        self.b_major = MajorKey('B')            # 5 sharps
         self.d_flat_major = MajorKey('D', 'b')  # 5 flats
 
 
@@ -43,7 +43,6 @@ class MajorKeysTestCase(unittest.TestCase):
                 notes=notes_to_test, yield_all=False
             )
         ):
-            # print(note, end=' ')
             i += 1
             if i == 1:
                 assert note.is_a('C', '', 0), note
@@ -188,6 +187,89 @@ class MajorKeysTestCase(unittest.TestCase):
                 assert note.is_a('A', '#', 18), note
             elif i == 127:
                 assert note.is_a('B', '', 18), note
+
+
+
+    def testDFlatMajorScaleGenerator(self):
+
+        octaves_to_test = 18
+        notes_to_test = octaves_to_test * self.intervals + 1  # 18 * 7 + 1 = 127
+
+        for i, note in enumerate(
+            self.d_flat_major.scale(
+                notes=notes_to_test, yield_all=False
+            )
+        ):
+            i += 1
+            print(note, end=' ')
+            if i == 1:
+                assert note.is_a('D', 'b', 0), note
+            elif i == 2:
+                assert note.is_a('E', 'b', 0), note
+            elif i == 3:
+                assert note.is_a('F', '', 0), note
+            elif i == 4:
+                assert note.is_a('G', 'b', 0), note
+            elif i == 5:
+                assert note.is_a('A', 'b', 0), note
+            elif i == 6:
+                assert note.is_a('B', 'b', 0), note
+            elif i == 7:
+                assert note.is_a('C', '', 1), note
+            elif i == 8:
+                assert note.is_a('D', 'b', 1), note
+            elif i == 9:
+                assert note.is_a('E', 'b', 1), note
+            elif i == 10:
+                assert note.is_a('F', '', 1), note
+            elif i == 11:
+                assert note.is_a('G', 'b', 1), note
+            elif i == 12:
+                assert note.is_a('A', 'b', 1), note
+            elif i == 13:
+                assert note.is_a('B', 'b', 1), note
+            elif i == 14:
+                assert note.is_a('C', '', 2), note
+            elif i == 15:
+                assert note.is_a('D', 'b', 2), note
+            elif i == 16:
+                assert note.is_a('E', 'b', 2), note
+            # ..............................
+            elif i == 64:
+                assert note.is_a('D', 'b', 9), note
+            elif i == 65:
+                assert note.is_a('E', 'b', 9), note
+            elif i == 66:
+                assert note.is_a('F', '', 9), note
+            elif i == 67:
+                assert note.is_a('G', 'b', 9), note
+            elif i == 68:
+                assert note.is_a('A', 'b', 9), note
+            elif i == 69:
+                assert note.is_a('B', 'b', 9), note
+            elif i == 70:
+                assert note.is_a('C', '', 10), note
+            elif i == 71:
+                assert note.is_a('D', 'b', 10), note
+            elif i == 72:
+                assert note.is_a('E', 'b', 10), note
+            # ..............................
+            elif i == 120:
+                assert note.is_a('D', 'b', 17), note
+            elif i == 121:
+                assert note.is_a('E', 'b', 17), note
+            elif i == 122:
+                assert note.is_a('F', '', 17), note
+            elif i == 123:
+                assert note.is_a('G', 'b', 17), note
+            elif i == 124:
+                assert note.is_a('A', 'b', 17), note
+            elif i == 125:
+                assert note.is_a('B', 'b', 17), note
+            elif i == 126:
+                assert note.is_a('C', '', 18), note
+            elif i == 127:
+                assert note.is_a('D', 'b', 18), note
 
 
     def testDegreeMethod(self):
