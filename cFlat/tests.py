@@ -63,6 +63,11 @@ class ChromaticKeysTestCase(unittest.TestCase):
         self.f_sharp_chromatic = ChromaticKey('F', '#')
         self.b_flat_chromatic = ChromaticKey('B', 'b')
 
+    def testIntervalsCount(self):
+        assert len(self.c_chromatic._root_intervals) == 12, self.c_chromatic._root_intervals
+        assert len(self.f_sharp_chromatic._root_intervals) == 12, self.f_sharp_chromatic._root_intervals
+        assert len(self.b_flat_chromatic._root_intervals) == 12, self.b_flat_chromatic._root_intervals
+
 
     def testCChromaticScaleGenerator(self):
 
@@ -192,11 +197,17 @@ class MajorKeysTestCase(unittest.TestCase):
         self.b_major = MajorKey('B')            # 5 sharps
         self.d_flat_major = MajorKey('D', 'b')  # 5 flats
 
+    def testIntervalsCount(self):
+        assert len(self.c_major._root_intervals) == 7, self.c_major._root_intervals
+        assert len(self.b_major._root_intervals) == 7, self.b_major._root_intervals
+        assert len(self.d_flat_major._root_intervals) == 7, self.d_flat_major._root_intervals
+
 
     def testCMajorScaleGenerator(self):
 
         octaves_to_test = 18
-        notes_to_test = octaves_to_test * self.intervals + 1  # 18 * 7 + 1 = 127
+        intervals = 7
+        notes_to_test = octaves_to_test * intervals + 1  # 18 * 7 + 1 = 127
 
         for i, note in enumerate(
             self.c_major.scale(
@@ -273,7 +284,8 @@ class MajorKeysTestCase(unittest.TestCase):
     def testBMajorScaleGenerator(self):
 
         octaves_to_test = 18
-        notes_to_test = octaves_to_test * self.intervals + 1  # 18 * 7 + 1 = 127
+        intervals = 7
+        notes_to_test = octaves_to_test * intervals + 1  # 18 * 7 + 1 = 127
 
         for i, note in enumerate(
             self.b_major.scale(
@@ -353,7 +365,8 @@ class MajorKeysTestCase(unittest.TestCase):
     def testDFlatMajorScaleGenerator(self):
 
         octaves_to_test = 18
-        notes_to_test = octaves_to_test * self.intervals + 1  # 18 * 7 + 1 = 127
+        intervals = 7
+        notes_to_test = octaves_to_test * intervals + 1  # 18 * 7 + 1 = 127
 
         for i, note in enumerate(
             self.d_flat_major.scale(
