@@ -48,6 +48,14 @@ class NoteEqualityTestCase(unittest.TestCase):
             assert note_pair[0] != note_pair[1]
 
 
+    def testAreEnharmonic(self):
+        ''' checks note_pairs in enharmonic rows
+            for different types of equality '''
+        for note_pair in EnharmonicMatrix:
+            assert note_pair[0] == note_pair[1]
+            assert note_pair[0] -  note_pair[1] == 0
+
+
 # class ChromaticKeyTestCase(unittest.TestCase):
 
 #     def setUp(self):
