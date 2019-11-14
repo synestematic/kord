@@ -9,9 +9,12 @@ from uuid import uuid4
 
 from bestia.output import echo
 
-
-
 class KeyValidityTestCase(unittest.TestCase):
+
+    ''' for a given key, allows to verify:
+            * invalid roots        
+            * octave changes
+    '''
 
     def setUp(self):
         self.chromatic_key = ChromaticKey
@@ -21,58 +24,35 @@ class KeyValidityTestCase(unittest.TestCase):
         # key_is_valid(HarmonicMinorKey)
 
 
-    def testChromatic(self):
-        ''' for a given key, allows to verify:
-                * invalid scales        
-                * octave changes
-        '''
-        # echo('Testing {}'.format(self.major_key.__name__), 'underline')
+    def testValidRoots(self):
 
-        for note in notes_by_alts():
-            note = Note(note.chr, note.alt, 0)
-            if note in self.major_key.valid_root_notes():
+        echo('\nValid {}s'.format(self.major_key.__name__), 'underline')
 
-                line = Row()
-                # key = self.major_key(*note)
-                # for d in key.scale(
-                #     notes=len(key._root_intervals) +16, yield_all=False
-                # ):
-                #     line.append(
-                #         FString(
-                #             d,
-                #             size=5,
-                #             fg='blue' if not (d.oct % 2) else 'white', 
-                #         )
-                #     )
-                # line.echo()
+        for note in self.major_key.valid_root_notes():
 
-            else:
-                echo(
-                    '{} invalid {}'.format(note, self.major_key.__name__),
-                    'red', 'faint'
+            line = Row()
+            key = self.major_key(*note)
+            for d in key.scale(
+                notes=len(key._root_intervals) +16, yield_all=False
+            ):
+                line.append(
+                    FString(
+                        d,
+                        size=5,
+                        fg='blue' if not (d.oct % 2) else 'white', 
+                    )
                 )
+            line.echo()
 
 
 
-        # for note in self.major_key.valid_root_notes():
-        #     line = Row()
-        #     key = self.major_key(*note)
-        #     for d in key.scale(
-        #         notes=len(key._root_intervals) +16, yield_all=False
-        #     ):
-        #         line.append(
-        #             FString(
-        #                 d,
-        #                 size=5,
-        #                 fg='blue' if not (d.oct % 2) else 'white', 
-        #             )
-        #         )
-        #     line.echo()
-
-
-
-
-
+    def testInvalidRoots(self):
+        echo('\nInvalid {}s'.format(self.major_key.__name__), 'underline')
+        for note in self.major_key.invalid_root_notes():
+            echo(
+                '{}{} invalid {}'.format(note.chr, note.repr_alt, self.major_key.__name__),
+                'red', 'faint'
+            )
 
 
 class NoteEqualityTestCase(unittest.TestCase):
@@ -665,13 +645,34 @@ class MajorKeysTestCase(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    # TDD
-    # write test
-    # fail test RED
-    # write code
-    # pass test GREEN
-    # remove duplication REFACTOR
-    # pass test
+    '''
+    TDD:
+        * write test
+        * fail test RED
+        * write code
+        * pass test GREEN
+        * remove duplication REFACTOR
+        * pass test
+    '''
 
     unittest.main()
 
+    # print(
+    #     ChromaticKey.valid_root_notes()
+    # )
+
+    # print(
+    #     MajorKey.valid_root_notes()
+    # )
+
+    # print(
+    #     NaturalMinorKey.invalid_root_notes()
+    # )
+
+    # print(
+    #     MelodicMinorKey.invalid_root_notes()
+    # )
+
+    # print(
+    #     HarmonicMinorKey.invalid_root_notes()
+    # )

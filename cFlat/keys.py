@@ -25,7 +25,7 @@ class TonalKey(object):
 
     @classmethod
     def __possible_root_notes(cls, valids=True):
-        ''' checks all possible root notes for validity in given key class '''
+        ''' checks all possible notes for validity as root of given key '''
         valid_roots = []
         invalid_roots = []
 

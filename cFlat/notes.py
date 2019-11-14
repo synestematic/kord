@@ -177,6 +177,8 @@ class Note(object):
         return self.__interval_from(other)
 
     def __eq__(self, other):
+        # this is a problen when finding a note within a set of notes
+        # Note('C', '#') in [ Note('D', 'b') ] == True
         return self.__interval_from(other) == 0
 
     def __gt__(self, other):
