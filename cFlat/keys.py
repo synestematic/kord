@@ -48,6 +48,25 @@ class TonalKey(object):
 
         notes_to_yield = notes if notes else len(self._root_intervals)
         start_note = start_note if start_note else self.root
+
+        degree_order = deque(
+            [ self[d] for d in degree_order ]
+        ) if degree_order else []
+
+        yield_enabled = False
+        d = 0
+
+        while notes_to_yield:
+            d += 1
+            yield self[d]
+            notes_to_yield -= 1
+
+
+
+    def __oldspell(self, notes=0, start_note=None, yield_all=True, degree_order=[]):
+
+        notes_to_yield = notes if notes else len(self._root_intervals)
+        start_note = start_note if start_note else self.root
         degree_order = deque(
             [ self[d] for d in degree_order ]
         ) if degree_order else []
