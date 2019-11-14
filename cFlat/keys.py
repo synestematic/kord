@@ -24,16 +24,35 @@ class TonalKey(object):
 
 
     @classmethod
-    def valid_root_notes(cls):
-        ''' yields only valid root notes for given key class '''
+    def __possible_root_notes(cls, valids=True):
+        ''' checks all possible root notes for validity in given key class '''
+        valid_roots = []
+        invalid_roots = []
+
         for note in notes_by_alts():
             try:
-                for _ in cls(*note).scale():
+                invalid_root = False
+                for _ in cls(*note).scale(yield_all=0):
                     pass
-                yield Note(note.chr, note.alt, 0)
             except InvalidNote:
-                pass
+                invalid_root = True
+            finally:
+                if invalid_root:
+                    invalid_roots.append(note)
+                else:
+                    valid_roots.append(note)
 
+        return valid_roots if valids else invalid_roots
+
+    @classmethod
+    def valid_root_notes(cls):
+        ''' returns only valid root notes for given key class '''
+        return cls.__possible_root_notes(valids=True)
+
+    @classmethod
+    def invalid_root_notes(cls):
+        ''' returns only invalid root notes for given key class '''
+        return cls.__possible_root_notes(valids=False)
 
     def degree_root_interval(self, d):
         ''' return degree's delta semitones from key's root '''
