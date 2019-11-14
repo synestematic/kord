@@ -18,10 +18,44 @@ class KeyValidityTestCase(unittest.TestCase):
 
     def setUp(self):
         self.chromatic_key = ChromaticKey
+        # test no invalid roots
+
         self.major_key = MajorKey
-        # key_is_valid(NaturalMinorKey)
-        # key_is_valid(MelodicMinorKey)
-        # key_is_valid(HarmonicMinorKey)
+        # F𝄫¹ invalid MajorKey
+        # B𝄪¹ invalid MajorKey
+        # D𝄪¹ invalid MajorKey
+        # E𝄪¹ invalid MajorKey
+        # G𝄪¹ invalid MajorKey
+        # A𝄪¹ invalid MajorKey
+
+        self.minor_key = NaturalMinorKey
+        # D𝄫² invalid NaturalMinorKey
+        # F𝄫¹ invalid NaturalMinorKey
+        # G𝄫¹ invalid NaturalMinorKey
+        # C𝄫² invalid NaturalMinorKey
+        # B𝄪¹ invalid NaturalMinorKey
+        # E𝄪¹ invalid NaturalMinorKey
+
+        self.mel_minor_key = MelodicMinorKey
+        # F𝄫¹ invalid MelodicMinorKey
+        # G𝄫¹ invalid MelodicMinorKey
+        # C𝄫² invalid MelodicMinorKey
+        # B𝄪¹ invalid MelodicMinorKey
+        # D𝄪¹ invalid MelodicMinorKey
+        # E𝄪¹ invalid MelodicMinorKey
+        # G𝄪¹ invalid MelodicMinorKey
+        # A𝄪¹ invalid MelodicMinorKey
+
+        self.har_minor_key = HarmonicMinorKey
+        # D𝄫² invalid HarmonicMinorKey
+        # F𝄫¹ invalid HarmonicMinorKey
+        # G𝄫¹ invalid HarmonicMinorKey
+        # C𝄫² invalid HarmonicMinorKey
+        # B𝄪¹ invalid HarmonicMinorKey
+        # D𝄪¹ invalid HarmonicMinorKey
+        # E𝄪¹ invalid HarmonicMinorKey
+        # G𝄪¹ invalid HarmonicMinorKey
+        # A𝄪¹ invalid HarmonicMinorKey
 
 
     def testValidRoots(self):
