@@ -30,7 +30,7 @@ class TonalKey(object):
             try:
                 for _ in cls(*note).scale():
                     pass
-                yield note
+                yield Note(note.chr, note.alt, 0)
             except InvalidNote:
                 pass
 
