@@ -7,6 +7,74 @@ from errors import *
 
 from uuid import uuid4
 
+from bestia.output import echo
+
+
+
+class KeyValidityTestCase(unittest.TestCase):
+
+    def setUp(self):
+        self.chromatic_key = ChromaticKey
+        self.major_key = MajorKey
+        # key_is_valid(NaturalMinorKey)
+        # key_is_valid(MelodicMinorKey)
+        # key_is_valid(HarmonicMinorKey)
+
+
+    def testChromatic(self):
+        ''' for a given key, allows to verify:
+                * invalid scales        
+                * octave changes
+        '''
+        # echo('Testing {}'.format(self.major_key.__name__), 'underline')
+
+        for note in notes_by_alts():
+            note = Note(note.chr, note.alt, 0)
+            if note in self.major_key.valid_root_notes():
+
+                line = Row()
+                # key = self.major_key(*note)
+                # for d in key.scale(
+                #     notes=len(key._root_intervals) +16, yield_all=False
+                # ):
+                #     line.append(
+                #         FString(
+                #             d,
+                #             size=5,
+                #             fg='blue' if not (d.oct % 2) else 'white', 
+                #         )
+                #     )
+                # line.echo()
+
+            else:
+                echo(
+                    '{} invalid {}'.format(note, self.major_key.__name__),
+                    'red', 'faint'
+                )
+
+
+
+        # for note in self.major_key.valid_root_notes():
+        #     line = Row()
+        #     key = self.major_key(*note)
+        #     for d in key.scale(
+        #         notes=len(key._root_intervals) +16, yield_all=False
+        #     ):
+        #         line.append(
+        #             FString(
+        #                 d,
+        #                 size=5,
+        #                 fg='blue' if not (d.oct % 2) else 'white', 
+        #             )
+        #         )
+        #     line.echo()
+
+
+
+
+
+
+
 class NoteEqualityTestCase(unittest.TestCase):
 
     DANGEROUS_NON_EQUALS = (
@@ -604,4 +672,6 @@ if __name__ == '__main__':
     # pass test GREEN
     # remove duplication REFACTOR
     # pass test
+
     unittest.main()
+
