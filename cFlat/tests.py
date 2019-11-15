@@ -1,11 +1,11 @@
 import unittest
+from random import randint
+# from uuid import uuid4
 
 from instruments import *
 from keys import *
 from notes import *
 from errors import *
-
-from uuid import uuid4
 
 from bestia.output import echo
 
@@ -704,10 +704,10 @@ class TonalKeySpellMethodTest(unittest.TestCase):
             'F#_har_minor': HarmonicMinorKey('F', '#'),
         }
 
-    def testSpellNoteCount(self):
-        ''' tests that _spell delivers the right amount of notes '''
+    def testNoteCount(self):
+        ''' tests yielded note count  '''
         for key in self.keys.values():
-            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell() note argument ...')
+            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( notes ) argument ...')
             for count in range(64):
                 count += 1
                 yielded_notes = len(
@@ -717,9 +717,10 @@ class TonalKeySpellMethodTest(unittest.TestCase):
 
 
     def testDiatonicStartNote(self):
+        ''' tests that first yielded note == diatonic start_note '''
         for key in self.keys.values():
-            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell() start_note argument ...')
-            diatonic_note = key.degree(13)
+            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note ) argument ...')
+            diatonic_note = key.degree( randint(2, 128) )
             for note in key.scale(
                 notes=1, start_note=diatonic_note, yield_all=True
             ): 
