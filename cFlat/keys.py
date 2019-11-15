@@ -33,6 +33,7 @@ class TonalKey(object):
             try:
                 invalid_root = False
                 for _ in cls(*note).scale(yield_all=0):
+                    # if any degree fails, scale is not spellable
                     pass
             except InvalidNote:
                 invalid_root = True
@@ -64,6 +65,15 @@ class TonalKey(object):
 
 
     def _spell(self, notes=0, start_note=None, yield_all=True, degree_order=[]):
+        '''
+            features to support:
+                * yield notes count
+                * octave change, BUT degree() takes care of it
+                * diatonic start_note
+                * non-diatonic start_note
+                * yield None for empty semi-tones
+                * degree order for chords, modes, etc
+        '''
 
         notes_to_yield = notes if notes else len(self._root_intervals)
         start_note = start_note if start_note else self.root
@@ -77,6 +87,14 @@ class TonalKey(object):
 
         while notes_to_yield:
             d += 1
+
+            # DETERMINE WHETHER THRESHOLD_NOTE HAS BEEN REACHED
+            if not yield_enabled and self[d] >= start_note:
+                yield_enabled = True
+
+            if not yield_enabled:
+                continue
+
             yield self[d]
             notes_to_yield -= 1
 
