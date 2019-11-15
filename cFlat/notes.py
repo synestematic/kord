@@ -1,7 +1,8 @@
 from bestia.iterate import LoopedList
 from bestia.output import echo
 
-from cFlat.errors import *
+from errors import *
+# from cFlat.errors import *
 
 SHARP = 1
 FLAT = -1
@@ -171,46 +172,46 @@ class Note(object):
 
     def __add__(self, other):
         ''' this is kinda useless but keeping it just for compliance '''
-        if self.__class__ == type(other):
+        if self.__class__ == other.__class__:
             return other.__interval_from(self)
         raise TypeError('unsupported operand type(s) for +')
 
     def __sub__(self, other):
-        if self.__class__ == type(other):
+        if self.__class__ == other.__class__:
             return self.__interval_from(other)
         raise TypeError('unsupported operand type(s) for -')
 
     def __eq__(self, other):
         # this is a problen when finding a note within a set of notes
         # Note('C', '#') in [ Note('D', 'b') ] == True
-        if self.__class__ != type(other):
+        if self.__class__ != other.__class__:
             return False
         return self.__interval_from(other) == 0
 
     def __ne__(self, other):
-        if self.__class__ != type(other):
+        if self.__class__ != other.__class__:
             return True
         return self.__interval_from(other) != 0
 
     def __gt__(self, other):
-        if self.__class__ == type(other):
+        if self.__class__ == other.__class__:
             return self.__interval_from(other) > 0
-        raise TypeError(f'\'>\' not supported between different types')
+        raise TypeError(f' > not supported with {other.__class__}')
 
     def __ge__(self, other):
-        if self.__class__ == type(other):
+        if self.__class__ == other.__class__:
             return self.__interval_from(other) >= 0
-        raise TypeError(f'\'>=\' not supported between different types')
+        raise TypeError(f' >= not supported with {other.__class__}')
 
     def __lt__(self, other):
-        if self.__class__ == type(other):
+        if self.__class__ == other.__class__:
             return self.__interval_from(other) < 0
-        raise TypeError(f'\'<\' not supported between different types')
+        raise TypeError(f' < not supported with {other.__class__}')
 
     def __le__(self, other):
-        if self.__class__ == type(other):
+        if self.__class__ == other.__class__:
             return self.__interval_from(other) <= 0
-        raise TypeError(f'\'<=\' not supported between different types')
+        raise TypeError(f' <= not supported with {other.__class__}')
 
 
     def is_a(self, chr, alt='', oct=None):

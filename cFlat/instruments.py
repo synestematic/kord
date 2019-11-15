@@ -1,6 +1,7 @@
 from bestia.output import Row, FString, echo, tty_columns
 
-from cFlat.keys import *
+from keys import *
+# from cFlat.keys import *
 
 _NOTE_WIDTH = 5
 _FRET_WIDTH = 1

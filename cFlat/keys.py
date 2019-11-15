@@ -2,7 +2,8 @@ from collections import deque
 
 from bestia.output import Row, FString, echo
 
-from cFlat.notes import *
+# from cFlat.notes import *
+from notes import *
 
 class TonalKey(object):
 
@@ -95,20 +96,33 @@ class TonalKey(object):
             if not yield_enabled:
                 continue
 
+
+            # CALCULATE AND YIELD NON-DIATONIC SEMITONES
+            # DO NOT CALCULATE PREV_INT ON ROOT DEGREE
+            previous_interval = 0 if d == 1 else self[d] - self[d -1]
+
+            # AVOID YIELDING EXTRA NONE BEFORE START_NOTE
+            # WHEN SCALE DEG BEFORE IS > 1ST AWAY
+            if yield_all and self[d] != start_note:
+                for st in range(previous_interval -1):
+                    yield
+
+
             yield self[d]
             notes_to_yield -= 1
+
+
+
+
+
 
 
 
     def __oldspell(self, notes=0, start_note=None, yield_all=True, degree_order=[]):
 
         while notes_to_yield:
-
-            d += 1 # ignore 0
-
-            # DETERMINE WHETHER THRESHOLD_NOTE HAS BEEN REACHED
+            d += 1
             if not yield_enabled and self[d] >= start_note:
-
                 yield_enabled = True
 
                 # ROTATE DEGREE_ORDER TO APPROPRIATE_NOTE
@@ -121,7 +135,6 @@ class TonalKey(object):
                             ) - 1
                         )
                         break
-
 
             if not yield_enabled:
                 continue
