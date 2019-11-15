@@ -17,6 +17,7 @@ class KeyValidityTest(unittest.TestCase):
     '''
 
     def setUp(self):
+        print()
 
         self.chromatic_key = ChromaticKey
         # test no invalid roots
@@ -153,6 +154,7 @@ class NoteEqualityTest(unittest.TestCase):
 class ChromaticKeysTest(unittest.TestCase):
 
     def setUp(self):
+        print()
         self.c_chromatic = ChromaticKey('C')
         self.f_sharp_chromatic = ChromaticKey('F', '#')
         self.b_flat_chromatic = ChromaticKey('B', 'b')
@@ -436,6 +438,7 @@ class ChromaticKeysTest(unittest.TestCase):
 class MajorKeysExpectedNotesTest(unittest.TestCase):
 
     def setUp(self):
+        print()
         self.c_major = MajorKey('C')
         self.b_major = MajorKey('B')            # 5 sharps
         self.d_flat_major = MajorKey('D', 'b')  # 5 flats
@@ -696,12 +699,14 @@ class MajorKeysExpectedNotesTest(unittest.TestCase):
 class TonalKeySpellMethodTest(unittest.TestCase):
 
     def setUp(self):
+        print()
         self.keys = {
             'Ab_chromatic_key': ChromaticKey('A', 'b'),
             'B_major': MajorKey('B'),
-            'Bbb_minor': NaturalMinorKey('B', 'b'),
+            'Bb_minor': NaturalMinorKey('B', 'b'),
             'C_mel_minor': MelodicMinorKey('C'),
             'F#_har_minor': HarmonicMinorKey('F', '#'),
+            # 'E7': SeventhDominant('E'),   # test chords too eventually
         }
 
     def testNoteCount(self):
@@ -719,12 +724,61 @@ class TonalKeySpellMethodTest(unittest.TestCase):
     def testDiatonicStartNote(self):
         ''' tests that first yielded note == diatonic start_note '''
         for key in self.keys.values():
-            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note ) argument ...')
+            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = diatonic_note ) argument ...')
             diatonic_note = key.degree( randint(2, 128) )
             for note in key.scale(
                 notes=1, start_note=diatonic_note, yield_all=True
             ): 
                 assert note.is_a(*diatonic_note), note
+
+
+    def testNonDiatonicStartNote(self):
+        ''' tests that first yielded note == expected diatonic note,
+            when start_note is a nnote non diatonic to the scale        
+        '''
+        test_parameters = [
+            {
+                'key': self.keys['Ab_chromatic_key'], 
+                'non_diatonic_note': Note('A', '#', 1), # enharmonic
+                'exp_diatonic_note': Note('B', 'b', 1), # equals
+            },
+            {
+                'key': self.keys['B_major'], 
+                'non_diatonic_note': Note('D', 1),      # missing note
+                'exp_diatonic_note': Note('D', '#', 1), # next note
+            },
+            {
+                'key': self.keys['Bb_minor'], 
+                'non_diatonic_note': Note('D', '#', 1), # enharmonic
+                'exp_diatonic_note': Note('E', 'b', 1), # equals
+            },
+            {
+                'key': self.keys['C_mel_minor'], 
+                'non_diatonic_note': Note('F', '#', 0), # missing note
+                'exp_diatonic_note': Note('G', '',  0), # next note
+            },
+            {
+                'key': self.keys['F#_har_minor'], 
+                'non_diatonic_note': Note('C', 'b', 4), # enharmonic
+                'exp_diatonic_note': Note('B', '' , 3), # equals
+            },
+            # {   # test chords too eventually
+            #     'key': self.keys['E7'], 
+            #     'non_diatonic_note': Note('A', '', 0), # missing note
+            #     'exp_diatonic_note': Note('B', '', 0), # next note
+            # },
+        ]
+
+        for param in test_parameters:
+            key = param['key']
+            non = param['non_diatonic_note']
+            exp = param['exp_diatonic_note']
+            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = non_diatonic_note ) argument ...')
+            for note in key.scale(
+                notes=1, start_note=non, yield_all=True
+            ): 
+                assert note.is_a(*exp), (note, exp)
+
 
 
 if __name__ == '__main__':
@@ -737,25 +791,4 @@ if __name__ == '__main__':
         * remove duplication REFACTOR
         * pass test
     '''
-
     unittest.main()
-
-    # print(
-    #     ChromaticKey.valid_root_notes()
-    # )
-
-    # print(
-    #     MajorKey.valid_root_notes()
-    # )
-
-    # print(
-    #     NaturalMinorKey.invalid_root_notes()
-    # )
-
-    # print(
-    #     MelodicMinorKey.invalid_root_notes()
-    # )
-
-    # print(
-    #     HarmonicMinorKey.invalid_root_notes()
-    # )
