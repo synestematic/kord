@@ -171,11 +171,14 @@ class Note(object):
 
     def __add__(self, other):
         ''' this is kinda useless but keeping it just for compliance '''
-        return other.__interval_from(self)
+        if self.__class__ == type(other):
+            return other.__interval_from(self)
+        raise TypeError('unsupported operand type(s) for +')
 
     def __sub__(self, other):
-        return self.__interval_from(other)
-
+        if self.__class__ == type(other):
+            return self.__interval_from(other)
+        raise TypeError('unsupported operand type(s) for -')
 
     def __eq__(self, other):
         # this is a problen when finding a note within a set of notes
