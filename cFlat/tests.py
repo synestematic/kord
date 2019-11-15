@@ -706,10 +706,11 @@ class TonalKeySpellMethodTest(unittest.TestCase):
         }
 
     def testNoteCount(self):
-        ''' tests yielded note count  '''
+        ''' tests yielded note count is what has been required '''
         for key in self.keys.values():
-            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( note_count ) argument ...')
-            for count in range(64):
+            max_notes = randint(2, 64)
+            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( note_count=1..{max_notes} ) argument ...')
+            for count in range(max_notes):
                 count += 1
                 yielded_notes = len(
                     [ n for n in key._spell(
