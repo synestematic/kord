@@ -193,19 +193,13 @@ class Note(object):
     def __gt__(self, other):
         if self.__class__ == type(other):
             return self.__interval_from(other) > 0
-        raise TypeError
-    # ('>' not supported between instances of 'int' and 'NoneType')
+        raise TypeError(f'\'>\' not supported between different types')
 
     def __ge__(self, other):
-        return self.__interval_from(other) >= 0
-
-    def is_note(self, other, ignore_oct=False):
         if self.__class__ == type(other):
-            if self.chr == other.chr:
-                if self.alt == other.alt:
-                    if ignore_oct:
-                        return True
-                    return self.oct == other.oct
+            return self.__interval_from(other) >= 0
+        raise TypeError(f'\'>=\' not supported between different types')
+
 
     def is_a(self, chr, alt='', oct=None):
         if self.chr == chr:
