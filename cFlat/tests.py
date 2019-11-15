@@ -9,7 +9,7 @@ from uuid import uuid4
 
 from bestia.output import echo
 
-class KeyValidityTestCase(unittest.TestCase):
+class KeyValidityTest(unittest.TestCase):
 
     ''' for a given key, allows to verify:
             * invalid roots        
@@ -17,6 +17,7 @@ class KeyValidityTestCase(unittest.TestCase):
     '''
 
     def setUp(self):
+
         self.chromatic_key = ChromaticKey
         # test no invalid roots
 
@@ -60,23 +61,25 @@ class KeyValidityTestCase(unittest.TestCase):
 
     def testValidRoots(self):
 
-        echo('\nValid {}s'.format(self.major_key.__name__), 'underline')
+        for Key in [self.major_key,self.minor_key ]:
 
-        for note in self.major_key.valid_root_notes():
+            echo('\nValid {}s'.format(Key.__name__), 'underline')
 
-            line = Row()
-            key = self.major_key(*note)
-            for d in key.scale(
-                notes=len(key._root_intervals) +16, yield_all=False
-            ):
-                line.append(
-                    FString(
-                        d,
-                        size=5,
-                        fg='blue' if not (d.oct % 2) else 'white', 
+            for note in Key.valid_root_notes():
+
+                line = Row()
+                key = Key(*note)
+                for d in key.scale(
+                    notes=len(key._root_intervals) +16, yield_all=False
+                ):
+                    line.append(
+                        FString(
+                            d,
+                            size=5,
+                            fg='blue' if not (d.oct % 2) else 'white', 
+                        )
                     )
-                )
-            line.echo()
+                line.echo()
 
 
 
@@ -89,7 +92,10 @@ class KeyValidityTestCase(unittest.TestCase):
             )
 
 
-class NoteEqualityTestCase(unittest.TestCase):
+
+
+
+class NoteEqualityTest(unittest.TestCase):
 
     DANGEROUS_NON_EQUALS = (
         # ''' Used mainly to test B#, Cd, etc... '''
@@ -138,7 +144,13 @@ class NoteEqualityTestCase(unittest.TestCase):
             assert note_pair[0] -  note_pair[1] == 0
 
 
-class ChromaticKeysTestCase(unittest.TestCase):
+
+
+
+
+
+
+class ChromaticKeysTest(unittest.TestCase):
 
     def setUp(self):
         self.c_chromatic = ChromaticKey('C')
@@ -419,7 +431,9 @@ class ChromaticKeysTestCase(unittest.TestCase):
 
 
 
-class MajorKeysTestCase(unittest.TestCase):
+
+
+class MajorKeysExpectedNotesTest(unittest.TestCase):
 
     def setUp(self):
         self.c_major = MajorKey('C')
@@ -676,6 +690,36 @@ class MajorKeysTestCase(unittest.TestCase):
     def testDegreeMethod(self):
         assert self.c_major.degree(1) == self.c_major[1], 'degree() != __get_item__()'
         assert self.c_major.degree(1).is_a('C'), 'diocane'
+
+
+    def testDio(self):
+        for note in self.c_major.scale(
+            notes=1, start_note=Note('F', 0)
+        ): 
+            assert note.is_a(*Note('F', 0)), note
+
+
+class TonalKeySpellMethodTest(unittest.TestCase):
+
+    def setUp(self):
+        self.keys = {
+            'a_bb_chromatic_key': ChromaticKey('A', 'b'),
+            'b_major': MajorKey('B'),
+            'bbb_minor': NaturalMinorKey('B', 'b'),
+            'c_mel_minor': MelodicMinorKey('C'),
+            'f#_har_minor': HarmonicMinorKey('F', '#'),
+        }
+
+    def testSpellNoteCount(self):
+        ''' tests that _spell delivers the right amount of notes '''
+        for key in self.keys.values():
+            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell() note count...')
+            for count in range(64):
+                count += 1
+                yielded_notes = len(
+                    [ n for n in key._spell(notes=count, yield_all=False) ]
+                )
+                assert yielded_notes == count, (yielded_notes, count)
 
 
 if __name__ == '__main__':
