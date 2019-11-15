@@ -730,9 +730,10 @@ class TonalKeySpellMethodTest(unittest.TestCase):
                 assert note.is_a(*diatonic_note), note
 
 
-    def testNonDiatonicStartNote(self):
-        ''' tests that first yielded note == expected diatonic note,
-            when start_note is a note non diatonic to the scale        
+    def testNonDiatonicStartNoteYieldNotes(self):
+        ''' tests 1st yielded item == expected diatonic note when:
+                * start_note is non-diatonic to the scale
+                * Nones ARE NOT being yielded
         '''
         test_parameters = [
             {
@@ -771,13 +772,64 @@ class TonalKeySpellMethodTest(unittest.TestCase):
             key = param['key']
             non = param['non_diatonic_note']
             exp = param['exp_diatonic_note']
-            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = non_diatonic_note ) argument ...')
+            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = non_diatonic_note , yield_all = 0 ) argument ...')
             for note in key._spell(
                 notes=1, start_note=non, yield_all=False
             ): 
-                # assert note != None, type(note)
+                assert note != None, type(note)         # yield all=False ensures no Nones
                 assert note.is_a(*exp), (note, exp)
 
+
+    def testNonDiatonicStartNoteYieldAll(self):
+        ''' tests 1st yielded item == expected value when:
+                * start_note is non-diatonic to the scale
+                * Nones ARE being yielded
+        '''
+        test_parameters = [
+            {
+                'key': self.keys['Ab_chromatic_key'], 
+                'non_diatonic_note': Note('A', '#', 1), # enharmonic
+                'exp_diatonic_note': Note('B', 'b', 1), # equals
+            },
+            {
+                'key': self.keys['B_major'], 
+                'non_diatonic_note': Note('D', 1),      # missing note
+                'exp_diatonic_note': None,              # yields a None, not D#
+            },
+            {
+                'key': self.keys['Bb_minor'], 
+                'non_diatonic_note': Note('D', '#', 1), # enharmonic
+                'exp_diatonic_note': Note('E', 'b', 1), # equals
+            },
+            {
+                'key': self.keys['C_mel_minor'], 
+                'non_diatonic_note': Note('F', '#', 0), # missing note
+                'exp_diatonic_note': None,              # yields a None, not G
+            },
+            {
+                'key': self.keys['F#_har_minor'], 
+                'non_diatonic_note': Note('C', 'b', 4), # enharmonic
+                'exp_diatonic_note': Note('B', '' , 3), # equals
+            },
+        ]
+
+        for param in test_parameters:
+            key = param['key']
+            non = param['non_diatonic_note']
+            exp = param['exp_diatonic_note']
+            
+            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = non_diatonic_note , yield_all = 1 ) argument ...')
+            
+            for note in key._spell(
+                notes=1, start_note=non, yield_all=True
+            ):
+
+                assert note == exp, (note, exp)
+                if note is not None:
+                    assert note.is_a(*exp), (note, exp)
+
+                break # test only first yielded value even if not a note
+                
 
     # def testNoneYields(self):
     #     for i, note in enumerate(MajorKey('C')._spell(
