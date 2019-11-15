@@ -1,16 +1,7 @@
 import unittest
 from random import randint
-# from uuid import uuid4
 
-from instruments import *
-from keys import *
-from notes import *
-from errors import *
-
-# from cFlat.instruments import *
-# from cFlat.keys import *
-# from cFlat.notes import *
-# from cFlat.errors import *
+from .instruments import *
 
 from bestia.output import echo
 
@@ -788,7 +779,6 @@ class TonalKeySpellMethodTest(unittest.TestCase):
                 assert note.is_a(*exp), (note, exp)
 
 
-
     # def testNoneYields(self):
     #     for i, note in enumerate(MajorKey('C')._spell(
     #         notes=2, start_note=None, yield_all=True
@@ -800,18 +790,3 @@ class TonalKeySpellMethodTest(unittest.TestCase):
     #             assert note is None
     #         if i == 2:
     #             assert note.is_a('D', '', 0)
-            
-
-
-
-if __name__ == '__main__':
-    '''
-    TDD:
-        * write test
-        * fail test RED
-        * write code
-        * pass test GREEN
-        * remove duplication REFACTOR
-        * pass test
-    '''
-    unittest.main()

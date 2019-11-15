@@ -1,7 +1,7 @@
 from bestia.iterate import LoopedList
 from bestia.output import echo
 
-from errors import *
+from .errors import *
 # from cFlat.errors import *
 
 SHARP = 1

@@ -2,8 +2,8 @@ from collections import deque
 
 from bestia.output import Row, FString, echo
 
+from .notes import *
 # from cFlat.notes import *
-from notes import *
 
 class TonalKey(object):
 
