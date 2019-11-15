@@ -692,34 +692,38 @@ class MajorKeysExpectedNotesTest(unittest.TestCase):
         assert self.c_major.degree(1).is_a('C'), 'diocane'
 
 
-    def testDio(self):
-        for note in self.c_major.scale(
-            notes=1, start_note=Note('F', 0)
-        ): 
-            assert note.is_a(*Note('F', 0)), note
-
 
 class TonalKeySpellMethodTest(unittest.TestCase):
 
     def setUp(self):
         self.keys = {
-            'a_bb_chromatic_key': ChromaticKey('A', 'b'),
-            'b_major': MajorKey('B'),
-            'bbb_minor': NaturalMinorKey('B', 'b'),
-            'c_mel_minor': MelodicMinorKey('C'),
-            'f#_har_minor': HarmonicMinorKey('F', '#'),
+            'Ab_chromatic_key': ChromaticKey('A', 'b'),
+            'B_major': MajorKey('B'),
+            'Bbb_minor': NaturalMinorKey('B', 'b'),
+            'C_mel_minor': MelodicMinorKey('C'),
+            'F#_har_minor': HarmonicMinorKey('F', '#'),
         }
 
     def testSpellNoteCount(self):
         ''' tests that _spell delivers the right amount of notes '''
         for key in self.keys.values():
-            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell() note count...')
+            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell() note argument ...')
             for count in range(64):
                 count += 1
                 yielded_notes = len(
                     [ n for n in key._spell(notes=count, yield_all=False) ]
                 )
                 assert yielded_notes == count, (yielded_notes, count)
+
+
+    def testDiatonicStartNote(self):
+        for key in self.keys.values():
+            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell() start_note argument ...')
+            diatonic_note = key.degree(13)
+            for note in key.scale(
+                notes=1, start_note=diatonic_note, yield_all=True
+            ): 
+                assert note.is_a(*diatonic_note), note
 
 
 if __name__ == '__main__':
