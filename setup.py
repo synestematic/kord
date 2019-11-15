@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="cFlat",
-    version="0.6",
+    version="0.7",
     author="Federico Rizzo",
     author_email="foo@bar.com",
     description='a python framework for programming music applications',
