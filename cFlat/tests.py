@@ -716,7 +716,9 @@ class TonalKeySpellMethodTest(unittest.TestCase):
             for count in range(64):
                 count += 1
                 yielded_notes = len(
-                    [ n for n in key._spell(notes=count, yield_all=False) ]
+                    [ n for n in key._spell(
+                        notes=count, start_note=None, yield_all=False,
+                    ) ]
                 )
                 assert yielded_notes == count, (yielded_notes, count)
 
@@ -726,7 +728,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
         for key in self.keys.values():
             print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = diatonic_note ) argument ...')
             diatonic_note = key.degree( randint(2, 128) )
-            for note in key.scale(
+            for note in key._spell(
                 notes=1, start_note=diatonic_note, yield_all=True
             ): 
                 assert note.is_a(*diatonic_note), note
@@ -734,7 +736,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
 
     def testNonDiatonicStartNote(self):
         ''' tests that first yielded note == expected diatonic note,
-            when start_note is a nnote non diatonic to the scale        
+            when start_note is a note non diatonic to the scale        
         '''
         test_parameters = [
             {
@@ -774,11 +776,10 @@ class TonalKeySpellMethodTest(unittest.TestCase):
             non = param['non_diatonic_note']
             exp = param['exp_diatonic_note']
             print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = non_diatonic_note ) argument ...')
-            for note in key.scale(
+            for note in key._spell(
                 notes=1, start_note=non, yield_all=True
             ): 
                 assert note.is_a(*exp), (note, exp)
-
 
 
 if __name__ == '__main__':
