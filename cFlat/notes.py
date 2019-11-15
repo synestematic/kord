@@ -189,7 +189,6 @@ class Note(object):
             return True
         return self.__interval_from(other) != 0
 
-
     def __gt__(self, other):
         if self.__class__ == type(other):
             return self.__interval_from(other) > 0
@@ -199,6 +198,16 @@ class Note(object):
         if self.__class__ == type(other):
             return self.__interval_from(other) >= 0
         raise TypeError(f'\'>=\' not supported between different types')
+
+    def __lt__(self, other):
+        if self.__class__ == type(other):
+            return self.__interval_from(other) < 0
+        raise TypeError(f'\'<\' not supported between different types')
+
+    def __le__(self, other):
+        if self.__class__ == type(other):
+            return self.__interval_from(other) <= 0
+        raise TypeError(f'\'<=\' not supported between different types')
 
 
     def is_a(self, chr, alt='', oct=None):
