@@ -67,7 +67,7 @@ class KeyValidityTest(unittest.TestCase):
                 line = Row()
                 key = Key(*note)
                 for d in key.scale(
-                    notes=len(key._root_intervals) +16, yield_all=False
+                    note_count=len(key._root_intervals) +16, yield_all=False
                 ):
                     line.append(
                         FString(
@@ -169,7 +169,7 @@ class ChromaticKeysTest(unittest.TestCase):
 
         for i, note in enumerate(
             self.c_chromatic.scale(
-                notes=notes_to_test, yield_all=False
+                note_count=notes_to_test, yield_all=False
             )
         ):
             i += 1
@@ -287,7 +287,7 @@ class ChromaticKeysTest(unittest.TestCase):
 
         for i, note in enumerate(
             self.f_sharp_chromatic.scale(
-                notes=notes_to_test, yield_all=False
+                note_count=notes_to_test, yield_all=False
             )
         ):
             i += 1
@@ -355,7 +355,7 @@ class ChromaticKeysTest(unittest.TestCase):
 
         for i, note in enumerate(
             self.b_flat_chromatic.scale(
-                notes=notes_to_test, yield_all=False
+                note_count=notes_to_test, yield_all=False
             )
         ):
             i += 1
@@ -453,7 +453,7 @@ class MajorKeysExpectedNotesTest(unittest.TestCase):
 
         for i, note in enumerate(
             self.c_major.scale(
-                notes=notes_to_test, yield_all=False
+                note_count=notes_to_test, yield_all=False
             )
         ):
             i += 1
@@ -531,7 +531,7 @@ class MajorKeysExpectedNotesTest(unittest.TestCase):
 
         for i, note in enumerate(
             self.b_major.scale(
-                notes=notes_to_test, yield_all=False
+                note_count=notes_to_test, yield_all=False
             )
         ):
             i += 1
@@ -612,7 +612,7 @@ class MajorKeysExpectedNotesTest(unittest.TestCase):
 
         for i, note in enumerate(
             self.d_flat_major.scale(
-                notes=notes_to_test, yield_all=False
+                note_count=notes_to_test, yield_all=False
             )
         ):
             i += 1
@@ -708,12 +708,12 @@ class TonalKeySpellMethodTest(unittest.TestCase):
     def testNoteCount(self):
         ''' tests yielded note count  '''
         for key in self.keys.values():
-            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( notes ) argument ...')
+            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( note_count ) argument ...')
             for count in range(64):
                 count += 1
                 yielded_notes = len(
                     [ n for n in key._spell(
-                        notes=count, start_note=None, yield_all=False,
+                        note_count=count, start_note=None, yield_all=False,
                     ) ]
                 )
                 assert yielded_notes == count, (yielded_notes, count)
@@ -722,12 +722,12 @@ class TonalKeySpellMethodTest(unittest.TestCase):
     def testDiatonicStartNote(self):
         ''' tests that first yielded note == diatonic start_note '''
         for key in self.keys.values():
-            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = diatonic_note ) argument ...')
-            diatonic_note = key.degree( randint(2, 128) )
+            d = randint(2, 64)
+            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = degree({d}) ) argument ...')
             for note in key._spell(
-                notes=1, start_note=diatonic_note, yield_all=True
+                note_count=1, start_note=key.degree(d), yield_all=True
             ): 
-                assert note.is_a(*diatonic_note), note
+                assert note.is_a(*key.degree(d)), note
 
 
     def testNonDiatonicStartNoteYieldNotes(self):
@@ -774,7 +774,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
             exp = param['exp_diatonic_note']
             print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = non_diatonic_note , yield_all = 0 ) argument ...')
             for note in key._spell(
-                notes=1, start_note=non, yield_all=False
+                note_count=1, start_note=non, yield_all=False
             ): 
                 assert note != None, type(note)         # yield all=False ensures no Nones
                 assert note.is_a(*exp), (note, exp)
@@ -821,7 +821,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
             print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = non_diatonic_note , yield_all = 1 ) argument ...')
             
             for note in key._spell(
-                notes=1, start_note=non, yield_all=True
+                note_count=1, start_note=non, yield_all=True
             ):
 
                 assert note == exp, (note, exp)
@@ -833,7 +833,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
 
     # def testNoneYields(self):
     #     for i, note in enumerate(MajorKey('C')._spell(
-    #         notes=2, start_note=None, yield_all=True
+    #         note_count=2, start_note=None, yield_all=True
     #     )):
     #         echo(note, 'yellow')
     #         if i == 0:

@@ -13,7 +13,7 @@ class TonalKey(object):
     def __repr__(self):
         spell_line = Row()
         for d in self.scale(
-            notes=len(self._root_intervals) +1, yield_all=False
+            note_count=len(self._root_intervals) +1, yield_all=False
         ):
             spell_line.append(
                 FString(d, size=5)
@@ -65,7 +65,7 @@ class TonalKey(object):
         return self._root_intervals[d -1]
 
 
-    def _spell(self, notes=0, start_note=None, yield_all=True, degree_order=[]):
+    def _spell(self, note_count=0, start_note=None, yield_all=True, degree_order=[]):
         '''
             features to support:
                 * yield notes count
@@ -76,7 +76,7 @@ class TonalKey(object):
                 * degree order for chords, modes, etc
         '''
 
-        notes_to_yield = notes if notes else len(self._root_intervals)
+        notes_to_yield = note_count if note_count else len(self._root_intervals)
         start_note = start_note if start_note else self.root
 
         degree_order = deque(
@@ -118,7 +118,7 @@ class TonalKey(object):
 
 
 
-    def __oldspell(self, notes=0, start_note=None, yield_all=True, degree_order=[]):
+    def __oldspell(self, note_count=0, start_note=None, yield_all=True, degree_order=[]):
 
         while notes_to_yield:
             d += 1
@@ -187,9 +187,9 @@ class TonalKey(object):
 
 
 
-    def scale(self, notes=0, start_note=None, yield_all=True):
+    def scale(self, note_count=0, start_note=None, yield_all=True):
         return self._spell(
-            notes=notes, start_note=start_note,
+            note_count=note_count, start_note=start_note,
             yield_all=yield_all, degree_order=range(1, len(self._root_intervals) +1),
         )
 
@@ -198,7 +198,7 @@ class TonalKey(object):
         ''' checks if a note object is a degree in the scale,
             returns degree number
         '''
-        for d, degree in enumerate(self.scale(yield_all=False, notes=666)):
+        for d, degree in enumerate(self.scale(yield_all=False, note_count=666)):
             d += 1
             if note == degree:
                 return d
@@ -240,33 +240,33 @@ class DiatonicKey(TonalKey):
         raise InvalidNote
 
 
-    def triad(self, notes=0, start_note=None, yield_all=True):
+    def triad(self, note_count=0, start_note=None, yield_all=True):
         return self._spell(
-            notes=notes, start_note=start_note,
+            note_count=note_count, start_note=start_note,
             yield_all=yield_all, degree_order=(1, 3, 5),
         )
 
-    def seventh(self, notes=0, start_note=None, yield_all=True):
+    def seventh(self, note_count=0, start_note=None, yield_all=True):
         return self._spell(
-            notes=notes, start_note=start_note,
+            note_count=note_count, start_note=start_note,
             yield_all=yield_all, degree_order=(1, 3, 5, 7),
         )
 
-    def ninth(self, notes=0, start_note=None, yield_all=True):
+    def ninth(self, note_count=0, start_note=None, yield_all=True):
         return self._spell(
-            notes=notes, start_note=start_note,
+            note_count=note_count, start_note=start_note,
             yield_all=yield_all, degree_order=(1, 3, 5, 7, 9),
         )
 
-    def eleventh(self, notes=0, start_note=None, yield_all=True):
+    def eleventh(self, note_count=0, start_note=None, yield_all=True):
         return self._spell(
-            notes=notes, start_note=start_note,
+            note_count=note_count, start_note=start_note,
             yield_all=yield_all, degree_order=(1, 3, 5, 7, 9, 11),
         )
 
-    def thirteenth(self, notes=0, start_note=None, yield_all=True):
+    def thirteenth(self, note_count=0, start_note=None, yield_all=True):
         return self._spell(
-            notes=notes, start_note=start_note,
+            note_count=note_count, start_note=start_note,
             yield_all=yield_all, degree_order=(1, 3, 5, 7, 9, 11, 13),
         )
 

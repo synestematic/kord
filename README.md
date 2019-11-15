@@ -131,10 +131,10 @@ Perhaps the most interesting aspect of any TonalKey sub-class is it's ability to
 C⁰ C♯⁰ D⁰ D♯⁰ E⁰ F⁰ F♯⁰ G⁰ G♯⁰ A⁰ A♯⁰ B⁰ C¹ 
 ```
 
-We can use the ```notes=``` argument to specify to the scale generator the amount of notes to yield:
+We can use the ```note_count=``` argument to specify to the scale generator the amount of notes to yield:
 
 ```
->>> for note in c_chromatic.scale(notes=4):
+>>> for note in c_chromatic.scale(note_count=4):
 ...   print(note, end=' ')
 ...
 C⁰ C♯⁰ D⁰ D♯⁰ 
@@ -145,7 +145,7 @@ The ```start_note=``` argument can be used to to start yielding from a specific 
 ```
 >>> from cFlat.notes import Note
 >>> Ab = Note('A', 'b', 0)
->>> for note in c_chromatic.scale(notes=6, start_note=Ab):
+>>> for note in c_chromatic.scale(note_count=6, start_note=Ab):
 ...   print(note, end=' ')
 ...
 G♯⁰ A⁰ A♯⁰ B⁰ C¹ C♯¹ 

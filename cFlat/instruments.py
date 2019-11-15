@@ -67,7 +67,7 @@ class String(object):
 
         for fret_n, fret_note in enumerate(
             self.display_method(
-                notes=self.frets,
+                note_count=self.frets,
                 start_note=self.tuning,
                 yield_all=True,
             )
