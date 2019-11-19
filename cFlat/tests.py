@@ -5,12 +5,15 @@ from .instruments import *
 
 from bestia.output import echo
 
+
 class KeyValidityTest(unittest.TestCase):
 
     ''' for a given key, allows to verify:
             * invalid roots        
             * octave changes
     '''
+
+
 
     def setUp(self):
         print()
@@ -832,14 +835,34 @@ class TonalKeySpellMethodTest(unittest.TestCase):
                 break # test only first yielded value even if not a note
                 
 
-    # def testNoneYields(self):
-    #     for i, note in enumerate(MajorKey('C')._spell(
-    #         note_count=2, start_note=None, yield_all=True
-    #     )):
-    #         echo(note, 'yellow')
-    #         if i == 0:
-    #             assert note.is_a('C', '', 0)
-    #         if i == 1:
-    #             assert note is None
-    #         if i == 2:
-    #             assert note.is_a('D', '', 0)
+    def testNoneYields(self):
+        for i, note in enumerate(MajorKey('C')._spell(
+            note_count=64, start_note=None, yield_all=True
+        )):
+            # echo(note, 'yellow')
+            if i == 0:
+                assert note.is_a('C', '', 0)
+            elif i == 1:
+                assert note is None
+            elif i == 2:
+                assert note.is_a('D', '', 0)
+            elif i == 3:
+                assert note is None
+            elif i == 4:
+                assert note.is_a('E', '', 0)
+            elif i == 5:
+                assert note.is_a('F', '', 0)
+            elif i == 6:
+                assert note is None
+            elif i == 7:
+                assert note.is_a('G', '', 0)
+            elif i == 8:
+                assert note is None
+            elif i == 9:
+                assert note.is_a('A', '', 0)
+            elif i == 10:
+                assert note is None
+            elif i == 11:
+                assert note.is_a('B', '', 0)
+            elif i == 12:
+                assert note.is_a('C', '', 1)

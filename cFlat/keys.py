@@ -91,7 +91,6 @@ class TonalKey(object):
             if self[d] < start_note:
                 continue
 
-
             if yield_all:
 
                 # DONT YIELD EXTRA NONE BEFORE START_NOTE
