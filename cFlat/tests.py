@@ -835,7 +835,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
                 break # test only first yielded value even if not a note
                 
 
-    def testNoneYields(self):
+    def testMajorNoneYields(self):
         for i, note in enumerate(MajorKey('C')._spell(
             note_count=64, start_note=None, yield_all=True
         )):
@@ -866,3 +866,11 @@ class TonalKeySpellMethodTest(unittest.TestCase):
                 assert note.is_a('B', '', 0)
             elif i == 12:
                 assert note.is_a('C', '', 1)
+
+
+    def testChromaticNoneYields(self):
+        ''' tests Chromatic scale does NEVER yield None even with yield_all '''
+        for i, note in enumerate(self.keys['Ab_chromatic_key']._spell(
+            note_count=128, start_note=None, yield_all=True
+        )):
+            assert note != None
