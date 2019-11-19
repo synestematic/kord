@@ -717,7 +717,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
                 count += 1
                 yielded_notes = len(
                     [ n for n in key._spell(
-                        note_count=count, start_note=None, yield_all=False,
+                        note_count=count, start_note=None, yield_all=False, degree_order=[]
                     ) ]
                 )
                 assert yielded_notes == count, (yielded_notes, count)
@@ -729,7 +729,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
             d = randint(2, 64)
             print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = degree({d}) ) argument ...')
             for note in key._spell(
-                note_count=1, start_note=key.degree(d), yield_all=True
+                note_count=1, start_note=key.degree(d), yield_all=True, degree_order=[]
             ): 
                 assert note.is_a(*key.degree(d)), note
 
@@ -778,7 +778,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
             exp = param['exp_diatonic_note']
             print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = non_diatonic_note , yield_all = 0 ) argument ...')
             for note in key._spell(
-                note_count=1, start_note=non, yield_all=False
+                note_count=1, start_note=non, yield_all=False, degree_order=[]
             ): 
                 assert note != None, type(note)         # yield all=False ensures no Nones
                 assert note.is_a(*exp), (note, exp)
@@ -825,7 +825,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
             print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = non_diatonic_note , yield_all = 1 ) argument ...')
             
             for note in key._spell(
-                note_count=1, start_note=non, yield_all=True
+                note_count=1, start_note=non, yield_all=True, degree_order=[]
             ):
 
                 assert note == exp, (note, exp)
@@ -837,7 +837,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
 
     def testMajorNoneYields(self):
         for i, note in enumerate(MajorKey('C')._spell(
-            note_count=64, start_note=None, yield_all=True
+            note_count=64, start_note=None, yield_all=True, degree_order=[]
         )):
             # echo(note, 'yellow')
             if i == 0:
@@ -871,6 +871,6 @@ class TonalKeySpellMethodTest(unittest.TestCase):
     def testChromaticNoneYields(self):
         ''' tests Chromatic scale does NEVER yield None even with yield_all '''
         for i, note in enumerate(self.keys['Ab_chromatic_key']._spell(
-            note_count=128, start_note=None, yield_all=True
+            note_count=128, start_note=None, yield_all=True, degree_order=[]
         )):
             assert note != None
