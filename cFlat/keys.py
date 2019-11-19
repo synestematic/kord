@@ -83,19 +83,14 @@ class TonalKey(object):
             [ self[d] for d in degree_order ]
         ) if degree_order else []
 
-        yield_enabled = False
         d = 0
-
+        # yield_enabled = False
         while notes_to_yield:
             d += 1
 
             # DETERMINE WHETHER THRESHOLD_NOTE HAS BEEN REACHED
-            if not yield_enabled and self[d] >= start_note:
-                yield_enabled = True
-
-            if not yield_enabled:
+            if self[d] < start_note:
                 continue
-
 
             # CALCULATE AND YIELD NON-DIATONIC SEMITONES
             # DO NOT CALCULATE PREV_INT ON ROOT DEGREE
@@ -110,7 +105,6 @@ class TonalKey(object):
 
             yield self[d]
             notes_to_yield -= 1
-
 
 
 
