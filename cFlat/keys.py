@@ -84,23 +84,24 @@ class TonalKey(object):
         ) if degree_order else []
 
         d = 0
-        # yield_enabled = False
         while notes_to_yield:
             d += 1
 
-            # DETERMINE WHETHER THRESHOLD_NOTE HAS BEEN REACHED
+            # START_NOTE REACHED
             if self[d] < start_note:
                 continue
 
-            # CALCULATE AND YIELD NON-DIATONIC SEMITONES
-            # DO NOT CALCULATE PREV_INT ON ROOT DEGREE
-            previous_interval = 0 if d == 1 else self[d] - self[d -1]
 
-            # AVOID YIELDING EXTRA NONE BEFORE START_NOTE
-            # WHEN SCALE DEG BEFORE IS > 1ST AWAY
-            if yield_all and self[d] != start_note:
-                for st in range(previous_interval -1):
-                    yield
+            if yield_all:
+
+                # DONT YIELD EXTRA NONE BEFORE START_NOTE
+                # WHEN SCALE DEG BEFORE IS > 1 ST AWAY
+                if self[d] != start_note:
+
+                    # YIELD NON-DIATONIC STs, EXCEPT FOR ROOT
+                    last_interval = 0 if d == 1 else self[d] - self[d -1] - 1
+                    for st in range(last_interval):
+                        yield
 
 
             yield self[d]
@@ -136,12 +137,12 @@ class TonalKey(object):
 
             # CALCULATE AND YIELD NON-DIATONIC SEMITONES
             # DO NOT CALCULATE PREV_INT ON ROOT DEGREE
-            previous_interval = 0 if d == 1 else self[d] - self[d -1]
+            last_interval = 0 if d == 1 else self[d] - self[d -1]
 
             # AVOID YIELDING EXTRA NONE BEFORE START_NOTE
             # WHEN SCALE DEG BEFORE IS > 1ST AWAY
             if yield_all and self[d] != start_note:
-                for st in range(previous_interval -1):
+                for st in range(last_interval -1):
                     yield
 
             # DETERMINE WHETHER TO YIELD DEGREE OR NONE
