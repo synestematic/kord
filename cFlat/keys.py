@@ -31,13 +31,16 @@ class TonalKey(object):
         invalid_roots = []
 
         for note in notes_by_alts():
+
             try:
                 invalid_root = False
-                for _ in cls(*note).scale(yield_all=0):
+                for _ in cls(*note).scale(note_count=len(cls._root_intervals) +1, yield_all=0):
                     # if any degree fails, scale is not spellable
                     pass
+
             except InvalidNote:
                 invalid_root = True
+
             finally:
                 if invalid_root:
                     invalid_roots.append(note)
@@ -65,26 +68,60 @@ class TonalKey(object):
         return self._root_intervals[d -1]
 
 
-    def _spell(self, note_count=0, start_note=None, yield_all=True, degree_order=[]):
+    def _spell(self, note_count=-1, start_note=None, yield_all=True, degree_order=[]):
+        ''' supported features:
+                * positive note_counts yield notes exactly
+                * negative note_counts yield notes indefinetly
+                * degree order for chords, modes, etc
         '''
-            features to support:
-                * yield notes count
+
+        if not degree_order:
+            degs = LoopedList(
+                * [ self.degree(n +1) for n in range(len(self._root_intervals)) ]
+            )
+        else:
+            degs = LoopedList(
+                * [ self.degree(n) for n in degree_order ]
+            )
+
+        for note in self.__spell( start_note=start_note, yield_all=yield_all ):
+
+            if note_count == 0:  # negative note_counts never return
+                return
+
+            if note is None:
+                if yield_all:
+                    yield None
+
+            else:
+
+                note_match = False
+                for deg in degs:
+                    if note.is_a(deg.chr, deg.alt):
+                        yield note
+                        note_count -= 1
+                        note_match = True
+                        break
+
+                if not note_match:
+                    if yield_all:
+                        yield None
+
+
+    def __spell(self, start_note=None, yield_all=True):
+        ''' supported features:
+                * yields indefinetly
                 * octave change, BUT degree() takes care of it
                 * diatonic start_note
                 * non-diatonic start_note
                 * yield None for empty semi-tones
-                * degree order for chords, modes, etc
         '''
 
-        notes_to_yield = note_count if note_count else len(self._root_intervals)
+        # note_count = note_count if note_count else len(self._root_intervals)
         start_note = start_note if start_note else self.root
 
-        degree_order = deque(
-            [ self[d] for d in degree_order ]
-        ) if degree_order else []
-
         d = 0
-        while notes_to_yield:
+        while True:
             d += 1
 
             # START_NOTE REACHED
@@ -102,13 +139,8 @@ class TonalKey(object):
                     for st in range(last_interval):
                         yield
 
-
             yield self[d]
-            notes_to_yield -= 1
-
-
-
-
+            # note_count -= 1
 
 
 
