@@ -155,7 +155,7 @@ class StringInstrument(object):
     def fret_inlays(cls, verbose=1, frets=12):
 
         if not verbose:
-            return
+            return ''
 
         inlays = (
             '',
