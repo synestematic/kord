@@ -14,7 +14,7 @@ def max_frets_on_screen():
 
 class String(object):
 
-    def __init__(self, tone, alt='', oct=0, frets=0, display=None):
+    def __init__(self, tone, alt='', oct=0, frets=0, display=None, verbose=1):
 
         self.__key = None
 
@@ -22,6 +22,7 @@ class String(object):
         self.tuning = Note(tone, alt, oct)
         self.display_method = display
         self.frets = 12 if not frets else frets
+        self.verbose = verbose
  
 
     @property
@@ -79,7 +80,7 @@ class String(object):
                 note = '{}{}{}'.format(
                     fret_note.chr,
                     fret_note.repr_alt,
-                    fret_note.repr_oct,
+                    fret_note.repr_oct if self.verbose > 1 else '',
                 )
                 note_fg = 'green' if fret_note.is_a(self.key.root.chr, self.key.root.alt) else 'magenta'
 
@@ -143,6 +144,7 @@ class StringInstrument(object):
 
             string.display_method = display
             string.frets = frets
+            string.verbose = verbose
 
             echo(str(string_n) + str(string))
         
