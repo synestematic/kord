@@ -125,6 +125,9 @@ class StringInstrument(object):
 
     def fretboard(self, display=None, frets=12, verbose=1):
 
+        if frets > 24:
+            frets = 24
+
         # INIT A NEW SCALE, OTHERWISE YOU USE THE SAME OUTER OBJECT!!!
 
         echo(self.fret_inlays(verbose=verbose, frets=frets))
