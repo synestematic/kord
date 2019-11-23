@@ -18,7 +18,6 @@ class String(object):
 
         self.__key = None
 
-        # ALWAYS INIT NEW OBJECT
         self.tuning = Note(tone, alt, oct)
         self.display_method = display
         self.frets = 12 if not frets else frets
@@ -66,7 +65,7 @@ class String(object):
         ''' prints string notes matching given key '''
         string_line = Row()
 
-        for fret_n, fret_note in enumerate(
+        for fret_n, note in enumerate(
             self.display_method(
                 note_count=self.frets,
                 start_note=self.tuning,
@@ -74,23 +73,26 @@ class String(object):
             )
         ):
 
-            note = ''
-            note_fg = ''
-            if fret_note:
-                note = '{}{}{}'.format(
-                    fret_note.chr,
-                    fret_note.repr_alt,
-                    fret_note.repr_oct if self.verbose > 1 else '',
+            fret_value = ''
+            if note:
+                note_fg = 'green' if note.is_a(self.key.root.chr, self.key.root.alt) else 'magenta'
+                fret_value = '{}{}{}'.format(
+                    FString(note.chr, size=1, fg=note_fg, fx=['']),
+                    FString(note.repr_alt, size=0, fg=note_fg, fx=['']),
+                    FString(
+                        note.repr_oct if self.verbose > 0 else '',
+                        size=1,
+                        fg=note_fg,
+                        fx=['faint' if self.verbose < 2 else ''],
+                    ),
                 )
-                note_fg = 'green' if fret_note.is_a(self.key.root.chr, self.key.root.alt) else 'magenta'
 
             # APPEND NOTE_INFO
             string_line.append(
                 FString(
-                    note,
+                    fret_value,
                     size=_NOTE_WIDTH -1 if fret_n == 0 else _NOTE_WIDTH,
                     align='cr',
-                    fg=note_fg,
                 )
             )
 
@@ -135,11 +137,12 @@ class StringInstrument(object):
         echo(self.binding('upper', frets=frets))
 
         for string in self.strings:
-            # string number display
+
+            # string numbers
             string_n = FString(
                 self.strings.index(string) +1,
                 fg='cyan', 
-                fx=['faint'],
+                fx=['faint' if verbose < 1 else ''],
             )
 
             string.display_method = display
@@ -204,7 +207,7 @@ class StringInstrument(object):
                     size=_NOTE_WIDTH + _FRET_WIDTH,
                     align='cl',
                     fg='cyan',
-                    fx=['faint'],
+                    fx=['faint' if i in (1, 2, 4, 6, 8, 10, 11, 13, 14, 16, 18, 20, 22, 23) else ''],
                 )
             )
             frets -= 1
