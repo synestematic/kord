@@ -1,5 +1,6 @@
 import unittest
 from random import randint
+from time import sleep
 
 from .instruments import *
 
@@ -12,8 +13,6 @@ class KeyValidityTest(unittest.TestCase):
             * invalid roots        
             * octave changes
     '''
-
-
 
     def setUp(self):
         print()
@@ -712,7 +711,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
         ''' tests yielded note count is what has been required '''
         for key in self.keys.values():
             max_notes = randint(2, 64)
-            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( note_count=1..{max_notes} ) argument ...')
+            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( note_count=1..{max_notes} ) ...')
             for count in range(max_notes):
                 count += 1
                 yielded_notes = len(
@@ -727,7 +726,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
         ''' tests that first yielded note == diatonic start_note '''
         for key in self.keys.values():
             d = randint(2, 64)
-            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = degree({d}) ) argument ...')
+            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = degree({d}) ) ...')
             for note in key._spell(
                 note_count=1, start_note=key.degree(d), yield_all=True, degree_order=[]
             ): 
@@ -776,7 +775,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
             key = param['key']
             non = param['non_diatonic_note']
             exp = param['exp_diatonic_note']
-            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = non_diatonic_note , yield_all = 0 ) argument ...')
+            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = non_diatonic_note , yield_all = 0 ) ...')
             for note in key._spell(
                 note_count=1, start_note=non, yield_all=False, degree_order=[]
             ): 
@@ -822,7 +821,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
             non = param['non_diatonic_note']
             exp = param['exp_diatonic_note']
             
-            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = non_diatonic_note , yield_all = 1 ) argument ...')
+            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = non_diatonic_note , yield_all = 1 ) ...')
             
             for note in key._spell(
                 note_count=1, start_note=non, yield_all=True, degree_order=[]
@@ -874,3 +873,27 @@ class TonalKeySpellMethodTest(unittest.TestCase):
             note_count=128, start_note=None, yield_all=True, degree_order=[]
         )):
             assert note != None
+
+
+    def testDegreeOrder(self):
+        sn = Note('C', '', 0)
+        for i, note in enumerate(MajorKey('C')._spell(
+            note_count=23, start_note=sn, yield_all=False, degree_order=[1, 3, 5, 7]
+        )):
+            echo(f'{note}  ', 'yellow', mode='raw')
+            # sleep(0.3)
+
+
+    def testDegreeOrderOverOct(self):
+        for i, note in enumerate(MajorKey('C').ninth(
+            note_count=5, start_note=None, yield_all=False
+        )):
+            i += 1
+            if i == 1:
+                assert note.is_a('C', '', 0), note
+            if i == 2:
+                assert note.is_a('D', '', 0), note
+
+            print(note)
+        # input('waiting...')
+
