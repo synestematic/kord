@@ -185,6 +185,7 @@ class Note(object):
     #     # https://stackoverflow.com/questions/39754808/overriding-not-operator-in-python
     #     pass
 
+    # EX. is_a(oct=None)
     def __mul__(self, other):
         ''' *  operator implements LOOSEST equality '''
         if self.__class__ == other.__class__:
@@ -194,6 +195,7 @@ class Note(object):
             return False
         raise TypeError('unsupported operand type(s) for *')
 
+    # EX. ==
     def __pow__(self, other):
         ''' ** operator implements LOOSE equality (enharmony) '''
         if self.__class__ == other.__class__:
@@ -206,6 +208,15 @@ class Note(object):
         if self.__class__ != other.__class__:
             return False
         return self.__interval_from(other) == 0
+
+    # EX. is_a(oct=3)
+    # def __eq__(self, other):
+    #     ''' == operator implements STRICT equality '''
+    #     if self.__class__ == other.__class__:
+    #         if self.chr == other.chr:
+    #             if self.alt == other.alt:
+    #                 if self.oct == other.oct:
+    #                     return True
 
     def __ne__(self, other):
         if self.__class__ != other.__class__:
