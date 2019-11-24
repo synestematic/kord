@@ -115,7 +115,7 @@ class TonalKey(object):
             # THIS.............
             note_match = False
             for deg in degs:
-                if note.is_a(deg.chr, deg.alt):
+                if note ** deg:
                     yield note
                     note_count -= 1
                     note_match = True
@@ -127,7 +127,7 @@ class TonalKey(object):
 
 
             # # OR THIS.............
-            # if note.is_a(degrees[0].chr, degrees[0].alt):
+            # if note ** degrees[0]:
             #     yield note
             #     note_count -= 1
             #     # degrees.rotate() # <<<<<
@@ -171,75 +171,6 @@ class TonalKey(object):
 
             yield self[d]
             # note_count -= 1
-
-
-
-    def __oldspell(self, note_count=0, start_note=None, yield_all=True, degree_order=[]):
-
-        while notes_to_yield:
-            d += 1
-            if not yield_enabled and self[d] >= start_note:
-                yield_enabled = True
-
-                # ROTATE DEGREE_ORDER TO APPROPRIATE_NOTE
-                for o, _ in enumerate(degree_order):
-
-                    if self.__check_degree_order(self[d].chr, o, degree_order):
-                        degree_order.rotate(
-                            0 - degree_order.index(
-                                degree_order[o]
-                            ) - 1
-                        )
-                        break
-
-            if not yield_enabled:
-                continue
-
-
-            # CALCULATE AND YIELD NON-DIATONIC SEMITONES
-            # DO NOT CALCULATE PREV_INT ON ROOT DEGREE
-            last_interval = 0 if d == 1 else self[d] - self[d -1]
-
-            # AVOID YIELDING EXTRA NONE BEFORE START_NOTE
-            # WHEN SCALE DEG BEFORE IS > 1ST AWAY
-            if yield_all and self[d] != start_note:
-                for st in range(last_interval -1):
-                    yield
-
-            # DETERMINE WHETHER TO YIELD DEGREE OR NONE
-            yield_note = False if degree_order else True
-            if degree_order:
-                if self[d].is_a(degree_order[0].chr, degree_order[0].alt):
-                    yield_note = True
-                    degree_order.rotate(-1)
-
-            if yield_note:
-                yield self[d]
-                notes_to_yield -= 1
-            elif yield_all:
-                yield
-
-
-    def __check_degree_order(self, check_chr, o, degree_order):
-        ''' helper function to spell method
-            checks degree order items one at a time
-            to decide when it's time to rotate
-        '''
-
-        c = 1
-        while True:
-
-            d_next_char = degree_order[o].adjacent_chr(c)
-
-            if d_next_char  == check_chr:
-                # found rotate position
-                return True
-
-            if d_next_char == degree_order[o + 1].chr:
-                # reached next degree_order.chr
-                return
-
-            c += 1
 
 
 
@@ -495,7 +426,8 @@ class ChromaticKey(TonalKey):
         next_degrees = [
             n for n in EnharmonicMatrix[
                 self.root.enharmonic_row + spare_sts
-            ] if n.is_a(self.root.chr, self.root.alt)
+            ] if n ** self.root
+            # ] if n.is_a(self.root.chr, self.root.alt)
         ]
 
         if not next_degrees:
