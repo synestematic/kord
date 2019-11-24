@@ -8,5 +8,6 @@
 !cFlat/tests.py
 !cFlat/instruments.py
 !cFlat/keys.py
+!cFlat/degrees.py
 !cFlat/notes.py
 !cFlat/errors.py
