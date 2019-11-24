@@ -37,6 +37,7 @@ class Degrees(object):
         return self._rotate_by_magnitude(note)
 
     def _rotate_by_presence(self, note):
+        ''' exact Note in order, == enforces STRICT match '''
         self.reset()
         for degree in self.original_order:
             if degree == note:
@@ -44,23 +45,9 @@ class Degrees(object):
             self.rotate()
 
     def _rotate_by_magnitude(self, note):
+        ''' exact Note NOT in order, >= allows enharmonic equality '''
         self.reset()
         for degree in self.original_order:
-            if degree > note:
+            if degree >= note:
                 return True
             self.rotate()
-
-
-if __name__ == "__main__":
-
-    degrees = Degrees( 1, 3, 5 )
-    # print(degrees)
-    degrees.rotate_by_note(5)
-    print(degrees)
-    degrees.rotate_by_note(2)
-    print(degrees)
-    degrees.rotate_by_note(3)
-    print(degrees)
-    degrees.rotate()
-    print(degrees)
-
