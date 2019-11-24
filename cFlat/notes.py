@@ -181,26 +181,31 @@ class Note(object):
             return self.__interval_from(other)
         raise TypeError('unsupported operand type(s) for -')
 
-    # def __invert__(self):
-    #     # https://stackoverflow.com/questions/39754808/overriding-not-operator-in-python
-    #     pass
 
     # EX. is_a(oct=None)
-    def __mul__(self, other):
-        ''' *  operator implements LOOSEST equality '''
+    def __pow__(self, other):
+        ''' **  operator implements LOOSEST equality '''
         if self.__class__ == other.__class__:
             if self.chr == other.chr:
                 if self.alt == other.alt:
                     return True
             return False
-        raise TypeError('unsupported operand type(s) for *')
+        raise TypeError('unsupported operand type(s) for **')
+
 
     # EX. ==
-    def __pow__(self, other):
-        ''' ** operator implements LOOSE equality (enharmony) '''
+    def __lshift__(self, other):
+        ''' << operator implements LOOSE equality (enharmony) '''
         if self.__class__ == other.__class__:
             return self.__interval_from(other) == 0
-        raise TypeError('unsupported operand type(s) for **')
+        raise TypeError('unsupported operand type(s) for <<')
+
+    def __rshift__(self, other):
+        ''' >> operator implements LOOSE equality (enharmony) '''
+        if other.__class__ == self.__class__:
+            return other.__interval_from(self) == 0
+        raise TypeError('unsupported operand type(s) for >>')
+
 
     def __eq__(self, other):
         # this is a problen when finding a note within a set of notes
@@ -208,6 +213,7 @@ class Note(object):
         if self.__class__ != other.__class__:
             return False
         return self.__interval_from(other) == 0
+
 
     # EX. is_a(oct=3)
     # def __eq__(self, other):
@@ -217,6 +223,7 @@ class Note(object):
     #             if self.alt == other.alt:
     #                 if self.oct == other.oct:
     #                     return True
+
 
     def __ne__(self, other):
         if self.__class__ != other.__class__:
@@ -294,11 +301,10 @@ class Note(object):
 
     @property
     def matrix_coordinates(self):
-        for _row_index, _row in enumerate(EnharmonicMatrix):
-            for _note_index, _enharmonic_note in enumerate(_row):
-                if self.chr == _enharmonic_note.chr and self.alt == _enharmonic_note.alt:
-                    return (_row_index, _note_index)
-
+        for row_index, row in enumerate(EnharmonicMatrix):
+            for note_index, enharmonic_note in enumerate(row):
+                if self ** enharmonic_note:
+                    return (row_index, note_index)
 
 
 
