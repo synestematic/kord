@@ -94,7 +94,7 @@ The ChromaticKey class uses the TonalKey class as an interface while implementin
 ```
 class ChromaticKey(TonalKey):
 
-    _root_intervals = (
+    root_intervals = (
         UNISON,
         MINOR_SECOND,
         MAJOR_SECOND,
@@ -158,7 +158,7 @@ G♯⁰ A⁰ A♯⁰ B⁰ C¹ C♯¹
 ```
 class MajorKey(DiatonicKey):
 
-    _root_intervals = (
+    root_intervals = (
         UNISON,
         MAJOR_SECOND,
         MAJOR_THIRD,

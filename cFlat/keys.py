@@ -13,7 +13,7 @@ class TonalKey(object):
     def __repr__(self):
         spell_line = Row()
         for d in self.scale(
-            note_count=len(self._root_intervals) +1, yield_all=False
+            note_count=len(self.root_intervals) +1, yield_all=False
         ):
             spell_line.append(
                 FString(d, size=5)
@@ -34,7 +34,7 @@ class TonalKey(object):
 
             try:
                 invalid_root = False
-                for _ in cls(*note).scale(note_count=len(cls._root_intervals) +1, yield_all=0):
+                for _ in cls(*note).scale(note_count=len(cls.root_intervals) +1, yield_all=0):
                     # if any degree fails, scale is not spellable
                     pass
 
@@ -61,11 +61,11 @@ class TonalKey(object):
 
     def degree_root_interval(self, d):
         ''' return degree's delta semitones from key's root '''
-        if d > len(self._root_intervals):
+        if d > len(self.root_intervals):
             return self.degree_root_interval(
-                d - len(self._root_intervals)
+                d - len(self.root_intervals)
             ) + OCTAVE
-        return self._root_intervals[d -1]
+        return self.root_intervals[d -1]
 
 
     def _spell(self, note_count=-1, start_note=None, yield_all=True, degree_order=[]):
@@ -81,7 +81,7 @@ class TonalKey(object):
 
         if not degree_order:
             degs = LoopedList(
-                * [ self.degree(n +1) for n in range(len(self._root_intervals)) ]
+                * [ self.degree(n +1) for n in range(len(self.root_intervals)) ]
             )
         else:
             degs = LoopedList(
@@ -147,7 +147,7 @@ class TonalKey(object):
                 * yield None for empty semi-tones
         '''
 
-        # note_count = note_count if note_count else len(self._root_intervals)
+        # note_count = note_count if note_count else len(self.root_intervals)
         start_note = start_note if start_note else self.root
 
         d = 0
@@ -177,7 +177,7 @@ class TonalKey(object):
     def scale(self, note_count=0, start_note=None, yield_all=True):
         return self._spell(
             note_count=note_count, start_note=start_note,
-            yield_all=yield_all, degree_order=range(1, len(self._root_intervals) +1),
+            yield_all=yield_all, degree_order=range(1, len(self.root_intervals) +1),
         )
 
 
@@ -254,7 +254,7 @@ class DiatonicKey(TonalKey):
 
 class MajorKey(DiatonicKey):
 
-    _root_intervals = (
+    root_intervals = (
         UNISON,
         MAJOR_SECOND,
         MAJOR_THIRD,
@@ -269,7 +269,7 @@ class IonianMode(MajorKey):
 
 class MixolydianMode(MajorKey):
 
-    _root_intervals = (
+    root_intervals = (
         UNISON,
         MAJOR_SECOND,
         MAJOR_THIRD,
@@ -281,7 +281,7 @@ class MixolydianMode(MajorKey):
 
 class LydianMode(MajorKey):
 
-    _root_intervals = (
+    root_intervals = (
         UNISON,
         MAJOR_SECOND,
         MAJOR_THIRD,
@@ -298,7 +298,7 @@ class LydianMode(MajorKey):
 
 class MinorKey(DiatonicKey):
 
-    _root_intervals = (
+    root_intervals = (
         UNISON,
         MAJOR_SECOND,
         MINOR_THIRD,
@@ -310,7 +310,7 @@ class MinorKey(DiatonicKey):
     
 class MinorPentatonicKey(MinorKey):
 
-    _root_intervals = (
+    root_intervals = (
         UNISON,
         MINOR_THIRD,
         PERFECT_FOURTH,
@@ -320,7 +320,7 @@ class MinorPentatonicKey(MinorKey):
 
 class Hokkaido(MinorKey):
 
-    _root_intervals = (
+    root_intervals = (
         UNISON,
         MAJOR_SECOND,
         MINOR_THIRD,
@@ -335,7 +335,7 @@ class NaturalMinorKey(MinorKey):
 
 class MelodicMinorKey(MinorKey):
 
-    _root_intervals = (
+    root_intervals = (
         UNISON,
         MAJOR_SECOND,
         MINOR_THIRD,
@@ -347,7 +347,7 @@ class MelodicMinorKey(MinorKey):
 
 class HarmonicMinorKey(MinorKey):
 
-    _root_intervals = (
+    root_intervals = (
         UNISON,
         MAJOR_SECOND,
         MINOR_THIRD,
@@ -362,7 +362,7 @@ class AeolianMode(MinorKey):
 
 class DorianMode(MinorKey):
 
-    _root_intervals = (
+    root_intervals = (
         UNISON,
         MAJOR_SECOND,
         MINOR_THIRD,
@@ -374,7 +374,7 @@ class DorianMode(MinorKey):
 
 class PhrygianMode(MinorKey):
 
-    _root_intervals = (
+    root_intervals = (
         UNISON,
         MINOR_SECOND, # <<<
         MINOR_THIRD,
@@ -391,7 +391,7 @@ class PhrygianMode(MinorKey):
 
 class ChromaticKey(TonalKey):
 
-    _root_intervals = (
+    root_intervals = (
         UNISON,
         MINOR_SECOND,
         MAJOR_SECOND,
