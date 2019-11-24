@@ -181,6 +181,25 @@ class Note(object):
             return self.__interval_from(other)
         raise TypeError('unsupported operand type(s) for -')
 
+    # def __invert__(self):
+    #     # https://stackoverflow.com/questions/39754808/overriding-not-operator-in-python
+    #     pass
+
+    def __mul__(self, other):
+        ''' *  operator implements LOOSEST equality '''
+        if self.__class__ == other.__class__:
+            if self.chr == other.chr:
+                if self.alt == other.alt:
+                    return True
+            return False
+        raise TypeError('unsupported operand type(s) for *')
+
+    def __pow__(self, other):
+        ''' ** operator implements LOOSE equality (enharmony) '''
+        if self.__class__ == other.__class__:
+            return self.__interval_from(other) == 0
+        raise TypeError('unsupported operand type(s) for **')
+
     def __eq__(self, other):
         # this is a problen when finding a note within a set of notes
         # Note('C', '#') in [ Note('D', 'b') ] == True
