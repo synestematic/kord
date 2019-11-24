@@ -250,16 +250,6 @@ class TonalKey(object):
         )
 
 
-    def is_diatonic(self, note):
-        ''' checks if a note object is a degree in the scale,
-            returns degree number
-        '''
-        for d, degree in enumerate(self.scale(yield_all=False, note_count=666)):
-            d += 1
-            if note == degree:
-                return d
-
-
 class DiatonicKey(TonalKey):
 
     def degree(self, d):
