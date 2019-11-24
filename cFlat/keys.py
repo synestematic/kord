@@ -427,7 +427,6 @@ class ChromaticKey(TonalKey):
             n for n in EnharmonicMatrix[
                 self.root.enharmonic_row + spare_sts
             ] if n ** self.root
-            # ] if n.is_a(self.root.chr, self.root.alt)
         ]
 
         if not next_degrees:

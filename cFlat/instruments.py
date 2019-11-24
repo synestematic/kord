@@ -75,7 +75,7 @@ class String(object):
 
             fret_value = ''
             if note:
-                note_fg = 'green' if note.is_a(self.key.root.chr, self.key.root.alt) else 'magenta'
+                note_fg = 'green' if note ** self.key.root else 'magenta'
                 fret_value = '{}{}{}'.format(
                     FString(note.chr, size=1, fg=note_fg, fx=['']),
                     FString(note.repr_alt, size=0, fg=note_fg, fx=['']),
