@@ -2,8 +2,8 @@ from collections import deque
 
 from bestia.output import Row, FString, echo
 
+from .degrees import *
 from .notes import *
-# from cFlat.notes import *
 
 class TonalKey(object):
 
@@ -70,10 +70,14 @@ class TonalKey(object):
 
     def _spell(self, note_count=-1, start_note=None, yield_all=True, degree_order=[]):
         ''' supported features:
-                * positive note_counts yield notes exactly
-                * negative note_counts yield notes indefinetly
-                * degree order for chords, modes, etc
+                * positive note_count yields notes exactly
+                * negative note_count yields notes indefinetly
+                * degree order is enforced for chords, modes, etc
         '''
+
+        start_note = start_note if start_note else self.root
+
+        # LOOPED LIST IMPORTED FROM NOTES.PY
 
         if not degree_order:
             degs = LoopedList(
@@ -84,33 +88,59 @@ class TonalKey(object):
                 * [ self.degree(n) for n in degree_order ]
             )
 
-        for note in self.__spell( start_note=start_note, yield_all=yield_all ):
+        # rotate degree order by comparing it to star_note
+        degrees = Degrees(*degs)
+        degrees.rotate_by_note(start_note)
 
+        # input(degrees.order)
+
+        # if start_note:
+        #     pass
+        #     input(start_note)
+
+
+        for note in self._solmizate( start_note=start_note, yield_all=yield_all ):
+
+            # DONE
             if note_count == 0:  # negative note_counts never return
                 return
 
+            # GOT A NONE
             if note is None:
                 if yield_all:
                     yield None
-
-            else:
-
-                note_match = False
-                for deg in degs:
-                    if note.is_a(deg.chr, deg.alt):
-                        yield note
-                        note_count -= 1
-                        note_match = True
-                        break
-
-                if not note_match:
-                    if yield_all:
-                        yield None
+                continue
 
 
-    def __spell(self, start_note=None, yield_all=True):
+            # THIS.............
+            note_match = False
+            for deg in degs:
+                if note.is_a(deg.chr, deg.alt):
+                    yield note
+                    note_count -= 1
+                    note_match = True
+                    break
+
+            if not note_match:
+                if yield_all:
+                    yield None
+
+
+            # # OR THIS.............
+            # if note.is_a(degrees[0].chr, degrees[0].alt):
+            #     yield note
+            #     note_count -= 1
+            #     # degrees.rotate() # <<<<<
+            #     continue
+
+            # if yield_all:
+            #     yield None
+
+
+
+    def _solmizate(self, start_note=None, yield_all=True):
         ''' supported features:
-                * yields indefinetly
+                * MUST yield indefinetly
                 * octave change, BUT degree() takes care of it
                 * diatonic start_note
                 * non-diatonic start_note
