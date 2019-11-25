@@ -92,8 +92,6 @@ class KeyValidityTest(unittest.TestCase):
 
 
 
-
-
 class NoteEqualityTest(unittest.TestCase):
 
     DANGEROUS_NON_EQUALS = (
@@ -130,6 +128,9 @@ class NoteEqualityTest(unittest.TestCase):
         (Note('C', '#'), Note('D', 'b', 4)),
     )
 
+    def setUp(self):
+        print()
+
     def testNotEnharmonic(self):
         for note_pair in self.DANGEROUS_NON_EQUALS:
             assert not note_pair[0] << note_pair[1], (note_pair[0], note_pair[1])
@@ -157,6 +158,20 @@ class NoteEqualityTest(unittest.TestCase):
             assert note_pair[0] >= note_pair[1], (note_pair[0], note_pair[1])
 
             assert note_pair[0] - note_pair[1] == 0, (note_pair[0], note_pair[1])
+
+
+    def testEnharmonicOperators(self):
+        ''' '''
+        print('Testing enharmonic operators')
+        Cs5 = Note('C', '#', 5)
+        Db3 = Note('D', 'b', 3)
+        Cs3 = Note('C', '#', 3)
+        assert Cs3 ** Cs5      # same pitch, OLD is_a(oct=None)
+        assert Db3 << Cs3      # enh note
+        assert Db3 >> Cs3      # enh note
+        assert Cs3 << Db3      # enh note
+        assert Cs3 >> Db3      # enh note
+        assert not Db3 == Cs3  # same note
 
 
 
