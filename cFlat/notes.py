@@ -182,7 +182,7 @@ class Note(object):
         raise TypeError('unsupported operand type(s) for -')
 
 
-    # EX. is_a(oct=None)
+    # OLD is_a(oct=None)
     def __pow__(self, other):
         ''' **  operator implements LOOSEST equality '''
         if self.__class__ == other.__class__:
@@ -193,7 +193,7 @@ class Note(object):
         raise TypeError('unsupported operand type(s) for **')
 
 
-    # EX. ==
+    # OLD ==
     def __lshift__(self, other):
         ''' << operator implements LOOSE equality (enharmony) '''
         if self.__class__ == other.__class__:
@@ -207,22 +207,14 @@ class Note(object):
         raise TypeError('unsupported operand type(s) for >>')
 
 
+    # OLD is_a(oct=1)
     def __eq__(self, other):
-        # this is a problen when finding a note within a set of notes
-        # Note('C', '#') in [ Note('D', 'b') ] == True
-        if self.__class__ != other.__class__:
-            return False
-        return self.__interval_from(other) == 0
-
-
-    # EX. is_a(oct=3)
-    # def __eq__(self, other):
-    #     ''' == operator implements STRICT equality '''
-    #     if self.__class__ == other.__class__:
-    #         if self.chr == other.chr:
-    #             if self.alt == other.alt:
-    #                 if self.oct == other.oct:
-    #                     return True
+        ''' == operator implements STRICT equality '''
+        if self.__class__ == other.__class__:
+            if self.chr == other.chr:
+                if self.alt == other.alt:
+                    if self.oct == other.oct:
+                        return True
 
 
     def __ne__(self, other):
