@@ -137,13 +137,24 @@ class NoteEqualityTest(unittest.TestCase):
 
     def testAreEnharmonic(self):
         ''' checks note_pairs in enharmonic rows
-            for different types of equality '''
+            for different types of enharmonic equality '''
         for note_pair in EnharmonicMatrix:
-            assert note_pair[0] << note_pair[1]
-            assert note_pair[0] >> note_pair[1]
-            assert note_pair[0] -  note_pair[1] == 0
 
+            # DO NOT PASS STRICT EQUALITY
+            assert not note_pair[0] == note_pair[1], (note_pair[0], note_pair[1])
 
+            # PASS ENHARMONIC EQUALITY
+            assert note_pair[0] << note_pair[1], (note_pair[0], note_pair[1])
+            assert note_pair[0] >> note_pair[1], (note_pair[0], note_pair[1])
+
+            # CHECK DELTA_ST === 0
+            assert not note_pair[0] < note_pair[1], (note_pair[0], note_pair[1])
+            assert not note_pair[0] > note_pair[1], (note_pair[0], note_pair[1])
+
+            assert note_pair[0] <= note_pair[1], (note_pair[0], note_pair[1])
+            assert note_pair[0] >= note_pair[1], (note_pair[0], note_pair[1])
+
+            assert note_pair[0] - note_pair[1] == 0, (note_pair[0], note_pair[1])
 
 
 
