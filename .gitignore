@@ -1,4 +1,5 @@
 *.*
+legacy/*.*
 !.gitignore
 !Makefile
 !setup.py
