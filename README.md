@@ -17,22 +17,48 @@ Only the `chr` argument is required to create an instance. Arguments `alt` and `
 
 ```
 >>> from cFlat.notes import Note
->>> e = Note('e')
->>> e
+>>> e3 = Note('e')
+>>> e3
 E³
+>>> Note('B', 'b', 7)
+B♭⁷
+>>> Note('C', '#', 0)
+C♯⁰
 ```
 
-Note objects implement comparison operators based on their semitone intervals:
+Notes with double alterations are supported but Notes with triple (or more) alterations raise InvalidAlteration Exceptions:
 
 ```
->>> f = Note('F')
->>> f 
+>>> n3 = Note('A', 'bb', 1)
+>>> n3
+A𝄫¹
+>>> n4 = Note('F', '##', 1)
+>>> n4
+F𝄪¹
+>>> Note('G', '###')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  ...
+cFlat.errors.InvalidAlteration: ###
+```
+
+
+
+Intervals between note objects can be evaluated using the following operators: ``` - < > << >> <= >= != ``` This allows calculations of semitones deltas notes dis as well as study of their enharmonic relationships. Let's take a quick look at each operator separately:
+
+#### <  > operators
+
+
+```
+>>> f3 = Note('F')
+>>> f3
 F³
->>> f > e
+>>> f3 > e3
 True
 ```
 
-Therefore, enharmonic relationships can be evaluated as follows:
+#### != operator
+
 
 ```
 >>> n1 = Note('F', '#', 5)
@@ -43,17 +69,6 @@ Therefore, enharmonic relationships can be evaluated as follows:
 False
 ```
 
-Notes with double alterations are also supported:
-
-```
->>> n3 = Note('A', 'bb', 1)
->>> n3
-A𝄫¹
->>> n4 = Note('F', '##', 1)
->>> n4
-F𝄪¹
-
-```
 
 Given that python lacks a `===` operator, Notes can be compared for a "stricter" equality using their `is_a()` method:
 
@@ -117,7 +132,6 @@ We can initialize ChromaticKey objects on any given note and use the ```degree()
 >>> c_chromatic = ChromaticKey('C')
 >>> c_chromatic.degree(2)
 C♯⁰
-
 >>> c_chromatic[12]
 B⁰
 ```
