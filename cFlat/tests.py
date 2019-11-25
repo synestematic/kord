@@ -132,7 +132,9 @@ class NoteEqualityTest(unittest.TestCase):
 
     def testNotEnharmonic(self):
         for note_pair in self.DANGEROUS_NON_EQUALS:
-            assert note_pair[0] != note_pair[1]
+            assert not note_pair[0] << note_pair[1], (note_pair[0], note_pair[1])
+            assert not note_pair[0] >> note_pair[1], (note_pair[0], note_pair[1])
+            assert note_pair[0] - note_pair[1] != 0, (note_pair[0], note_pair[1])
 
 
     def testAreEnharmonic(self):
@@ -699,8 +701,12 @@ class MajorKeysExpectedNotesTest(unittest.TestCase):
 
 
     def testDegreeMethod(self):
-        assert self.c_major.degree(1) == self.c_major[1], 'degree() != __get_item__()'
-        assert self.c_major.degree(1) == Note('C', 0), 'NO GOOD'
+        ''' tests __getitem__ == degree() '''
+        degree = self.c_major.degree(1)
+        item = self.c_major[1]
+        note = Note('C', 0)
+        assert degree == item, (degree, item)
+        assert degree == note, (degree, note)
 
 
 
