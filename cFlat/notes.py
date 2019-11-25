@@ -243,12 +243,6 @@ class Note(object):
         raise TypeError(f' <= not supported with {other.__class__}')
 
 
-    def is_a(self, chr, alt='', oct=None):
-        if self.chr == chr:
-            if self.alt == alt:
-                return True if oct is None else self.oct == oct
-
-
     ### CHR METHODS
     def relative_chr(self, n):
         my_index = _CHARS.index(self.chr)
