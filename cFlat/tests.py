@@ -139,11 +139,9 @@ class NoteEqualityTest(unittest.TestCase):
         ''' checks note_pairs in enharmonic rows
             for different types of equality '''
         for note_pair in EnharmonicMatrix:
-            assert note_pair[0] == note_pair[1]
+            assert note_pair[0] << note_pair[1]
+            assert note_pair[0] >> note_pair[1]
             assert note_pair[0] -  note_pair[1] == 0
-
-
-
 
 
 
@@ -176,109 +174,110 @@ class ChromaticKeysTest(unittest.TestCase):
         ):
             i += 1
             if i == 1:
-                assert note.is_a('C', '', 0), note
+                assert note == Note('C', '', 0), note
+                # assert note == Note('C', '', 0), note
             elif i == 2:
-                assert note.is_a('C', '#', 0), note
+                assert note == Note('C', '#', 0), note
             elif i == 3:
-                assert note.is_a('D', '', 0), note
+                assert note == Note('D', '', 0), note
             elif i == 4:
-                assert note.is_a('D', '#', 0), note
+                assert note == Note('D', '#', 0), note
             elif i == 5:
-                assert note.is_a('E', '', 0), note
+                assert note == Note('E', '', 0), note
             elif i == 6:
-                assert note.is_a('F', '', 0), note
+                assert note == Note('F', '', 0), note
             elif i == 7:
-                assert note.is_a('F', '#', 0), note
+                assert note == Note('F', '#', 0), note
             elif i == 8:
-                assert note.is_a('G', '', 0), note
+                assert note == Note('G', '', 0), note
             elif i == 9:
-                assert note.is_a('G', '#', 0), note
+                assert note == Note('G', '#', 0), note
             elif i == 10:
-                assert note.is_a('A', '', 0), note
+                assert note == Note('A', '', 0), note
             elif i == 11:
-                assert note.is_a('A', '#', 0), note
+                assert note == Note('A', '#', 0), note
             elif i == 12:
-                assert note.is_a('B', '', 0), note
+                assert note == Note('B', '', 0), note
             elif i == 13:
-                assert note.is_a('C', '', 1), note
+                assert note == Note('C', '', 1), note
             elif i == 14:
-                assert note.is_a('C', '#', 1), note
+                assert note == Note('C', '#', 1), note
             elif i == 15:
-                assert note.is_a('D', '', 1), note
+                assert note == Note('D', '', 1), note
             elif i == 16:
-                assert note.is_a('D', '#', 1), note
+                assert note == Note('D', '#', 1), note
             elif i == 17:
-                assert note.is_a('E', '', 1), note
+                assert note == Note('E', '', 1), note
             elif i == 18:
-                assert note.is_a('F', '', 1), note
+                assert note == Note('F', '', 1), note
             elif i == 19:
-                assert note.is_a('F', '#', 1), note
+                assert note == Note('F', '#', 1), note
             elif i == 20:
-                assert note.is_a('G', '', 1), note
+                assert note == Note('G', '', 1), note
             elif i == 21:
-                assert note.is_a('G', '#', 1), note
+                assert note == Note('G', '#', 1), note
             elif i == 22:
-                assert note.is_a('A', '', 1), note
+                assert note == Note('A', '', 1), note
             elif i == 23:
-                assert note.is_a('A', '#', 1), note
+                assert note == Note('A', '#', 1), note
             elif i == 24:
-                assert note.is_a('B', '', 1), note
+                assert note == Note('B', '', 1), note
             elif i == 25:
-                assert note.is_a('C', '', 2), note
+                assert note == Note('C', '', 2), note
             # ..............................
             elif i == 97:
-                assert note.is_a('C', '', 8), note
+                assert note == Note('C', '', 8), note
             elif i == 98:
-                assert note.is_a('C', '#', 8), note
+                assert note == Note('C', '#', 8), note
             elif i == 99:
-                assert note.is_a('D', '', 8), note
+                assert note == Note('D', '', 8), note
             elif i == 100:
-                assert note.is_a('D', '#', 8), note
+                assert note == Note('D', '#', 8), note
             elif i == 101:
-                assert note.is_a('E', '', 8), note
+                assert note == Note('E', '', 8), note
             elif i == 102:
-                assert note.is_a('F', '', 8), note
+                assert note == Note('F', '', 8), note
             elif i == 103:
-                assert note.is_a('F', '#', 8), note
+                assert note == Note('F', '#', 8), note
             elif i == 104:
-                assert note.is_a('G', '', 8), note
+                assert note == Note('G', '', 8), note
             elif i == 105:
-                assert note.is_a('G', '#', 8), note
+                assert note == Note('G', '#', 8), note
             elif i == 106:
-                assert note.is_a('A', '', 8), note
+                assert note == Note('A', '', 8), note
             elif i == 107:
-                assert note.is_a('A', '#', 8), note
+                assert note == Note('A', '#', 8), note
             elif i == 108:
-                assert note.is_a('B', '', 8), note
+                assert note == Note('B', '', 8), note
             elif i == 109:
-                assert note.is_a('C', '', 9), note
+                assert note == Note('C', '', 9), note
             # ..............................
             elif i == 205:
-                assert note.is_a('C', '', 17), note
+                assert note == Note('C', '', 17), note
             elif i == 206:
-                assert note.is_a('C', '#', 17), note
+                assert note == Note('C', '#', 17), note
             elif i == 207:
-                assert note.is_a('D', '', 17), note
+                assert note == Note('D', '', 17), note
             elif i == 208:
-                assert note.is_a('D', '#', 17), note
+                assert note == Note('D', '#', 17), note
             elif i == 209:
-                assert note.is_a('E', '', 17), note
+                assert note == Note('E', '', 17), note
             elif i == 210:
-                assert note.is_a('F', '', 17), note
+                assert note == Note('F', '', 17), note
             elif i == 211:
-                assert note.is_a('F', '#', 17), note
+                assert note == Note('F', '#', 17), note
             elif i == 212:
-                assert note.is_a('G', '', 17), note
+                assert note == Note('G', '', 17), note
             elif i == 213:
-                assert note.is_a('G', '#', 17), note
+                assert note == Note('G', '#', 17), note
             elif i == 214:
-                assert note.is_a('A', '', 17), note
+                assert note == Note('A', '', 17), note
             elif i == 215:
-                assert note.is_a('A', '#', 17), note
+                assert note == Note('A', '#', 17), note
             elif i == 216:
-                assert note.is_a('B', '', 17), note
+                assert note == Note('B', '', 17), note
             elif i == 217:
-                assert note.is_a('C', '', 18), note
+                assert note == Note('C', '', 18), note
 
 
     def testFSharpChromaticScaleGenerator(self):
@@ -294,58 +293,58 @@ class ChromaticKeysTest(unittest.TestCase):
         ):
             i += 1
             if i == 1:
-                assert note.is_a('F', '#', 0), note
+                assert note == Note('F', '#', 0), note
             elif i == 2:
-                assert note.is_a('G', '', 0), note
+                assert note == Note('G', '', 0), note
             elif i == 3:
-                assert note.is_a('G', '#', 0), note
+                assert note == Note('G', '#', 0), note
             elif i == 4:
-                assert note.is_a('A', '', 0), note
+                assert note == Note('A', '', 0), note
             elif i == 5:
-                assert note.is_a('A', '#', 0), note
+                assert note == Note('A', '#', 0), note
             elif i == 6:
-                assert note.is_a('B', '', 0), note
+                assert note == Note('B', '', 0), note
             elif i == 7:
-                assert note.is_a('C', '', 1), note
+                assert note == Note('C', '', 1), note
             elif i == 8:
-                assert note.is_a('C', '#', 1), note
+                assert note == Note('C', '#', 1), note
             elif i == 9:
-                assert note.is_a('D', '', 1), note
+                assert note == Note('D', '', 1), note
             elif i == 10:
-                assert note.is_a('D', '#', 1), note
+                assert note == Note('D', '#', 1), note
             elif i == 11:
-                assert note.is_a('E', '', 1), note
+                assert note == Note('E', '', 1), note
             elif i == 12:
-                assert note.is_a('F', '', 1), note
+                assert note == Note('F', '', 1), note
             elif i == 13:
-                assert note.is_a('F', '#', 1), note
+                assert note == Note('F', '#', 1), note
             elif i == 14:
-                assert note.is_a('G', '', 1), note
+                assert note == Note('G', '', 1), note
             elif i == 15:
-                assert note.is_a('G', '#', 1), note
+                assert note == Note('G', '#', 1), note
             elif i == 16:
-                assert note.is_a('A', '', 1), note
+                assert note == Note('A', '', 1), note
             elif i == 17:
-                assert note.is_a('A', '#', 1), note
+                assert note == Note('A', '#', 1), note
             elif i == 18:
-                assert note.is_a('B', '', 1), note
+                assert note == Note('B', '', 1), note
             elif i == 19:
-                assert note.is_a('C', '', 2), note
+                assert note == Note('C', '', 2), note
             # ..............................
             elif i == 211:
-                assert note.is_a('C', '', 18), note
+                assert note == Note('C', '', 18), note
             elif i == 212:
-                assert note.is_a('C', '#', 18), note
+                assert note == Note('C', '#', 18), note
             elif i == 213:
-                assert note.is_a('D', '', 18), note
+                assert note == Note('D', '', 18), note
             elif i == 214:
-                assert note.is_a('D', '#', 18), note
+                assert note == Note('D', '#', 18), note
             elif i == 215:
-                assert note.is_a('E', '', 18), note
+                assert note == Note('E', '', 18), note
             elif i == 216:
-                assert note.is_a('F', '', 18), note
+                assert note == Note('F', '', 18), note
             elif i == 217:
-                assert note.is_a('F', '#', 18), note
+                assert note == Note('F', '#', 18), note
 
 
 
@@ -362,72 +361,72 @@ class ChromaticKeysTest(unittest.TestCase):
         ):
             i += 1
             if i == 1:
-                assert note.is_a('B', 'b', 0), note
+                assert note == Note('B', 'b', 0), note
             elif i == 2:
-                assert note.is_a('B', '', 0), note
+                assert note == Note('B', '', 0), note
             elif i == 3:
-                assert note.is_a('C', '', 1), note
+                assert note == Note('C', '', 1), note
             elif i == 4:
-                assert note.is_a('D', 'b', 1), note
+                assert note == Note('D', 'b', 1), note
             elif i == 5:
-                assert note.is_a('D', '', 1), note
+                assert note == Note('D', '', 1), note
             elif i == 6:
-                assert note.is_a('E', 'b', 1), note
+                assert note == Note('E', 'b', 1), note
             elif i == 7:
-                assert note.is_a('E', '', 1), note
+                assert note == Note('E', '', 1), note
             elif i == 8:
-                assert note.is_a('F', '', 1), note
+                assert note == Note('F', '', 1), note
             elif i == 9:
-                assert note.is_a('G', 'b', 1), note
+                assert note == Note('G', 'b', 1), note
             elif i == 10:
-                assert note.is_a('G', '', 1), note
+                assert note == Note('G', '', 1), note
             elif i == 11:
-                assert note.is_a('A', 'b', 1), note
+                assert note == Note('A', 'b', 1), note
             elif i == 12:
-                assert note.is_a('A', '', 1), note
+                assert note == Note('A', '', 1), note
             elif i == 13:
-                assert note.is_a('B', 'b', 1), note
+                assert note == Note('B', 'b', 1), note
             elif i == 14:
-                assert note.is_a('B', '', 1), note
+                assert note == Note('B', '', 1), note
             elif i == 15:
-                assert note.is_a('C', '', 2), note
+                assert note == Note('C', '', 2), note
             # ..............................
             elif i == 200:
-                assert note.is_a('F', '', 17), note
+                assert note == Note('F', '', 17), note
             elif i == 201:
-                assert note.is_a('G', 'b', 17), note
+                assert note == Note('G', 'b', 17), note
             elif i == 202:
-                assert note.is_a('G', '', 17), note
+                assert note == Note('G', '', 17), note
             elif i == 203:
-                assert note.is_a('A', 'b', 17), note
+                assert note == Note('A', 'b', 17), note
             elif i == 204:
-                assert note.is_a('A', '', 17), note
+                assert note == Note('A', '', 17), note
             elif i == 205:
-                assert note.is_a('B', 'b', 17), note
+                assert note == Note('B', 'b', 17), note
             elif i == 206:
-                assert note.is_a('B', '', 17), note
+                assert note == Note('B', '', 17), note
             elif i == 207:
-                assert note.is_a('C', '', 18), note
+                assert note == Note('C', '', 18), note
             elif i == 208:
-                assert note.is_a('D', 'b', 18), note
+                assert note == Note('D', 'b', 18), note
             elif i == 209:
-                assert note.is_a('D', '', 18), note
+                assert note == Note('D', '', 18), note
             elif i == 210:
-                assert note.is_a('E', 'b', 18), note
+                assert note == Note('E', 'b', 18), note
             elif i == 211:
-                assert note.is_a('E', '', 18), note
+                assert note == Note('E', '', 18), note
             elif i == 212:
-                assert note.is_a('F', '', 18), note
+                assert note == Note('F', '', 18), note
             elif i == 213:
-                assert note.is_a('G', 'b', 18), note
+                assert note == Note('G', 'b', 18), note
             elif i == 214:
-                assert note.is_a('G', '', 18), note
+                assert note == Note('G', '', 18), note
             elif i == 215:
-                assert note.is_a('A', 'b', 18), note
+                assert note == Note('A', 'b', 18), note
             elif i == 216:
-                assert note.is_a('A', '', 18), note
+                assert note == Note('A', '', 18), note
             elif i == 217:
-                assert note.is_a('B', 'b', 18), note
+                assert note == Note('B', 'b', 18), note
 
 
 
@@ -460,69 +459,69 @@ class MajorKeysExpectedNotesTest(unittest.TestCase):
         ):
             i += 1
             if i == 1:
-                assert note.is_a('C', '', 0), note
+                assert note == Note('C', '', 0), note
             elif i == 2:
-                assert note.is_a('D', '', 0), note
+                assert note == Note('D', '', 0), note
             elif i == 3:
-                assert note.is_a('E', '', 0), note
+                assert note == Note('E', '', 0), note
             elif i == 4:
-                assert note.is_a('F', '', 0), note
+                assert note == Note('F', '', 0), note
             elif i == 5:
-                assert note.is_a('G', '', 0), note
+                assert note == Note('G', '', 0), note
             elif i == 6:
-                assert note.is_a('A', '', 0), note
+                assert note == Note('A', '', 0), note
             elif i == 7:
-                assert note.is_a('B', '', 0), note
+                assert note == Note('B', '', 0), note
             elif i == 8:
-                assert note.is_a('C', '', 1), note
+                assert note == Note('C', '', 1), note
             elif i == 9:
-                assert note.is_a('D', '', 1), note
+                assert note == Note('D', '', 1), note
             elif i == 10:
-                assert note.is_a('E', '', 1), note
+                assert note == Note('E', '', 1), note
             elif i == 11:
-                assert note.is_a('F', '', 1), note
+                assert note == Note('F', '', 1), note
             elif i == 12:
-                assert note.is_a('G', '', 1), note
+                assert note == Note('G', '', 1), note
             elif i == 13:
-                assert note.is_a('A', '', 1), note
+                assert note == Note('A', '', 1), note
             elif i == 14:
-                assert note.is_a('B', '', 1), note
+                assert note == Note('B', '', 1), note
             elif i == 15:
-                assert note.is_a('C', '', 2), note
+                assert note == Note('C', '', 2), note
             # ..............................
             elif i == 64:
-                assert note.is_a('C', '', 9), note
+                assert note == Note('C', '', 9), note
             elif i == 65:
-                assert note.is_a('D', '', 9), note
+                assert note == Note('D', '', 9), note
             elif i == 66:
-                assert note.is_a('E', '', 9), note
+                assert note == Note('E', '', 9), note
             elif i == 67:
-                assert note.is_a('F', '', 9), note
+                assert note == Note('F', '', 9), note
             elif i == 68:
-                assert note.is_a('G', '', 9), note
+                assert note == Note('G', '', 9), note
             elif i == 69:
-                assert note.is_a('A', '', 9), note
+                assert note == Note('A', '', 9), note
             elif i == 70:
-                assert note.is_a('B', '', 9), note
+                assert note == Note('B', '', 9), note
             elif i == 71:
-                assert note.is_a('C', '', 10), note
+                assert note == Note('C', '', 10), note
             # ..............................
             elif i == 120:
-                assert note.is_a('C', '', 17), note
+                assert note == Note('C', '', 17), note
             elif i == 121:
-                assert note.is_a('D', '', 17), note
+                assert note == Note('D', '', 17), note
             elif i == 122:
-                assert note.is_a('E', '', 17), note
+                assert note == Note('E', '', 17), note
             elif i == 123:
-                assert note.is_a('F', '', 17), note
+                assert note == Note('F', '', 17), note
             elif i == 124:
-                assert note.is_a('G', '', 17), note
+                assert note == Note('G', '', 17), note
             elif i == 125:
-                assert note.is_a('A', '', 17), note
+                assert note == Note('A', '', 17), note
             elif i == 126:
-                assert note.is_a('B', '', 17), note
+                assert note == Note('B', '', 17), note
             elif i == 127:
-                assert note.is_a('C', '', 18), note
+                assert note == Note('C', '', 18), note
 
 
     def testBMajorScaleGenerator(self):
@@ -538,71 +537,71 @@ class MajorKeysExpectedNotesTest(unittest.TestCase):
         ):
             i += 1
             if i == 1:
-                assert note.is_a('B', '', 0), note
+                assert note == Note('B', '', 0), note
             elif i == 2:
-                assert note.is_a('C', '#', 1), note
+                assert note == Note('C', '#', 1), note
             elif i == 3:
-                assert note.is_a('D', '#', 1), note
+                assert note == Note('D', '#', 1), note
             elif i == 4:
-                assert note.is_a('E', '', 1), note
+                assert note == Note('E', '', 1), note
             elif i == 5:
-                assert note.is_a('F', '#', 1), note
+                assert note == Note('F', '#', 1), note
             elif i == 6:
-                assert note.is_a('G', '#', 1), note
+                assert note == Note('G', '#', 1), note
             elif i == 7:
-                assert note.is_a('A', '#', 1), note
+                assert note == Note('A', '#', 1), note
             elif i == 8:
-                assert note.is_a('B', '', 1), note
+                assert note == Note('B', '', 1), note
             elif i == 9:
-                assert note.is_a('C', '#', 2), note
+                assert note == Note('C', '#', 2), note
             elif i == 10:
-                assert note.is_a('D', '#', 2), note
+                assert note == Note('D', '#', 2), note
             elif i == 11:
-                assert note.is_a('E', '', 2), note
+                assert note == Note('E', '', 2), note
             elif i == 12:
-                assert note.is_a('F', '#', 2), note
+                assert note == Note('F', '#', 2), note
             elif i == 13:
-                assert note.is_a('G', '#', 2), note
+                assert note == Note('G', '#', 2), note
             elif i == 14:
-                assert note.is_a('A', '#', 2), note
+                assert note == Note('A', '#', 2), note
             elif i == 15:
-                assert note.is_a('B', '', 2), note
+                assert note == Note('B', '', 2), note
             elif i == 16:
-                assert note.is_a('C', '#', 3), note
+                assert note == Note('C', '#', 3), note
             # ..............................
             elif i == 64:
-                assert note.is_a('B', '', 9), note
+                assert note == Note('B', '', 9), note
             elif i == 65:
-                assert note.is_a('C', '#', 10), note
+                assert note == Note('C', '#', 10), note
             elif i == 66:
-                assert note.is_a('D', '#', 10), note
+                assert note == Note('D', '#', 10), note
             elif i == 67:
-                assert note.is_a('E', '', 10), note
+                assert note == Note('E', '', 10), note
             elif i == 68:
-                assert note.is_a('F', '#', 10), note
+                assert note == Note('F', '#', 10), note
             elif i == 69:
-                assert note.is_a('G', '#', 10), note
+                assert note == Note('G', '#', 10), note
             elif i == 70:
-                assert note.is_a('A', '#', 10), note
+                assert note == Note('A', '#', 10), note
             elif i == 71:
-                assert note.is_a('B', '', 10), note
+                assert note == Note('B', '', 10), note
             # ..............................
             elif i == 120:
-                assert note.is_a('B', '', 17), note
+                assert note == Note('B', '', 17), note
             elif i == 121:
-                assert note.is_a('C', '#', 18), note
+                assert note == Note('C', '#', 18), note
             elif i == 122:
-                assert note.is_a('D', '#', 18), note
+                assert note == Note('D', '#', 18), note
             elif i == 123:
-                assert note.is_a('E', '', 18), note
+                assert note == Note('E', '', 18), note
             elif i == 124:
-                assert note.is_a('F', '#', 18), note
+                assert note == Note('F', '#', 18), note
             elif i == 125:
-                assert note.is_a('G', '#', 18), note
+                assert note == Note('G', '#', 18), note
             elif i == 126:
-                assert note.is_a('A', '#', 18), note
+                assert note == Note('A', '#', 18), note
             elif i == 127:
-                assert note.is_a('B', '', 18), note
+                assert note == Note('B', '', 18), note
 
 
 
@@ -619,78 +618,78 @@ class MajorKeysExpectedNotesTest(unittest.TestCase):
         ):
             i += 1
             if i == 1:
-                assert note.is_a('D', 'b', 0), note
+                assert note == Note('D', 'b', 0), note
             elif i == 2:
-                assert note.is_a('E', 'b', 0), note
+                assert note == Note('E', 'b', 0), note
             elif i == 3:
-                assert note.is_a('F', '', 0), note
+                assert note == Note('F', '', 0), note
             elif i == 4:
-                assert note.is_a('G', 'b', 0), note
+                assert note == Note('G', 'b', 0), note
             elif i == 5:
-                assert note.is_a('A', 'b', 0), note
+                assert note == Note('A', 'b', 0), note
             elif i == 6:
-                assert note.is_a('B', 'b', 0), note
+                assert note == Note('B', 'b', 0), note
             elif i == 7:
-                assert note.is_a('C', '', 1), note
+                assert note == Note('C', '', 1), note
             elif i == 8:
-                assert note.is_a('D', 'b', 1), note
+                assert note == Note('D', 'b', 1), note
             elif i == 9:
-                assert note.is_a('E', 'b', 1), note
+                assert note == Note('E', 'b', 1), note
             elif i == 10:
-                assert note.is_a('F', '', 1), note
+                assert note == Note('F', '', 1), note
             elif i == 11:
-                assert note.is_a('G', 'b', 1), note
+                assert note == Note('G', 'b', 1), note
             elif i == 12:
-                assert note.is_a('A', 'b', 1), note
+                assert note == Note('A', 'b', 1), note
             elif i == 13:
-                assert note.is_a('B', 'b', 1), note
+                assert note == Note('B', 'b', 1), note
             elif i == 14:
-                assert note.is_a('C', '', 2), note
+                assert note == Note('C', '', 2), note
             elif i == 15:
-                assert note.is_a('D', 'b', 2), note
+                assert note == Note('D', 'b', 2), note
             elif i == 16:
-                assert note.is_a('E', 'b', 2), note
+                assert note == Note('E', 'b', 2), note
             # ..............................
             elif i == 64:
-                assert note.is_a('D', 'b', 9), note
+                assert note == Note('D', 'b', 9), note
             elif i == 65:
-                assert note.is_a('E', 'b', 9), note
+                assert note == Note('E', 'b', 9), note
             elif i == 66:
-                assert note.is_a('F', '', 9), note
+                assert note == Note('F', '', 9), note
             elif i == 67:
-                assert note.is_a('G', 'b', 9), note
+                assert note == Note('G', 'b', 9), note
             elif i == 68:
-                assert note.is_a('A', 'b', 9), note
+                assert note == Note('A', 'b', 9), note
             elif i == 69:
-                assert note.is_a('B', 'b', 9), note
+                assert note == Note('B', 'b', 9), note
             elif i == 70:
-                assert note.is_a('C', '', 10), note
+                assert note == Note('C', '', 10), note
             elif i == 71:
-                assert note.is_a('D', 'b', 10), note
+                assert note == Note('D', 'b', 10), note
             elif i == 72:
-                assert note.is_a('E', 'b', 10), note
+                assert note == Note('E', 'b', 10), note
             # ..............................
             elif i == 120:
-                assert note.is_a('D', 'b', 17), note
+                assert note == Note('D', 'b', 17), note
             elif i == 121:
-                assert note.is_a('E', 'b', 17), note
+                assert note == Note('E', 'b', 17), note
             elif i == 122:
-                assert note.is_a('F', '', 17), note
+                assert note == Note('F', '', 17), note
             elif i == 123:
-                assert note.is_a('G', 'b', 17), note
+                assert note == Note('G', 'b', 17), note
             elif i == 124:
-                assert note.is_a('A', 'b', 17), note
+                assert note == Note('A', 'b', 17), note
             elif i == 125:
-                assert note.is_a('B', 'b', 17), note
+                assert note == Note('B', 'b', 17), note
             elif i == 126:
-                assert note.is_a('C', '', 18), note
+                assert note == Note('C', '', 18), note
             elif i == 127:
-                assert note.is_a('D', 'b', 18), note
+                assert note == Note('D', 'b', 18), note
 
 
     def testDegreeMethod(self):
         assert self.c_major.degree(1) == self.c_major[1], 'degree() != __get_item__()'
-        assert self.c_major.degree(1).is_a('C'), 'diocane'
+        assert self.c_major.degree(1) == Note('C', 0), 'NO GOOD'
 
 
 
@@ -730,7 +729,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
             for note in key._spell(
                 note_count=1, start_note=key.degree(d), yield_all=True, degree_order=[]
             ): 
-                assert note.is_a(*key.degree(d)), note
+                assert note == Note(*key.degree(d)), note
 
 
     def testNonDiatonicStartNoteYieldNotes(self):
@@ -780,7 +779,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
                 note_count=1, start_note=non, yield_all=False, degree_order=[]
             ): 
                 assert note != None, type(note)         # yield all=False ensures no Nones
-                assert note.is_a(*exp), (note, exp)
+                assert note == Note(*exp), (note, exp)
 
 
     def testNonDiatonicStartNoteYieldAll(self):
@@ -828,8 +827,8 @@ class TonalKeySpellMethodTest(unittest.TestCase):
             ):
 
                 assert note == exp, (note, exp)
-                if note is not None:
-                    assert note.is_a(*exp), (note, exp)
+                # if note is not None:
+                #     assert note == Note(*exp), (note, exp)
 
                 break # test only first yielded value even if not a note
                 
@@ -840,31 +839,31 @@ class TonalKeySpellMethodTest(unittest.TestCase):
         )):
             # echo(note, 'yellow')
             if i == 0:
-                assert note.is_a('C', '', 0)
+                assert note == Note('C', '', 0)
             elif i == 1:
                 assert note is None
             elif i == 2:
-                assert note.is_a('D', '', 0)
+                assert note == Note('D', '', 0)
             elif i == 3:
                 assert note is None
             elif i == 4:
-                assert note.is_a('E', '', 0)
+                assert note == Note('E', '', 0)
             elif i == 5:
-                assert note.is_a('F', '', 0)
+                assert note == Note('F', '', 0)
             elif i == 6:
                 assert note is None
             elif i == 7:
-                assert note.is_a('G', '', 0)
+                assert note == Note('G', '', 0)
             elif i == 8:
                 assert note is None
             elif i == 9:
-                assert note.is_a('A', '', 0)
+                assert note == Note('A', '', 0)
             elif i == 10:
                 assert note is None
             elif i == 11:
-                assert note.is_a('B', '', 0)
+                assert note == Note('B', '', 0)
             elif i == 12:
-                assert note.is_a('C', '', 1)
+                assert note == Note('C', '', 1)
 
 
     def testChromaticNoneYields(self):
@@ -890,9 +889,9 @@ class TonalKeySpellMethodTest(unittest.TestCase):
         )):
             i += 1
             if i == 1:
-                assert note.is_a('C', '', 0), note
+                assert note == Note('C', '', 0), note
             if i == 2:
-                assert note.is_a('D', '', 0), note
+                assert note == Note('D', '', 0), note
 
             print(note)
         # input('waiting...')
