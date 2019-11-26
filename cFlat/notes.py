@@ -170,12 +170,6 @@ class Note(object):
     def repr_alt(self):
         return _ALTS[self.alt]
 
-    def __add__(self, other):
-        ''' this is kinda useless but keeping it just for compliance '''
-        if self.__class__ == other.__class__:
-            return other.__interval_from(self)
-        raise TypeError('unsupported operand type(s) for +')
-
     def __sub__(self, other):
         if self.__class__ == other.__class__:
             return self.__interval_from(other)
