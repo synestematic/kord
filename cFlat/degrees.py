@@ -1,6 +1,4 @@
-from bestia.iterate import LoopedList
 from bestia.output import echo
-from collections import deque
 
 class Degrees(object):
 
@@ -31,7 +29,8 @@ class Degrees(object):
     def rotate_by_note(self, note):
         if note in self.original_order:
             return self._rotate_by_presence(note)
-        return self._rotate_by_magnitude(note)
+        return self._rotate_by_char(note)
+        # return self._rotate_by_magnitude(note)
 
     def _rotate_by_presence(self, note):
         ''' exact Note in order:
@@ -53,9 +52,59 @@ class Degrees(object):
         for degree in self.original_order:
 
             degree.oct += note.oct
+            input(degree)
             if degree >= note:
                 degree.oct -= note.oct
                 return True
 
             degree.oct -= note.oct
             self.rotate()
+
+    def _rotate_by_char(self, note):
+
+        self.reset()
+
+        for d, _ in enumerate(self.original_order):
+
+            # B0
+            for rc in self.degree_char_check(d, note):
+
+                echo(self.original_order[d], 'red')
+                input()
+
+                # try degree's next adj_char
+                if rc == 'next_d':
+                    self.rotate()
+                    break
+
+                # match check note
+                elif rc == 'match':
+                    return True
+
+                # reached next degree_order.chr
+                # elif rc == 'next_c':
+                #     pass
+
+
+    def degree_char_check(self, degree=0, note=None):
+
+        this_deg = self.original_order[degree]
+        next_deg = self.original_order[degree +1]
+
+        c = 1
+        while True:
+
+            echo(this_deg, 'green')
+            input()
+
+            if this_deg.adjacent_chr(c) == note.chr:
+                # match check note
+                yield 'match'
+
+            if this_deg.adjacent_chr(c) == next_deg.chr:
+                # reached next degree_order.chr
+                yield 'next_d'
+
+            # try degree's next adj_char
+            # yield 'next_c'
+            c += 1
