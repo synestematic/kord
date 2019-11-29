@@ -3,7 +3,7 @@ cFlat is a python framework that provides programmers with a simple api for the 
 
 <hr/>
 
-# API:
+# api reference:
 ## cFlat.notes module:
 
 ### Note() class

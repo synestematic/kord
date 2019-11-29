@@ -6,6 +6,9 @@ from .instruments import *
 
 from bestia.output import echo
 
+def dbg(t='Waiting...', c='magenta'):
+    echo(f'** {t} **', c)
+    input()
 
 class KeyValidityTest(unittest.TestCase):
 
@@ -173,6 +176,11 @@ class NoteEqualityTest(unittest.TestCase):
         assert Cs3 >> Db3      # enh note
         assert not Db3 == Cs3  # same note
 
+
+        # // enhr note, ignr oct
+        # ** same note, ignr oct
+        # == same note, same oct
+        # << enhr note, same oct
 
 
 class ChromaticKeysTest(unittest.TestCase):
@@ -770,16 +778,19 @@ class TonalKeySpellMethodTest(unittest.TestCase):
                 * Nones ARE NOT being yielded
         '''
         test_parameters = [
+
             {
                 'key': self.keys['Ab_chromatic_key'], 
                 'non_diatonic_note': Note('A', '#', 1), # enharmonic
                 'exp_diatonic_note': Note('B', 'b', 1), # equals
             },
+
             {
                 'key': self.keys['B_major'], 
                 'non_diatonic_note': Note('D', 1),      # missing note
                 'exp_diatonic_note': Note('D', '#', 1), # next note
             },
+
             {
                 'key': self.keys['Bb_minor'], 
                 'non_diatonic_note': Note('D', '#', 1), # enharmonic
@@ -795,6 +806,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
                 'non_diatonic_note': Note('C', 'b', 4), # enharmonic
                 'exp_diatonic_note': Note('B', '' , 3), # equals
             },
+
             # {   # test chords too eventually
             #     'key': self.keys['E7'], 
             #     'non_diatonic_note': Note('A', '', 0), # missing note
@@ -871,31 +883,31 @@ class TonalKeySpellMethodTest(unittest.TestCase):
         )):
             # echo(note, 'yellow')
             if i == 0:
-                assert note == Note('C', '', 0)
+                assert note == Note('C', '', 0), note
             elif i == 1:
                 assert note is None
             elif i == 2:
-                assert note == Note('D', '', 0)
+                assert note == Note('D', '', 0), note
             elif i == 3:
                 assert note is None
             elif i == 4:
-                assert note == Note('E', '', 0)
+                assert note == Note('E', '', 0), note
             elif i == 5:
-                assert note == Note('F', '', 0)
+                assert note == Note('F', '', 0), note
             elif i == 6:
                 assert note is None
             elif i == 7:
-                assert note == Note('G', '', 0)
+                assert note == Note('G', '', 0), note
             elif i == 8:
                 assert note is None
             elif i == 9:
-                assert note == Note('A', '', 0)
+                assert note == Note('A', '', 0), note
             elif i == 10:
                 assert note is None
             elif i == 11:
-                assert note == Note('B', '', 0)
+                assert note == Note('B', '', 0), note
             elif i == 12:
-                assert note == Note('C', '', 1)
+                assert note == Note('C', '', 1), note
 
 
     def testChromaticNoneYields(self):
@@ -917,14 +929,20 @@ class TonalKeySpellMethodTest(unittest.TestCase):
 
     def testDegreeOrderOverOct(self):
         for i, note in enumerate(MajorKey('C').ninth(
-            note_count=5, start_note=None, yield_all=False
+            note_count=6, start_note=None, yield_all=False
         )):
             i += 1
             if i == 1:
                 assert note == Note('C', '', 0), note
-            if i == 2:
-                assert note == Note('D', '', 0), note
+            # elif i == 2:
+            #     assert note == Note('E', '', 0), note
+            # elif i == 3:
+            #     assert note == Note('G', '', 0), note
+            # elif i == 4:
+            #     assert note == Note('B', '', 0), note
+            # elif i == 5:
+            #     assert note == Note('D', '', 1), note
+            # elif i == 6:
+            #     assert note == Note('C', '', 2), note
 
-            print(note)
-        # input('waiting...')
 

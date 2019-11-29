@@ -212,6 +212,7 @@ class Note(object):
 
 
     def __ne__(self, other):
+        # THIS IS A PROBLEM, IT SHOULD BE DIRECT OPPOSITE TO __EQ__
         if self.__class__ != other.__class__:
             return True
         return self.__interval_from(other) != 0
