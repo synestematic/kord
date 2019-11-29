@@ -72,6 +72,26 @@ class TonalKey(object):
         ''' supported features:
                 * positive note_count yields notes exactly
                 * negative note_count yields notes indefinetly
+        '''
+
+        for note in self._filter_degrees( start_note=start_note, yield_all=yield_all, degree_order=degree_order ):
+
+            if note_count == 0:  # negative note_counts never return
+                return
+
+            if yield_all:
+                yield note
+
+            elif not yield_all:
+                if note:
+                    yield note
+
+            if note:
+                note_count -= 1
+
+
+    def _filter_degrees(self, start_note=None, yield_all=True, degree_order=[]):
+        ''' supported features:
                 * degree order is enforced for chords, modes, etc
         '''
 
@@ -89,48 +109,35 @@ class TonalKey(object):
             )
 
         # rotate degree order by comparing it to star_note
-        degrees = Degrees(*degs)
-        degrees.rotate_by_note(start_note)
+        # degrees = Degrees(*degs)
+        # input(degrees.original_order)
+        # input(degrees.current_order)
+        # degrees.rotate_by_note(start_note)
+        # input(degrees.original_order)
+        # input(degrees.current_order)
 
-        # input(degrees.order)
-
-        # if start_note:
-        #     pass
-        #     input(start_note)
-
-
-        for note in self._solmizate( start_note=start_note, yield_all=yield_all ):
-
-            # DONE
-            if note_count == 0:  # negative note_counts never return
-                return
-
-            # GOT A NONE
-            if note is None:
-                if yield_all:
-                    yield None
-                continue
-
+        for note in self._solmizate(
+            start_note=start_note, yield_all=yield_all,
+        ):
 
             # THIS.............
             note_match = False
-            for deg in degs:
-                if note ** deg:
-                    yield note
-                    note_count -= 1
-                    note_match = True
-                    break
+
+            if note:
+                for deg in degs:
+                    if note ** deg:
+                        yield note
+                        note_match = True
+                        break
 
             if not note_match:
                 if yield_all:
                     yield None
 
-
-            # # OR THIS.............
-            # if note ** degrees[0]:
+            # OR THIS.............
+            # if note and note ** degrees[0]: # same note, ignr oct
             #     yield note
-            #     note_count -= 1
-            #     # degrees.rotate() # <<<<<
+            #     degrees.rotate()
             #     continue
 
             # if yield_all:
@@ -140,14 +147,12 @@ class TonalKey(object):
 
     def _solmizate(self, start_note=None, yield_all=True):
         ''' supported features:
-                * MUST yield indefinetly
-                * octave change, BUT degree() takes care of it
+                * yields indefinetly
+                * yields None for non-diatonic semitones
+                * changes octs { degree() }
                 * diatonic start_note
                 * non-diatonic start_note
-                * yield None for empty semi-tones
         '''
-
-        # note_count = note_count if note_count else len(self.root_intervals)
         start_note = start_note if start_note else self.root
 
         d = 0
@@ -170,8 +175,6 @@ class TonalKey(object):
                         yield
 
             yield self[d]
-            # note_count -= 1
-
 
 
     def scale(self, note_count=0, start_note=None, yield_all=True):
