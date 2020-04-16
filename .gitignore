@@ -1,6 +1,5 @@
 *.*
 legacy/*.*
-!.gitignore
 !Makefile
 !setup.py
 !LICENSE
