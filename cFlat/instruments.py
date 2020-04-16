@@ -132,8 +132,9 @@ class StringInstrument(object):
             frets = 24
 
         # INIT A NEW SCALE, OTHERWISE YOU USE THE SAME OUTER OBJECT!!!
+        if verbose:
+            echo(self.fret_inlays(verbose=verbose, frets=frets))
 
-        echo(self.fret_inlays(verbose=verbose, frets=frets))
         echo(self.binding('upper', frets=frets))
 
         for string in self.strings:
