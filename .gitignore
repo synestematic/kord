@@ -1,5 +1,7 @@
 *.*
 legacy/*.*
+!run.py
+!test.py
 !Makefile
 !setup.py
 !LICENSE
