@@ -3,106 +3,121 @@ from bestia.output import echo
 
 from cFlat import *
 
-TUNINGS = {
+INSTRUMENTS = {
 
-    # COMMON TUNINGS
-    'gtr': [
-        ('E', 4),
-        ('B', 3),
-        ('G', 3),
-        ('D', 3),
-        ('A', 2),
-        ('E', 2),
-    ],
-    'dropDgtr': [
-        ('E', 4),
-        ('B', 3),
-        ('G', 3),
-        ('D', 3),
-        ('A', 2),
-        ('D', 2),
-    ],
-    '7stringgtr': [
-        ('E', 4),
-        ('B', 3),
-        ('G', 3),
-        ('D', 3),
-        ('A', 2),
-        ('E', 2),
-        ('B', 1),
-    ],
+    'guitar': {
 
-    # OPEN TUNINGS
-    'openEgtr': [
-        ('E', 4),
-        ('B', 3),
-        ('G', '#', 3),
-        ('E', 3),
-        ('B', 2),
-        ('E', 2),
-    ],
-    'openDgtr': [
-        ('D', 4),
-        ('A', 3),
-        ('F', '#', 3),
-        ('D', 3),
-        ('A', 2),
-        ('D', 2),
-    ],
-    'openGgtr': [
-        ('D', 4),
-        ('B', 3),
-        ('G', 3),
-        ('D', 3),
-        ('G', 2),
-        ('D', 2),
-    ],
-    'openF#gtr': [
-        ('C', '#', 4),
-        ('A', '#', 3),
-        ('F', '#', 3),
-        ('C', '#', 3),
-        ('F', '#', 2),
-        ('C', '#', 2),
-    ],
+        'standard': [
+            ('E', 4),
+            ('B', 3),
+            ('G', 3),
+            ('D', 3),
+            ('A', 2),
+            ('E', 2),
+        ],
+        'dropD': [
+            ('E', 4),
+            ('B', 3),
+            ('G', 3),
+            ('D', 3),
+            ('A', 2),
+            ('D', 2),
+        ],
+        '7string': [
+            ('E', 4),
+            ('B', 3),
+            ('G', 3),
+            ('D', 3),
+            ('A', 2),
+            ('E', 2),
+            ('B', 1),
+        ],
+        'openE': [
+            ('E', 4),
+            ('B', 3),
+            ('G', '#', 3),
+            ('E', 3),
+            ('B', 2),
+            ('E', 2),
+        ],
+        'openD': [
+            ('D', 4),
+            ('A', 3),
+            ('F', '#', 3),
+            ('D', 3),
+            ('A', 2),
+            ('D', 2),
+        ],
+        'openG': [
+            ('D', 4),
+            ('B', 3),
+            ('G', 3),
+            ('D', 3),
+            ('G', 2),
+            ('D', 2),
+        ],
+        'openF#': [
+            ('C', '#', 4),
+            ('A', '#', 3),
+            ('F', '#', 3),
+            ('C', '#', 3),
+            ('F', '#', 2),
+            ('C', '#', 2),
+        ],
 
-    # OTHER INSTRUMENTS
-    'bass': [
-        ('G', 2),
-        ('D', 2),
-        ('A', 1),
-        ('E', 1),
-        # ('B', 0),
-    ],
-    '5stringbass': [
-        ('G', 2),
-        ('D', 2),
-        ('A', 1),
-        ('E', 1),
-        ('B', 0),
-    ],
-    '6stringbass': [
-        ('C', 3),
-        ('G', 2),
-        ('D', 2),
-        ('A', 1),
-        ('E', 1),
-        ('B', 0),
-    ],
-    'ukulele': [
-        ('A', 3),
-        ('E', 3),
-        ('C', 3),
-        ('G', 3),
-    ],
-    'banjo': [
-        ('D', 3),
-        ('B', 2),
-        ('G', 2),
-        ('D', 2),
-    ],
+    },
+
+    'bass': {
+
+        'standard': [
+            ('G', 2),
+            ('D', 2),
+            ('A', 1),
+            ('E', 1),
+            # ('B', 0),
+        ],
+        '5string': [
+            ('G', 2),
+            ('D', 2),
+            ('A', 1),
+            ('E', 1),
+            ('B', 0),
+        ],
+        '6string': [
+            ('C', 3),
+            ('G', 2),
+            ('D', 2),
+            ('A', 1),
+            ('E', 1),
+            ('B', 0),
+        ],
+
+    },
+
+    'ukulele' : {
+
+        'standard': [
+            ('A', 3),
+            ('E', 3),
+            ('C', 3),
+            ('G', 3),
+        ],
+
+    },
+
+    'banjo': {
+
+        'standard': [
+            ('D', 3),
+            ('B', 2),
+            ('G', 2),
+            ('D', 2),
+        ],
+
+    },
 
 }
+    
 
 TONAL_CLASSES = {
 
@@ -167,45 +182,53 @@ def parse_arguments():
 
     parser.add_argument(
         '-i', '--instrument',
-        help = 'set instrument & tuning',
-        choices=TUNINGS.keys(),
-        default=list(
-            TUNINGS.keys()
-        )[0],
+        help = 'select string instrument',
+        choices = INSTRUMENTS.keys(),
+        default = 'bass',
+    )
+
+    parser.add_argument(
+        '-t', '--tuning',
+        help = 'set specific tuning',
+        # choices = INSTRUMENTS.keys(),
+        default = 'standard',
     )
 
     parser.add_argument(
         '-f', '--frets',
         help = 'number of frets to display',
         type = int,
-        default=max_frets_on_screen()
+        default = max_frets_on_screen(),
     )
     parser.add_argument(
         '-v', '--verbosity',
         help = 'amount of verbosity',
-        choices=(0, 1, 2),
+        choices = (0, 1, 2),
         type = int,
-        default=1
+        default = 1,
     )
     parser.add_argument(
-        '-t', '--tonality',   # --key ??
-        help = 'tonality to display',
-        default='major'
+        '-k', '--key',
+        help = 'key to display',
+        default = 'major',
     )
 
-    parser.add_argument(
-        '-c', '--chord',
-        help = 'chord to display',
-    )
+    # parser.add_argument(
+    #     '-c', '--chord',
+    #     help = 'chord to display',
+    # )
 
     args = parser.parse_args()
 
-    instrument = args.instrument
-    if instrument not in TUNINGS.keys():
+    if args.instrument not in INSTRUMENTS.keys():
         raise InvalidInstrument
-    args.instrument = TUNINGS[instrument]
 
-    args.tonality = TONAL_CLASSES[args.tonality]
+    if args.tuning not in INSTRUMENTS[args.instrument].keys():
+        raise InvalidInstrument
+
+    args.tuning = INSTRUMENTS[args.instrument][args.tuning]
+
+    args.key = TONAL_CLASSES[args.key]
 
     note_char = args.note[:1].upper()
     if note_char not in notes._CHARS:
@@ -226,12 +249,12 @@ if __name__ == '__main__':
     args = parse_arguments()
 
     INSTRUMENT = StringInstrument(
-        *[ Note(*s) for s in args.instrument ]
+        *[ Note(*string) for string in args.tuning ]
     )
 
     CHR = args.note[0]
     ALT = args.note[1]
-    TONALITY = args.tonality(CHR, ALT)
+    TONALITY = args.key(CHR, ALT)
     # CHORD = args.chord
 
     FRETS = args.frets
