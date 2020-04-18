@@ -104,7 +104,7 @@ TUNINGS = {
 
 }
 
-SCALES = {
+TONAL_CLASSES = {
 
     'major': MajorKey,
 
@@ -163,11 +163,11 @@ def parse_arguments():
     parser = ArgumentParser(
         description = 'fretboard',
     )
-    parser.add_argument('key')
+    parser.add_argument('note')
 
     parser.add_argument(
-        '-t', '--tuning',
-        help = 'set string number/tuning',
+        '-i', '--instrument',
+        help = 'set instrument & tuning',
         choices=TUNINGS.keys(),
         default=list(
             TUNINGS.keys()
@@ -188,8 +188,8 @@ def parse_arguments():
         default=1
     )
     parser.add_argument(
-        '-s', '--scale',
-        help = 'scale to display',
+        '-t', '--tonality',   # --key ??
+        help = 'tonality to display',
         default='major'
     )
 
@@ -200,22 +200,22 @@ def parse_arguments():
 
     args = parser.parse_args()
 
-    tuning = args.tuning
-    if tuning not in TUNINGS.keys():
+    instrument = args.instrument
+    if instrument not in TUNINGS.keys():
         raise InvalidInstrument
-    args.tuning = TUNINGS[tuning]
+    args.instrument = TUNINGS[instrument]
 
-    args.scale = SCALES[args.scale]
+    args.tonality = TONAL_CLASSES[args.tonality]
 
-    key_char = args.key[:1].upper()
-    if key_char not in notes._CHARS:
+    note_char = args.note[:1].upper()
+    if note_char not in notes._CHARS:
         raise InvalidTone
 
-    key_alt = args.key[1:]
+    note_alt = args.note[1:]
     # if alt:
     #     alt = valid_alt(alt)
 
-    args.key = (key_char, key_alt)
+    args.note = (note_char, note_alt)
 
     return args
 
@@ -226,38 +226,38 @@ if __name__ == '__main__':
     args = parse_arguments()
 
     INSTRUMENT = StringInstrument(
-        *[ Note(*s) for s in args.tuning ]
+        *[ Note(*s) for s in args.instrument ]
     )
 
-    KEY = args.key
-    SCALE = args.scale
+    CHR = args.note[0]
+    ALT = args.note[1]
+    TONALITY = args.tonality(CHR, ALT)
     # CHORD = args.chord
-
-    DISPLAY = SCALE(*KEY).scale
 
     FRETS = args.frets
     VERBOSE = args.verbosity
 
-    try:
-        echo(SCALE, 'blue', 'underline')
-        INSTRUMENT.fretboard(
-            display=DISPLAY,
-            # display=MinorKey('F', '').scale,
-            # display=MajorKey('C').degree(5).seventh,
-            # display=SeventhDominantChord('G'),
-            frets=FRETS,
-            verbose=VERBOSE,
-        )
+    # try:
 
-    except KeyboardInterrupt:
-        echo()
+    echo('{}{} {}'.format(CHR, ALT, TONALITY.__class__.__name__), 'blue', 'underline')
+    INSTRUMENT.fretboard(
+        display=TONALITY.scale,
+        # display=MinorKey('F', '').scale,
+        # display=MajorKey('C').degree(5).seventh,
+        # display=SeventhDominantChord('G'),
+        frets=FRETS,
+        verbose=VERBOSE,
+    )
 
-    except Exception as x:
-        print("Unexpected error:", sys.exc_info()[0])
-        raise x
+    # except KeyboardInterrupt:
+    #     echo()
 
-    finally:
-        exit(0)
+    # except Exception as x:
+    #     print("Unexpected error:", sys.exc_info()[0])
+    #     raise x
+
+    # finally:
+    #     exit(0)
 
     # g = ChordVoicing(
     #     3,
