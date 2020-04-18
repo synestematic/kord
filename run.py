@@ -121,6 +121,8 @@ INSTRUMENTS = {
 
 TONAL_CLASSES = {
 
+    'chromatic': ChromaticKey,
+
     'major': MajorKey,
 
     'minor': MinorKey,
@@ -182,34 +184,35 @@ def parse_arguments():
 
     parser.add_argument(
         '-i', '--instrument',
-        help = 'select string instrument',
+        # help = 'select string instrument',
         choices = INSTRUMENTS.keys(),
         default = 'bass',
     )
 
     parser.add_argument(
         '-t', '--tuning',
-        help = 'set specific tuning',
+        # help = 'set specific tuning',
         # choices = INSTRUMENTS.keys(),
         default = 'standard',
     )
 
     parser.add_argument(
         '-f', '--frets',
-        help = 'number of frets to display',
+        # help = 'number of frets to display',
         type = int,
         default = max_frets_on_screen(),
     )
     parser.add_argument(
         '-v', '--verbosity',
-        help = 'amount of verbosity',
+        # help = 'amount of verbosity',
         choices = (0, 1, 2),
         type = int,
         default = 1,
     )
     parser.add_argument(
         '-k', '--key',
-        help = 'key to display',
+        # help = 'key to display',
+        choices = TONAL_CLASSES.keys(),
         default = 'major',
     )
 
