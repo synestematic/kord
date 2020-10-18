@@ -1,4 +1,4 @@
-from bestia.output import Row, FString, echo, tty_columns
+from bestia.output import Row, FString, echo, tty_cols
 
 from .keys import *
 # from cFlat.keys import *
@@ -8,7 +8,7 @@ _FRET_WIDTH = 1
 
 def max_frets_on_screen():
     frets = int(
-        tty_columns() / ( _NOTE_WIDTH + _FRET_WIDTH )
+        tty_cols() / ( _NOTE_WIDTH + _FRET_WIDTH )
     ) - 1
     return frets if frets <= 24 else 24
 
