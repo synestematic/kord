@@ -4,14 +4,14 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="cFlat",
+    name="kord",
     version="0.8",
     author="Federico Rizzo",
     author_email="foo@bar.com",
     description='a python framework for programming music applications',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/synestematic/cFlat",
+    url="https://github.com/synestematic/kord",
     license="MIT",
     packages=setuptools.find_packages(),
     classifiers=[

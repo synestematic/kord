@@ -1,4 +1,4 @@
-from cFlat.tests import *
+from kord.tests import *
 
 # so using relative imports in my modules means that I can NOT run them directly
 # because I need to import the parent beforehand... like from this script

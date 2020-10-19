@@ -1,4 +1,4 @@
-PACKAGE = cFlat
+PACKAGE = kord
 DISTR_DIRS = dist build ${PACKAGE}.egg-info
 
 default: build install clean

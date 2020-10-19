@@ -1,7 +1,7 @@
 from argparse import ArgumentParser
 from bestia.output import echo
 
-from cFlat import *
+from kord import *
 
 INSTRUMENTS = {
 

@@ -1,10 +1,10 @@
-# cFlat
-cFlat is a python framework that provides programmers with a simple api for the creation of music-based applications. While it focuses on theoretical purposes, some of it's more visually oriented features are tuned for the generation of tablature-style notation as such for guitars, basses, ukuleles and other similar plucked-string instruments.
+# kord
+kord is a python framework that provides programmers with a simple api for the creation of music-based applications. While it focuses on theoretical purposes, some of it's more visually oriented features are tuned for the generation of tablature-style notation as such for guitars, basses, ukuleles and other similar plucked-string instruments.
 
 <hr/>
 
 # api reference:
-## cFlat.notes module:
+## kord.notes module:
 
 ### Note() class
 Note instances are the lowest-level objects of the framework and have 3 main attributes:
@@ -16,7 +16,7 @@ Note instances are the lowest-level objects of the framework and have 3 main att
 Only the `chr` argument is required to create an instance. Arguments `alt` and `oct` will default to `''` and `3` respectively.
 
 ```
->>> from cFlat.notes import Note
+>>> from kord.notes import Note
 >>> e3 = Note('e')
 >>> e3
 E³
@@ -39,7 +39,7 @@ F𝄪¹
 Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
   ...
-cFlat.errors.InvalidAlteration: ###
+kord.errors.InvalidAlteration: ###
 ```
 
 
@@ -92,7 +92,7 @@ True
 
 <hr/>
 
-## cFlat.keys module:
+## kord.keys module:
 
 
 ### class TonalKey(object):
@@ -128,7 +128,7 @@ class ChromaticKey(TonalKey):
 We can initialize ChromaticKey objects on any given note and use the ```degree()``` method to obtain one of it's degrees. Using list index notation will achieve a similar result:
 
 ```
->>> from cFlat.keys import ChromaticKey
+>>> from kord.keys import ChromaticKey
 >>> c_chromatic = ChromaticKey('C')
 >>> c_chromatic.degree(2)
 C♯⁰
@@ -157,7 +157,7 @@ C⁰ C♯⁰ D⁰ D♯⁰
 The ```start_note=``` argument can be used to to start yielding from a specific note. This can be done even if the note is not part of the scale:
 
 ```
->>> from cFlat.notes import Note
+>>> from kord.notes import Note
 >>> Ab = Note('A', 'b', 0)
 >>> for note in c_chromatic.scale(note_count=6, start_note=Ab):
 ...   print(note, end=' ')
