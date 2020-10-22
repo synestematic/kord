@@ -197,7 +197,7 @@ class StringInstrument(object):
                 size=_NOTE_WIDTH + _FRET_WIDTH,
                 align='l'
             ),
-            width=6 +83 # why this??
+            size=6 +83 # why this??
         )
 
         i = 1

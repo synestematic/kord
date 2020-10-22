@@ -1,5 +1,3 @@
-from collections import deque
-
 from bestia.output import Row, FString, echo
 
 from .degrees import *

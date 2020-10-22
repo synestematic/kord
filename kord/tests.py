@@ -1,10 +1,10 @@
 import unittest
-from random import randint
-from time import sleep
-
-from .instruments import *
+import time
+import random
 
 from bestia.output import echo
+
+from .instruments import *
 
 def dbg(t='Waiting...', c='magenta'):
     echo(f'** {t} **', c)
@@ -749,7 +749,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
     def testNoteCount(self):
         ''' tests yielded note count is what has been required '''
         for key in self.keys.values():
-            max_notes = randint(2, 64)
+            max_notes = random.randint(2, 64)
             print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( note_count=1..{max_notes} ) ...')
             for count in range(max_notes):
                 count += 1
@@ -764,7 +764,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
     def testDiatonicStartNote(self):
         ''' tests that first yielded note == diatonic start_note '''
         for key in self.keys.values():
-            d = randint(2, 64)
+            d = random.randint(2, 64)
             print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = degree({d}) ) ...')
             for note in key._spell(
                 note_count=1, start_note=key.degree(d), yield_all=True, degree_order=[]
@@ -924,7 +924,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
             note_count=23, start_note=sn, yield_all=False, degree_order=[1, 3, 5, 7]
         )):
             echo(f'{note}  ', 'yellow', mode='raw')
-            # sleep(0.3)
+            # time.sleep(0.3)
 
 
     def testDegreeOrderOverOct(self):

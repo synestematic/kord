@@ -1,7 +1,9 @@
-from argparse import ArgumentParser
+import argparse
+
 from bestia.output import echo
 
 from kord import *
+# how to make sure it is relative import and not already installed?
 
 INSTRUMENTS = {
 
@@ -177,7 +179,7 @@ TONAL_CLASSES = {
 # }
 
 def parse_arguments():
-    parser = ArgumentParser(
+    parser = argparse.ArgumentParser(
         description = 'fretboard',
     )
     parser.add_argument('note')
@@ -186,7 +188,7 @@ def parse_arguments():
         '-i', '--instrument',
         # help = 'select string instrument',
         choices = INSTRUMENTS.keys(),
-        default = 'bass',
+        default = 'guitar',
     )
 
     parser.add_argument(
