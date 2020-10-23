@@ -1,125 +1,24 @@
+import os
+import json
 import argparse
 
 from bestia.output import echo
 
 from kord import *
-# how to make sure it is relative import and not already installed?
 
-INSTRUMENTS = {
+def json_instruments(d):
+    for f in os.listdir(d):
+        if f.endswith('.json'):
+            yield f.split('.')[0]
 
-    'guitar': {
+def get_instrument_data():
+    d = {}
+    for instrument in json_instruments('instruments'):
+        with open('instruments/{}.json'.format(instrument)) as js:
+            d[instrument] = json.load(js)
+    return d
 
-        'standard': [
-            ('E', 4),
-            ('B', 3),
-            ('G', 3),
-            ('D', 3),
-            ('A', 2),
-            ('E', 2),
-        ],
-        'dropD': [
-            ('E', 4),
-            ('B', 3),
-            ('G', 3),
-            ('D', 3),
-            ('A', 2),
-            ('D', 2),
-        ],
-        '7string': [
-            ('E', 4),
-            ('B', 3),
-            ('G', 3),
-            ('D', 3),
-            ('A', 2),
-            ('E', 2),
-            ('B', 1),
-        ],
-        'openE': [
-            ('E', 4),
-            ('B', 3),
-            ('G', '#', 3),
-            ('E', 3),
-            ('B', 2),
-            ('E', 2),
-        ],
-        'openD': [
-            ('D', 4),
-            ('A', 3),
-            ('F', '#', 3),
-            ('D', 3),
-            ('A', 2),
-            ('D', 2),
-        ],
-        'openG': [
-            ('D', 4),
-            ('B', 3),
-            ('G', 3),
-            ('D', 3),
-            ('G', 2),
-            ('D', 2),
-        ],
-        'openF#': [
-            ('C', '#', 4),
-            ('A', '#', 3),
-            ('F', '#', 3),
-            ('C', '#', 3),
-            ('F', '#', 2),
-            ('C', '#', 2),
-        ],
-
-    },
-
-    'bass': {
-
-        'standard': [
-            ('G', 2),
-            ('D', 2),
-            ('A', 1),
-            ('E', 1),
-            # ('B', 0),
-        ],
-        '5string': [
-            ('G', 2),
-            ('D', 2),
-            ('A', 1),
-            ('E', 1),
-            ('B', 0),
-        ],
-        '6string': [
-            ('C', 3),
-            ('G', 2),
-            ('D', 2),
-            ('A', 1),
-            ('E', 1),
-            ('B', 0),
-        ],
-
-    },
-
-    'ukulele' : {
-
-        'standard': [
-            ('A', 3),
-            ('E', 3),
-            ('C', 3),
-            ('G', 3),
-        ],
-
-    },
-
-    'banjo': {
-
-        'standard': [
-            ('D', 3),
-            ('B', 2),
-            ('G', 2),
-            ('D', 2),
-        ],
-
-    },
-
-}
-    
+INSTRUMENTS = get_instrument_data()
 
 TONAL_CLASSES = {
 
@@ -194,7 +93,7 @@ def parse_arguments():
     parser.add_argument(
         '-t', '--tuning',
         # help = 'set specific tuning',
-        # choices = INSTRUMENTS.keys(),
+        choices = [ INSTRUMENTS[i].keys() for i in INSTRUMENTS.keys() ],
         default = 'standard',
     )
 
@@ -226,10 +125,10 @@ def parse_arguments():
     args = parser.parse_args()
 
     if args.instrument not in INSTRUMENTS.keys():
-        raise InvalidInstrument
+        raise InvalidInstrument(args.instrument)
 
     if args.tuning not in INSTRUMENTS[args.instrument].keys():
-        raise InvalidInstrument
+        raise InvalidInstrument(args.tuning)
 
     args.tuning = INSTRUMENTS[args.instrument][args.tuning]
 
@@ -237,7 +136,7 @@ def parse_arguments():
 
     note_char = args.note[:1].upper()
     if note_char not in notes._CHARS:
-        raise InvalidTone
+        raise InvalidNote(note_char)
 
     note_alt = args.note[1:]
     # if alt:
@@ -254,7 +153,7 @@ if __name__ == '__main__':
     args = parse_arguments()
 
     INSTRUMENT = StringInstrument(
-        *[ Note(*string) for string in args.tuning ]
+        *[ Note(*string) for string in args.tuning ]  # maigc is here
     )
 
     CHR = args.note[0]
