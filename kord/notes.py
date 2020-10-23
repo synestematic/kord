@@ -2,7 +2,6 @@ from bestia.iterate import LoopedList
 from bestia.output import echo
 
 from .errors import *
-# from cFlat.errors import *
 
 SHARP = 1
 FLAT = -1
@@ -207,29 +206,28 @@ class Note(object):
                     if self.oct == other.oct:
                         return True
 
-
-    def __ne__(self, other):
+    def __ne__(self, other):  # !=
         # THIS IS A PROBLEM, IT SHOULD BE DIRECT OPPOSITE TO __EQ__
         if self.__class__ != other.__class__:
             return True
         return self.__interval_from(other) != 0
 
-    def __gt__(self, other):
+    def __gt__(self, other):  # >
         if self.__class__ == other.__class__:
             return self.__interval_from(other) > 0
         raise TypeError(f' > not supported with {other.__class__}')
 
-    def __ge__(self, other):
+    def __ge__(self, other):  # >=
         if self.__class__ == other.__class__:
             return self.__interval_from(other) >= 0
         raise TypeError(f' >= not supported with {other.__class__}')
 
-    def __lt__(self, other):
+    def __lt__(self, other):  # <
         if self.__class__ == other.__class__:
             return self.__interval_from(other) < 0
         raise TypeError(f' < not supported with {other.__class__}')
 
-    def __le__(self, other):
+    def __le__(self, other):  # <=
         if self.__class__ == other.__class__:
             return self.__interval_from(other) <= 0
         raise TypeError(f' <= not supported with {other.__class__}')
@@ -313,7 +311,7 @@ EnharmonicMatrix = LoopedList(
 
 )
 
-def notes_by_alts(alts=[]):
+def notes_by_alts():
     ''' yields all 35 possible notes in following order:
         * 7 notes with alt ''
         * 7 notes with alt 'b'
@@ -321,28 +319,19 @@ def notes_by_alts(alts=[]):
         * 7 notes with alt 'bb'
         * 7 notes with alt '##'
     '''
+    # sort alts
+    alts = input_alterations()
+    alts.sort(key=len) # '', b, #, bb, ##
+
+    # get all notes
     notes = []
     for ehns in EnharmonicMatrix:
         for ehn in ehns:
             notes.append(ehn)
 
-    for n in notes:
-        if not n.alt:
-            yield n
-
-    for n in notes:
-        if n.alt == 'b':
-            yield n
-
-    for n in notes:
-        if n.alt == '#':
-            yield n
-
-    for n in notes:
-        if n.alt == 'bb':
-            yield n
-
-    for n in notes:
-        if n.alt == '##':
-            yield n
-    
+    # yield notes
+    for alt in alts:
+        for note in notes:
+            if note.alt == alt:
+                # note.oct = 3
+                yield note
