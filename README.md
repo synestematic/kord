@@ -1,25 +1,29 @@
 # kord
-kord is a python framework that provides programmers with a simple api for the creation of music-based applications. While it focuses on theoretical purposes, some of it's more visually oriented features are tuned for the generation of tablature-style notation as such for guitars, basses, ukuleles and other similar plucked-string instruments.
+kord is a python framework that provides programmers with a simple api for the creation of music-based applications. While it's mainly focused for theoretical purposes, some of it's more visually oriented features are well-suited for the generation of plucked-string instruments.
 
 <hr/>
 
 # api reference:
+
 ## kord.notes module:
 
 ### Note() class
 Note instances are the lowest-level objects of the framework and have 3 main attributes:
 
-* (str) chr
-* (str) alt
-* (int) oct
+```
+* chr: str   ('C', 'D', 'E', 'F', 'G', 'A', 'B')
+* alt: str   ('b', 'bb', '', '#', '##')
+* oct: int   (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+```
+
 
 Only the `chr` argument is required to create an instance. Arguments `alt` and `oct` will default to `''` and `3` respectively.
 
 ```
 >>> from kord.notes import Note
->>> e3 = Note('e')
->>> e3
-E³
+>>> e3, f3 = Note('e'), Note('f')
+>>> e3, f3
+(E³, F³) 
 >>> Note('B', 'b', 7)
 B♭⁷
 >>> Note('C', '#', 0)
@@ -43,14 +47,33 @@ kord.errors.InvalidAlteration: ###
 ```
 
 
+ 
+Intervals between note objects can be evaluated using the following operators:
 
-Intervals between note objects can be evaluated using the following operators: ``` - < > << >> <= >= != ``` This allows calculations of semitones deltas notes dis as well as study of their enharmonic relationships. Let's take a quick look at each operator separately:
+```
+-   < >   <= >=   == !=   << >>
+```
+ 
+These allow calculation of semitone deltas between notes as well as insights into their enharmonic relationships. Let's take a quick look at each operator separately:
+
+#### - operator
+
+This operator allows you to calculate the difference in semitones between two notes:
+
+```
+>>> f3 - e3
+1
+>>> Note('a', 8) - Note('c', 4)
+57
+>>> Note('a', 8) - Note('c', '##', 4)
+55
+```
+
 
 #### <  > operators
 
 
 ```
->>> f3 = Note('F')
 >>> f3
 F³
 >>> f3 > e3
