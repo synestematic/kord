@@ -51,7 +51,8 @@ def parse_arguments():
         description='<<< Fretboard visualizer helper tool for the kord music framework >>>',
     )
     parser.add_argument(
-        'ROOT', help='select a ROOT key'
+        'ROOT',
+        help='select a root note',
     )
     parser.add_argument(
         '-m', '--mode',
@@ -90,23 +91,46 @@ def parse_arguments():
     )
     args = parser.parse_args()
 
-    if args.instrument not in INSTRUMENTS.keys():
-        raise InvalidInstrument(args.instrument)
+    # some args require more validation than what argparse can offer, let's do that here
+    try:
+        # valid tuning
+        if args.tuning not in INSTRUMENTS[args.instrument].keys():
+            parser.print_usage()
+            raise InvalidInstrument(
+                "run.py: error: argument -t/--tuning: invalid choice: '{}' (choose from {}) ".format(
+                    args.tuning,
+                    str( list( INSTRUMENTS[args.instrument].keys() ) ).lstrip('[').rstrip(']'),
+                )
+            )
+        args.tuning = INSTRUMENTS[args.instrument][args.tuning]
 
-    if args.tuning not in INSTRUMENTS[args.instrument].keys():
-        raise InvalidInstrument(args.tuning)
+        # validate ROOT note
+        note_chr = args.ROOT[:1].upper()
+        if note_chr not in notes._CHARS:
+            parser.print_usage()
+            raise InvalidNote(
+                "run.py: error: argument ROOT: invalid note: '{}' (choose from {}) ".format(
+                    note_chr,
+                    str( [ n for n in notes._CHARS if n ] ).lstrip('[').rstrip(']')
+                )
+            )
 
-    args.tuning = INSTRUMENTS[args.instrument][args.tuning]
+        # validate ROOT alteration
+        note_alt = args.ROOT[1:]
+        if note_alt and note_alt not in list(notes._ALTS.keys()):
+            parser.print_usage()
+            raise InvalidNote(
+                "run.py: error: argument ROOT: invalid alteration: '{}' (choose from {}) ".format(
+                    note_alt,
+                    str( list(notes._ALTS.keys()) ).lstrip('[').rstrip(']')
+                )
+            )
 
-    note_char = args.ROOT[:1].upper()
-    if note_char not in notes._CHARS:
-        raise InvalidNote(note_char)
+        args.ROOT = (note_chr, note_alt)
 
-    note_alt = args.ROOT[1:]
-    # if alt:
-    #     alt = valid_alt(alt)
-
-    args.ROOT = (note_char, note_alt)
+    except Exception as x:
+        print(x)
+        args = None
 
     return args
 
@@ -115,7 +139,7 @@ def run(args):
     
     try:
         rc = 0
-        INSTRUMENT = StringInstrument(
+        INSTRUMENT = PluckedStringInstrument(
             *[ Note(*string_tuning) for string_tuning in args.tuning ]
         )
 
@@ -138,6 +162,10 @@ def run(args):
 
 
 if __name__ == '__main__':
-    args = parse_arguments()
-    rc = run(args)
+    rc = -1
+    valid_args = parse_arguments()
+    if not valid_args:
+        rc = 2
+    else:
+        rc = run(valid_args)
     sys.exit(rc)

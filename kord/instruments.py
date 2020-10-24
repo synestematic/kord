@@ -11,7 +11,7 @@ def max_frets_on_screen(limit=24):
     ) - 1
     return frets if frets <= limit else limit
 
-class String(object):
+class PluckedString(object):
 
     def __init__(self, tone, alt='', oct=0, frets=0, display=None, verbose=1):
 
@@ -111,11 +111,11 @@ class String(object):
         return str(string_line)
 
 
-class StringInstrument(object):
+class PluckedStringInstrument(object):
 
     def __init__(self, *notes, name=''):
         self.name = name
-        self.strings = [ String(*n) for n in notes ]
+        self.strings = [ PluckedString(*n) for n in notes ]
 
 
     def string(self, s):
