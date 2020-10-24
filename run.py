@@ -45,63 +45,6 @@ def get_instruments_data():
 
 INSTRUMENTS = get_instruments_data()
 
-TONAL_CLASSES = {
-
-    'chromatic': ChromaticKey,
-
-    'major': MajorKey,
-
-    'minor': MinorKey,
-    'natural_minor': NaturalMinorKey,
-    'melodic_minor': MelodicMinorKey,
-    'harmonic_minor': HarmonicMinorKey,
-
-    'ionian': IonianMode,
-    'lydian': LydianMode,
-    'mixo': MixolydianMode,
-    'aeolian': AeolianMode,
-    'dorian': DorianMode,
-    'phrygian': PhrygianMode,
-
-    # 'hokkaido': Hokkaido,
-
-}
-
-
-# CHORDS = {
-#     # TRIADS ########################
-#     '': MajorTriadChord,
-#     'M': MajorTriadChord,
-
-#     'm': MinorTriadChord,
-
-#     'a': AugmentedTriadChord,
-    #  '+': AugmentedTriadChord,
-
-#     'd': DiminishedTriadChord,
-#     '-': DiminishedTriadChord,
-
-#     # SEVENTH #######################
-#     '7': DominantSeventhChord,
-#     'dom7': DominantSeventhChord,
-
-#     'M7': MajorSeventhChord,
-#     'maj7': MajorSeventhChord,
-#     '△7': MajorSeventhChord,
-
-#     'm7': MinorSeventhChord,
-#     'min7': MinorSeventhChord,
-    
-#     'D7': DiminishedSeventhChord,
-#     'dim7': DiminishedSeventhChord,
-#     '°7': DiminishedSeventhChord,
-
-#     'd7': HalfDiminishedSeventhChord, # isnt this one usually used for diminished (instead of D7)?
-#     'm7-5': HalfDiminishedSeventhChord,
-#     '⦰7': HalfDiminishedSeventhChord,
-
-# }
-
 def parse_arguments():
     parser = argparse.ArgumentParser(
         description = '<<< Fretboard visualizer helper tool for the kord music framework >>>',
@@ -110,37 +53,38 @@ def parse_arguments():
 
     parser.add_argument(
         '-m', '--mode',
-        help='select the music mode to visualize',
+        help='music mode to visualize: {}'.format([ m for m in TONAL_CLASSES.keys() ]),
         choices=[ m for m in TONAL_CLASSES.keys() ],
         default='major',
-        # metavar=TONAL_CLASSES.keys(),
+        metavar='',
     )
     parser.add_argument(
         '-i', '--instrument',
-        help='select instrument you want to visualize the fretboard of',
+        help='instrument fretboard to visualize: {}'.format([ i for i in INSTRUMENTS.keys() ]),
         choices=[ i for i in INSTRUMENTS.keys() ],
         default='guitar',
         metavar='',
-        # dest='domain'
-
     )
     parser.add_argument(
         '-t', '--tuning',
-        help='check the instrument.json file for available tunings',
+        help='instrument tuning: check your .json files for available options',
         default='standard',
+        metavar='',
     )
     parser.add_argument(
         '-f', '--frets',
-        help='limit the number of frets to display, max is {}'.format(MAX_FRETS),
+        help='number of displayed frets: [0, 1, 2, .. , {}]'.format(MAX_FRETS),
         type=int,
         default=max_frets_on_screen(MAX_FRETS),
+        metavar='',
     )
     parser.add_argument(
         '-v', '--verbosity',
-        help = 'set the amount of application verbosity, default is 1',
-        choices = (0, 1, 2),
-        type = int,
-        default = 1,
+        help='application verbosity: [0, 1, 2]',
+        choices= (0, 1, 2),
+        type=int,
+        default=1,
+        metavar='',
     )
 
     args = parser.parse_args()
