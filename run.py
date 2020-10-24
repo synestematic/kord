@@ -6,19 +6,44 @@ from bestia.output import echo
 
 from kord import *
 
-def json_instruments(d):
-    for f in os.listdir(d):
+MAX_FRETS = 36
+
+JSON_DIR = 'instruments'
+
+def list_json_instruments(directory):
+    for f in os.listdir(directory):
         if f.endswith('.json'):
             yield f.split('.')[0]
 
-def get_instrument_data():
-    d = {}
-    for instrument in json_instruments('instruments'):
-        with open('instruments/{}.json'.format(instrument)) as js:
-            d[instrument] = json.load(js)
-    return d
+def open_json_instrument(directory, instrument):
+    try:
+        with open('{}/{}.json'.format(directory, instrument)) as js:
+            return json.load(js)
+    except:
+        return {}
 
-INSTRUMENTS = get_instrument_data()
+def get_instruments_data():
+    data = {}
+    for instrument in list_json_instruments(JSON_DIR):
+
+        instrument_data = open_json_instrument(JSON_DIR, instrument)
+        if not instrument_data:
+            echo('Ignoring {}.json (failed to parse file)'.format(instrument), 'red')
+            continue
+
+        for tuning, strings_list in instrument_data.items():
+            for s, string in enumerate(strings_list):
+                instrument_data[tuning][s] = (
+                    # chr    , alt         , oct
+                    string[0], string[1:-1], int(string[-1])
+                )
+
+        data[instrument] = instrument_data
+
+    return data
+
+
+INSTRUMENTS = get_instruments_data()
 
 TONAL_CLASSES = {
 
@@ -79,48 +104,44 @@ TONAL_CLASSES = {
 
 def parse_arguments():
     parser = argparse.ArgumentParser(
-        description = 'fretboard',
+        description = '<<< Fretboard visualizer helper tool for the kord music framework >>>',
     )
-    parser.add_argument('note')
+    parser.add_argument('ROOT', help='select a ROOT key')
 
+    parser.add_argument(
+        '-m', '--mode',
+        help='select the music mode to visualize',
+        choices=[ m for m in TONAL_CLASSES.keys() ],
+        default='major',
+        # metavar=TONAL_CLASSES.keys(),
+    )
     parser.add_argument(
         '-i', '--instrument',
-        # help = 'select string instrument',
-        choices = INSTRUMENTS.keys(),
-        default = 'guitar',
-    )
+        help='select instrument you want to visualize the fretboard of',
+        choices=[ i for i in INSTRUMENTS.keys() ],
+        default='guitar',
+        metavar='',
+        # dest='domain'
 
+    )
     parser.add_argument(
         '-t', '--tuning',
-        # help = 'set specific tuning',
-        choices = [ INSTRUMENTS[i].keys() for i in INSTRUMENTS.keys() ],
-        default = 'standard',
+        help='check the instrument.json file for available tunings',
+        default='standard',
     )
-
     parser.add_argument(
         '-f', '--frets',
-        # help = 'number of frets to display',
-        type = int,
-        default = max_frets_on_screen(),
+        help='limit the number of frets to display, max is {}'.format(MAX_FRETS),
+        type=int,
+        default=max_frets_on_screen(MAX_FRETS),
     )
     parser.add_argument(
         '-v', '--verbosity',
-        # help = 'amount of verbosity',
+        help = 'set the amount of application verbosity, default is 1',
         choices = (0, 1, 2),
         type = int,
         default = 1,
     )
-    parser.add_argument(
-        '-k', '--key',
-        # help = 'key to display',
-        choices = TONAL_CLASSES.keys(),
-        default = 'major',
-    )
-
-    # parser.add_argument(
-    #     '-c', '--chord',
-    #     help = 'chord to display',
-    # )
 
     args = parser.parse_args()
 
@@ -132,20 +153,17 @@ def parse_arguments():
 
     args.tuning = INSTRUMENTS[args.instrument][args.tuning]
 
-    args.key = TONAL_CLASSES[args.key]
-
-    note_char = args.note[:1].upper()
+    note_char = args.ROOT[:1].upper()
     if note_char not in notes._CHARS:
         raise InvalidNote(note_char)
 
-    note_alt = args.note[1:]
+    note_alt = args.ROOT[1:]
     # if alt:
     #     alt = valid_alt(alt)
 
-    args.note = (note_char, note_alt)
+    args.ROOT = (note_char, note_alt)
 
     return args
-
 
 
 if __name__ == '__main__':
@@ -153,13 +171,12 @@ if __name__ == '__main__':
     args = parse_arguments()
 
     INSTRUMENT = StringInstrument(
-        *[ Note(*string) for string in args.tuning ]  # maigc is here
+        *[ Note(*string) for string in args.tuning ]
     )
 
-    CHR = args.note[0]
-    ALT = args.note[1]
-    TONALITY = args.key(CHR, ALT)
-    # CHORD = args.chord
+    CHR = args.ROOT[0]
+    ALT = args.ROOT[1]
+    TONALITY = TONAL_CLASSES[args.mode](CHR, ALT)
 
     FRETS = args.frets
     VERBOSE = args.verbosity
@@ -174,6 +191,7 @@ if __name__ == '__main__':
         # display=SeventhDominantChord('G'),
         frets=FRETS,
         verbose=VERBOSE,
+        limit=24
     )
 
     # except KeyboardInterrupt:
