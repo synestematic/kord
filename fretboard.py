@@ -48,7 +48,7 @@ INSTRUMENTS = get_instruments_data()
 
 def parse_arguments():
     parser = argparse.ArgumentParser(
-        description='<<< Fretboard visualizer helper tool for the kord music framework >>>',
+        description='<<< Fretboard visualizer sample tool for the kord music framework >>>',
     )
     parser.add_argument(
         'ROOT',
