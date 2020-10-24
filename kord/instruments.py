@@ -5,11 +5,11 @@ from .keys import *
 _NOTE_WIDTH = 5
 _FRET_WIDTH = 1
 
-def max_frets_on_screen():
+def max_frets_on_screen(limit=24):
     frets = int(
         tty_cols() / ( _NOTE_WIDTH + _FRET_WIDTH )
     ) - 1
-    return frets if frets <= 24 else 24
+    return frets if frets <= limit else limit
 
 class String(object):
 
@@ -125,10 +125,10 @@ class StringInstrument(object):
         return self.strings[s -1]
 
 
-    def fretboard(self, display=None, frets=12, verbose=1):
+    def fretboard(self, display=None, frets=12, verbose=1, limit=24):
 
-        if frets > 24:
-            frets = 24
+        if frets > limit:
+            frets = limit
 
         # INIT A NEW SCALE, OTHERWISE YOU USE THE SAME OUTER OBJECT!!!
         if verbose:
