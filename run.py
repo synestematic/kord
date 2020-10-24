@@ -1,4 +1,5 @@
 import os
+import sys
 import json
 import argparse
 
@@ -47,10 +48,11 @@ INSTRUMENTS = get_instruments_data()
 
 def parse_arguments():
     parser = argparse.ArgumentParser(
-        description = '<<< Fretboard visualizer helper tool for the kord music framework >>>',
+        description='<<< Fretboard visualizer helper tool for the kord music framework >>>',
     )
-    parser.add_argument('ROOT', help='select a ROOT key')
-
+    parser.add_argument(
+        'ROOT', help='select a ROOT key'
+    )
     parser.add_argument(
         '-m', '--mode',
         help='music mode to visualize: {}'.format([ m for m in TONAL_CLASSES.keys() ]),
@@ -86,7 +88,6 @@ def parse_arguments():
         default=1,
         metavar='',
     )
-
     args = parser.parse_args()
 
     if args.instrument not in INSTRUMENTS.keys():
@@ -110,9 +111,7 @@ def parse_arguments():
     return args
 
 
-if __name__ == '__main__':
-
-    args = parse_arguments()
+def run(args):
 
     INSTRUMENT = StringInstrument(
         *[ Note(*string) for string in args.tuning ]
@@ -120,16 +119,14 @@ if __name__ == '__main__':
 
     CHR = args.ROOT[0]
     ALT = args.ROOT[1]
-    TONALITY = TONAL_CLASSES[args.mode](CHR, ALT)
+    MODE = TONAL_CLASSES[args.mode](CHR, ALT)
 
     FRETS = args.frets
     VERBOSE = args.verbosity
 
-    # try:
-
-    echo('{}{} {}'.format(CHR, ALT, TONALITY.__class__.__name__), 'blue', 'underline')
+    echo('{}{} {}'.format(CHR, ALT, MODE.__class__.__name__), 'blue', 'underline')
     INSTRUMENT.fretboard(
-        display=TONALITY.scale,
+        display=MODE.scale,
         # display=MinorKey('F', '').scale,
         # display=MajorKey('C').degree(5).seventh,
         # display=SeventhDominantChord('G'),
@@ -138,21 +135,10 @@ if __name__ == '__main__':
         limit=24
     )
 
-    # except KeyboardInterrupt:
-    #     echo()
+    return 0
 
-    # except Exception as x:
-    #     print("Unexpected error:", sys.exc_info()[0])
-    #     raise x
 
-    # finally:
-    #     exit(0)
-
-    # g = ChordVoicing(
-    #     3,
-    #     3,
-    #     0,
-    #     0,
-    #     2,
-    #     3
-    # )
+if __name__ == '__main__':
+    args = parse_arguments()
+    rc = run(args)
+    sys.exit(rc)
