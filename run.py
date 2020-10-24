@@ -9,7 +9,7 @@ from kord import *
 
 MAX_FRETS = 36
 
-JSON_DIR = 'instruments'
+JSON_DIR = './instruments'
 
 def list_json_instruments(directory):
     for f in os.listdir(directory):
@@ -112,30 +112,29 @@ def parse_arguments():
 
 
 def run(args):
+    
+    try:
+        rc = 0
+        INSTRUMENT = StringInstrument(
+            *[ Note(*string_tuning) for string_tuning in args.tuning ]
+        )
 
-    INSTRUMENT = StringInstrument(
-        *[ Note(*string) for string in args.tuning ]
-    )
+        MODE = TONAL_CLASSES[args.mode](args.ROOT[0], alt=args.ROOT[1])
 
-    CHR = args.ROOT[0]
-    ALT = args.ROOT[1]
-    MODE = TONAL_CLASSES[args.mode](CHR, ALT)
+        echo('{} {} on {}'.format(str(MODE.root)[:-1], MODE.__class__.__name__, args.instrument), 'blue', 'underline')
+        INSTRUMENT.fretboard(
+            display=MODE.scale,
+            frets=args.frets,
+            verbose=args.verbosity,
+            limit=24
+        )
 
-    FRETS = args.frets
-    VERBOSE = args.verbosity
+    except Exception as x:
+        print(x)
+        rc = -1
 
-    echo('{}{} {}'.format(CHR, ALT, MODE.__class__.__name__), 'blue', 'underline')
-    INSTRUMENT.fretboard(
-        display=MODE.scale,
-        # display=MinorKey('F', '').scale,
-        # display=MajorKey('C').degree(5).seventh,
-        # display=SeventhDominantChord('G'),
-        frets=FRETS,
-        verbose=VERBOSE,
-        limit=24
-    )
-
-    return 0
+    finally:
+        return rc
 
 
 if __name__ == '__main__':
