@@ -460,3 +460,59 @@ class ChromaticKey(TonalKey):
             return Note(deg.chr, deg.alt, deg_oct)
 
         raise InvalidNote
+
+TONAL_CLASSES = {
+
+    'major': MajorKey,
+
+    'minor': MinorKey,
+    'natural_minor': NaturalMinorKey,
+    'melodic_minor': MelodicMinorKey,
+    'harmonic_minor': HarmonicMinorKey,
+
+    'ionian': IonianMode,
+    'lydian': LydianMode,
+    'mixo': MixolydianMode,
+    'aeolian': AeolianMode,
+    'dorian': DorianMode,
+    'phrygian': PhrygianMode,
+
+    # 'hokkaido': Hokkaido,
+
+    'chromatic': ChromaticKey,
+
+}
+
+# CHORDS = {
+#     # TRIADS ########################
+#     '': MajorTriadChord,
+#     'M': MajorTriadChord,
+
+#     'm': MinorTriadChord,
+
+#     'a': AugmentedTriadChord,
+    #  '+': AugmentedTriadChord,
+
+#     'd': DiminishedTriadChord,
+#     '-': DiminishedTriadChord,
+
+#     # SEVENTH #######################
+#     '7': DominantSeventhChord,
+#     'dom7': DominantSeventhChord,
+
+#     'M7': MajorSeventhChord,
+#     'maj7': MajorSeventhChord,
+#     '△7': MajorSeventhChord,
+
+#     'm7': MinorSeventhChord,
+#     'min7': MinorSeventhChord,
+    
+#     'D7': DiminishedSeventhChord,
+#     'dim7': DiminishedSeventhChord,
+#     '°7': DiminishedSeventhChord,
+
+#     'd7': HalfDiminishedSeventhChord, # isnt this one usually used for diminished (instead of D7)?
+#     'm7-5': HalfDiminishedSeventhChord,
+#     '⦰7': HalfDiminishedSeventhChord,
+
+# }
