@@ -5,8 +5,8 @@ from .notes import *
 
 class TonalKey(object):
 
-    def __init__(self, c, alt='', oct=0):
-        self.root = Note(c, alt, 0) # ignore note.oct
+    def __init__(self, chr, alt='', oct=0):
+        self.root = Note(chr, alt, 0) # ignore note.oct
 
     def __repr__(self):
         spell_line = Row()
@@ -21,6 +21,9 @@ class TonalKey(object):
     def __getitem__(self, i):
         return self.degree(i)
 
+    @property
+    def name(self):
+        return self.__class__.__name__
 
     @classmethod
     def __possible_root_notes(cls, valids=True):

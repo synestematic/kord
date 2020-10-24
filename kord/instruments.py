@@ -113,12 +113,9 @@ class String(object):
 
 class StringInstrument(object):
 
-    def __init__(self, *notes):
-        self.strings = []
-        for n in notes:
-            self.strings.append(
-                String(*n)
-            )
+    def __init__(self, *notes, name=''):
+        self.name = name
+        self.strings = [ String(*n) for n in notes ]
 
 
     def string(self, s):

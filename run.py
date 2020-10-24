@@ -121,7 +121,7 @@ def run(args):
 
         MODE = TONAL_CLASSES[args.mode](args.ROOT[0], alt=args.ROOT[1])
 
-        echo('{} {} on {}'.format(str(MODE.root)[:-1], MODE.__class__.__name__, args.instrument), 'blue', 'underline')
+        echo('{} {} on {}'.format(str(MODE.root)[:-1], MODE.name, args.instrument), 'blue', 'underline')
         INSTRUMENT.fretboard(
             display=MODE.scale,
             frets=args.frets,

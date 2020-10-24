@@ -93,6 +93,10 @@ False
 ```
 
 
+
+
+
+
 Given that python lacks a `===` operator, Notes can be compared for a "stricter" equality using their `is_a()` method:
 
 ```
