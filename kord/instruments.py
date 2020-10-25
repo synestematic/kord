@@ -4,6 +4,7 @@ from .keys import *
 
 _NOTE_WIDTH = 5
 _FRET_WIDTH = 1
+MAX_FRETS = 36
 
 def max_frets_on_screen(limit=24):
     frets = int(
