@@ -14,9 +14,7 @@ def max_frets_on_screen(limit=24):
 class PluckedString(object):
 
     def __init__(self, tone, alt='', oct=0, frets=0, display=None, verbose=1):
-
         self.__key = None
-
         self.tuning = Note(tone, alt, oct)
         self.display_method = display
         self.frets = 12 if not frets else frets
@@ -98,7 +96,7 @@ class PluckedString(object):
             # APPEND FRET
             string_line.append(
                 FString(                   
-                    '║' if fret_n % 12 == 0 or fret_n == self.frets -1 else '|', #¦
+                    '║' if fret_n % 12 == 0 else '│',
                     size=_FRET_WIDTH,
                     # fg='blue',
                     # fx=['faint'],
@@ -216,27 +214,46 @@ class PluckedStringInstrument(object):
     @staticmethod
     def render_binding(side, frets=12):
         # https://en.wikipedia.org/wiki/Box-drawing_character
-        binding = {
+        normal = {
             'upper': '═',
             'lower': '═'
         }
-        joint = {
+        twelve = {
             'upper': '╦',
             'lower': '╩'
+        }
+        joints = {
+            'upper': '╤',
+            'lower': '╧'
         }
         capo = {
             'upper': '     ╔',
             'lower': '     ╚',
+        }
+        final = {
+            'upper': '╕',
+            'lower': '╛',
         }
         fine = {
             'upper': '╗',
             'lower': '╝',
         }
         total_fret_width = _NOTE_WIDTH + _FRET_WIDTH
-        fret_bind = ''
-        for f in range(1, frets * total_fret_width):
-            if f > 0 and f % (total_fret_width * 12) == 0:
-                fret_bind += joint[side]
+        fret_bind = capo[side]
+        for f in range(1, frets * total_fret_width + 1):
+            # final fret
+            if f == frets * total_fret_width:
+                if f % (total_fret_width * 12) == 0:
+                    fret_bind += fine[side]
+                else:
+                    fret_bind += final[side]
+            # 12th, 24th
+            elif f % (total_fret_width * 12) == 0:
+                fret_bind += twelve[side]
+            # fret bar joints
+            elif f % total_fret_width == 0:
+                fret_bind += joints[side]
+            # normal bind
             else:
-                fret_bind += binding[side]
-        return capo[side] + fret_bind + fine[side]
+                fret_bind += normal[side]
+        return fret_bind
