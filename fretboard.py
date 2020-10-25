@@ -56,34 +56,34 @@ def parse_arguments():
     )
     parser.add_argument(
         '-m', '--mode',
-        help='music mode to visualize: {}'.format([ m for m in TONAL_CLASSES.keys() ]),
+        help='set mode: {}'.format([ m for m in TONAL_CLASSES.keys() ]),
         choices=[ m for m in TONAL_CLASSES.keys() ],
         default='major',
         metavar='',
     )
     parser.add_argument(
         '-i', '--instrument',
-        help='instrument fretboard to visualize: {}'.format([ i for i in INSTRUMENTS.keys() ]),
+        help='set instrument fretboard: {}'.format([ i for i in INSTRUMENTS.keys() ]),
         choices=[ i for i in INSTRUMENTS.keys() ],
         default='guitar',
         metavar='',
     )
     parser.add_argument(
         '-t', '--tuning',
-        help='instrument tuning: check .json files for available options',
+        help='set instrument tuning: check .json files for available options',
         default='standard',
         metavar='',
     )
     parser.add_argument(
         '-f', '--frets',
-        help='number of displayed frets: [0, 1, 2, .. , {}]'.format(MAX_FRETS),
+        help='set number of displayed frets: [0, 1, 2, .. , {}]'.format(MAX_FRETS),
         type=int,
         default=max_frets_on_screen(MAX_FRETS),
         metavar='',
     )
     parser.add_argument(
         '-v', '--verbosity',
-        help='application verbosity: [0, 1, 2]',
+        help='set application verbosity: [0, 1, 2]',
         choices= (0, 1, 2),
         type=int,
         default=1,
