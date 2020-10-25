@@ -14,9 +14,7 @@ def max_frets_on_screen(limit=24):
 class PluckedString(object):
 
     def __init__(self, tone, alt='', oct=0, frets=0, display=None, verbose=1):
-
         self.__key = None
-
         self.tuning = Note(tone, alt, oct)
         self.display_method = display
         self.frets = 12 if not frets else frets
@@ -98,7 +96,7 @@ class PluckedString(object):
             # APPEND FRET
             string_line.append(
                 FString(                   
-                    '║' if fret_n % 12 == 0 or fret_n == self.frets -1 else '|', #¦
+                    '║' if fret_n % 12 == 0 or fret_n == self.frets -1 else '│', # ¦, |
                     size=_FRET_WIDTH,
                     # fg='blue',
                     # fx=['faint'],
@@ -220,9 +218,13 @@ class PluckedStringInstrument(object):
             'upper': '═',
             'lower': '═'
         }
-        joint = {
+        twelve = {
             'upper': '╦',
             'lower': '╩'
+        }
+        joints = {
+            'upper': '╤',
+            'lower': '╧'
         }
         capo = {
             'upper': '     ╔',
@@ -236,7 +238,9 @@ class PluckedStringInstrument(object):
         fret_bind = ''
         for f in range(1, frets * total_fret_width):
             if f > 0 and f % (total_fret_width * 12) == 0:
-                fret_bind += joint[side]
+                fret_bind += twelve[side]
+            elif f > 0 and f % total_fret_width == 0:
+                fret_bind += joints[side]
             else:
                 fret_bind += binding[side]
         return capo[side] + fret_bind + fine[side]
