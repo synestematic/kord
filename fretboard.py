@@ -9,7 +9,7 @@ from kord import *
 
 MAX_FRETS = 36
 
-JSON_DIR = './instruments'
+JSON_DIR = './tunings'
 
 def list_json_instruments(directory):
     for f in os.listdir(directory):
@@ -70,7 +70,7 @@ def parse_arguments():
     )
     parser.add_argument(
         '-t', '--tuning',
-        help='instrument tuning: check your .json files for available options',
+        help='instrument tuning: check .json files for available options',
         default='standard',
         metavar='',
     )
@@ -91,13 +91,12 @@ def parse_arguments():
     )
     args = parser.parse_args()
 
-    # some args require more validation than what argparse can offer, let's do that here
+    # some args require extra validation than what argparse can offer, let's do that here...
     try:
-        # valid tuning
+        # validate tuning
         if args.tuning not in INSTRUMENTS[args.instrument].keys():
-            parser.print_usage()
             raise InvalidInstrument(
-                "run.py: error: argument -t/--tuning: invalid choice: '{}' (choose from {}) ".format(
+                "fretboard.py: error: argument -t/--tuning: invalid choice: '{}' (choose from {}) ".format(
                     args.tuning,
                     str( list( INSTRUMENTS[args.instrument].keys() ) ).lstrip('[').rstrip(']'),
                 )
@@ -107,9 +106,8 @@ def parse_arguments():
         # validate ROOT note
         note_chr = args.ROOT[:1].upper()
         if note_chr not in notes._CHARS:
-            parser.print_usage()
             raise InvalidNote(
-                "run.py: error: argument ROOT: invalid note: '{}' (choose from {}) ".format(
+                "fretboard.py: error: argument ROOT: invalid note: '{}' (choose from {}) ".format(
                     note_chr,
                     str( [ n for n in notes._CHARS if n ] ).lstrip('[').rstrip(']')
                 )
@@ -118,9 +116,8 @@ def parse_arguments():
         # validate ROOT alteration
         note_alt = args.ROOT[1:]
         if note_alt and note_alt not in list(notes._ALTS.keys()):
-            parser.print_usage()
             raise InvalidNote(
-                "run.py: error: argument ROOT: invalid alteration: '{}' (choose from {}) ".format(
+                "fretboard.py: error: argument ROOT: invalid alteration: '{}' (choose from {}) ".format(
                     note_alt,
                     str( list(notes._ALTS.keys()) ).lstrip('[').rstrip(']')
                 )
@@ -129,6 +126,7 @@ def parse_arguments():
         args.ROOT = (note_chr, note_alt)
 
     except Exception as x:
+        parser.print_usage()
         print(x)
         args = None
 

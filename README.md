@@ -214,7 +214,7 @@ class MajorKey(DiatonicKey):
 
 ## fretboard sample application
 
-The kord framework comes with a built-in sample application `fretboard.py` that gives some insight into it's possibilities.
+A sample application `fretboard.py` comes built-in with the kord framework and gives some insight into it's possibilities. It displays a representation of the fretboard of your instrument, tuned to your preference along as where to find the notes for any given mode for any given root note.
 
 ```
 usage: fretboard.py [-h] [-m] [-i] [-t] [-f] [-v] ROOT
@@ -226,12 +226,14 @@ positional arguments:
 
 optional arguments:
   -h, --help          show this help message and exit
-  -m , --mode         music mode to visualize: ['major', 'minor', 'natural_minor', 'melodic_minor', 'harmonic_minor', 'ionian', 'lydian', 'mixo', 'aeolian', 'dorian', 'phrygian', 'chromatic']
+  -m , --mode         mode to visualize: ['major', 'minor', 'natural_minor', 'melodic_minor', 'harmonic_minor', 'ionian', 'lydian', 'mixo', 'aeolian', 'dorian', 'phrygian', 'chromatic']
   -i , --instrument   instrument fretboard to visualize: ['banjo', 'guitar', 'bass', 'ukulele']
   -t , --tuning       instrument tuning: check your .json files for available options
   -f , --frets        number of displayed frets: [0, 1, 2, .. , 36]
   -v , --verbosity    application verbosity: [0, 1, 2]
 
 ```
+
+You will find some pre-defined instrument tunings in the `tunings` directory in the form of .json files. Feel free to modify these or add your own following the correct syntax and they will immediately become available to the fretboard tool.
 
 I'm pretty sure guitar/bass players may find it very handy as a means to develop their knowledge of their instrument. Have fun!
