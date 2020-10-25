@@ -131,7 +131,7 @@ class PluckedStringInstrument(object):
         if verbose:
             echo(self.fret_inlays(verbose=verbose, frets=frets))
 
-        echo(self.binding('upper', frets=frets))
+        echo(self.render_binding('upper', frets=frets))
 
         for string in self.strings:
 
@@ -148,7 +148,7 @@ class PluckedStringInstrument(object):
 
             echo(str(string_n) + str(string))
         
-        echo(self.binding('lower', frets=frets))
+        echo(self.render_binding('lower', frets=frets))
 
 
     @classmethod
@@ -214,10 +214,29 @@ class PluckedStringInstrument(object):
 
 
     @staticmethod
-    def binding(side, frets=12):
-        binding = {'upper': '═', 'lower': '═'}
-        capo = {'upper': '     ╔', 'lower': '     ╚'}
-        fine = {'upper': '╗', 'lower': '╝'}
-        fret_binding = binding[side] * frets * (_NOTE_WIDTH + _FRET_WIDTH)
-        return capo[side] + fret_binding[:-1] + fine[side]
-
+    def render_binding(side, frets=12):
+        # https://en.wikipedia.org/wiki/Box-drawing_character
+        binding = {
+            'upper': '═',
+            'lower': '═'
+        }
+        joint = {
+            'upper': '╦',
+            'lower': '╩'
+        }
+        capo = {
+            'upper': '     ╔',
+            'lower': '     ╚',
+        }
+        fine = {
+            'upper': '╗',
+            'lower': '╝',
+        }
+        total_fret_width = _NOTE_WIDTH + _FRET_WIDTH
+        fret_bind = ''
+        for f in range(1, frets * total_fret_width):
+            if f > 0 and f % (total_fret_width * 12) == 0:
+                fret_bind += joint[side]
+            else:
+                fret_bind += binding[side]
+        return capo[side] + fret_bind + fine[side]
