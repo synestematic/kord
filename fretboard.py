@@ -9,7 +9,7 @@ from kord import *
 
 MAX_FRETS = 36
 
-JSON_DIR = './tunings'
+JSON_DIR = '{}/tunings'.format( os.path.dirname(os.path.realpath(__file__)) )
 
 def list_json_instruments(directory):
     for f in os.listdir(directory):
