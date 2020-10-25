@@ -76,18 +76,19 @@ def parse_arguments():
     )
     parser.add_argument(
         '-f', '--frets',
-        help='set number of displayed frets: [0, 1, 2, .. , {}]'.format(MAX_FRETS),
-        type=int,
+        help='set number of displayed frets: [1, 2, .. , {}]'.format(MAX_FRETS),
+        choices=[ f+1 for f in range(MAX_FRETS) ],
         default=max_frets_on_screen(MAX_FRETS),
         metavar='',
+        type=int,
     )
     parser.add_argument(
         '-v', '--verbosity',
         help='set application verbosity: [0, 1, 2]',
         choices= (0, 1, 2),
-        type=int,
         default=1,
         metavar='',
+        type=int,
     )
     args = parser.parse_args()
 
