@@ -34,11 +34,11 @@ class Degrees(object):
 
     def _rotate_by_presence(self, note):
         ''' exact Note in order:
-            == enforces exact note match
+            >> enforces exact note match
         '''
         self.reset()
         for degree in self.original_order:
-            if degree == note:
+            if degree >> note:
                 return True
             self.rotate()
 

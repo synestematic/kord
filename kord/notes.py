@@ -183,31 +183,31 @@ class Note(object):
 
     def __eq__(self, other):  # ==
         if other.__class__ == self.__class__:
-            return other - self == 0
+            return other - self == UNISON
 
     def __ne__(self, other):  # !=
         if other.__class__ == self.__class__:
-            return other - self != 0
+            return other - self != UNISON
         return True
 
     def __gt__(self, other):  # >
         if self.__class__ == other.__class__:
-            return self - other > 0
+            return self - other > UNISON
         raise TypeError(f' > not supported with {other.__class__}')
 
     def __ge__(self, other):  # >=
         if self.__class__ == other.__class__:
-            return self - other >= 0
+            return self - other >= UNISON
         raise TypeError(f' >= not supported with {other.__class__}')
 
     def __lt__(self, other):  # <
         if self.__class__ == other.__class__:
-            return self - other < 0
+            return self - other < UNISON
         raise TypeError(f' < not supported with {other.__class__}')
 
     def __le__(self, other):  # <=
         if self.__class__ == other.__class__:
-            return self - other <= 0
+            return self - other <= UNISON
         raise TypeError(f' <= not supported with {other.__class__}')
 
 

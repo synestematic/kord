@@ -14,6 +14,8 @@ $   python3 -m pip install kord
 
 # api reference:
 
+First, let me say that all of the following will only make sense to you if you already have some background on music theory|harmony.
+
 ## kord.notes module:
 
 ### Note() class
@@ -57,21 +59,19 @@ kord.errors.InvalidAlteration: ###
 
 
  
-Intervals between note objects can be evaluated using the following operators:
-
-```
--   < >   <= >=   == !=   << >>
-```
+Intervals between note objects can be evaluated using the following operators:  ```-   < >   <= >=   == !=   >>   ** ```
  
 These allow calculation of semitone deltas between notes as well as insights into their enharmonic relationships. Let's take a quick look at each operator separately:
 
 #### - operator
 
-This operator allows you to calculate the difference in semitones between two notes:
+The substraction operator allows you to calculate the difference in semitones between two notes:
 
 ```
 >>> f3 - e3
 1
+>>> Note('a', 'b', 2) - Note('g', '#', 2)
+0
 >>> Note('a', 8) - Note('c', 4)
 57
 >>> Note('a', 8) - Note('c', '##', 4)
@@ -79,54 +79,60 @@ This operator allows you to calculate the difference in semitones between two no
 ```
 
 
-#### <  > operators
+####  < >   <= >=   == !=  operators
 
+Comparison operators return boolean values based on the interval between 2 notes. 
 
 ```
->>> f3
-F³
 >>> f3 > e3
+True
+>>> f3 >= e3
 True
 ```
 
-#### != operator
-
+While the concept is seemingly straightforward, special attention needs to be taken when using `== !=` with enharmonic notes.
 
 ```
 >>> n1 = Note('F', '#', 5)
 >>> n2 = Note('G', 'b', 5)
 >>> n1, n2
 (F♯⁵, G♭⁵)
->>> n1 != n2
-False
-```
-
-
-
-
-
-
-Given that python lacks a `===` operator, Notes can be compared for a "stricter" equality using their `is_a()` method:
-
-```
->>> n3 == n4
-True
->>> n3.is_a(n4)
-False
-```
-
-This method directly compares Note attributes instead of their semitone interval. Set the `ignore_oct` argument appropriately for a less strict comparison:
-
-```
->>> n1
-F♯⁵
->>> n1.is_a(Note('F', '#', 3))
-False
->>> n1.is_a(Note('F', '#', 3), ignore_oct=False)
+>>> n1 == n2
 True
 ```
+
+The notes F#5 and Gb5 are not the same but `==` checks their interval and since its a unison,  the comparison evaluates True. This might seem a bit counter-intuitive at first but `kord` uses different operators to check for exact note matches.
+
+#### >> ** operators
+
+The power and right-shift operators allow you to compare Notes for equality based not on their intervals, but on their internal properties. The strictest operator is `>>` which compares note, alteration and octave attributes while `**` is less strict and only compares note and alteration. 
+
+```
+>>> ab1, ab5 = Note('A', 'b', 1),  Note('A', 'b', 5)
+>>> ab1 == ab5
+False
+>>> ab1 ** ab5
+True
+```
+
+Notice that `**` evaluated True because both instances are A flat notes, even though there is a wide interval between them.
+
+```
+>>> ab1 >> ab5
+False
+>>> ab1.oct = 5
+>>> ab1 >> ab5
+True
+```
+
+For the `>>` operator to evaluate True, the octave of the notes has to match as well.
+
+
 
 <hr/>
+
+
+
 
 ## kord.keys module:
 
@@ -161,7 +167,7 @@ class ChromaticKey(TonalKey):
     )
 ```
 
-We can initialize ChromaticKey objects on any given note and use the ```degree()``` method to obtain one of it's degrees. Using list index notation will achieve a similar result:
+We can initialize ChromaticKey objects on any given note and use the ```degree()``` method to obtain one of it's degrees. We can achieve the same result using list index notation:
 
 ```
 >>> from kord.keys import ChromaticKey
@@ -190,7 +196,7 @@ We can use the ```note_count=``` argument to specify to the scale generator the 
 C⁰ C♯⁰ D⁰ D♯⁰ 
 ```
 
-The ```start_note=``` argument can be used to to start yielding from a specific note. This can be done even if the note is not part of the scale:
+The ```start_note=``` argument can be used to start yielding from a specific note. This can be done even if the note is not part of the scale:
 
 ```
 >>> from kord.notes import Note
