@@ -160,7 +160,10 @@ class Note(object):
 
     def __sub__(self, other):
         if self.__class__ == other.__class__:
-            return self.__interval_from(other)
+            oct_interval = (self.oct - other.oct) * OCTAVE
+            chr_interval = _CHARS.index(self.chr) - _CHARS.index(other.chr)
+            alt_interval = input_alterations().index(self.alt) - input_alterations().index(other.alt)
+            return oct_interval + chr_interval + alt_interval
         raise TypeError('unsupported operand type(s) for -')
 
     def __pow__(self, other):
@@ -177,34 +180,36 @@ class Note(object):
                 if self.alt == other.alt:
                     if self.oct == other.oct:
                         return True
+        # raise TypeError('unsupported operand type(s) for >>')
+
 
     def __eq__(self, other):  # ==
         if other.__class__ == self.__class__:
-            return other.__interval_from(self) == 0        
+            return other - self == 0
 
     def __ne__(self, other):  # !=
         if other.__class__ == self.__class__:
-            return other.__interval_from(self) != 0
+            return other - self != 0
         return True
 
     def __gt__(self, other):  # >
         if self.__class__ == other.__class__:
-            return self.__interval_from(other) > 0
+            return self - other > 0
         raise TypeError(f' > not supported with {other.__class__}')
 
     def __ge__(self, other):  # >=
         if self.__class__ == other.__class__:
-            return self.__interval_from(other) >= 0
+            return self - other >= 0
         raise TypeError(f' >= not supported with {other.__class__}')
 
     def __lt__(self, other):  # <
         if self.__class__ == other.__class__:
-            return self.__interval_from(other) < 0
+            return self - other < 0
         raise TypeError(f' < not supported with {other.__class__}')
 
     def __le__(self, other):  # <=
         if self.__class__ == other.__class__:
-            return self.__interval_from(other) <= 0
+            return self - other <= 0
         raise TypeError(f' <= not supported with {other.__class__}')
 
 
@@ -235,14 +240,6 @@ class Note(object):
         if self.chr != other.chr:
             return _CHARS.index(self.chr) > _CHARS.index(other.chr)
         return input_alterations().index(self.alt) > input_alterations().index(other.alt)
-
-
-    def __interval_from(self, other):
-        ''' used ONLY to implement comparison operators, do NOT call directly... '''
-        oct_interval = (self.oct - other.oct) * OCTAVE
-        chr_interval = _CHARS.index(self.chr) - _CHARS.index(other.chr)
-        alt_interval = input_alterations().index(self.alt) - input_alterations().index(other.alt)
-        return oct_interval + chr_interval + alt_interval
 
 
     # ENHARMONIC ATTRIBUTES
