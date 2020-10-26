@@ -1,7 +1,16 @@
 # kord
 kord is a python framework that provides programmers with a simple api for the creation of music-based applications. While it's mainly focused for theoretical purposes, some of it's more visually oriented features are well-suited for the generation of plucked-string instruments.
 
-<hr/>
+
+## installation
+
+The only dependency for `kord` is the pip package `bestia`, my own library for creating command-line applications. It will be automatically downloaded when you install using pip:
+
+```
+$   python3 -m pip install kord
+```
+
+
 
 # api reference:
 
