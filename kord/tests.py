@@ -1,5 +1,4 @@
 import unittest
-import time
 import random
 
 from bestia.output import echo
@@ -136,30 +135,26 @@ class NoteEqualityTest(unittest.TestCase):
 
     def testNotEnharmonic(self):
         for note_pair in self.DANGEROUS_NON_EQUALS:
-            assert not note_pair[0] << note_pair[1], (note_pair[0], note_pair[1])
             assert not note_pair[0] >> note_pair[1], (note_pair[0], note_pair[1])
             assert note_pair[0] - note_pair[1] != 0, (note_pair[0], note_pair[1])
 
 
     def testAreEnharmonic(self):
-        ''' checks note_pairs in enharmonic rows
-            for different types of enharmonic equality '''
+        ''' checks note_pairs in enharmonic rows for different types of enharmonic equality '''
         for note_pair in EnharmonicMatrix:
 
-            # DO NOT PASS STRICT EQUALITY
-            assert not note_pair[0] == note_pair[1], (note_pair[0], note_pair[1])
-
             # PASS ENHARMONIC EQUALITY
-            assert note_pair[0] << note_pair[1], (note_pair[0], note_pair[1])
-            assert note_pair[0] >> note_pair[1], (note_pair[0], note_pair[1])
+            assert note_pair[0] == note_pair[1], (note_pair[0], note_pair[1])
 
-            # CHECK DELTA_ST === 0
+            # DO NOT PASS NOTE EQUALITY
+            assert not note_pair[0] >> note_pair[1], (note_pair[0], note_pair[1])
+            assert not note_pair[0] ** note_pair[1], (note_pair[0], note_pair[1])
+
+            # CHECK DELTA_ST == 0
             assert not note_pair[0] < note_pair[1], (note_pair[0], note_pair[1])
             assert not note_pair[0] > note_pair[1], (note_pair[0], note_pair[1])
-
             assert note_pair[0] <= note_pair[1], (note_pair[0], note_pair[1])
             assert note_pair[0] >= note_pair[1], (note_pair[0], note_pair[1])
-
             assert note_pair[0] - note_pair[1] == 0, (note_pair[0], note_pair[1])
 
 
@@ -169,18 +164,16 @@ class NoteEqualityTest(unittest.TestCase):
         Cs5 = Note('C', '#', 5)
         Db3 = Note('D', 'b', 3)
         Cs3 = Note('C', '#', 3)
-        assert Cs3 ** Cs5      # same pitch, OLD is_a(oct=None)
-        assert Db3 << Cs3      # enh note
-        assert Db3 >> Cs3      # enh note
-        assert Cs3 << Db3      # enh note
-        assert Cs3 >> Db3      # enh note
-        assert not Db3 == Cs3  # same note
+        assert Cs3 ** Cs5      # loosest equality
+        assert Db3 == Cs3      # enhamonic notes
+        assert not Db3 >> Cs3  # enh note
+        assert not Cs3 >> Db3  # enh note
 
-
-        # // enhr note, ignr oct
         # ** same note, ignr oct
-        # == same note, same oct
-        # << enhr note, same oct
+        # == enhr note, same oct
+        # >> same note, same oct
+
+        # // enhr note, ignr oct   do I need to implement this operator ?
 
 
 class ChromaticKeysTest(unittest.TestCase):
@@ -210,110 +203,109 @@ class ChromaticKeysTest(unittest.TestCase):
         ):
             i += 1
             if i == 1:
-                assert note == Note('C', '', 0), note
-                # assert note == Note('C', '', 0), note
+                assert note >> Note('C', '', 0), note
             elif i == 2:
-                assert note == Note('C', '#', 0), note
+                assert note >> Note('C', '#', 0), note
             elif i == 3:
-                assert note == Note('D', '', 0), note
+                assert note >> Note('D', '', 0), note
             elif i == 4:
-                assert note == Note('D', '#', 0), note
+                assert note >> Note('D', '#', 0), note
             elif i == 5:
-                assert note == Note('E', '', 0), note
+                assert note >> Note('E', '', 0), note
             elif i == 6:
-                assert note == Note('F', '', 0), note
+                assert note >> Note('F', '', 0), note
             elif i == 7:
-                assert note == Note('F', '#', 0), note
+                assert note >> Note('F', '#', 0), note
             elif i == 8:
-                assert note == Note('G', '', 0), note
+                assert note >> Note('G', '', 0), note
             elif i == 9:
-                assert note == Note('G', '#', 0), note
+                assert note >> Note('G', '#', 0), note
             elif i == 10:
-                assert note == Note('A', '', 0), note
+                assert note >> Note('A', '', 0), note
             elif i == 11:
-                assert note == Note('A', '#', 0), note
+                assert note >> Note('A', '#', 0), note
             elif i == 12:
-                assert note == Note('B', '', 0), note
+                assert note >> Note('B', '', 0), note
             elif i == 13:
-                assert note == Note('C', '', 1), note
+                assert note >> Note('C', '', 1), note
             elif i == 14:
-                assert note == Note('C', '#', 1), note
+                assert note >> Note('C', '#', 1), note
             elif i == 15:
-                assert note == Note('D', '', 1), note
+                assert note >> Note('D', '', 1), note
             elif i == 16:
-                assert note == Note('D', '#', 1), note
+                assert note >> Note('D', '#', 1), note
             elif i == 17:
-                assert note == Note('E', '', 1), note
+                assert note >> Note('E', '', 1), note
             elif i == 18:
-                assert note == Note('F', '', 1), note
+                assert note >> Note('F', '', 1), note
             elif i == 19:
-                assert note == Note('F', '#', 1), note
+                assert note >> Note('F', '#', 1), note
             elif i == 20:
-                assert note == Note('G', '', 1), note
+                assert note >> Note('G', '', 1), note
             elif i == 21:
-                assert note == Note('G', '#', 1), note
+                assert note >> Note('G', '#', 1), note
             elif i == 22:
-                assert note == Note('A', '', 1), note
+                assert note >> Note('A', '', 1), note
             elif i == 23:
-                assert note == Note('A', '#', 1), note
+                assert note >> Note('A', '#', 1), note
             elif i == 24:
-                assert note == Note('B', '', 1), note
+                assert note >> Note('B', '', 1), note
             elif i == 25:
-                assert note == Note('C', '', 2), note
+                assert note >> Note('C', '', 2), note
             # ..............................
             elif i == 97:
-                assert note == Note('C', '', 8), note
+                assert note >> Note('C', '', 8), note
             elif i == 98:
-                assert note == Note('C', '#', 8), note
+                assert note >> Note('C', '#', 8), note
             elif i == 99:
-                assert note == Note('D', '', 8), note
+                assert note >> Note('D', '', 8), note
             elif i == 100:
-                assert note == Note('D', '#', 8), note
+                assert note >> Note('D', '#', 8), note
             elif i == 101:
-                assert note == Note('E', '', 8), note
+                assert note >> Note('E', '', 8), note
             elif i == 102:
-                assert note == Note('F', '', 8), note
+                assert note >> Note('F', '', 8), note
             elif i == 103:
-                assert note == Note('F', '#', 8), note
+                assert note >> Note('F', '#', 8), note
             elif i == 104:
-                assert note == Note('G', '', 8), note
+                assert note >> Note('G', '', 8), note
             elif i == 105:
-                assert note == Note('G', '#', 8), note
+                assert note >> Note('G', '#', 8), note
             elif i == 106:
-                assert note == Note('A', '', 8), note
+                assert note >> Note('A', '', 8), note
             elif i == 107:
-                assert note == Note('A', '#', 8), note
+                assert note >> Note('A', '#', 8), note
             elif i == 108:
-                assert note == Note('B', '', 8), note
+                assert note >> Note('B', '', 8), note
             elif i == 109:
-                assert note == Note('C', '', 9), note
+                assert note >> Note('C', '', 9), note
             # ..............................
             elif i == 205:
-                assert note == Note('C', '', 17), note
+                assert note >> Note('C', '', 17), note
             elif i == 206:
-                assert note == Note('C', '#', 17), note
+                assert note >> Note('C', '#', 17), note
             elif i == 207:
-                assert note == Note('D', '', 17), note
+                assert note >> Note('D', '', 17), note
             elif i == 208:
-                assert note == Note('D', '#', 17), note
+                assert note >> Note('D', '#', 17), note
             elif i == 209:
-                assert note == Note('E', '', 17), note
+                assert note >> Note('E', '', 17), note
             elif i == 210:
-                assert note == Note('F', '', 17), note
+                assert note >> Note('F', '', 17), note
             elif i == 211:
-                assert note == Note('F', '#', 17), note
+                assert note >> Note('F', '#', 17), note
             elif i == 212:
-                assert note == Note('G', '', 17), note
+                assert note >> Note('G', '', 17), note
             elif i == 213:
-                assert note == Note('G', '#', 17), note
+                assert note >> Note('G', '#', 17), note
             elif i == 214:
-                assert note == Note('A', '', 17), note
+                assert note >> Note('A', '', 17), note
             elif i == 215:
-                assert note == Note('A', '#', 17), note
+                assert note >> Note('A', '#', 17), note
             elif i == 216:
-                assert note == Note('B', '', 17), note
+                assert note >> Note('B', '', 17), note
             elif i == 217:
-                assert note == Note('C', '', 18), note
+                assert note >> Note('C', '', 18), note
 
 
     def testFSharpChromaticScaleGenerator(self):
@@ -329,58 +321,58 @@ class ChromaticKeysTest(unittest.TestCase):
         ):
             i += 1
             if i == 1:
-                assert note == Note('F', '#', 0), note
+                assert note >> Note('F', '#', 0), note
             elif i == 2:
-                assert note == Note('G', '', 0), note
+                assert note >> Note('G', '', 0), note
             elif i == 3:
-                assert note == Note('G', '#', 0), note
+                assert note >> Note('G', '#', 0), note
             elif i == 4:
-                assert note == Note('A', '', 0), note
+                assert note >> Note('A', '', 0), note
             elif i == 5:
-                assert note == Note('A', '#', 0), note
+                assert note >> Note('A', '#', 0), note
             elif i == 6:
-                assert note == Note('B', '', 0), note
+                assert note >> Note('B', '', 0), note
             elif i == 7:
-                assert note == Note('C', '', 1), note
+                assert note >> Note('C', '', 1), note
             elif i == 8:
-                assert note == Note('C', '#', 1), note
+                assert note >> Note('C', '#', 1), note
             elif i == 9:
-                assert note == Note('D', '', 1), note
+                assert note >> Note('D', '', 1), note
             elif i == 10:
-                assert note == Note('D', '#', 1), note
+                assert note >> Note('D', '#', 1), note
             elif i == 11:
-                assert note == Note('E', '', 1), note
+                assert note >> Note('E', '', 1), note
             elif i == 12:
-                assert note == Note('F', '', 1), note
+                assert note >> Note('F', '', 1), note
             elif i == 13:
-                assert note == Note('F', '#', 1), note
+                assert note >> Note('F', '#', 1), note
             elif i == 14:
-                assert note == Note('G', '', 1), note
+                assert note >> Note('G', '', 1), note
             elif i == 15:
-                assert note == Note('G', '#', 1), note
+                assert note >> Note('G', '#', 1), note
             elif i == 16:
-                assert note == Note('A', '', 1), note
+                assert note >> Note('A', '', 1), note
             elif i == 17:
-                assert note == Note('A', '#', 1), note
+                assert note >> Note('A', '#', 1), note
             elif i == 18:
-                assert note == Note('B', '', 1), note
+                assert note >> Note('B', '', 1), note
             elif i == 19:
-                assert note == Note('C', '', 2), note
+                assert note >> Note('C', '', 2), note
             # ..............................
             elif i == 211:
-                assert note == Note('C', '', 18), note
+                assert note >> Note('C', '', 18), note
             elif i == 212:
-                assert note == Note('C', '#', 18), note
+                assert note >> Note('C', '#', 18), note
             elif i == 213:
-                assert note == Note('D', '', 18), note
+                assert note >> Note('D', '', 18), note
             elif i == 214:
-                assert note == Note('D', '#', 18), note
+                assert note >> Note('D', '#', 18), note
             elif i == 215:
-                assert note == Note('E', '', 18), note
+                assert note >> Note('E', '', 18), note
             elif i == 216:
-                assert note == Note('F', '', 18), note
+                assert note >> Note('F', '', 18), note
             elif i == 217:
-                assert note == Note('F', '#', 18), note
+                assert note >> Note('F', '#', 18), note
 
 
 
@@ -397,72 +389,72 @@ class ChromaticKeysTest(unittest.TestCase):
         ):
             i += 1
             if i == 1:
-                assert note == Note('B', 'b', 0), note
+                assert note >> Note('B', 'b', 0), note
             elif i == 2:
-                assert note == Note('B', '', 0), note
+                assert note >> Note('B', '', 0), note
             elif i == 3:
-                assert note == Note('C', '', 1), note
+                assert note >> Note('C', '', 1), note
             elif i == 4:
-                assert note == Note('D', 'b', 1), note
+                assert note >> Note('D', 'b', 1), note
             elif i == 5:
-                assert note == Note('D', '', 1), note
+                assert note >> Note('D', '', 1), note
             elif i == 6:
-                assert note == Note('E', 'b', 1), note
+                assert note >> Note('E', 'b', 1), note
             elif i == 7:
-                assert note == Note('E', '', 1), note
+                assert note >> Note('E', '', 1), note
             elif i == 8:
-                assert note == Note('F', '', 1), note
+                assert note >> Note('F', '', 1), note
             elif i == 9:
-                assert note == Note('G', 'b', 1), note
+                assert note >> Note('G', 'b', 1), note
             elif i == 10:
-                assert note == Note('G', '', 1), note
+                assert note >> Note('G', '', 1), note
             elif i == 11:
-                assert note == Note('A', 'b', 1), note
+                assert note >> Note('A', 'b', 1), note
             elif i == 12:
-                assert note == Note('A', '', 1), note
+                assert note >> Note('A', '', 1), note
             elif i == 13:
-                assert note == Note('B', 'b', 1), note
+                assert note >> Note('B', 'b', 1), note
             elif i == 14:
-                assert note == Note('B', '', 1), note
+                assert note >> Note('B', '', 1), note
             elif i == 15:
-                assert note == Note('C', '', 2), note
+                assert note >> Note('C', '', 2), note
             # ..............................
             elif i == 200:
-                assert note == Note('F', '', 17), note
+                assert note >> Note('F', '', 17), note
             elif i == 201:
-                assert note == Note('G', 'b', 17), note
+                assert note >> Note('G', 'b', 17), note
             elif i == 202:
-                assert note == Note('G', '', 17), note
+                assert note >> Note('G', '', 17), note
             elif i == 203:
-                assert note == Note('A', 'b', 17), note
+                assert note >> Note('A', 'b', 17), note
             elif i == 204:
-                assert note == Note('A', '', 17), note
+                assert note >> Note('A', '', 17), note
             elif i == 205:
-                assert note == Note('B', 'b', 17), note
+                assert note >> Note('B', 'b', 17), note
             elif i == 206:
-                assert note == Note('B', '', 17), note
+                assert note >> Note('B', '', 17), note
             elif i == 207:
-                assert note == Note('C', '', 18), note
+                assert note >> Note('C', '', 18), note
             elif i == 208:
-                assert note == Note('D', 'b', 18), note
+                assert note >> Note('D', 'b', 18), note
             elif i == 209:
-                assert note == Note('D', '', 18), note
+                assert note >> Note('D', '', 18), note
             elif i == 210:
-                assert note == Note('E', 'b', 18), note
+                assert note >> Note('E', 'b', 18), note
             elif i == 211:
-                assert note == Note('E', '', 18), note
+                assert note >> Note('E', '', 18), note
             elif i == 212:
-                assert note == Note('F', '', 18), note
+                assert note >> Note('F', '', 18), note
             elif i == 213:
-                assert note == Note('G', 'b', 18), note
+                assert note >> Note('G', 'b', 18), note
             elif i == 214:
-                assert note == Note('G', '', 18), note
+                assert note >> Note('G', '', 18), note
             elif i == 215:
-                assert note == Note('A', 'b', 18), note
+                assert note >> Note('A', 'b', 18), note
             elif i == 216:
-                assert note == Note('A', '', 18), note
+                assert note >> Note('A', '', 18), note
             elif i == 217:
-                assert note == Note('B', 'b', 18), note
+                assert note >> Note('B', 'b', 18), note
 
 
 
@@ -495,69 +487,69 @@ class MajorKeysExpectedNotesTest(unittest.TestCase):
         ):
             i += 1
             if i == 1:
-                assert note == Note('C', '', 0), note
+                assert note >> Note('C', '', 0), note
             elif i == 2:
-                assert note == Note('D', '', 0), note
+                assert note >> Note('D', '', 0), note
             elif i == 3:
-                assert note == Note('E', '', 0), note
+                assert note >> Note('E', '', 0), note
             elif i == 4:
-                assert note == Note('F', '', 0), note
+                assert note >> Note('F', '', 0), note
             elif i == 5:
-                assert note == Note('G', '', 0), note
+                assert note >> Note('G', '', 0), note
             elif i == 6:
-                assert note == Note('A', '', 0), note
+                assert note >> Note('A', '', 0), note
             elif i == 7:
-                assert note == Note('B', '', 0), note
+                assert note >> Note('B', '', 0), note
             elif i == 8:
-                assert note == Note('C', '', 1), note
+                assert note >> Note('C', '', 1), note
             elif i == 9:
-                assert note == Note('D', '', 1), note
+                assert note >> Note('D', '', 1), note
             elif i == 10:
-                assert note == Note('E', '', 1), note
+                assert note >> Note('E', '', 1), note
             elif i == 11:
-                assert note == Note('F', '', 1), note
+                assert note >> Note('F', '', 1), note
             elif i == 12:
-                assert note == Note('G', '', 1), note
+                assert note >> Note('G', '', 1), note
             elif i == 13:
-                assert note == Note('A', '', 1), note
+                assert note >> Note('A', '', 1), note
             elif i == 14:
-                assert note == Note('B', '', 1), note
+                assert note >> Note('B', '', 1), note
             elif i == 15:
-                assert note == Note('C', '', 2), note
+                assert note >> Note('C', '', 2), note
             # ..............................
             elif i == 64:
-                assert note == Note('C', '', 9), note
+                assert note >> Note('C', '', 9), note
             elif i == 65:
-                assert note == Note('D', '', 9), note
+                assert note >> Note('D', '', 9), note
             elif i == 66:
-                assert note == Note('E', '', 9), note
+                assert note >> Note('E', '', 9), note
             elif i == 67:
-                assert note == Note('F', '', 9), note
+                assert note >> Note('F', '', 9), note
             elif i == 68:
-                assert note == Note('G', '', 9), note
+                assert note >> Note('G', '', 9), note
             elif i == 69:
-                assert note == Note('A', '', 9), note
+                assert note >> Note('A', '', 9), note
             elif i == 70:
-                assert note == Note('B', '', 9), note
+                assert note >> Note('B', '', 9), note
             elif i == 71:
-                assert note == Note('C', '', 10), note
+                assert note >> Note('C', '', 10), note
             # ..............................
             elif i == 120:
-                assert note == Note('C', '', 17), note
+                assert note >> Note('C', '', 17), note
             elif i == 121:
-                assert note == Note('D', '', 17), note
+                assert note >> Note('D', '', 17), note
             elif i == 122:
-                assert note == Note('E', '', 17), note
+                assert note >> Note('E', '', 17), note
             elif i == 123:
-                assert note == Note('F', '', 17), note
+                assert note >> Note('F', '', 17), note
             elif i == 124:
-                assert note == Note('G', '', 17), note
+                assert note >> Note('G', '', 17), note
             elif i == 125:
-                assert note == Note('A', '', 17), note
+                assert note >> Note('A', '', 17), note
             elif i == 126:
-                assert note == Note('B', '', 17), note
+                assert note >> Note('B', '', 17), note
             elif i == 127:
-                assert note == Note('C', '', 18), note
+                assert note >> Note('C', '', 18), note
 
 
     def testBMajorScaleGenerator(self):
@@ -573,71 +565,71 @@ class MajorKeysExpectedNotesTest(unittest.TestCase):
         ):
             i += 1
             if i == 1:
-                assert note == Note('B', '', 0), note
+                assert note >> Note('B', '', 0), note
             elif i == 2:
-                assert note == Note('C', '#', 1), note
+                assert note >> Note('C', '#', 1), note
             elif i == 3:
-                assert note == Note('D', '#', 1), note
+                assert note >> Note('D', '#', 1), note
             elif i == 4:
-                assert note == Note('E', '', 1), note
+                assert note >> Note('E', '', 1), note
             elif i == 5:
-                assert note == Note('F', '#', 1), note
+                assert note >> Note('F', '#', 1), note
             elif i == 6:
-                assert note == Note('G', '#', 1), note
+                assert note >> Note('G', '#', 1), note
             elif i == 7:
-                assert note == Note('A', '#', 1), note
+                assert note >> Note('A', '#', 1), note
             elif i == 8:
-                assert note == Note('B', '', 1), note
+                assert note >> Note('B', '', 1), note
             elif i == 9:
-                assert note == Note('C', '#', 2), note
+                assert note >> Note('C', '#', 2), note
             elif i == 10:
-                assert note == Note('D', '#', 2), note
+                assert note >> Note('D', '#', 2), note
             elif i == 11:
-                assert note == Note('E', '', 2), note
+                assert note >> Note('E', '', 2), note
             elif i == 12:
-                assert note == Note('F', '#', 2), note
+                assert note >> Note('F', '#', 2), note
             elif i == 13:
-                assert note == Note('G', '#', 2), note
+                assert note >> Note('G', '#', 2), note
             elif i == 14:
-                assert note == Note('A', '#', 2), note
+                assert note >> Note('A', '#', 2), note
             elif i == 15:
-                assert note == Note('B', '', 2), note
+                assert note >> Note('B', '', 2), note
             elif i == 16:
-                assert note == Note('C', '#', 3), note
+                assert note >> Note('C', '#', 3), note
             # ..............................
             elif i == 64:
-                assert note == Note('B', '', 9), note
+                assert note >> Note('B', '', 9), note
             elif i == 65:
-                assert note == Note('C', '#', 10), note
+                assert note >> Note('C', '#', 10), note
             elif i == 66:
-                assert note == Note('D', '#', 10), note
+                assert note >> Note('D', '#', 10), note
             elif i == 67:
-                assert note == Note('E', '', 10), note
+                assert note >> Note('E', '', 10), note
             elif i == 68:
-                assert note == Note('F', '#', 10), note
+                assert note >> Note('F', '#', 10), note
             elif i == 69:
-                assert note == Note('G', '#', 10), note
+                assert note >> Note('G', '#', 10), note
             elif i == 70:
-                assert note == Note('A', '#', 10), note
+                assert note >> Note('A', '#', 10), note
             elif i == 71:
-                assert note == Note('B', '', 10), note
+                assert note >> Note('B', '', 10), note
             # ..............................
             elif i == 120:
-                assert note == Note('B', '', 17), note
+                assert note >> Note('B', '', 17), note
             elif i == 121:
-                assert note == Note('C', '#', 18), note
+                assert note >> Note('C', '#', 18), note
             elif i == 122:
-                assert note == Note('D', '#', 18), note
+                assert note >> Note('D', '#', 18), note
             elif i == 123:
-                assert note == Note('E', '', 18), note
+                assert note >> Note('E', '', 18), note
             elif i == 124:
-                assert note == Note('F', '#', 18), note
+                assert note >> Note('F', '#', 18), note
             elif i == 125:
-                assert note == Note('G', '#', 18), note
+                assert note >> Note('G', '#', 18), note
             elif i == 126:
-                assert note == Note('A', '#', 18), note
+                assert note >> Note('A', '#', 18), note
             elif i == 127:
-                assert note == Note('B', '', 18), note
+                assert note >> Note('B', '', 18), note
 
 
 
@@ -654,73 +646,73 @@ class MajorKeysExpectedNotesTest(unittest.TestCase):
         ):
             i += 1
             if i == 1:
-                assert note == Note('D', 'b', 0), note
+                assert note >> Note('D', 'b', 0), note
             elif i == 2:
-                assert note == Note('E', 'b', 0), note
+                assert note >> Note('E', 'b', 0), note
             elif i == 3:
-                assert note == Note('F', '', 0), note
+                assert note >> Note('F', '', 0), note
             elif i == 4:
-                assert note == Note('G', 'b', 0), note
+                assert note >> Note('G', 'b', 0), note
             elif i == 5:
-                assert note == Note('A', 'b', 0), note
+                assert note >> Note('A', 'b', 0), note
             elif i == 6:
-                assert note == Note('B', 'b', 0), note
+                assert note >> Note('B', 'b', 0), note
             elif i == 7:
-                assert note == Note('C', '', 1), note
+                assert note >> Note('C', '', 1), note
             elif i == 8:
-                assert note == Note('D', 'b', 1), note
+                assert note >> Note('D', 'b', 1), note
             elif i == 9:
-                assert note == Note('E', 'b', 1), note
+                assert note >> Note('E', 'b', 1), note
             elif i == 10:
-                assert note == Note('F', '', 1), note
+                assert note >> Note('F', '', 1), note
             elif i == 11:
-                assert note == Note('G', 'b', 1), note
+                assert note >> Note('G', 'b', 1), note
             elif i == 12:
-                assert note == Note('A', 'b', 1), note
+                assert note >> Note('A', 'b', 1), note
             elif i == 13:
-                assert note == Note('B', 'b', 1), note
+                assert note >> Note('B', 'b', 1), note
             elif i == 14:
-                assert note == Note('C', '', 2), note
+                assert note >> Note('C', '', 2), note
             elif i == 15:
-                assert note == Note('D', 'b', 2), note
+                assert note >> Note('D', 'b', 2), note
             elif i == 16:
-                assert note == Note('E', 'b', 2), note
+                assert note >> Note('E', 'b', 2), note
             # ..............................
             elif i == 64:
-                assert note == Note('D', 'b', 9), note
+                assert note >> Note('D', 'b', 9), note
             elif i == 65:
-                assert note == Note('E', 'b', 9), note
+                assert note >> Note('E', 'b', 9), note
             elif i == 66:
-                assert note == Note('F', '', 9), note
+                assert note >> Note('F', '', 9), note
             elif i == 67:
-                assert note == Note('G', 'b', 9), note
+                assert note >> Note('G', 'b', 9), note
             elif i == 68:
-                assert note == Note('A', 'b', 9), note
+                assert note >> Note('A', 'b', 9), note
             elif i == 69:
-                assert note == Note('B', 'b', 9), note
+                assert note >> Note('B', 'b', 9), note
             elif i == 70:
-                assert note == Note('C', '', 10), note
+                assert note >> Note('C', '', 10), note
             elif i == 71:
-                assert note == Note('D', 'b', 10), note
+                assert note >> Note('D', 'b', 10), note
             elif i == 72:
-                assert note == Note('E', 'b', 10), note
+                assert note >> Note('E', 'b', 10), note
             # ..............................
             elif i == 120:
-                assert note == Note('D', 'b', 17), note
+                assert note >> Note('D', 'b', 17), note
             elif i == 121:
-                assert note == Note('E', 'b', 17), note
+                assert note >> Note('E', 'b', 17), note
             elif i == 122:
-                assert note == Note('F', '', 17), note
+                assert note >> Note('F', '', 17), note
             elif i == 123:
-                assert note == Note('G', 'b', 17), note
+                assert note >> Note('G', 'b', 17), note
             elif i == 124:
-                assert note == Note('A', 'b', 17), note
+                assert note >> Note('A', 'b', 17), note
             elif i == 125:
-                assert note == Note('B', 'b', 17), note
+                assert note >> Note('B', 'b', 17), note
             elif i == 126:
-                assert note == Note('C', '', 18), note
+                assert note >> Note('C', '', 18), note
             elif i == 127:
-                assert note == Note('D', 'b', 18), note
+                assert note >> Note('D', 'b', 18), note
 
 
     def testDegreeMethod(self):
@@ -728,8 +720,8 @@ class MajorKeysExpectedNotesTest(unittest.TestCase):
         degree = self.c_major.degree(1)
         item = self.c_major[1]
         note = Note('C', 0)
-        assert degree == item, (degree, item)
-        assert degree == note, (degree, note)
+        assert degree >> item, (degree, item)
+        assert degree >> note, (degree, note)
 
 
 
@@ -769,7 +761,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
             for note in key._spell(
                 note_count=1, start_note=key.degree(d), yield_all=True, degree_order=[]
             ): 
-                assert note == Note(*key.degree(d)), note
+                assert note >> Note(*key.degree(d)), note
 
 
     def testNonDiatonicStartNoteYieldNotes(self):
@@ -823,7 +815,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
                 note_count=1, start_note=non, yield_all=False, degree_order=[]
             ): 
                 assert note != None, type(note)         # yield all=False ensures no Nones
-                assert note == Note(*exp), (note, exp)
+                assert note >> Note(*exp), (note, exp)
 
 
     def testNonDiatonicStartNoteYieldAll(self):
@@ -869,10 +861,10 @@ class TonalKeySpellMethodTest(unittest.TestCase):
             for note in key._spell(
                 note_count=1, start_note=non, yield_all=True, degree_order=[]
             ):
-
-                assert note == exp, (note, exp)
-                # if note is not None:
-                #     assert note == Note(*exp), (note, exp)
+                if note == None:
+                    assert note == exp, (note, exp)
+                else:
+                    assert note >> exp, (note, exp)
 
                 break # test only first yielded value even if not a note
                 
@@ -883,31 +875,31 @@ class TonalKeySpellMethodTest(unittest.TestCase):
         )):
             # echo(note, 'yellow')
             if i == 0:
-                assert note == Note('C', '', 0), note
+                assert note >> Note('C', '', 0), note
             elif i == 1:
-                assert note is None
+                assert note == None
             elif i == 2:
-                assert note == Note('D', '', 0), note
+                assert note >> Note('D', '', 0), note
             elif i == 3:
-                assert note is None
+                assert note == None
             elif i == 4:
-                assert note == Note('E', '', 0), note
+                assert note >> Note('E', '', 0), note
             elif i == 5:
-                assert note == Note('F', '', 0), note
+                assert note >> Note('F', '', 0), note
             elif i == 6:
-                assert note is None
+                assert note == None
             elif i == 7:
-                assert note == Note('G', '', 0), note
+                assert note >> Note('G', '', 0), note
             elif i == 8:
-                assert note is None
+                assert note == None
             elif i == 9:
-                assert note == Note('A', '', 0), note
+                assert note >> Note('A', '', 0), note
             elif i == 10:
-                assert note is None
+                assert note == None
             elif i == 11:
-                assert note == Note('B', '', 0), note
+                assert note >> Note('B', '', 0), note
             elif i == 12:
-                assert note == Note('C', '', 1), note
+                assert note >> Note('C', '', 1), note
 
 
     def testChromaticNoneYields(self):
@@ -924,25 +916,22 @@ class TonalKeySpellMethodTest(unittest.TestCase):
             note_count=23, start_note=sn, yield_all=False, degree_order=[1, 3, 5, 7]
         )):
             echo(f'{note}  ', 'yellow', mode='raw')
-            # time.sleep(0.3)
 
 
-    def testDegreeOrderOverOct(self):
-        for i, note in enumerate(MajorKey('C').ninth(
-            note_count=6, start_note=None, yield_all=False
-        )):
-            i += 1
-            if i == 1:
-                assert note == Note('C', '', 0), note
-            # elif i == 2:
-            #     assert note == Note('E', '', 0), note
-            # elif i == 3:
-            #     assert note == Note('G', '', 0), note
-            # elif i == 4:
-            #     assert note == Note('B', '', 0), note
-            # elif i == 5:
-            #     assert note == Note('D', '', 1), note
-            # elif i == 6:
-            #     assert note == Note('C', '', 2), note
-
-
+    # def testDegreeOrderOverOct(self):
+    #     for i, note in enumerate(MajorKey('C').ninth(
+    #         note_count=6, start_note=None, yield_all=False
+    #     )):
+    #         i += 1
+    #         if i == 1:
+    #             assert note >> Note('C', '', 0), note
+    #         elif i == 2:
+    #             assert note >> Note('E', '', 0), note
+    #         elif i == 3:
+    #             assert note >> Note('G', '', 0), note
+    #         elif i == 4:
+    #             assert note >> Note('B', '', 0), note
+    #         elif i == 5:
+    #             assert note >> Note('D', '', 1), note
+    #         elif i == 6:
+    #             assert note >> Note('C', '', 2), note

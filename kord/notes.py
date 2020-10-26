@@ -3,12 +3,6 @@ from bestia.output import echo
 
 from .errors import *
 
-SHARP = 1
-FLAT = -1
-
-TONE = 2
-SEMITONE = 1
-
 UNISON = 0
 DIMINISHED_SECOND = 0
 
@@ -116,14 +110,12 @@ class Note(object):
             raise InvalidNote('Too many arguments')
 
         if len(args) == 2:
-            if args[0] in input_alterations():
-                self.alt = args[0]
-            else:
+            if args[0] not in input_alterations():
                 raise InvalidAlteration(args[0])
+            self.alt = args[0]
 
             try:
                 self.oct = int(args[1])
-
             except:
                 raise InvalidOctave(args[1])
 
@@ -171,10 +163,7 @@ class Note(object):
             return self.__interval_from(other)
         raise TypeError('unsupported operand type(s) for -')
 
-
-    # OLD is_a(oct=None)
     def __pow__(self, other):
-        ''' **  operator implements LOOSEST equality '''
         if self.__class__ == other.__class__:
             if self.chr == other.chr:
                 if self.alt == other.alt:
@@ -182,35 +171,21 @@ class Note(object):
             return False
         raise TypeError('unsupported operand type(s) for **')
 
-
-    # OLD ==
-    def __lshift__(self, other):
-        ''' << operator implements LOOSE equality (enharmony) '''
-        if self.__class__ == other.__class__:
-            return self.__interval_from(other) == 0
-        raise TypeError('unsupported operand type(s) for <<')
-
     def __rshift__(self, other):
-        ''' >> operator implements LOOSE equality (enharmony) '''
-        if other.__class__ == self.__class__:
-            return other.__interval_from(self) == 0
-        raise TypeError('unsupported operand type(s) for >>')
-
-
-    # OLD is_a(oct=1)
-    def __eq__(self, other):
-        ''' == operator implements STRICT equality '''
         if self.__class__ == other.__class__:
             if self.chr == other.chr:
                 if self.alt == other.alt:
                     if self.oct == other.oct:
                         return True
 
+    def __eq__(self, other):  # ==
+        if other.__class__ == self.__class__:
+            return other.__interval_from(self) == 0        
+
     def __ne__(self, other):  # !=
-        # THIS IS A PROBLEM, IT SHOULD BE DIRECT OPPOSITE TO __EQ__
-        if self.__class__ != other.__class__:
-            return True
-        return self.__interval_from(other) != 0
+        if other.__class__ == self.__class__:
+            return other.__interval_from(self) != 0
+        return True
 
     def __gt__(self, other):  # >
         if self.__class__ == other.__class__:
