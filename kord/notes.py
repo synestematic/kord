@@ -132,13 +132,10 @@ class Note(object):
                         'Failed to parse argument: '.format(args[0])
                     )
 
-
-
     def __iter__(self):
         ''' allows unpacking Note objects as args for other functions '''
         for i in (self.chr, self.alt, self.oct):
             yield i
-
 
     def __repr__(self):
         return '{}{}{}'.format(
@@ -180,7 +177,8 @@ class Note(object):
                 if self.alt == other.alt:
                     if self.oct == other.oct:
                         return True
-        # raise TypeError('unsupported operand type(s) for >>')
+            return False
+        raise TypeError('unsupported operand type(s) for >>')
 
 
     def __eq__(self, other):  # ==
@@ -236,7 +234,7 @@ class Note(object):
 
     ### OCT METHODS
     def oversteps_oct(self, other):
-        ''' does NOT take oct attr into account '''
+        ''' does NOT take oct into account '''
         if self.chr != other.chr:
             return _CHARS.index(self.chr) > _CHARS.index(other.chr)
         return input_alterations().index(self.alt) > input_alterations().index(other.alt)
@@ -251,9 +249,8 @@ class Note(object):
     def matrix_coordinates(self):
         for row_index, row in enumerate(EnharmonicMatrix):
             for note_index, enharmonic_note in enumerate(row):
-                if self ** enharmonic_note:
+                if self ** enharmonic_note:  # ignore oct
                     return (row_index, note_index)
-
 
 
 ### This is the heart of the whole project
