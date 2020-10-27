@@ -75,41 +75,38 @@ class TonalKey(object):
             * returns when note_count == 0
             * positive note_count yields notes exactly
             * negative note_count yields notes indefinetly
+            * filters Nones if needed
         '''
-        for note in self._filter_degrees( start_note=start_note, yield_all=yield_all, degree_order=degree_order ):
-
+        for note in self._filter_degrees(
+            start_note=start_note, degree_order=degree_order
+        ):
             if note_count == 0:
                 return
 
-            if note == None:
-                if yield_all:
-                    yield None
-                continue
+            if note:
+                yield note
+                note_count -= 1
 
-            yield note
-            note_count -= 1
+            elif yield_all:
+                yield None
 
 
-    def _filter_degrees(self, start_note=None, yield_all=True, degree_order=[]):
+    def _filter_degrees(self, start_note=None, degree_order=[]):
         ''' 
             * degree order is enforced for chords, modes, etc
         '''
         if not degree_order:
             degree_order = [
-                n+1 for n in range(len(self.root_intervals))
+                n+1 for n in range( len(self.root_intervals) )
             ]
 
         degs = [ self.degree(n) for n in degree_order ]
         degs = LoopedList( * degs )
         # input(degs)
-
-        for note in self._solmizate(
-            start_note=start_note, yield_all=yield_all,
-        ):
+        for note in self._solmizate(start_note=start_note):
 
             if note == None:
-                if yield_all:
-                    yield None
+                yield None
                 continue
 
             for deg in degs:
@@ -119,10 +116,10 @@ class TonalKey(object):
                     break
 
 
-    def _solmizate(self, start_note=None, yield_all=True):
+    def _solmizate(self, start_note):
         ''' supported features:
                 * yields forever
-                * yields None for non-diatonic semitones
+                * always yields Nones
                 * changes octs by calling degree()
                 * start_note (diatonic, non-diatonic)
         '''
@@ -134,17 +131,15 @@ class TonalKey(object):
             d += 1
 
             if self[d] < start_note:
-                # START_NOTE NOT YET REACHED
+                # start_note not yet reached
                 continue
 
-            if yield_all:
-                # DONT YIELD EXTRA NONE BEFORE START_NOTE WHEN SCALE DEG BEFORE IS > 1 ST AWAY
-                # if self[d] != start_note and d != 1:
-                if self[d] != start_note:
-                    # YIELD NON-DIATONIC STs
-                    last_interval = self[d] - self[d -1] - 1
-                    for st in range(last_interval):
-                        yield None
+            # DONT YIELD EXTRA NONE BEFORE START_NOTE WHEN SCALE DEG BEFORE IS > 1 ST AWAY
+            if self[d] != start_note:
+                # yield non-diatonic semitones
+                last_interval = self[d] - self[d -1] - 1
+                for st in range(last_interval):
+                    yield None
 
             yield self[d]
 
