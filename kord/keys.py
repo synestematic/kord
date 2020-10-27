@@ -76,21 +76,18 @@ class TonalKey(object):
             * positive note_count yields notes exactly
             * negative note_count yields notes indefinetly
         '''
-
         for note in self._filter_degrees( start_note=start_note, yield_all=yield_all, degree_order=degree_order ):
 
-            if note_count == 0:  # negative note_counts never return
+            if note_count == 0:
                 return
 
-            if yield_all:
-                yield note
+            if note == None:
+                if yield_all:
+                    yield None
+                continue
 
-            elif not yield_all:
-                if note:
-                    yield note
-
-            if note:
-                note_count -= 1
+            yield note
+            note_count -= 1
 
 
     def _filter_degrees(self, start_note=None, yield_all=True, degree_order=[]):
