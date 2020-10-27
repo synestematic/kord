@@ -71,9 +71,10 @@ class TonalKey(object):
 
 
     def _spell(self, note_count=-1, start_note=None, yield_all=True, degree_order=[]):
-        ''' supported features:
-                * positive note_count yields notes exactly
-                * negative note_count yields notes indefinetly
+        ''' 
+            * returns when note_count == 0
+            * positive note_count yields notes exactly
+            * negative note_count yields notes indefinetly
         '''
 
         for note in self._filter_degrees( start_note=start_note, yield_all=yield_all, degree_order=degree_order ):
@@ -93,90 +94,60 @@ class TonalKey(object):
 
 
     def _filter_degrees(self, start_note=None, yield_all=True, degree_order=[]):
-        ''' supported features:
-                * degree order is enforced for chords, modes, etc
+        ''' 
+            * degree order is enforced for chords, modes, etc
         '''
-
-        if not start_note:
-            start_note = self.root
-
         if not degree_order:
             degree_order = [
                 n+1 for n in range(len(self.root_intervals))
             ]
 
-        degs = LoopedList(
-            * [ self.degree(n) for n in degree_order ]
-        )
-
+        degs = [ self.degree(n) for n in degree_order ]
+        degs = LoopedList( * degs )
         # input(degs)
-
-        # rotate degree order by comparing it to start_note
-        # degrees = Degrees(*degs)
-        # input(degrees.original_order)
-        # input(degrees.current_order)
-        # degrees.rotate_by_note(start_note)
-        # input(degrees.original_order)
-        # input(degrees.current_order)
 
         for note in self._solmizate(
             start_note=start_note, yield_all=yield_all,
         ):
 
-            # THIS.............
-            note_match = False
-
-            if note:
-                for deg in degs:
-                    if note ** deg:
-                        yield note
-                        note_match = True
-                        break
-
-            if not note_match:
+            if note == None:
                 if yield_all:
                     yield None
+                continue
 
-            # OR THIS.............
-            # if note and note ** degrees[0]: # same note, ignr oct
-            #     yield note
-            #     degrees.rotate()
-            #     continue
-
-            # if yield_all:
-            #     yield None
-
+            for deg in degs:
+                if note ** deg:
+                # if note >> deg:
+                    yield note
+                    break
 
 
     def _solmizate(self, start_note=None, yield_all=True):
         ''' supported features:
-                * yields indefinetly
+                * yields forever
                 * yields None for non-diatonic semitones
-                * changes octs { degree() }
-                * diatonic start_note
-                * non-diatonic start_note
+                * changes octs by calling degree()
+                * start_note (diatonic, non-diatonic)
         '''
-        start_note = start_note if start_note else self.root
+        if not start_note:
+            start_note = self.root
 
         d = 0
         while True:
             d += 1
 
-            # START_NOTE REACHED
             if self[d] < start_note:
+                # START_NOTE NOT YET REACHED
                 continue
 
             if yield_all:
-
-                # DONT YIELD EXTRA NONE BEFORE START_NOTE
-                # WHEN SCALE DEG BEFORE IS > 1 ST AWAY
+                # DONT YIELD EXTRA NONE BEFORE START_NOTE WHEN SCALE DEG BEFORE IS > 1 ST AWAY
+                # if self[d] != start_note and d != 1:
                 if self[d] != start_note:
-
-                    # YIELD NON-DIATONIC STs, EXCEPT FOR ROOT
-                    if d != 1:
-                        last_interval = self[d] - self[d -1] - 1
-                        for st in range(last_interval):
-                            yield
+                    # YIELD NON-DIATONIC STs
+                    last_interval = self[d] - self[d -1] - 1
+                    for st in range(last_interval):
+                        yield None
 
             yield self[d]
 
