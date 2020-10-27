@@ -1,4 +1,5 @@
 from bestia.output import Row, FString, echo
+from bestia.iterate import LoopedList
 
 from .degrees import *
 from .notes import *
@@ -96,20 +97,21 @@ class TonalKey(object):
                 * degree order is enforced for chords, modes, etc
         '''
 
-        start_note = start_note if start_note else self.root
-
-        # LOOPED LIST IMPORTED FROM NOTES.PY
+        if not start_note:
+            start_note = self.root
 
         if not degree_order:
-            degs = LoopedList(
-                * [ self.degree(n +1) for n in range(len(self.root_intervals)) ]
-            )
-        else:
-            degs = LoopedList(
-                * [ self.degree(n) for n in degree_order ]
-            )
+            degree_order = [
+                n+1 for n in range(len(self.root_intervals))
+            ]
 
-        # rotate degree order by comparing it to star_note
+        degs = LoopedList(
+            * [ self.degree(n) for n in degree_order ]
+        )
+
+        # input(degs)
+
+        # rotate degree order by comparing it to start_note
         # degrees = Degrees(*degs)
         # input(degrees.original_order)
         # input(degrees.current_order)
@@ -171,9 +173,10 @@ class TonalKey(object):
                 if self[d] != start_note:
 
                     # YIELD NON-DIATONIC STs, EXCEPT FOR ROOT
-                    last_interval = 0 if d == 1 else self[d] - self[d -1] - 1
-                    for st in range(last_interval):
-                        yield
+                    if d != 1:
+                        last_interval = self[d] - self[d -1] - 1
+                        for st in range(last_interval):
+                            yield
 
             yield self[d]
 
@@ -221,31 +224,31 @@ class DiatonicKey(TonalKey):
         raise InvalidNote
 
 
-    def triad(self, note_count=0, start_note=None, yield_all=True):
+    def triad(self, note_count=3+1, start_note=None, yield_all=True):
         return self._spell(
             note_count=note_count, start_note=start_note,
             yield_all=yield_all, degree_order=(1, 3, 5),
         )
 
-    def seventh(self, note_count=0, start_note=None, yield_all=True):
+    def seventh(self, note_count=4+1, start_note=None, yield_all=True):
         return self._spell(
             note_count=note_count, start_note=start_note,
             yield_all=yield_all, degree_order=(1, 3, 5, 7),
         )
 
-    def ninth(self, note_count=0, start_note=None, yield_all=True):
+    def ninth(self, note_count=5+1, start_note=None, yield_all=True):
         return self._spell(
             note_count=note_count, start_note=start_note,
             yield_all=yield_all, degree_order=(1, 3, 5, 7, 9),
         )
 
-    def eleventh(self, note_count=0, start_note=None, yield_all=True):
+    def eleventh(self, note_count=6+1, start_note=None, yield_all=True):
         return self._spell(
             note_count=note_count, start_note=start_note,
             yield_all=yield_all, degree_order=(1, 3, 5, 7, 9, 11),
         )
 
-    def thirteenth(self, note_count=0, start_note=None, yield_all=True):
+    def thirteenth(self, note_count=7+1, start_note=None, yield_all=True):
         return self._spell(
             note_count=note_count, start_note=start_note,
             yield_all=yield_all, degree_order=(1, 3, 5, 7, 9, 11, 13),
