@@ -95,37 +95,80 @@ class TonalKey(object):
         ''' 
             * degree order is enforced for chords, modes, etc
         '''
+        if not start_note:
+            start_note = self.root
+
         if not degree_order:
             degree_order = [
                 n+1 for n in range( len(self.root_intervals) )
             ]
 
-        degs = [ self.degree(n) for n in degree_order ]
+        # calculate distance between octaves of first and last items of degree_order
+        octave_delta = self.degree(degree_order[-1]).oct - self.degree(degree_order[0]).oct
+        if not octave_delta:  # this cannot be 0 ...
+            octave_delta = 1
+
+
+        # yields only degree numbers
+        i = 0
+
+        while True:
+
+            #   7 for Major, 12 for Chromatic
+            o = len(self.root_intervals) * i
+
+            for degree_index, _ in enumerate(degree_order):
+                t = degree_order[degree_index]   + o  #  8 = 1 + 7*1
+                p = degree_order[degree_index-1] + o  # 12 = 5 + 7*1
+                if degree_index == 0:
+                    p -= len(self.root_intervals) # should be 5
+
+                this_degree = self.degree(t)
+                prev_degree = self.degree(p)
+
+                if this_degree < start_note:
+                    continue
+
+                # input([p, prev_degree, t, this_degree])
+
+                # dont yield Nones before start_note
+                if this_degree != start_note:
+                    # yield non-diatonic semitones
+                    last_interval = this_degree - prev_degree - 1
+                    for st in range(last_interval):
+                        yield None
+
+                yield this_degree
+
+            i += octave_delta
+
+        input('DONE')
+        return
+
         degs = LoopedList( * degs )
-        # input(degs)
+
+        # yields all degree numbers
         for note in self._solmizate(start_note=start_note):
 
+            input(note)
             if note == None:
                 yield None
                 continue
 
             for deg in degs:
-                if note ** deg:
-                # if note >> deg:
+                # if note ** deg:
+                if note >> deg:
                     yield note
                     break
 
 
     def _solmizate(self, start_note):
-        ''' supported features:
-                * yields forever
-                * always yields Nones
-                * changes octs by calling degree()
-                * start_note (diatonic, non-diatonic)
         '''
-        if not start_note:
-            start_note = self.root
-
+        * yields forever
+        * always yields Nones
+        * changes octs by calling degree()
+        * start_note (diatonic, non-diatonic)
+        '''
         d = 0
         while True:
             d += 1
