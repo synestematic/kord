@@ -100,7 +100,6 @@ def parse_arguments():
                     str( list( INSTRUMENTS[args.instrument].keys() ) ).lstrip('[').rstrip(']'),
                 )
             )
-        args.tuning = INSTRUMENTS[args.instrument][args.tuning]
 
         # validate ROOT note
         note_chr = args.ROOT[:1].upper()
@@ -136,13 +135,15 @@ def run(args):
     
     try:
         rc = 0
+
         INSTRUMENT = PluckedStringInstrument(
-            *[ Note(*string_tuning) for string_tuning in args.tuning ]
+            *[ Note(*string_tuning) for string_tuning in INSTRUMENTS[args.instrument][args.tuning] ]
         )
 
-        MODE = TONAL_CLASSES[args.mode](args.ROOT[0], alt=args.ROOT[1])
+        MODE = TONAL_CLASSES[args.mode](chr=args.ROOT[0], alt=args.ROOT[1])
 
-        echo('{} {} on {}'.format(str(MODE.root)[:-1], MODE.name, args.instrument), 'blue', 'underline')
+        echo('{} {} on {} ({} tuning)'.format(str(MODE.root)[:-1], MODE.name, args.instrument, args.tuning), 'blue', '')
+
         INSTRUMENT.fretboard(
             display=MODE.scale,
             frets=args.frets,
@@ -159,10 +160,31 @@ def run(args):
 
 
 if __name__ == '__main__':
-    rc = -1
-    valid_args = parse_arguments()
-    if not valid_args:
-        rc = 2
-    else:
-        rc = run(valid_args)
-    sys.exit(rc)
+    # try:
+        rc = -1
+        valid_args = parse_arguments()
+        if not valid_args:
+            rc = 2
+        else:
+            rc = run(valid_args)
+        sys.exit(rc)
+
+    # except:
+    #     print()
+'''
+scale, triad
+
+    _spell
+                count notes
+                filter Nones
+
+    _filter_degrees
+                order degrees
+
+    _solmizate
+                start_note
+                yield Nones
+                change oct
+
+
+'''
