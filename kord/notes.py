@@ -234,7 +234,9 @@ class Note(object):
 
     ### OCT METHODS
     def oversteps_oct(self, other):
-        ''' does NOT take oct into account '''
+        ''' evaluates whether I need to cross octave border in rder to go from self to other
+            ignores octave
+        '''
         if self.chr != other.chr:
             return _CHARS.index(self.chr) > _CHARS.index(other.chr)
         return input_alterations().index(self.alt) > input_alterations().index(other.alt)
