@@ -101,37 +101,24 @@ class TonalKey(object):
     def _filter_degrees(self, start_note=None, degree_order=[]):
         ''' 
             * enforces degree_order for chords, modes, etc
+            * yields None when received note is NOT in degrees
         '''
-        degs = [ self.degree(n) for n in degree_order ]
-        # input(degs)
-        for t, note in self._solmizate(start_note=start_note):
+        degrees = [ self.degree(n) for n in degree_order ]
+
+        for _, note in self._solmizate(start_note=start_note):
             # input(note)
             if note == None:
                 yield None
                 continue
 
-            for deg in degs:
+            # ensures correct amount of non-diatonic Nones are yielded for chords
+            note_or_none = None
+            for deg in degrees:
                 if note ** deg:
-                    yield note
+                    note_or_none = note
                     break
 
-    
-    def match_tone_number_to_degree_number(self, t, d):
-        ''' 
-            C0 1
-            C3 22
-            len(self.root_intervals) == 7
-            t  =  d.val +  ( len  * y )
-            22 =  1     +  (  7   * 3 )
-        '''
-        # for n in range(10):
-        #     if divmod(t, d + len(self.root_intervals)*n) == (1, 0):
-        #         return True
-        o = 0
-        while o < 20:
-            if t == d + len(self.root_intervals) * o:
-                return d
-            o += 1
+            yield note_or_none
 
 
     def _solmizate(self, start_note):
