@@ -715,15 +715,6 @@ class MajorKeysExpectedNotesTest(unittest.TestCase):
                 assert note >> Note('D', 'b', 18), note
 
 
-    def testDegreeMethod(self):
-        ''' tests __getitem__ == degree() '''
-        degree = self.c_major.degree(1)
-        item = self.c_major[1]
-        note = Note('C', 0)
-        assert degree >> item, (degree, item)
-        assert degree >> note, (degree, note)
-
-
 
 class TonalKeySpellMethodTest(unittest.TestCase):
 
@@ -759,9 +750,9 @@ class TonalKeySpellMethodTest(unittest.TestCase):
             d = random.randint(2, 64)
             print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = degree({d}) ) ...')
             for note in key._spell(
-                note_count=1, start_note=key.degree(d), yield_all=True, degree_order=[]
-            ): 
-                assert note >> Note(*key.degree(d)), note
+                note_count=1, start_note=key[d], yield_all=True, degree_order=[]
+            ):
+                assert note >> Note(*key[d]), note
 
 
     def testNonDiatonicStartNoteYieldNotes(self):

@@ -21,9 +21,6 @@ class TonalKey(object):
             )
         return str(spell_line)
 
-    def __getitem__(self, i):
-        return self.degree(i)
-
     @property
     def name(self):
         return self.__class__.__name__
@@ -106,7 +103,7 @@ class TonalKey(object):
             * enforces degree_order for chords, modes, etc
             * yields None when received note is NOT in degrees
         '''
-        degrees = [ self.degree(n) for n in degree_order ]
+        degrees = [ self[n] for n in degree_order ]
 
         for _, note in self._solmizate(start_note=start_note):
 
@@ -132,7 +129,7 @@ class TonalKey(object):
         * yields forever
         * always yields 
         * yields degree number
-        * changes octs by calling degree()
+        * changes octs by using self[d]
         * start_note (diatonic, non-diatonic)
         '''
         d = 0
@@ -170,7 +167,7 @@ class DiatonicKey(TonalKey):
     def SeventhChord(cls, chr, alt=''):
         return cls(chr, alt).seventh
 
-    def degree(self, d):
+    def __getitem__(self, d):
 
         if d < 1:
             return
@@ -392,7 +389,7 @@ class ChromaticKey(TonalKey):
         MAJOR_SEVENTH,
     )
 
-    def degree(self, d):
+    def __getitem__(self, d):
 
         if d < 1:
             return

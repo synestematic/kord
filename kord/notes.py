@@ -256,7 +256,7 @@ class Note(object):
 ### indeces are used to determine:
 ###   * when to change octs
 ###   * intervals between Note instances
-### notes MUST be unique so that Note.degree() finds 1 exact match!
+### notes MUST be unique so that TonalKey[d] finds 1 exact match!
 EnharmonicMatrix = LoopedList(
 
     ## 2-octave enharmonic relationships
