@@ -145,7 +145,8 @@ def run(args):
         echo('{} {} on {} ({} tuning)'.format(str(MODE.root)[:-1], MODE.name, args.instrument, args.tuning), 'blue', '')
 
         INSTRUMENT.fretboard(
-            display=MODE.scale,
+            # display=MODE.scale,
+            display=MODE.triad,
             frets=args.frets,
             verbose=args.verbosity,
             limit=24
@@ -159,6 +160,23 @@ def run(args):
         return rc
 
 
+def bla():
+        # c = Note('C', '', 3)
+    # print(
+    #     c.oversteps_oct(Note('C', 'b', 4))
+    # )
+
+    asd = MajorKey( 'C' )
+    for n in asd.triad(
+    # for n in asd.scale(
+        note_count=8,
+        yield_all=1,
+        # start_note=Note('C', '', 3),
+    ):
+        # pass
+        echo(n, 'red')
+
+
 if __name__ == '__main__':
     # try:
         rc = -1
@@ -166,7 +184,8 @@ if __name__ == '__main__':
         if not valid_args:
             rc = 2
         else:
-            rc = run(valid_args)
+            rc = bla()
+            # rc = run(valid_args)
         sys.exit(rc)
 
     # except:
@@ -185,6 +204,52 @@ scale, triad
                 start_note
                 yield Nones
                 change oct
+
+
+        # calculate distance between octaves of first and last items of degree_order
+        octave_delta = self.degree(degree_order[-1]).oct - self.degree(degree_order[0]).oct
+        if not octave_delta:  # this cannot be 0 ...
+            octave_delta = 1
+
+
+        i = 0
+        while True:
+
+            #   7 for Major, 12 for Chromatic
+            o = len(self.root_intervals) * i
+
+            for degree_index, _ in enumerate(degree_order):
+
+                this = degree_order[degree_index]   + o  #  8 = 1 + 7*1
+                prev = degree_order[degree_index-1] + o  # 12 = 5 + 7*1
+                if degree_index == 0:
+                    prev -= len(self.root_intervals) # should be 5
+
+                if i != 0 and degree_index == 0 and self.degree(prev).oversteps_oct(self.degree(this)):
+                    # input([prev, self.degree(prev), this, self.degree(this)])
+                    i += octave_delta
+                    o = len(self.root_intervals) * i
+                    this = degree_order[degree_index]   + o
+                    # input([prev, self.degree(prev), this, self.degree(this)])
+
+                if self.degree(this) < start_note:
+                    continue
+
+
+                # dont yield Nones before start_note
+                if self.degree(this) != start_note:
+                    # yield non-diatonic semitones
+                    last_interval =  self.degree(this) - self.degree(prev)
+                    for st in range(last_interval - 1):
+                        yield None
+
+                yield  self.degree(this)
+
+            i += octave_delta
+
+        input('DONE')
+        return
+
 
 
 '''

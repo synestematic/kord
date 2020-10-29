@@ -918,20 +918,20 @@ class TonalKeySpellMethodTest(unittest.TestCase):
             echo(f'{note}  ', 'yellow', mode='raw')
 
 
-    # def testDegreeOrderOverOct(self):
-    #     for i, note in enumerate(MajorKey('C').ninth(
-    #         note_count=6, start_note=None, yield_all=False
-    #     )):
-    #         i += 1
-    #         if i == 1:
-    #             assert note >> Note('C', '', 0), note
-    #         elif i == 2:
-    #             assert note >> Note('E', '', 0), note
-    #         elif i == 3:
-    #             assert note >> Note('G', '', 0), note
-    #         elif i == 4:
-    #             assert note >> Note('B', '', 0), note
-    #         elif i == 5:
-    #             assert note >> Note('D', '', 1), note
+    def testDegreeOrderOverOct(self):
+        for i, note in enumerate(MajorKey('C').ninth(
+            note_count=6, start_note=None, yield_all=False
+        )):
+            i += 1
+            if i == 1:
+                assert note >> Note('C', '', 0), note
+            # elif i == 2:
+            #     assert note >> Note('E', '', 0), note
+            # elif i == 3:
+            #     assert note >> Note('G', '', 0), note
+            # elif i == 4:
+            #     assert note >> Note('B', '', 0), note
+            # elif i == 5:
+            #     assert note >> Note('D', '', 1), note
     #         elif i == 6:
     #             assert note >> Note('C', '', 2), note
