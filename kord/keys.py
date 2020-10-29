@@ -106,12 +106,15 @@ class TonalKey(object):
         degrees = [ self.degree(n) for n in degree_order ]
 
         for _, note in self._solmizate(start_note=start_note):
-            # input(note)
+
+            # if solmizate sends a None, yield it immediately
             if note == None:
                 yield None
                 continue
 
-            # ensures correct amount of non-diatonic Nones are yielded for chords
+            # if solmizate sends a note, check if it's in degrees and
+            # if not, yield a None
+            # ensures correct amount of non-diatonic Nones for chords
             note_or_none = None
             for deg in degrees:
                 if note ** deg:
