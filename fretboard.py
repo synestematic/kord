@@ -52,17 +52,33 @@ def parse_arguments():
         'ROOT',
         help='select a root note',
     )
-    parser.add_argument(
-        '-m', '--mode',
-        help='set mode: {}'.format([ m for m in TONAL_CLASSES.keys() ]),
-        choices=[ m for m in TONAL_CLASSES.keys() ],
+
+    group = parser.add_mutually_exclusive_group()
+
+    scale_choices = [ m for m in SCALES.keys() ]
+    group.add_argument(
+        '-s', '--scale',
+        help='set scale: {}'.format(str(scale_choices).lstrip('[').rstrip(']').replace('\'', '')),
+        choices=scale_choices,
         default='major',
         metavar='',
     )
+
+    chord_choices = [ m for m in CHORDS.keys() ]
+    group.add_argument(
+        '-c', '--chord',
+        help='set chord: {}'.format(str(chord_choices).lstrip('[').rstrip(']').replace('\'', '')),
+        choices=chord_choices,
+        default='',
+        metavar='',
+    )
+
+    instr_choices = [ i for i in INSTRUMENTS.keys() ]
+
     parser.add_argument(
         '-i', '--instrument',
-        help='set instrument fretboard: {}'.format([ i for i in INSTRUMENTS.keys() ]),
-        choices=[ i for i in INSTRUMENTS.keys() ],
+        help='set instrument fretboard: {}'.format(str(instr_choices).lstrip('[').rstrip(']').replace('\'', '')),
+        choices=instr_choices,
         default='guitar',
         metavar='',
     )
@@ -74,7 +90,7 @@ def parse_arguments():
     )
     parser.add_argument(
         '-f', '--frets',
-        help='set number of displayed frets: [1, 2, .. , {}]'.format(MAX_FRETS),
+        help='set number of displayed frets: 1, 2, .., {}'.format(MAX_FRETS),
         choices=[ f+1 for f in range(MAX_FRETS) ],
         default=max_frets_on_screen(MAX_FRETS),
         metavar='',
@@ -82,7 +98,7 @@ def parse_arguments():
     )
     parser.add_argument(
         '-v', '--verbosity',
-        help='set application verbosity: [0, 1, 2]',
+        help='set verbosity: 0, 1, 2',
         choices= (0, 1, 2),
         default=1,
         metavar='',
@@ -131,51 +147,56 @@ def parse_arguments():
     return args
 
 
+
+
+def bla():
+
+    # c_major_scale = MajorKey.Scale('C')
+    # for n in c_major_scale(7):
+    #     print(n)
+
+    # chord = MajorTriad('C')
+    # for n in chord.scale(4):
+    #     print(n)
+
+
+    c = Note('c')
+    print(
+        c.adjacent_chr(2)
+    )
+
+
 def run(args):
     
-    try:
+    # try:
         rc = 0
 
         INSTRUMENT = PluckedStringInstrument(
             *[ Note(*string_tuning) for string_tuning in INSTRUMENTS[args.instrument][args.tuning] ]
         )
 
-        MODE = TONAL_CLASSES[args.mode](chr=args.ROOT[0], alt=args.ROOT[1])
+        if args.chord:
+            MODE = CHORDS[args.chord](chr=args.ROOT[0], alt=args.ROOT[1])
+        elif args.scale:
+            MODE = SCALES[args.scale](chr=args.ROOT[0], alt=args.ROOT[1])
 
-        echo('{} {} on {} ({} tuning)'.format(str(MODE.root)[:-1], MODE.name, args.instrument, args.tuning), 'blue', '')
+        # input(MODE.__class__.__name__)
+
+        # echo('{} {} on {} ({} tuning)'.format(str(MODE.root)[:-1], MODE.name, args.instrument, args.tuning), 'blue', '')
 
         INSTRUMENT.fretboard(
-            # display=MODE.scale,
-            display=MODE.triad,
+            display=MODE,
             frets=args.frets,
             verbose=args.verbosity,
             limit=24
         )
 
-    except Exception as x:
-        print(x)
-        rc = -1
+    # except Exception as x:
+    #     print(x)
+    #     rc = -1
 
-    finally:
-        return rc
-
-
-def bla():
-        # c = Note('C', '', 3)
-    # print(
-    #     c.oversteps_oct(Note('C', 'b', 4))
-    # )
-
-    asd = MajorKey( 'C' )
-    for n in asd.triad(
-    # for n in asd.scale(
-        note_count=8,
-        yield_all=1,
-        # start_note=Note('C', '', 3),
-    ):
-        # pass
-        echo(n, 'red')
-
+    # finally:
+    #     return rc
 
 if __name__ == '__main__':
     # try:
