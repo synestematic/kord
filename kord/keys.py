@@ -1,5 +1,4 @@
 from bestia.output import Row, FString, echo
-from bestia.iterate import LoopedList
 
 from .degrees import *
 from .notes import *
@@ -77,6 +76,14 @@ class TonalKey(object):
             * negative note_count yields notes indefinetly
             * filters Nones if needed
         '''
+        if not start_note:
+            start_note = self.root
+
+        if not degree_order:
+            degree_order = [
+                n+1 for n in range( len(self.root_intervals) )
+            ]
+
         for note in self._filter_degrees(
             start_note=start_note, degree_order=degree_order
         ):
@@ -93,79 +100,45 @@ class TonalKey(object):
 
     def _filter_degrees(self, start_note=None, degree_order=[]):
         ''' 
-            * degree order is enforced for chords, modes, etc
+            * enforces degree_order for chords, modes, etc
         '''
-        if not start_note:
-            start_note = self.root
-
-        if not degree_order:
-            degree_order = [
-                n+1 for n in range( len(self.root_intervals) )
-            ]
-
-        # calculate distance between octaves of first and last items of degree_order
-        octave_delta = self.degree(degree_order[-1]).oct - self.degree(degree_order[0]).oct
-        if not octave_delta:  # this cannot be 0 ...
-            octave_delta = 1
-
-
-        # yields only degree numbers
-        i = 0
-
-        while True:
-
-            #   7 for Major, 12 for Chromatic
-            o = len(self.root_intervals) * i
-
-            for degree_index, _ in enumerate(degree_order):
-                t = degree_order[degree_index]   + o  #  8 = 1 + 7*1
-                p = degree_order[degree_index-1] + o  # 12 = 5 + 7*1
-                if degree_index == 0:
-                    p -= len(self.root_intervals) # should be 5
-
-                this_degree = self.degree(t)
-                prev_degree = self.degree(p)
-
-                if this_degree < start_note:
-                    continue
-
-                # input([p, prev_degree, t, this_degree])
-
-                # dont yield Nones before start_note
-                if this_degree != start_note:
-                    # yield non-diatonic semitones
-                    last_interval = this_degree - prev_degree - 1
-                    for st in range(last_interval):
-                        yield None
-
-                yield this_degree
-
-            i += octave_delta
-
-        input('DONE')
-        return
-
-        degs = LoopedList( * degs )
-
-        # yields all degree numbers
-        for note in self._solmizate(start_note=start_note):
-
-            input(note)
+        degs = [ self.degree(n) for n in degree_order ]
+        # input(degs)
+        for t, note in self._solmizate(start_note=start_note):
+            # input(note)
             if note == None:
                 yield None
                 continue
 
             for deg in degs:
-                # if note ** deg:
-                if note >> deg:
+                if note ** deg:
                     yield note
                     break
+
+    
+    def match_tone_number_to_degree_number(self, t, d):
+        ''' 
+            C0 1
+            C3 22
+            len(self.root_intervals) == 7
+            t  =  d.val +  ( len  * y )
+            22 =  1     +  (  7   * 3 )
+        '''
+        # for n in range(10):
+        #     if divmod(t, d + len(self.root_intervals)*n) == (1, 0):
+        #         return True
+        o = 0
+        while o < 20:
+            if t == d + len(self.root_intervals) * o:
+                return d
+            o += 1
 
 
     def _solmizate(self, start_note):
         '''
         * yields forever
-        * always yields Nones
+        * always yields 
+        * yields degree number
         * changes octs by calling degree()
         * start_note (diatonic, non-diatonic)
         '''
@@ -174,17 +147,17 @@ class TonalKey(object):
             d += 1
 
             if self[d] < start_note:
-                # start_note not yet reached
+                ## start_note not yet reached
                 continue
 
-            # DONT YIELD EXTRA NONE BEFORE START_NOTE WHEN SCALE DEG BEFORE IS > 1 ST AWAY
+            # dont yield the Nones before the starting note
             if self[d] != start_note:
-                # yield non-diatonic semitones
-                last_interval = self[d] - self[d -1] - 1
-                for st in range(last_interval):
-                    yield None
+                # yield Nones non-diatonic semitones
+                last_interval = self[d] - self[d-1]
+                for semitone in range(last_interval - 1): # dont yield last st, yield the note below
+                    yield d, None
 
-            yield self[d]
+            yield d, self[d]
 
 
     def scale(self, note_count=0, start_note=None, yield_all=True):
