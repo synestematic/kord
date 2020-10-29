@@ -1,9 +1,12 @@
 from bestia.output import Row, FString, echo
 
-from .degrees import *
 from .notes import *
 
 class TonalKey(object):
+
+    @classmethod
+    def Scale(cls, chr, alt=''):
+        return cls(chr, alt).scale
 
     def __init__(self, chr, alt='', oct=0):
         self.root = Note(chr, alt, 0) # ignore note.oct
@@ -150,7 +153,7 @@ class TonalKey(object):
             yield d, self[d]
 
 
-    def scale(self, note_count=0, start_note=None, yield_all=True):
+    def scale(self, note_count, start_note=None, yield_all=True):
         return self._spell(
             note_count=note_count, start_note=start_note,
             yield_all=yield_all, degree_order=range(1, len(self.root_intervals) +1),
@@ -158,6 +161,14 @@ class TonalKey(object):
 
 
 class DiatonicKey(TonalKey):
+
+    @classmethod
+    def Triad(cls, chr, alt=''):
+        return cls(chr, alt).triad
+
+    @classmethod
+    def SeventhChord(cls, chr, alt=''):
+        return cls(chr, alt).seventh
 
     def degree(self, d):
 
@@ -229,7 +240,6 @@ class DiatonicKey(TonalKey):
 ########################
 
 class MajorKey(DiatonicKey):
-
     root_intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -244,7 +254,6 @@ class IonianMode(MajorKey):
     pass
 
 class MixolydianMode(MajorKey):
-
     root_intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -256,7 +265,6 @@ class MixolydianMode(MajorKey):
     )
 
 class LydianMode(MajorKey):
-
     root_intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -267,13 +275,11 @@ class LydianMode(MajorKey):
         MAJOR_SEVENTH,
     )
 
-
 ########################
 ### MINOR KEYS/MODES ###
 ########################
 
 class MinorKey(DiatonicKey):
-
     root_intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -285,7 +291,6 @@ class MinorKey(DiatonicKey):
     )
     
 class MinorPentatonicKey(MinorKey):
-
     root_intervals = (
         UNISON,
         MINOR_THIRD,
@@ -295,7 +300,6 @@ class MinorPentatonicKey(MinorKey):
     )
 
 class Hokkaido(MinorKey):
-
     root_intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -310,7 +314,6 @@ class NaturalMinorKey(MinorKey):
     pass
 
 class MelodicMinorKey(MinorKey):
-
     root_intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -322,7 +325,6 @@ class MelodicMinorKey(MinorKey):
     )
 
 class HarmonicMinorKey(MinorKey):
-
     root_intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -337,7 +339,6 @@ class AeolianMode(MinorKey):
     pass
 
 class DorianMode(MinorKey):
-
     root_intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -349,7 +350,6 @@ class DorianMode(MinorKey):
     )
 
 class PhrygianMode(MinorKey):
-
     root_intervals = (
         UNISON,
         MINOR_SECOND, # <<<
@@ -360,6 +360,16 @@ class PhrygianMode(MinorKey):
         MINOR_SEVENTH,
     )
 
+class MajorTriad(DiatonicKey):
+    root_intervals = (
+        UNISON,
+        # MAJOR_SECOND,
+        MAJOR_THIRD,
+        PERFECT_FOURTH,
+        PERFECT_FIFTH,
+        MAJOR_SIXTH,
+        MAJOR_SEVENTH,
+    )
 
 #####################
 ### CHROMATIC KEY ###
@@ -436,58 +446,45 @@ class ChromaticKey(TonalKey):
 
         raise InvalidNote
 
-TONAL_CLASSES = {
+SCALES = {
 
-    'major': MajorKey,
+    'major': MajorKey.Scale,
 
-    'minor': MinorKey,
-    'natural_minor': NaturalMinorKey,
-    'melodic_minor': MelodicMinorKey,
-    'harmonic_minor': HarmonicMinorKey,
+    'minor': MinorKey.Scale,
+    'natural_minor': NaturalMinorKey.Scale,
+    'melodic_minor': MelodicMinorKey.Scale,
+    'harmonic_minor': HarmonicMinorKey.Scale,
 
-    'ionian': IonianMode,
-    'lydian': LydianMode,
-    'mixo': MixolydianMode,
-    'aeolian': AeolianMode,
-    'dorian': DorianMode,
-    'phrygian': PhrygianMode,
+    'ionian': IonianMode.Scale,
+    'lydian': LydianMode.Scale,
+    'mixo': MixolydianMode.Scale,
+    'aeolian': AeolianMode.Scale,
+    'dorian': DorianMode.Scale,
+    'phrygian': PhrygianMode.Scale,
 
-    # 'hokkaido': Hokkaido,
+    # 'hokkaido': Hokkaido.Scale,
 
-    'chromatic': ChromaticKey,
+    'chromatic': ChromaticKey.Scale,
 
 }
 
-# CHORDS = {
-#     # TRIADS ########################
-#     '': MajorTriadChord,
-#     'M': MajorTriadChord,
+CHORDS = {
+    # TRIADS ########################
+    'maj': MajorKey.Triad,
+    'min': MinorKey.Triad,
+    'aug': None,
+    'dim': None,
 
-#     'm': MinorTriadChord,
+    # SEVENTH #######################
+    '7': MixolydianMode.SeventhChord,
+    'maj7': MajorKey.SeventhChord,
+    'min7': MinorKey.SeventhChord,
 
-#     'a': AugmentedTriadChord,
-    #  '+': AugmentedTriadChord,
 
-#     'd': DiminishedTriadChord,
-#     '-': DiminishedTriadChord,
+    # diminished, °7  
+    'dim7': PhrygianMode.SeventhChord,
 
-#     # SEVENTH #######################
-#     '7': DominantSeventhChord,
-#     'dom7': DominantSeventhChord,
+    # half-diminished, ⦰7
+    'min7dim5': PhrygianMode.SeventhChord,
 
-#     'M7': MajorSeventhChord,
-#     'maj7': MajorSeventhChord,
-#     '△7': MajorSeventhChord,
-
-#     'm7': MinorSeventhChord,
-#     'min7': MinorSeventhChord,
-    
-#     'D7': DiminishedSeventhChord,
-#     'dim7': DiminishedSeventhChord,
-#     '°7': DiminishedSeventhChord,
-
-#     'd7': HalfDiminishedSeventhChord, # isnt this one usually used for diminished (instead of D7)?
-#     'm7-5': HalfDiminishedSeventhChord,
-#     '⦰7': HalfDiminishedSeventhChord,
-
-# }
+}
