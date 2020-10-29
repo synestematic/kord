@@ -221,15 +221,12 @@ class Note(object):
             negative fails...
         '''
         c = ''
-        count = 0
         i = 1
-
-        while count != n:
+        while n != 0:
             c = self.relative_chr(i)
             if c:
-                count += 1
+                n -= 1
             i += 1
-
         return c
 
     ### OCT METHODS
