@@ -161,7 +161,7 @@ class Note(object):
             chr_interval = _CHARS.index(self.chr) - _CHARS.index(other.chr)
             alt_interval = input_alterations().index(self.alt) - input_alterations().index(other.alt)
             return oct_interval + chr_interval + alt_interval
-        raise TypeError('unsupported operand type(s) for -')
+        raise TypeError(f' - not supported with {other.__class__}')
 
     def __pow__(self, other):
         if self.__class__ == other.__class__:
@@ -169,7 +169,7 @@ class Note(object):
                 if self.alt == other.alt:
                     return True
             return False
-        raise TypeError('unsupported operand type(s) for **')
+        raise TypeError(f' ** not supported with {other.__class__}')
 
     def __rshift__(self, other):
         if self.__class__ == other.__class__:
@@ -178,7 +178,7 @@ class Note(object):
                     if self.oct == other.oct:
                         return True
             return False
-        raise TypeError('unsupported operand type(s) for >>')
+        raise TypeError(f' >> not supported with {other.__class__}')
 
 
     def __eq__(self, other):  # ==
