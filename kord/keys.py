@@ -17,16 +17,16 @@ class TonalKey(object):
                 )
         return out
 
-    @classmethod
-    def Scale(cls, chr, alt=''):
-        return cls(chr, alt).scale
+    # @classmethod
+    # def Scale(cls, chr, alt=''):
+    #     return cls(chr, alt).scale
 
     def __init__(self, chr, alt='', oct=0):
         self.root = Note(chr, alt, 0) # ignore note.oct
 
     def __repr__(self):
         spell_line = Row()
-        for d in self.scale(
+        for d in self.spell(
             note_count=len(self.root_intervals) +1, yield_all=False
         ):
             spell_line.append(
@@ -48,7 +48,7 @@ class TonalKey(object):
 
             try:
                 invalid_root = False
-                for _ in cls(*note).scale(note_count=len(cls.root_intervals) +1, yield_all=0):
+                for _ in cls(*note).spell(note_count=len(cls.root_intervals) +1, yield_all=0):
                     # if any degree fails, scale is not spellable
                     pass
 
@@ -204,8 +204,7 @@ class TonalKey(object):
             yield d, self[d]
 
 
-
-    def scale(self, note_count=None, start_note=None, yield_all=True):
+    def spell(self, note_count=None, start_note=None, yield_all=True):
         if note_count == None:
             note_count = len(self.root_intervals)
         return self._spell(
@@ -216,13 +215,13 @@ class TonalKey(object):
 
 class DiatonicKey(TonalKey):
 
-    @classmethod
-    def Triad(cls, chr, alt=''):
-        return cls(chr, alt).triad
+    # @classmethod
+    # def Triad(cls, chr, alt=''):
+    #     return cls(chr, alt).triad
 
-    @classmethod
-    def SeventhChord(cls, chr, alt=''):
-        return cls(chr, alt).seventh
+    # @classmethod
+    # def SeventhChord(cls, chr, alt=''):
+    #     return cls(chr, alt).seventh
 
     def __getitem__(self, d):
 
@@ -249,14 +248,12 @@ class DiatonicKey(TonalKey):
         ]
 
         if len(next_notes) == 1:
-            deg = next_notes[0]
-
             # AT THIS POINT DEG_OCT CAN EITHER STAY | +1
-            if self.root.oversteps_oct(deg):
+            if self.root.oversteps_oct(next_notes[0]):
                 note_oct += 1
 
             # RETURN NEW OBJECT, DO NOT CHANGE ENHARMONIC MATRIX ITEM!
-            return Note(deg.chr, deg.alt, note_oct)
+            return Note(next_notes[0].chr, next_notes[0].alt, note_oct)
 
         raise InvalidNote
 
@@ -515,56 +512,48 @@ class ChromaticKey(TonalKey):
                 ]
 
         if len(next_notes) == 1:
-
-            deg = next_notes[0] # got from ENH_MATRIX
-
             # AT THIS POINT DEG_OCT CAN EITHER STAY | +1
-            if self.root.oversteps_oct(deg):
+            if self.root.oversteps_oct(next_notes[0]):
                 note_oct += 1
 
             # RETURN NEW OBJECT, DO NOT CHANGE ENHARMONIC MATRIX ITEM!
-            return Note(deg.chr, deg.alt, note_oct)
+            return Note(next_notes[0].chr, next_notes[0].alt, note_oct)
 
         raise InvalidNote
 
 SCALES = {
 
-    'major': MajorKey.Scale,
-    'minor': MinorKey.Scale,
+    'major': MajorKey,
+    'minor': MinorKey,
 
-    'melodic_minor': MelodicMinorKey.Scale,
-    'harmonic_minor': HarmonicMinorKey.Scale,
+    'melodic_minor': MelodicMinorKey,
+    'harmonic_minor': HarmonicMinorKey,
 
-    'ionian': IonianMode.Scale,
-    'lydian': LydianMode.Scale,
-    'mixo': MixolydianMode.Scale,
-    'aeolian': AeolianMode.Scale,
-    'dorian': DorianMode.Scale,
-    'phrygian': PhrygianMode.Scale,
+    'ionian': IonianMode,
+    'lydian': LydianMode,
+    'mixo': MixolydianMode,
 
-    # 'hokkaido': Hokkaido.Scale,
+    'aeolian': AeolianMode,
+    'dorian': DorianMode,
+    'phrygian': PhrygianMode,
+    'locrian': LocrianMode,
 
-    'chromatic': ChromaticKey.Scale,
+    # 'hokkaido': Hokkaido,
+
+    'chromatic': ChromaticKey,
 
 }
 
 CHORDS = {
-    # TRIADS ########################
-    'maj': MajorKey.Triad,
-    'min': MinorKey.Triad,
-    'aug': None,
-    'dim': None,
-
-    # SEVENTH #######################
-    '7': MixolydianMode.SeventhChord,
-    'maj7': MajorKey.SeventhChord,
-    'min7': MinorKey.SeventhChord,
-
-
-    # diminished, °7  
-    'dim7': PhrygianMode.SeventhChord,
-
-    # half-diminished, ⦰7
-    'min7dim5': PhrygianMode.SeventhChord,
-
+    # TRIADS
+    'maj': MajorTriad,
+    'min': MinorTriad,
+    'aug': AugmentedTriad,
+    'dim': DiminishedTriad,
+    # SEVENTH
+    '7': DominantSeventhChord,
+    'maj7': MajorSeventhChord,
+    'min7': MinorSeventhChord,
+    'dim7': DiminishedSeventhChord,         # °7  
+    'min7dim5': HalfDiminishedSeventhChord, # ⦰7
 }

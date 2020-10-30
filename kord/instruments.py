@@ -42,8 +42,8 @@ class PluckedString(object):
     @property
     def display_method(self):
         if not self.__display:
-            self.__display = ChromaticKey(*self.tuning).scale
-        return self.__display
+            self.__display = ChromaticKey(*self.tuning)
+        return self.__display.spell
 
     @display_method.setter
     def display_method(self, dm):

@@ -74,7 +74,6 @@ def parse_arguments():
     )
 
     instr_choices = [ i for i in INSTRUMENTS.keys() ]
-
     parser.add_argument(
         '-i', '--instrument',
         help='set instrument fretboard: {}'.format(str(instr_choices).lstrip('[').rstrip(']').replace('\'', '')),

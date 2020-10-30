@@ -70,7 +70,7 @@ class KeyValidityTest(unittest.TestCase):
 
                 line = Row()
                 key = Key(*note)
-                for d in key.scale(
+                for d in key.spell(
                     note_count=len(key.root_intervals) +16, yield_all=False
                 ):
                     line.append(
@@ -197,7 +197,7 @@ class ChromaticKeysTest(unittest.TestCase):
         notes_to_test = octaves_to_test * intervals + 1  # 18 * 12 + 1 = 217
 
         for i, note in enumerate(
-            self.c_chromatic.scale(
+            self.c_chromatic.spell(
                 note_count=notes_to_test, yield_all=False
             )
         ):
@@ -315,7 +315,7 @@ class ChromaticKeysTest(unittest.TestCase):
         notes_to_test = octaves_to_test * intervals + 1  # 18 * 12 + 1 = 217
 
         for i, note in enumerate(
-            self.f_sharp_chromatic.scale(
+            self.f_sharp_chromatic.spell(
                 note_count=notes_to_test, yield_all=False
             )
         ):
@@ -383,7 +383,7 @@ class ChromaticKeysTest(unittest.TestCase):
         notes_to_test = octaves_to_test * intervals + 1  # 18 * 12 + 1 = 217
 
         for i, note in enumerate(
-            self.b_flat_chromatic.scale(
+            self.b_flat_chromatic.spell(
                 note_count=notes_to_test, yield_all=False
             )
         ):
@@ -481,7 +481,7 @@ class MajorKeysExpectedNotesTest(unittest.TestCase):
         notes_to_test = octaves_to_test * intervals + 1  # 18 * 7 + 1 = 127
 
         for i, note in enumerate(
-            self.c_major.scale(
+            self.c_major.spell(
                 note_count=notes_to_test, yield_all=False
             )
         ):
@@ -559,7 +559,7 @@ class MajorKeysExpectedNotesTest(unittest.TestCase):
         notes_to_test = octaves_to_test * intervals + 1  # 18 * 7 + 1 = 127
 
         for i, note in enumerate(
-            self.b_major.scale(
+            self.b_major.spell(
                 note_count=notes_to_test, yield_all=False
             )
         ):
@@ -640,7 +640,7 @@ class MajorKeysExpectedNotesTest(unittest.TestCase):
         notes_to_test = octaves_to_test * intervals + 1  # 18 * 7 + 1 = 127
 
         for i, note in enumerate(
-            self.d_flat_major.scale(
+            self.d_flat_major.spell(
                 note_count=notes_to_test, yield_all=False
             )
         ):
