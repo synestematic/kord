@@ -231,7 +231,6 @@ class MixolydianMode(MajorScale):
         MINOR_SEVENTH, # <<<
     )
 
-
 class LydianMode(MajorScale):
     root_intervals = (
         UNISON,
@@ -269,12 +268,8 @@ class DiminishedScale(DiatonicScale):
         DIMINISHED_SEVENTH, # <<<
     )
 
-
 class MinorPentatonicScale(MinorScale):
     degrees = (1, 3, 4, 5, 7)
-
-# class Hokkaido(MinorScale):
-#     degrees = (1, 2, 3, 4, 5, 6)
 
 class MelodicMinorScale(MinorScale):
     root_intervals = (
@@ -456,7 +451,7 @@ SCALES = {
 
     'ionian': IonianMode,
     'lydian': LydianMode,
-    'mixo': MixolydianMode,
+    'mixolydian': MixolydianMode,
 
     'aeolian': AeolianMode,
     'dorian': DorianMode,

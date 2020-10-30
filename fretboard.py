@@ -49,8 +49,8 @@ def parse_arguments():
         description='<<< Fretboard visualizer sample tool for the kord music framework >>>',
     )
     parser.add_argument(
-        'ROOT',
-        help='select key root note',
+        'root',
+        help='select key ROOT note',
     )
 
     group = parser.add_mutually_exclusive_group()
@@ -58,38 +58,38 @@ def parse_arguments():
     scale_choices = [ m for m in SCALES.keys() ]
     group.add_argument(
         '-s', '--scale',
-        help='set scale: {}'.format(str(scale_choices).lstrip('[').rstrip(']').replace('\'', '')),
+        help='{}'.format(str(scale_choices).lstrip('[').rstrip(']').replace('\'', '')),
         choices=scale_choices,
-        default='major',
+        default='',
         metavar='',
     )
 
     chord_choices = [ m for m in CHORDS.keys() ]
     group.add_argument(
         '-c', '--chord',
-        help='set chord: {}'.format(str(chord_choices).lstrip('[').rstrip(']').replace('\'', '')),
+        help='{}'.format(str(chord_choices).lstrip('[').rstrip(']').replace('\'', '')),
         choices=chord_choices,
-        default='',
+        default='maj',
         metavar='',
     )
 
     instr_choices = [ i for i in INSTRUMENTS.keys() ]
     parser.add_argument(
         '-i', '--instrument',
-        help='set instrument fretboard: {}'.format(str(instr_choices).lstrip('[').rstrip(']').replace('\'', '')),
+        help='{}'.format(str(instr_choices).lstrip('[').rstrip(']').replace('\'', '')),
         choices=instr_choices,
         default='guitar',
         metavar='',
     )
     parser.add_argument(
         '-t', '--tuning',
-        help='set instrument tuning: check .json files for available options',
+        help='check .json files for available options',
         default='standard',
         metavar='',
     )
     parser.add_argument(
         '-f', '--frets',
-        help='set number of displayed frets: 1, 2, .., {}'.format(MAX_FRETS),
+        help='1, 2, .., {}'.format(MAX_FRETS),
         choices=[ f+1 for f in range(MAX_FRETS) ],
         default=max_frets_on_screen(MAX_FRETS),
         metavar='',
@@ -97,7 +97,7 @@ def parse_arguments():
     )
     parser.add_argument(
         '-v', '--verbosity',
-        help='set verbosity: 0, 1, 2',
+        help='0, 1, 2',
         choices= (0, 1, 2),
         default=1,
         metavar='',
@@ -116,8 +116,8 @@ def parse_arguments():
                 )
             )
 
-        # validate ROOT note
-        note_chr = args.ROOT[:1].upper()
+        # validate root note
+        note_chr = args.root[:1].upper()
         if note_chr not in notes._CHARS:
             raise InvalidNote(
                 "fretboard.py: error: argument ROOT: invalid note: '{}' (choose from {}) ".format(
@@ -126,8 +126,8 @@ def parse_arguments():
                 )
             )
 
-        # validate ROOT alteration
-        note_alt = args.ROOT[1:]
+        # validate root alteration
+        note_alt = args.root[1:]
         if note_alt and note_alt not in list(notes._ALTS.keys()):
             raise InvalidNote(
                 "fretboard.py: error: argument ROOT: invalid alteration: '{}' (choose from {}) ".format(
@@ -136,7 +136,7 @@ def parse_arguments():
                 )
             )
 
-        args.ROOT = (note_chr, note_alt)
+        args.root = (note_chr, note_alt)
 
     except Exception as x:
         parser.print_usage()
@@ -151,15 +151,15 @@ def run(args):
         *[ Note(*string_tuning) for string_tuning in INSTRUMENTS[args.instrument][args.tuning] ]
     )
 
-    if args.chord:
-        MODE = CHORDS[args.chord]
-    elif args.scale:
+    if args.scale:
         MODE = SCALES[args.scale]
+    elif args.chord:
+        MODE = CHORDS[args.chord]
 
-    mode = MODE(chr=args.ROOT[0], alt=args.ROOT[1])
+    mode = MODE(chr=args.root[0], alt=args.root[1])
 
     echo(
-        '{} {} on {} ({} tuning)'.format(
+        '{} {}\t\t{} ({} tuning)'.format(
             str(mode.root)[:-1],
             mode.name,
             args.instrument,
