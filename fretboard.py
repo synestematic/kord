@@ -50,7 +50,7 @@ def parse_arguments():
     )
     parser.add_argument(
         'ROOT',
-        help='select a root note',
+        help='select key root note',
     )
 
     group = parser.add_mutually_exclusive_group()
@@ -150,21 +150,29 @@ def run(args):
     # try:
         rc = 0
 
-        INSTRUMENT = PluckedStringInstrument(
+        instrument = PluckedStringInstrument(
             *[ Note(*string_tuning) for string_tuning in INSTRUMENTS[args.instrument][args.tuning] ]
         )
 
         if args.chord:
-            MODE = CHORDS[args.chord](chr=args.ROOT[0], alt=args.ROOT[1])
+            MODE = CHORDS[args.chord]
         elif args.scale:
-            MODE = SCALES[args.scale](chr=args.ROOT[0], alt=args.ROOT[1])
+            MODE = SCALES[args.scale]
 
-        # input(MODE.__class__.__name__)
+        mode = MODE(chr=args.ROOT[0], alt=args.ROOT[1])
 
-        # echo('{} {} on {} ({} tuning)'.format(str(MODE.root)[:-1], MODE.name, args.instrument, args.tuning), 'blue', '')
+        echo(
+            '{} {} on {} ({} tuning)'.format(
+                str(mode.root)[:-1],
+                mode.name,
+                args.instrument,
+                args.tuning
+            ),
+            'blue'
+        )
 
-        INSTRUMENT.fretboard(
-            display=MODE,
+        instrument.fretboard(
+            display=mode,
             frets=args.frets,
             verbose=args.verbosity,
             limit=24
