@@ -181,7 +181,7 @@ B⁰
 Perhaps the most interesting aspect of any MusicKey sub-class is it's ability to iterate over Note objects using one of their several generator methods. As an example, let's take a quick look at the ```scale()``` method:
 
 ```
->>> for note in c_chromatic.scale()
+>>> for note in c_chromatic.spell()
 ...   print(note, end=' ')
 ...
 C⁰ C♯⁰ D⁰ D♯⁰ E⁰ F⁰ F♯⁰ G⁰ G♯⁰ A⁰ A♯⁰ B⁰ C¹ 
@@ -190,7 +190,7 @@ C⁰ C♯⁰ D⁰ D♯⁰ E⁰ F⁰ F♯⁰ G⁰ G♯⁰ A⁰ A♯⁰ B⁰ C¹
 We can use the ```note_count=``` argument to specify to the scale generator the amount of notes to yield:
 
 ```
->>> for note in c_chromatic.scale(note_count=4):
+>>> for note in c_chromatic.spell(note_count=4):
 ...   print(note, end=' ')
 ...
 C⁰ C♯⁰ D⁰ D♯⁰ 
@@ -201,7 +201,7 @@ The ```start_note=``` argument can be used to start yielding from a specific not
 ```
 >>> from kord.notes import Note
 >>> Ab = Note('A', 'b', 0)
->>> for note in c_chromatic.scale(note_count=6, start_note=Ab):
+>>> for note in c_chromatic.spell(note_count=6, start_note=Ab):
 ...   print(note, end=' ')
 ...
 G♯⁰ A⁰ A♯⁰ B⁰ C¹ C♯¹ 
@@ -224,7 +224,6 @@ class MajorScale(DiatonicKey):
         MAJOR_SEVENTH,
     )
 ```
-
 
 
 ## fretboard sample application
