@@ -147,43 +147,35 @@ def parse_arguments():
 
 def run(args):
     
-    # try:
-        rc = 0
+    instrument = PluckedStringInstrument(
+        *[ Note(*string_tuning) for string_tuning in INSTRUMENTS[args.instrument][args.tuning] ]
+    )
 
-        instrument = PluckedStringInstrument(
-            *[ Note(*string_tuning) for string_tuning in INSTRUMENTS[args.instrument][args.tuning] ]
-        )
+    if args.chord:
+        MODE = CHORDS[args.chord]
+    elif args.scale:
+        MODE = SCALES[args.scale]
 
-        if args.chord:
-            MODE = CHORDS[args.chord]
-        elif args.scale:
-            MODE = SCALES[args.scale]
+    mode = MODE(chr=args.ROOT[0], alt=args.ROOT[1])
 
-        mode = MODE(chr=args.ROOT[0], alt=args.ROOT[1])
+    echo(
+        '{} {} on {} ({} tuning)'.format(
+            str(mode.root)[:-1],
+            mode.name,
+            args.instrument,
+            args.tuning
+        ),
+        'blue'
+    )
 
-        echo(
-            '{} {} on {} ({} tuning)'.format(
-                str(mode.root)[:-1],
-                mode.name,
-                args.instrument,
-                args.tuning
-            ),
-            'blue'
-        )
+    instrument.fretboard(
+        display=mode,
+        frets=args.frets,
+        verbose=args.verbosity,
+        limit=24
+    )
 
-        instrument.fretboard(
-            display=mode,
-            frets=args.frets,
-            verbose=args.verbosity,
-            limit=24
-        )
-
-    # except Exception as x:
-    #     print(x)
-    #     rc = -1
-
-    # finally:
-    #     return rc
+    return 0
 
 if __name__ == '__main__':
     rc = -1
