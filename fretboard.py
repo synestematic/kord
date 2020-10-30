@@ -146,26 +146,6 @@ def parse_arguments():
 
     return args
 
-
-
-
-def bla():
-
-    # c_major_scale = MajorKey.Scale('C')
-    # for n in c_major_scale(7):
-    #     print(n)
-
-    # chord = MajorTriad('C')
-    # for n in chord.scale(4):
-    #     print(n)
-
-
-    c = Note('c')
-    print(
-        c.adjacent_chr(2)
-    )
-
-
 def run(args):
     
     # try:
@@ -199,15 +179,10 @@ def run(args):
     #     return rc
 
 if __name__ == '__main__':
-    # try:
-        rc = -1
-        valid_args = parse_arguments()
-        if not valid_args:
-            rc = 2
-        else:
-            rc = bla()
-            # rc = run(valid_args)
-        sys.exit(rc)
-
-    # except:
-    #     print()
+    rc = -1
+    valid_args = parse_arguments()
+    if not valid_args:
+        rc = 2
+    else:
+        rc = run(valid_args)
+    sys.exit(rc)
