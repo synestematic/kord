@@ -81,6 +81,8 @@ _OCTS = (
     '⁹',
 )
 
+MAX_OCT = len(_OCTS)
+
 _ALTS = {
     'bb': '𝄫',
     'b': '♭',
