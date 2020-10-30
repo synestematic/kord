@@ -9,7 +9,7 @@ def dbg(t='Waiting...', c='magenta'):
     echo(f'** {t} **', c)
     input()
 
-class KeyValidityTest(unittest.TestCase):
+class ScaleValidityTest(unittest.TestCase):
 
     ''' for a given key, allows to verify:
             * invalid roots        
@@ -19,57 +19,57 @@ class KeyValidityTest(unittest.TestCase):
     def setUp(self):
         print()
 
-        self.chromatic_key = ChromaticKey
+        self.chromatic_key = ChromaticScale
         # test no invalid roots
 
-        self.major_key = MajorKey
-        # F𝄫¹ invalid MajorKey
-        # B𝄪¹ invalid MajorKey
-        # D𝄪¹ invalid MajorKey
-        # E𝄪¹ invalid MajorKey
-        # G𝄪¹ invalid MajorKey
-        # A𝄪¹ invalid MajorKey
+        self.major_key = MajorScale
+        # F𝄫¹ invalid MajorScale
+        # B𝄪¹ invalid MajorScale
+        # D𝄪¹ invalid MajorScale
+        # E𝄪¹ invalid MajorScale
+        # G𝄪¹ invalid MajorScale
+        # A𝄪¹ invalid MajorScale
 
-        self.minor_key = MinorKey
-        # D𝄫² invalid MinorKey
-        # F𝄫¹ invalid MinorKey
-        # G𝄫¹ invalid MinorKey
-        # C𝄫² invalid MinorKey
-        # B𝄪¹ invalid MinorKey
-        # E𝄪¹ invalid MinorKey
+        self.minor_key = MinorScale
+        # D𝄫² invalid MinorScale
+        # F𝄫¹ invalid MinorScale
+        # G𝄫¹ invalid MinorScale
+        # C𝄫² invalid MinorScale
+        # B𝄪¹ invalid MinorScale
+        # E𝄪¹ invalid MinorScale
 
-        self.mel_minor_key = MelodicMinorKey
-        # F𝄫¹ invalid MelodicMinorKey
-        # G𝄫¹ invalid MelodicMinorKey
-        # C𝄫² invalid MelodicMinorKey
-        # B𝄪¹ invalid MelodicMinorKey
-        # D𝄪¹ invalid MelodicMinorKey
-        # E𝄪¹ invalid MelodicMinorKey
-        # G𝄪¹ invalid MelodicMinorKey
-        # A𝄪¹ invalid MelodicMinorKey
+        self.mel_minor_key = MelodicMinorScale
+        # F𝄫¹ invalid MelodicMinorScale
+        # G𝄫¹ invalid MelodicMinorScale
+        # C𝄫² invalid MelodicMinorScale
+        # B𝄪¹ invalid MelodicMinorScale
+        # D𝄪¹ invalid MelodicMinorScale
+        # E𝄪¹ invalid MelodicMinorScale
+        # G𝄪¹ invalid MelodicMinorScale
+        # A𝄪¹ invalid MelodicMinorScale
 
-        self.har_minor_key = HarmonicMinorKey
-        # D𝄫² invalid HarmonicMinorKey
-        # F𝄫¹ invalid HarmonicMinorKey
-        # G𝄫¹ invalid HarmonicMinorKey
-        # C𝄫² invalid HarmonicMinorKey
-        # B𝄪¹ invalid HarmonicMinorKey
-        # D𝄪¹ invalid HarmonicMinorKey
-        # E𝄪¹ invalid HarmonicMinorKey
-        # G𝄪¹ invalid HarmonicMinorKey
-        # A𝄪¹ invalid HarmonicMinorKey
+        self.har_minor_key = HarmonicMinorScale
+        # D𝄫² invalid HarmonicMinorScale
+        # F𝄫¹ invalid HarmonicMinorScale
+        # G𝄫¹ invalid HarmonicMinorScale
+        # C𝄫² invalid HarmonicMinorScale
+        # B𝄪¹ invalid HarmonicMinorScale
+        # D𝄪¹ invalid HarmonicMinorScale
+        # E𝄪¹ invalid HarmonicMinorScale
+        # G𝄪¹ invalid HarmonicMinorScale
+        # A𝄪¹ invalid HarmonicMinorScale
 
 
     def testValidRoots(self):
 
-        for Key in [self.major_key,self.minor_key ]:
+        for Scale in [self.major_key,self.minor_key ]:
 
-            echo('\nValid {}s'.format(Key.__name__), 'underline')
+            echo('\nValid {}s'.format(Scale.__name__), 'underline')
 
-            for note in Key.valid_root_notes():
+            for note in Scale.valid_root_notes():
 
                 line = Row()
-                key = Key(*note)
+                key = Scale(*note)
                 for d in key.spell(
                     note_count=len(key.root_intervals) +16, yield_all=False
                 ):
@@ -176,13 +176,13 @@ class NoteEqualityTest(unittest.TestCase):
         # // enhr note, ignr oct   do I need to implement this operator ?
 
 
-class ChromaticKeysTest(unittest.TestCase):
+class ChromaticScalesTest(unittest.TestCase):
 
     def setUp(self):
         print()
-        self.c_chromatic = ChromaticKey('C')
-        self.f_sharp_chromatic = ChromaticKey('F', '#')
-        self.b_flat_chromatic = ChromaticKey('B', 'b')
+        self.c_chromatic = ChromaticScale('C')
+        self.f_sharp_chromatic = ChromaticScale('F', '#')
+        self.b_flat_chromatic = ChromaticScale('B', 'b')
 
     def testIntervalsCount(self):
         assert len(self.c_chromatic.root_intervals) == 12, self.c_chromatic.root_intervals
@@ -460,13 +460,13 @@ class ChromaticKeysTest(unittest.TestCase):
 
 
 
-class MajorKeysExpectedNotesTest(unittest.TestCase):
+class MajorScalesExpectedNotesTest(unittest.TestCase):
 
     def setUp(self):
         print()
-        self.c_major = MajorKey('C')
-        self.b_major = MajorKey('B')            # 5 sharps
-        self.d_flat_major = MajorKey('D', 'b')  # 5 flats
+        self.c_major = MajorScale('C')
+        self.b_major = MajorScale('B')            # 5 sharps
+        self.d_flat_major = MajorScale('D', 'b')  # 5 flats
 
     def testIntervalsCount(self):
         assert len(self.c_major.root_intervals) == 7, self.c_major.root_intervals
@@ -716,16 +716,16 @@ class MajorKeysExpectedNotesTest(unittest.TestCase):
 
 
 
-class TonalKeySpellMethodTest(unittest.TestCase):
+class TonalScaleSpellMethodTest(unittest.TestCase):
 
     def setUp(self):
         print()
         self.keys = {
-            'Ab_chromatic_key': ChromaticKey('A', 'b'),
-            'B_major': MajorKey('B'),
-            'Bb_minor': MinorKey('B', 'b'),
-            'C_mel_minor': MelodicMinorKey('C'),
-            'F#_har_minor': HarmonicMinorKey('F', '#'),
+            'Ab_chromatic_key': ChromaticScale('A', 'b'),
+            'B_major': MajorScale('B'),
+            'Bb_minor': MinorScale('B', 'b'),
+            'C_mel_minor': MelodicMinorScale('C'),
+            'F#_har_minor': HarmonicMinorScale('F', '#'),
             # 'E7': DominantSeventhChord('E'),   # test chords too eventually
         }
 
@@ -861,7 +861,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
                 
 
     def testMajorNoneYields(self):
-        for i, note in enumerate(MajorKey('C')._count_notes(
+        for i, note in enumerate(MajorScale('C')._count_notes(
             note_count=64, start_note=None, yield_all=True
         )):
             # echo(note, 'yellow')
@@ -901,16 +901,8 @@ class TonalKeySpellMethodTest(unittest.TestCase):
             assert note != None
 
 
-    def testDegreeOrder(self):
-        sn = Note('C', '', 0)
-        for i, note in enumerate(MajorKey('C')._count_notes(
-            note_count=23, start_note=sn, yield_all=False
-        )):
-            echo(f'{note}  ', 'yellow', mode='raw')
-
-
     # def testDegreeOrderOverOct(self):
-    #     for i, note in enumerate(MajorKey('C').ninth(
+    #     for i, note in enumerate(DominantSeventhChord('C').spell(
     #         note_count=6, start_note=None, yield_all=True
     #     )):
     #         i += 1

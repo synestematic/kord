@@ -2,20 +2,20 @@ from bestia.output import Row, FString, echo
 
 from .notes import *
 
-class TonalKey(object):
+class MusicKey(object):
 
     degrees = ()
 
     @classmethod
     def allowed_degrees(cls):
         rs = cls.degrees if cls.degrees else [n+1 for n in range( len(cls.root_intervals) )] 
-        out = []
+        degs = []
         for o in range(MAX_OCT):
             for r in rs:
-                out.append(
+                degs.append(
                     r + len(cls.root_intervals) * o
                 )
-        return out
+        return degs
 
     def __init__(self, chr, alt='', oct=0):
         self.root = Note(chr, alt, 0) # ignore note.oct
@@ -151,7 +151,7 @@ class TonalKey(object):
         )
 
 
-class DiatonicKey(TonalKey):
+class DiatonicScale(MusicKey):
 
     def __getitem__(self, d):
 
@@ -192,7 +192,7 @@ class DiatonicKey(TonalKey):
 ### MAJOR KEYS/MODES ###
 ########################
 
-class MajorKey(DiatonicKey):
+class MajorScale(DiatonicScale):
     root_intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -203,10 +203,10 @@ class MajorKey(DiatonicKey):
         MAJOR_SEVENTH,
     )
 
-class MajorPentatonicKey(MajorKey):
+class MajorPentatonicScale(MajorScale):
     degrees = (1, 2, 3, 5, 6)
 
-class AugmentedKey(DiatonicKey):
+class AugmentedScale(DiatonicScale):
     root_intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -217,10 +217,10 @@ class AugmentedKey(DiatonicKey):
         MAJOR_SEVENTH,
     )
 
-class IonianMode(MajorKey):
+class IonianMode(MajorScale):
     pass
 
-class MixolydianMode(MajorKey):
+class MixolydianMode(MajorScale):
     root_intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -232,7 +232,7 @@ class MixolydianMode(MajorKey):
     )
 
 
-class LydianMode(MajorKey):
+class LydianMode(MajorScale):
     root_intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -247,7 +247,7 @@ class LydianMode(MajorKey):
 ### MINOR KEYS/MODES ###
 ########################
 
-class MinorKey(DiatonicKey):
+class MinorScale(DiatonicScale):
     root_intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -258,7 +258,7 @@ class MinorKey(DiatonicKey):
         MINOR_SEVENTH,
     )
 
-class DiminishedKey(DiatonicKey):
+class DiminishedScale(DiatonicScale):
     root_intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -270,13 +270,13 @@ class DiminishedKey(DiatonicKey):
     )
 
 
-class MinorPentatonicKey(MinorKey):
+class MinorPentatonicScale(MinorScale):
     degrees = (1, 3, 4, 5, 7)
 
-# class Hokkaido(MinorKey):
+# class Hokkaido(MinorScale):
 #     degrees = (1, 2, 3, 4, 5, 6)
 
-class MelodicMinorKey(MinorKey):
+class MelodicMinorScale(MinorScale):
     root_intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -287,7 +287,7 @@ class MelodicMinorKey(MinorKey):
         MAJOR_SEVENTH, # <<<
     )
 
-class HarmonicMinorKey(MinorKey):
+class HarmonicMinorScale(MinorScale):
     root_intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -298,10 +298,10 @@ class HarmonicMinorKey(MinorKey):
         MAJOR_SEVENTH, # <<<
     )
 
-class AeolianMode(MinorKey):
+class AeolianMode(MinorScale):
     pass
 
-class DorianMode(MinorKey):
+class DorianMode(MinorScale):
     root_intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -312,7 +312,7 @@ class DorianMode(MinorKey):
         MINOR_SEVENTH,
     )
 
-class PhrygianMode(MinorKey):
+class PhrygianMode(MinorScale):
     root_intervals = (
         UNISON,
         MINOR_SECOND, # <<<
@@ -323,7 +323,7 @@ class PhrygianMode(MinorKey):
         MINOR_SEVENTH,
     )
 
-class LocrianMode(MinorKey):
+class LocrianMode(MinorScale):
     root_intervals = (
         UNISON,
         MINOR_SECOND, # <<<
@@ -339,16 +339,16 @@ class LocrianMode(MinorKey):
 ### TRIAD CHORDS ###
 ####################
 
-class MajorTriad(MajorKey):
+class MajorTriad(MajorScale):
     degrees = (1, 3, 5)
 
-class MinorTriad(MinorKey):
+class MinorTriad(MinorScale):
     degrees = (1, 3, 5)
 
-class AugmentedTriad(AugmentedKey):
+class AugmentedTriad(AugmentedScale):
     degrees = (1, 3, 5)
 
-class DiminishedTriad(DiminishedKey):
+class DiminishedTriad(DiminishedScale):
     degrees = (1, 3, 5)
 
 
@@ -368,7 +368,7 @@ class DominantSeventhChord(MixolydianMode):
 class HalfDiminishedSeventhChord(LocrianMode):
     degrees = (1, 3, 5, 7)
 
-class DiminishedSeventhChord(DiminishedKey):
+class DiminishedSeventhChord(DiminishedScale):
     degrees = (1, 3, 5, 7)
 
 
@@ -376,7 +376,7 @@ class DiminishedSeventhChord(DiminishedKey):
 ### CHROMATIC KEY ###
 #####################
 
-class ChromaticKey(TonalKey):
+class ChromaticScale(MusicKey):
 
     root_intervals = (
         UNISON,
@@ -445,14 +445,14 @@ class ChromaticKey(TonalKey):
 
 
 SCALES = {
-    'major': MajorKey,
+    'major': MajorScale,
 
-    'minor': MinorKey,
-    'melodic_minor': MelodicMinorKey,
-    'harmonic_minor': HarmonicMinorKey,
+    'minor': MinorScale,
+    'melodic_minor': MelodicMinorScale,
+    'harmonic_minor': HarmonicMinorScale,
 
-    'major_pentatonic': MajorPentatonicKey,
-    'minor_pentatonic': MinorPentatonicKey,
+    'major_pentatonic': MajorPentatonicScale,
+    'minor_pentatonic': MinorPentatonicScale,
 
     'ionian': IonianMode,
     'lydian': LydianMode,
@@ -463,7 +463,7 @@ SCALES = {
     'phrygian': PhrygianMode,
     'locrian': LocrianMode,
 
-    'chromatic': ChromaticKey,
+    'chromatic': ChromaticScale,
 }
 
 CHORDS = {
