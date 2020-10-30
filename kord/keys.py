@@ -78,23 +78,17 @@ class TonalKey(object):
         return self.root_intervals[d -1]
 
 
-    def _spell(self, note_count=-1, start_note=None, yield_all=True, note_order=[]):
+    def _count_notes(self, note_count=-1, start_note=None, yield_all=True):
         ''' * returns when note_count == 0
             * positive note_count yields notes exactly
             * negative note_count yields notes indefinetly
-            * filters Nones if needed
+            * filters received Nones when needed
         '''
         if not start_note:
             start_note = self.root
 
-        if not note_order:
-            note_order = [
-                n+1 for n in range( len(self.root_intervals) )
-            ]
+        for note in self.__solmizate(start_note=start_note):
 
-        for note in self._solmizate(
-            start_note=start_note
-        ):
             if note_count == 0:
                 return
 
@@ -106,9 +100,12 @@ class TonalKey(object):
                 yield None
 
 
+    def __solmizate(self, start_note):
+        ''' uses __get_item__ to retrieve notes to yield:
+            before yielding a note, calulates semitone
+            difference with previous note and yields Nones
 
-    def _solmizate(self, start_note):
-        ''' * yields based on allowed_degrees
+            * yields based on allowed_degrees
             * always yields Nones
             * changes octs by using self[d]
             * start_note (diatonic, non-diatonic)
@@ -123,22 +120,34 @@ class TonalKey(object):
                 ## start_note not yet reached
                 continue
 
-            # dont yield the Nones before the starting note
-            if this != start_note:
-                # yield Nones for non-diatonic semitones
+            #####################################################
+            # calculate Nones to yield for non-diatonic semitones
+            #####################################################
+            if this != start_note: # do not yield the Nones before starting note
+
                 prev = self[ degrees[d-1] ]
-                last_interval = this - prev # dont yield last st, yield the note below
-                for semitone in range(last_interval - 1):
+                if prev >= start_note:
+                    # dont yield last st, yield the note below
+                    last_interval = this - prev - 1
+
+                else:
+                    # to calculate Nones to yield, dont go all way back to prev
+                    # when prev is lower than starting note
+                    last_interval = this - start_note
+
+                for semitone in range(last_interval):
                     yield None
 
             yield this
 
+
     def spell(self, note_count=None, start_note=None, yield_all=True):
         if note_count == None:
             note_count = len(self.root_intervals)
-        return self._spell(
-            note_count=note_count, start_note=start_note,
-            yield_all=yield_all, note_order=range(1, len(self.root_intervals) +1),
+        return self._count_notes(
+            note_count=note_count,
+            start_note=start_note,
+            yield_all=yield_all,
         )
 
 
@@ -409,7 +418,6 @@ class ChromaticKey(TonalKey):
 
         if not next_notes:
             # MATCH ROOT_ALT
-
             next_notes = [
                 n for n in EnharmonicMatrix[
                     self.root.enharmonic_row + spare_sts
