@@ -30,13 +30,13 @@ class KeyValidityTest(unittest.TestCase):
         # G𝄪¹ invalid MajorKey
         # A𝄪¹ invalid MajorKey
 
-        self.minor_key = NaturalMinorKey
-        # D𝄫² invalid NaturalMinorKey
-        # F𝄫¹ invalid NaturalMinorKey
-        # G𝄫¹ invalid NaturalMinorKey
-        # C𝄫² invalid NaturalMinorKey
-        # B𝄪¹ invalid NaturalMinorKey
-        # E𝄪¹ invalid NaturalMinorKey
+        self.minor_key = MinorKey
+        # D𝄫² invalid MinorKey
+        # F𝄫¹ invalid MinorKey
+        # G𝄫¹ invalid MinorKey
+        # C𝄫² invalid MinorKey
+        # B𝄪¹ invalid MinorKey
+        # E𝄪¹ invalid MinorKey
 
         self.mel_minor_key = MelodicMinorKey
         # F𝄫¹ invalid MelodicMinorKey
@@ -723,10 +723,10 @@ class TonalKeySpellMethodTest(unittest.TestCase):
         self.keys = {
             'Ab_chromatic_key': ChromaticKey('A', 'b'),
             'B_major': MajorKey('B'),
-            'Bb_minor': NaturalMinorKey('B', 'b'),
+            'Bb_minor': MinorKey('B', 'b'),
             'C_mel_minor': MelodicMinorKey('C'),
             'F#_har_minor': HarmonicMinorKey('F', '#'),
-            # 'E7': SeventhDominant('E'),   # test chords too eventually
+            # 'E7': DominantSeventhChord('E'),   # test chords too eventually
         }
 
     def testNoteCount(self):
@@ -738,7 +738,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
                 count += 1
                 yielded_notes = len(
                     [ n for n in key._spell(
-                        note_count=count, start_note=None, yield_all=False, degree_order=[]
+                        note_count=count, start_note=None, yield_all=False, note_order=[]
                     ) ]
                 )
                 assert yielded_notes == count, (yielded_notes, count)
@@ -748,9 +748,9 @@ class TonalKeySpellMethodTest(unittest.TestCase):
         ''' tests that first yielded note == diatonic start_note '''
         for key in self.keys.values():
             d = random.randint(2, 64)
-            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = degree({d}) ) ...')
+            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = note({d}) ) ...')
             for note in key._spell(
-                note_count=1, start_note=key[d], yield_all=True, degree_order=[]
+                note_count=1, start_note=key[d], yield_all=True, note_order=[]
             ):
                 assert note >> Note(*key[d]), note
 
@@ -803,7 +803,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
             exp = param['exp_diatonic_note']
             print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = non_diatonic_note , yield_all = 0 ) ...')
             for note in key._spell(
-                note_count=1, start_note=non, yield_all=False, degree_order=[]
+                note_count=1, start_note=non, yield_all=False, note_order=[]
             ): 
                 assert note != None, type(note)         # yield all=False ensures no Nones
                 assert note >> Note(*exp), (note, exp)
@@ -850,7 +850,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
             print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._spell( start_note = non_diatonic_note , yield_all = 1 ) ...')
             
             for note in key._spell(
-                note_count=1, start_note=non, yield_all=True, degree_order=[]
+                note_count=1, start_note=non, yield_all=True, note_order=[]
             ):
                 if note == None:
                     assert note == exp, (note, exp)
@@ -862,7 +862,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
 
     def testMajorNoneYields(self):
         for i, note in enumerate(MajorKey('C')._spell(
-            note_count=64, start_note=None, yield_all=True, degree_order=[]
+            note_count=64, start_note=None, yield_all=True, note_order=[]
         )):
             # echo(note, 'yellow')
             if i == 0:
@@ -896,7 +896,7 @@ class TonalKeySpellMethodTest(unittest.TestCase):
     def testChromaticNoneYields(self):
         ''' tests Chromatic scale does NEVER yield None even with yield_all '''
         for i, note in enumerate(self.keys['Ab_chromatic_key']._spell(
-            note_count=128, start_note=None, yield_all=True, degree_order=[]
+            note_count=128, start_note=None, yield_all=True, note_order=[]
         )):
             assert note != None
 
@@ -904,41 +904,41 @@ class TonalKeySpellMethodTest(unittest.TestCase):
     def testDegreeOrder(self):
         sn = Note('C', '', 0)
         for i, note in enumerate(MajorKey('C')._spell(
-            note_count=23, start_note=sn, yield_all=False, degree_order=[1, 3, 5, 7]
+            note_count=23, start_note=sn, yield_all=False, note_order=[1, 3, 5, 7]
         )):
             echo(f'{note}  ', 'yellow', mode='raw')
 
 
-    def testDegreeOrderOverOct(self):
-        for i, note in enumerate(MajorKey('C').ninth(
-            note_count=6, start_note=None, yield_all=True
-        )):
-            i += 1
-            if i == 1:
-                assert note >> Note('C', '', 0), note
-            elif i == 2:
-                assert not note, note
-            elif i == 3:
-                assert note >> Note('D', '', 0), note
-            elif i == 4:
-                assert not note, note
-            elif i == 5:
-                assert note >> Note('E', '', 0), note
-            elif i == 6:
-                assert not note, note
-            elif i == 7:
-                assert not note, note
-            elif i == 8:
-                assert note >> Note('G', '', 0), note
-            elif i == 9:
-                assert not note, note
-            elif i == 10:
-                assert not note, note
-            elif i == 11:
-                assert not note, note
-            elif i == 12:
-                assert note >> Note('B', '', 0), note
-            elif i == 13:
-                assert note >> Note('C', '', 1), note
-            elif i == 14:
-                assert not note, note
+    # def testDegreeOrderOverOct(self):
+    #     for i, note in enumerate(MajorKey('C').ninth(
+    #         note_count=6, start_note=None, yield_all=True
+    #     )):
+    #         i += 1
+    #         if i == 1:
+    #             assert note >> Note('C', '', 0), note
+    #         elif i == 2:
+    #             assert not note, note
+    #         elif i == 3:
+    #             assert note >> Note('D', '', 0), note
+    #         elif i == 4:
+    #             assert not note, note
+    #         elif i == 5:
+    #             assert note >> Note('E', '', 0), note
+    #         elif i == 6:
+    #             assert not note, note
+    #         elif i == 7:
+    #             assert not note, note
+    #         elif i == 8:
+    #             assert note >> Note('G', '', 0), note
+    #         elif i == 9:
+    #             assert not note, note
+    #         elif i == 10:
+    #             assert not note, note
+    #         elif i == 11:
+    #             assert not note, note
+    #         elif i == 12:
+    #             assert note >> Note('B', '', 0), note
+    #         elif i == 13:
+    #             assert note >> Note('C', '', 1), note
+    #         elif i == 14:
+    #             assert not note, note
