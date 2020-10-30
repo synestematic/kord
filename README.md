@@ -137,19 +137,19 @@ For the `>>` operator to evaluate True, the octave of the notes has to match as 
 ## kord.keys module:
 
 
-### class TonalKey(object):
+### class MusicKey(object):
 
-The best way to describe a TonalKey object is basically as a Note object generator. You can use this class to create any theoretical arrangement of musical notes (ie. chords, scales).
+The best way to describe a MusicKey object is basically as a Note object generator. You can use this class to create any theoretical arrangement of musical notes (ie. chords, scales).
 
-Let us take a look at 2 examples using the 2 main categories of child class that inherit from TonalKey class and how they are defined:
+Let us take a look at 2 examples using the 2 main categories of child class that inherit from MusicKey class and how they are defined:
 
 
-### class ChromaticKey(TonalKey):
+### class ChromaticKey(MusicKey):
 
-The ChromaticKey class uses the TonalKey class as an interface while implementing it's own structure of intervals.
+The ChromaticScale class uses the MusicKey class as an interface while implementing it's own structure of intervals.
 
 ```
-class ChromaticKey(TonalKey):
+class ChromaticScale(MusicKey):
 
     root_intervals = (
         UNISON,
@@ -167,18 +167,18 @@ class ChromaticKey(TonalKey):
     )
 ```
 
-We can initialize ChromaticKey objects on any given note and use the ```degree()``` method to obtain one of it's degrees. We can achieve the same result using list index notation:
+We can initialize ChromaticScale objects on any given note and use the ```degree()``` method to obtain one of it's degrees. We can achieve the same result using list index notation:
 
 ```
->>> from kord.keys import ChromaticKey
->>> c_chromatic = ChromaticKey('C')
+>>> from kord.keys import ChromaticScale
+>>> c_chromatic = ChromaticScale('C')
 >>> c_chromatic.degree(2)
 C♯⁰
 >>> c_chromatic[12]
 B⁰
 ```
 
-Perhaps the most interesting aspect of any TonalKey sub-class is it's ability to iterate over Note objects using one of their several generator methods. As an example, let's take a quick look at the ```scale()``` method:
+Perhaps the most interesting aspect of any MusicKey sub-class is it's ability to iterate over Note objects using one of their several generator methods. As an example, let's take a quick look at the ```scale()``` method:
 
 ```
 >>> for note in c_chromatic.scale()
@@ -209,10 +209,10 @@ G♯⁰ A⁰ A♯⁰ B⁰ C¹ C♯¹
 
 
 
-### class DiatonicKey(TonalKey):
+### class DiatonicScale(MusicKey):
 
 ```
-class MajorKey(DiatonicKey):
+class MajorScale(DiatonicKey):
 
     root_intervals = (
         UNISON,
