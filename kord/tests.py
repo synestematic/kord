@@ -720,8 +720,8 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
 
     def setUp(self):
         print()
-        self.keys = {
-            'Ab_chromatic_key': ChromaticScale('A', 'b'),
+        self.scales = {
+            'Ab_chromatic': ChromaticScale('A', 'b'),
             'B_major': MajorScale('B'),
             'Bb_minor': MinorScale('B', 'b'),
             'C_mel_minor': MelodicMinorScale('C'),
@@ -731,7 +731,7 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
 
     def testNoteCount(self):
         ''' tests yielded note count is what has been required '''
-        for key in self.keys.values():
+        for key in self.scales.values():
             max_notes = random.randint(2, 64)
             print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._count_notes( note_count=1..{max_notes} ) ...')
             for count in range(max_notes):
@@ -746,7 +746,7 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
 
     def testDiatonicStartNote(self):
         ''' tests that first yielded note == diatonic start_note '''
-        for key in self.keys.values():
+        for key in self.scales.values():
             d = random.randint(2, 64)
             print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._count_notes( start_note = note({d}) ) ...')
             for note in key._count_notes(
@@ -763,42 +763,42 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
         test_parameters = [
 
             {
-                'key': self.keys['Ab_chromatic_key'], 
+                'scale': self.scales['Ab_chromatic'], 
                 'non_diatonic_note': Note('A', '#', 1), # enharmonic
                 'exp_diatonic_note': Note('B', 'b', 1), # equals
             },
 
             {
-                'key': self.keys['B_major'], 
+                'scale': self.scales['B_major'], 
                 'non_diatonic_note': Note('D', 1),      # missing note
                 'exp_diatonic_note': Note('D', '#', 1), # next note
             },
 
             {
-                'key': self.keys['Bb_minor'], 
+                'scale': self.scales['Bb_minor'], 
                 'non_diatonic_note': Note('D', '#', 1), # enharmonic
                 'exp_diatonic_note': Note('E', 'b', 1), # equals
             },
             {
-                'key': self.keys['C_mel_minor'], 
+                'scale': self.scales['C_mel_minor'], 
                 'non_diatonic_note': Note('F', '#', 0), # missing note
                 'exp_diatonic_note': Note('G', '',  0), # next note
             },
             {
-                'key': self.keys['F#_har_minor'], 
+                'scale': self.scales['F#_har_minor'], 
                 'non_diatonic_note': Note('C', 'b', 4), # enharmonic
                 'exp_diatonic_note': Note('B', '' , 3), # equals
             },
 
             # {   # test chords too eventually
-            #     'key': self.keys['E7'], 
+            #     'scale': self.scales['E7'], 
             #     'non_diatonic_note': Note('A', '', 0), # missing note
             #     'exp_diatonic_note': Note('B', '', 0), # next note
             # },
         ]
 
         for param in test_parameters:
-            key = param['key']
+            key = param['scale']
             non = param['non_diatonic_note']
             exp = param['exp_diatonic_note']
             print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._count_notes( start_note = non_diatonic_note , yield_all = 0 ) ...')
@@ -816,34 +816,34 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
         '''
         test_parameters = [
             {
-                'key': self.keys['Ab_chromatic_key'], 
+                'scale': self.scales['Ab_chromatic'], 
                 'non_diatonic_note': Note('A', '#', 1), # enharmonic
                 'exp_diatonic_note': Note('B', 'b', 1), # equals
             },
             {
-                'key': self.keys['B_major'], 
+                'scale': self.scales['B_major'], 
                 'non_diatonic_note': Note('D', 1),      # missing note
                 'exp_diatonic_note': None,              # yields a None, not D#
             },
             {
-                'key': self.keys['Bb_minor'], 
+                'scale': self.scales['Bb_minor'], 
                 'non_diatonic_note': Note('D', '#', 1), # enharmonic
                 'exp_diatonic_note': Note('E', 'b', 1), # equals
             },
             {
-                'key': self.keys['C_mel_minor'], 
+                'scale': self.scales['C_mel_minor'], 
                 'non_diatonic_note': Note('F', '#', 0), # missing note
                 'exp_diatonic_note': None,              # yields a None, not G
             },
             {
-                'key': self.keys['F#_har_minor'], 
+                'scale': self.scales['F#_har_minor'], 
                 'non_diatonic_note': Note('C', 'b', 4), # enharmonic
                 'exp_diatonic_note': Note('B', '' , 3), # equals
             },
         ]
 
         for param in test_parameters:
-            key = param['key']
+            key = param['scale']
             non = param['non_diatonic_note']
             exp = param['exp_diatonic_note']
             
@@ -895,42 +895,39 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
 
     def testChromaticNoneYields(self):
         ''' tests Chromatic scale does NEVER yield None even with yield_all '''
-        for i, note in enumerate(self.keys['Ab_chromatic_key']._count_notes(
+        for i, note in enumerate(self.scales['Ab_chromatic']._count_notes(
             note_count=128, start_note=None, yield_all=True
         )):
             assert note != None
 
 
-    # def testDegreeOrderOverOct(self):
-    #     for i, note in enumerate(DominantSeventhChord('C').spell(
-    #         note_count=6, start_note=None, yield_all=True
-    #     )):
-    #         i += 1
-    #         if i == 1:
-    #             assert note >> Note('C', '', 0), note
-    #         elif i == 2:
-    #             assert not note, note
-    #         elif i == 3:
-    #             assert note >> Note('D', '', 0), note
-    #         elif i == 4:
-    #             assert not note, note
-    #         elif i == 5:
-    #             assert note >> Note('E', '', 0), note
-    #         elif i == 6:
-    #             assert not note, note
-    #         elif i == 7:
-    #             assert not note, note
-    #         elif i == 8:
-    #             assert note >> Note('G', '', 0), note
-    #         elif i == 9:
-    #             assert not note, note
-    #         elif i == 10:
-    #             assert not note, note
-    #         elif i == 11:
-    #             assert not note, note
-    #         elif i == 12:
-    #             assert note >> Note('B', '', 0), note
-    #         elif i == 13:
-    #             assert note >> Note('C', '', 1), note
-    #         elif i == 14:
-    #             assert not note, note
+    def testDegreeOrderOverOct(self):
+        for i, note in enumerate(
+            DominantSeventhChord('A').spell(
+            note_count=6,
+            start_note=None,
+            yield_all=True,
+        )):
+            i += 1
+            if i == 1:
+                assert note >> Note('A', '', 0), note
+            elif i == 2:
+                assert not note, note
+            elif i == 3:
+                assert not note, note
+            elif i == 4:
+                assert not note, note
+            elif i == 5:
+                assert note >> Note('C', '#', 1), note
+            elif i == 6:
+                assert not note, note
+            elif i == 7:
+                assert not note, note
+            elif i == 8:
+                assert note >> Note('E', '', 1), note
+            elif i == 9:
+                assert not note, note
+            elif i == 10:
+                assert not note, note
+            elif i == 11:
+                assert note >> Note('G', '', 1), note
