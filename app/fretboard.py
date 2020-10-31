@@ -5,6 +5,8 @@ import argparse
 
 from bestia.output import echo
 
+import bla
+
 from kord import *
 
 JSON_DIR = '{}/tunings'.format( os.path.dirname(os.path.realpath(__file__)) )
