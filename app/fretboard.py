@@ -4,7 +4,7 @@ import argparse
 from kord import *
 from bestia.output import echo
 
-import json_parser
+import tuner
 
 SCALES = {
     'major': MajorScale,
@@ -45,7 +45,7 @@ CHORDS = {
     '9': DominantNinthChord,
 }
 
-INSTRUMENTS = json_parser.get_instruments_data()
+INSTRUMENTS = tuner.get_instruments_data()
 
 def parse_arguments():
     parser = argparse.ArgumentParser(
