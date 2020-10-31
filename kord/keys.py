@@ -9,6 +9,9 @@ class MusicKey(object):
 
     @classmethod
     def allowed_degrees(cls):
+        ''' calculates all possible degree numbers for MusicKey
+
+        '''
         if cls.degrees:
             degrees = list(cls.degrees)
         else:
@@ -17,22 +20,26 @@ class MusicKey(object):
             ]
 
         # floors over-octave degrees into in-octave
-        # ie.  9th  => 2nd
-        # ie.  11th => 4th
-        # input(degrees)
         for d, deg in enumerate(degrees):
             if deg > len(cls.root_intervals):
                 degrees[d] -= len(cls.root_intervals)
-        degrees.sort()
-        # input(degrees)
+                # ie.  9th  => 2nd
+                # ie.  11th => 4th
 
-        degs = []
+        # remove duplicates
+        degrees = list( set(degrees) )
+
+        # sort order
+        degrees.sort()
+
+        # calculate all possible octaves
+        all_degrees = []
         for o in range(MAX_OCT):
             for deg in degrees:
-                degs.append(
+                all_degrees.append(
                     deg + len(cls.root_intervals) * o
                 )
-        return degs
+        return tuple(all_degrees)
 
     def __init__(self, chr, alt='', oct=0):
         self.root = Note(chr, alt, 0) # ignore note.oct
@@ -158,7 +165,7 @@ class MusicKey(object):
             yield this
 
 
-    def spell(self, note_count=None, start_note=None, yield_all=True):
+    def spell(self, note_count=None, start_note=None, yield_all=False):
         if note_count == None:
             note_count = len(self.root_intervals)
         return self._count_notes(
@@ -396,7 +403,6 @@ class MinorNinthChord(AeolianMode):
 
 class DominantNinthChord(MixolydianMode):
     degrees = (1, 3, 5, 7, 9)
-
 
 
 #####################
