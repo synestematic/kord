@@ -45,7 +45,7 @@ CHORDS = {
     '9': DominantNinthChord,
 }
 
-INSTRUMENTS = tuner.get_instruments_data()
+INSTRUMENTS = tuner.load_tuning_data()
 
 def parse_arguments():
     parser = argparse.ArgumentParser(
