@@ -99,9 +99,9 @@ def output_alterations():
 
 class Note(object):
 
-    def __init__(self, char, *args):
+    def __init__(self, chr, *args):
 
-        self.chr = char.upper()
+        self.chr = chr.upper()
         if self.chr not in _CHARS:
             raise InvalidNote(char)
 

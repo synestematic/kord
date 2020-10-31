@@ -154,16 +154,25 @@ def parse_arguments():
 
 def run(args):
     
-    instrument = PluckedStringInstrument(
-        *[ Note(*string_tuning) for string_tuning in TUNINGS[args.instrument][args.tuning] ]
-    )
-
+    # default mode is chord, so use scale if set
     if args.scale:
-        MODE = SCALES[args.scale]
+        Mode = SCALES[args.scale]
     elif args.chord:
-        MODE = CHORDS[args.chord]
+        Mode = CHORDS[args.chord]
 
-    mode = MODE(chr=args.root[0], alt=args.root[1])
+    root = Note(args.root[0], args.root[1])
+    mode = Mode(*root)
+
+    # check if mode is spellable for required root note
+    for invalid_note in mode.invalid_root_notes():
+        if root ** invalid_note:
+            print(
+                '{} {} cannot be visualized'.format(
+                    str(mode.root)[:-1],
+                    mode.name,
+                )
+            )
+            return -1
 
     echo(
         '{} {}\t\t{} ({} tuning)'.format(
@@ -175,6 +184,10 @@ def run(args):
         'blue'
     )
 
+    instrument = PluckedStringInstrument(
+        *[ Note(*string_tuning) for string_tuning in TUNINGS[args.instrument][args.tuning] ]
+    )
+
     instrument.fretboard(
         display=mode,
         frets=args.frets,
@@ -183,6 +196,7 @@ def run(args):
     )
 
     return 0
+
 
 if __name__ == '__main__':
     rc = -1
