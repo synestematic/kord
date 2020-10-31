@@ -4,16 +4,22 @@ from .notes import *
 
 class MusicKey(object):
 
+    root_intervals = ()
     degrees = ()
 
     @classmethod
     def allowed_degrees(cls):
-        rs = cls.degrees if cls.degrees else [n+1 for n in range( len(cls.root_intervals) )] 
+        if cls.degrees:
+            degrees = list(cls.degrees)
+        else:
+            degrees = [
+                n+1 for n in range( len(cls.root_intervals) )
+            ]
         degs = []
         for o in range(MAX_OCT):
-            for r in rs:
+            for deg in degrees:
                 degs.append(
-                    r + len(cls.root_intervals) * o
+                    deg + len(cls.root_intervals) * o
                 )
         return degs
 
@@ -366,6 +372,17 @@ class HalfDiminishedSeventhChord(LocrianMode):
 class DiminishedSeventhChord(DiminishedScale):
     degrees = (1, 3, 5, 7)
 
+class MajorSeventhChord(IonianMode):
+    degrees = (1, 3, 5, 7)
+
+
+####################
+### NINTH CHORDS ###
+####################
+
+class MajorNinthChord(IonianMode):
+    degrees = (1, 3, 5, 7, 9)
+
 
 #####################
 ### CHROMATIC KEY ###
@@ -472,4 +489,6 @@ CHORDS = {
     'min7': MinorSeventhChord,
     'dim7': DiminishedSeventhChord, # °7  
     'min7dim5': HalfDiminishedSeventhChord, # ⦰7
+
+    '9': MajorNinthChord,
 }
