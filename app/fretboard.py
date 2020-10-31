@@ -45,7 +45,7 @@ CHORDS = {
     '9': DominantNinthChord,
 }
 
-INSTRUMENTS = tuner.load_tuning_data()
+TUNINGS = tuner.load_tuning_data()
 
 def parse_arguments():
     parser = argparse.ArgumentParser(
@@ -56,10 +56,10 @@ def parse_arguments():
         help='select key ROOT note',
     )
 
-    group = parser.add_mutually_exclusive_group()
+    mode_group = parser.add_mutually_exclusive_group()
 
-    scale_choices = [ m for m in SCALES.keys() ]
-    group.add_argument(
+    scale_choices = list( SCALES.keys() )
+    mode_group.add_argument(
         '-s', '--scale',
         help='{}'.format(str(scale_choices).lstrip('[').rstrip(']').replace('\'', '')),
         choices=scale_choices,
@@ -67,8 +67,8 @@ def parse_arguments():
         metavar='',
     )
 
-    chord_choices = [ m for m in CHORDS.keys() ]
-    group.add_argument(
+    chord_choices = list( CHORDS.keys() )
+    mode_group.add_argument(
         '-c', '--chord',
         help='{}'.format(str(chord_choices).lstrip('[').rstrip(']').replace('\'', '')),
         choices=chord_choices,
@@ -76,7 +76,7 @@ def parse_arguments():
         metavar='',
     )
 
-    instr_choices = [ i for i in INSTRUMENTS.keys() ]
+    instr_choices = list( TUNINGS.keys() )
     parser.add_argument(
         '-i', '--instrument',
         help='{}'.format(str(instr_choices).lstrip('[').rstrip(']').replace('\'', '')),
@@ -84,12 +84,14 @@ def parse_arguments():
         default='guitar',
         metavar='',
     )
+
     parser.add_argument(
         '-t', '--tuning',
         help='check .json files for available options',
         default='standard',
         metavar='',
     )
+
     parser.add_argument(
         '-f', '--frets',
         help='1, 2, .., {}'.format(MAX_FRETS),
@@ -98,6 +100,7 @@ def parse_arguments():
         metavar='',
         type=int,
     )
+
     parser.add_argument(
         '-v', '--verbosity',
         help='0, 1, 2',
@@ -106,16 +109,17 @@ def parse_arguments():
         metavar='',
         type=int,
     )
+
     args = parser.parse_args()
 
     # some args require extra validation than what argparse can offer, let's do that here...
     try:
         # validate tuning
-        if args.tuning not in INSTRUMENTS[args.instrument].keys():
+        if args.tuning not in TUNINGS[args.instrument].keys():
             raise InvalidInstrument(
                 "fretboard.py: error: argument -t/--tuning: invalid choice: '{}' (choose from {}) ".format(
                     args.tuning,
-                    str( list( INSTRUMENTS[args.instrument].keys() ) ).lstrip('[').rstrip(']'),
+                    str( list( TUNINGS[args.instrument].keys() ) ).lstrip('[').rstrip(']'),
                 )
             )
 
@@ -151,7 +155,7 @@ def parse_arguments():
 def run(args):
     
     instrument = PluckedStringInstrument(
-        *[ Note(*string_tuning) for string_tuning in INSTRUMENTS[args.instrument][args.tuning] ]
+        *[ Note(*string_tuning) for string_tuning in TUNINGS[args.instrument][args.tuning] ]
     )
 
     if args.scale:
