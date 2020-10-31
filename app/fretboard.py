@@ -6,6 +6,45 @@ from bestia.output import echo
 
 import json_parser
 
+SCALES = {
+    'major': MajorScale,
+
+    'minor': MinorScale,
+    'melodic_minor': MelodicMinorScale,
+    'harmonic_minor': HarmonicMinorScale,
+
+    'major_pentatonic': MajorPentatonicScale,
+    'minor_pentatonic': MinorPentatonicScale,
+
+    'ionian': IonianMode,
+    'lydian': LydianMode,
+    'mixolydian': MixolydianMode,
+
+    'aeolian': AeolianMode,
+    'dorian': DorianMode,
+    'phrygian': PhrygianMode,
+    'locrian': LocrianMode,
+
+    'chromatic': ChromaticScale,
+}
+
+CHORDS = {
+    'maj': MajorTriad,
+    'min': MinorTriad,
+    'aug': AugmentedTriad,
+    'dim': DiminishedTriad,
+
+    'maj7': MajorSeventhChord,
+    'min7': MinorSeventhChord,
+    '7': DominantSeventhChord,
+    'dim7': DiminishedSeventhChord, # °7  
+    'min7dim5': HalfDiminishedSeventhChord, # ⦰7
+
+    'maj9': MajorNinthChord,
+    'min9': MinorNinthChord,
+    '9': DominantNinthChord,
+}
+
 INSTRUMENTS = json_parser.get_instruments_data()
 
 def parse_arguments():
