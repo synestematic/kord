@@ -236,7 +236,7 @@ class AugmentedScale(DiatonicScale):
         MAJOR_SECOND,
         MAJOR_THIRD,
         PERFECT_FOURTH,
-        AUGMENTED_SIXTH, # <<<
+        AUGMENTED_FIFTH, # <<<
         MAJOR_SIXTH,
         MAJOR_SEVENTH,
     )
