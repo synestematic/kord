@@ -931,3 +931,25 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
                 assert not note, note
             elif i == 11:
                 assert note >> Note('G', '', 1), note
+
+
+
+    def testCustomDegrees(self):
+        '''
+        B is not part of C major pentatonic =>
+            * 1st note should be None
+            * 2nd note should be C
+        '''
+        for i, note in enumerate(
+            MajorPentatonicScale('C').spell(
+                yield_all=1,
+                start_note=Note('B', '', 3),
+                note_count=3
+            )
+        ):
+            i += 1
+            if i == 1:
+                assert not note, note
+            if i == 2:
+                assert note, note
+                assert note >> Note('C', '', 4), note
