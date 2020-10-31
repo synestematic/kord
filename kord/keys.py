@@ -15,6 +15,17 @@ class MusicKey(object):
             degrees = [
                 n+1 for n in range( len(cls.root_intervals) )
             ]
+
+        # floors over-octave degrees into in-octave
+        # ie.  9th  => 2nd
+        # ie.  11th => 4th
+        # input(degrees)
+        for d, deg in enumerate(degrees):
+            if deg > len(cls.root_intervals):
+                degrees[d] -= len(cls.root_intervals)
+        degrees.sort()
+        # input(degrees)
+
         degs = []
         for o in range(MAX_OCT):
             for deg in degrees:
@@ -372,9 +383,6 @@ class HalfDiminishedSeventhChord(LocrianMode):
 class DiminishedSeventhChord(DiminishedScale):
     degrees = (1, 3, 5, 7)
 
-class MajorSeventhChord(IonianMode):
-    degrees = (1, 3, 5, 7)
-
 
 ####################
 ### NINTH CHORDS ###
@@ -382,6 +390,13 @@ class MajorSeventhChord(IonianMode):
 
 class MajorNinthChord(IonianMode):
     degrees = (1, 3, 5, 7, 9)
+
+class MinorNinthChord(AeolianMode):
+    degrees = (1, 3, 5, 7, 9)
+
+class DominantNinthChord(MixolydianMode):
+    degrees = (1, 3, 5, 7, 9)
+
 
 
 #####################
@@ -484,11 +499,13 @@ CHORDS = {
     'aug': AugmentedTriad,
     'dim': DiminishedTriad,
 
-    '7': DominantSeventhChord,
     'maj7': MajorSeventhChord,
     'min7': MinorSeventhChord,
+    '7': DominantSeventhChord,
     'dim7': DiminishedSeventhChord, # °7  
     'min7dim5': HalfDiminishedSeventhChord, # ⦰7
 
-    '9': MajorNinthChord,
+    'maj9': MajorNinthChord,
+    'min9': MinorNinthChord,
+    '9': DominantNinthChord,
 }
