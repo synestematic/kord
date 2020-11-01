@@ -4,7 +4,7 @@ from .notes import *
 
 class MusicKey(object):
 
-    root_intervals = ()
+    intervals = ()
     degrees = ()
 
     @classmethod
@@ -16,13 +16,13 @@ class MusicKey(object):
             degrees = list(cls.degrees)
         else:
             degrees = [
-                n+1 for n in range( len(cls.root_intervals) )
+                n+1 for n in range( len(cls.intervals) )
             ]
 
         # floors over-octave degrees into in-octave
         for d, deg in enumerate(degrees):
-            if deg > len(cls.root_intervals):
-                degrees[d] -= len(cls.root_intervals)
+            if deg > len(cls.intervals):
+                degrees[d] -= len(cls.intervals)
                 # ie.  9th  => 2nd
                 # ie.  11th => 4th
 
@@ -37,7 +37,7 @@ class MusicKey(object):
         for o in range(MAX_OCT):
             for deg in degrees:
                 all_degrees.append(
-                    deg + len(cls.root_intervals) * o
+                    deg + len(cls.intervals) * o
                 )
         return tuple(all_degrees)
 
@@ -61,7 +61,7 @@ class MusicKey(object):
             try:
                 invalid_root = False
                 for _ in cls(*note).spell(
-                    note_count=len(cls.root_intervals) +1,
+                    note_count=len(cls.intervals) +1,
                     yield_all=False,
                 ):
                     # if any degree fails, scale is not spellable
@@ -95,7 +95,7 @@ class MusicKey(object):
     def __repr__(self):
         spell_line = Row()
         for d in self.spell(
-            note_count=len(self.root_intervals) +1, yield_all=False
+            note_count=len(self.intervals) +1, yield_all=False
         ):
             spell_line.append(
                 FString(d, size=5)
@@ -146,11 +146,11 @@ class MusicKey(object):
 
     def degree_root_interval(self, d):
         ''' return degree's delta semitones from key's root '''
-        if d > len(self.root_intervals):
+        if d > len(self.intervals):
             return self.degree_root_interval(
-                d - len(self.root_intervals)
+                d - len(self.intervals)
             ) + OCTAVE
-        return self.root_intervals[d -1]
+        return self.intervals[d -1]
 
 
     def _count_notes(self, note_count=-1, start_note=None, yield_all=True):
@@ -218,7 +218,7 @@ class MusicKey(object):
 
     def spell(self, note_count=None, start_note=None, yield_all=False):
         if note_count == None:
-            note_count = len(self.root_intervals)
+            note_count = len(self.intervals)
         return self._count_notes(
             note_count=note_count,
             start_note=start_note,
@@ -231,7 +231,7 @@ class MusicKey(object):
 ########################
 
 class MajorScale(MusicKey):
-    root_intervals = (
+    intervals = (
         UNISON,
         MAJOR_SECOND,
         MAJOR_THIRD,
@@ -245,7 +245,7 @@ class MajorPentatonicScale(MajorScale):
     degrees = (1, 2, 3, 5, 6)
 
 class AugmentedScale(MusicKey):
-    root_intervals = (
+    intervals = (
         UNISON,
         MAJOR_SECOND,
         MAJOR_THIRD,
@@ -259,7 +259,7 @@ class IonianMode(MajorScale):
     pass
 
 class MixolydianMode(MajorScale):
-    root_intervals = (
+    intervals = (
         UNISON,
         MAJOR_SECOND,
         MAJOR_THIRD,
@@ -270,7 +270,7 @@ class MixolydianMode(MajorScale):
     )
 
 class LydianMode(MajorScale):
-    root_intervals = (
+    intervals = (
         UNISON,
         MAJOR_SECOND,
         MAJOR_THIRD,
@@ -285,7 +285,7 @@ class LydianMode(MajorScale):
 ########################
 
 class MinorScale(MusicKey):
-    root_intervals = (
+    intervals = (
         UNISON,
         MAJOR_SECOND,
         MINOR_THIRD,
@@ -296,7 +296,7 @@ class MinorScale(MusicKey):
     )
 
 class DiminishedScale(MusicKey):
-    root_intervals = (
+    intervals = (
         UNISON,
         MAJOR_SECOND,
         MINOR_THIRD,
@@ -310,7 +310,7 @@ class MinorPentatonicScale(MinorScale):
     degrees = (1, 3, 4, 5, 7)
 
 class MelodicMinorScale(MinorScale):
-    root_intervals = (
+    intervals = (
         UNISON,
         MAJOR_SECOND,
         MINOR_THIRD,
@@ -321,7 +321,7 @@ class MelodicMinorScale(MinorScale):
     )
 
 class HarmonicMinorScale(MinorScale):
-    root_intervals = (
+    intervals = (
         UNISON,
         MAJOR_SECOND,
         MINOR_THIRD,
@@ -335,7 +335,7 @@ class AeolianMode(MinorScale):
     pass
 
 class DorianMode(MinorScale):
-    root_intervals = (
+    intervals = (
         UNISON,
         MAJOR_SECOND,
         MINOR_THIRD,
@@ -346,7 +346,7 @@ class DorianMode(MinorScale):
     )
 
 class PhrygianMode(MinorScale):
-    root_intervals = (
+    intervals = (
         UNISON,
         MINOR_SECOND, # <<<
         MINOR_THIRD,
@@ -357,7 +357,7 @@ class PhrygianMode(MinorScale):
     )
 
 class LocrianMode(MinorScale):
-    root_intervals = (
+    intervals = (
         UNISON,
         MINOR_SECOND, # <<<
         MINOR_THIRD,
@@ -425,7 +425,7 @@ class DominantNinthChord(MixolydianMode):
 
 class ChromaticScale(MusicKey):
 
-    root_intervals = (
+    intervals = (
         UNISON,
         MINOR_SECOND,
         MAJOR_SECOND,

@@ -18,7 +18,8 @@ First, let me say that all of the following will only make sense to you if you a
 
 ## kord.notes module:
 
-### Note() class
+### class Note(object):
+
 Note instances are the lowest-level objects of the framework and have 3 main attributes:
 
 ```
@@ -139,19 +140,13 @@ For the `>>` operator to evaluate True, the octave of the notes has to match as 
 
 ### class MusicKey(object):
 
-The best way to describe a MusicKey object is basically as a Note object generator. You can use this class to create any theoretical arrangement of musical notes (ie. chords, scales).
+Think of MusicKey objects as generators of Note objects. You can define a new class which inherits MusicKey and use any theoretical arrangement of `intervals` from the root note in order to create chords, scales, modes. You can further restrict these child classes by restricting `degrees` to specific values.
 
-Let us take a look at 2 examples using the 2 main categories of child class that inherit from MusicKey class and how they are defined:
-
-
-### class ChromaticKey(MusicKey):
-
-The ChromaticScale class uses the MusicKey class as an interface while implementing it's own structure of intervals.
+These are a couple of pre-defined examples to give you an idea of how it works:
 
 ```
 class ChromaticScale(MusicKey):
-
-    root_intervals = (
+    intervals = (
         UNISON,
         MINOR_SECOND,
         MAJOR_SECOND,
@@ -164,57 +159,10 @@ class ChromaticScale(MusicKey):
         MAJOR_SIXTH,
         MINOR_SEVENTH,
         MAJOR_SEVENTH,
-    )
-```
+	)
 
-We can initialize ChromaticScale objects on any given note and use the ```degree()``` method to obtain one of it's degrees. We can achieve the same result using list index notation:
-
-```
->>> from kord.keys import ChromaticScale
->>> c_chromatic = ChromaticScale('C')
->>> c_chromatic.degree(2)
-C♯⁰
->>> c_chromatic[12]
-B⁰
-```
-
-Perhaps the most interesting aspect of any MusicKey sub-class is it's ability to iterate over Note objects using one of their several generator methods. As an example, let's take a quick look at the ```scale()``` method:
-
-```
->>> for note in c_chromatic.spell()
-...   print(note, end=' ')
-...
-C⁰ C♯⁰ D⁰ D♯⁰ E⁰ F⁰ F♯⁰ G⁰ G♯⁰ A⁰ A♯⁰ B⁰ C¹ 
-```
-
-We can use the ```note_count=``` argument to specify to the scale generator the amount of notes to yield:
-
-```
->>> for note in c_chromatic.spell(note_count=4):
-...   print(note, end=' ')
-...
-C⁰ C♯⁰ D⁰ D♯⁰ 
-```
-
-The ```start_note=``` argument can be used to start yielding from a specific note. This can be done even if the note is not part of the scale:
-
-```
->>> from kord.notes import Note
->>> Ab = Note('A', 'b', 0)
->>> for note in c_chromatic.spell(note_count=6, start_note=Ab):
-...   print(note, end=' ')
-...
-G♯⁰ A⁰ A♯⁰ B⁰ C¹ C♯¹ 
-```
-
-
-
-### class DiatonicScale(MusicKey):
-
-```
-class MajorScale(DiatonicKey):
-
-    root_intervals = (
+class MajorScale(MusicKey):
+    intervals = (
         UNISON,
         MAJOR_SECOND,
         MAJOR_THIRD,
@@ -223,6 +171,67 @@ class MajorScale(DiatonicKey):
         MAJOR_SIXTH,
         MAJOR_SEVENTH,
     )
+    
+class MajorPentatonicScale(MajorScale):
+    degrees = (1, 2, 3, 5, 6)
+
+class MajorTriad(MajorScale):
+    degrees = (1, 3, 5)
+```
+
+When we create an instance of a MusicKey subclass, we can then access it's items using list index notation:
+
+```
+>>> from kord.keys import ChromaticScale
+>>> c_chromatic_scale = ChromaticScale('C')
+>>> c_chromatic_scale[2]
+C♯⁰
+>>> c_chromatic_scale[12]
+B⁰
+```
+
+### MusicKey.spell() method
+
+Using list index notation is fine but perhaps it is more interesting to look at a different and more dynamic way of getting the items of our MusicKey instances. The `spell()` method provides a simple interface that generates Note instances on the fly. Let's take a look at a couple of examples and the several arguments that we can use when calling this method:
+
+```
+>>> for note in c_chromatic_scale.spell():
+...     print(note, end=' ')
+...
+C⁰ C♯⁰ D⁰ D♯⁰ E⁰ F⁰ F♯⁰ G⁰ G♯⁰ A⁰ A♯⁰ B⁰ C¹ >>> 
+```
+
+
+The `note_count` argument is an `int` that allows us to specify the amount of notes we want:
+
+```
+>>> from kord.keys import MinorScale
+>>> a_minor_scale = MinorScale('A')
+>>> for note in a_minor_scale.spell(note_count=4):
+...     print(note, end=' ')
+...
+A⁰ B⁰ C¹ D¹ >>> 
+```
+
+
+The `yield_all` argument is a `boolean` that will make the method yield not just Note instances, but also None instances for every non-diatonic semitone found:
+
+```
+>>> for note in a_minor_scale.spell(note_count=4, yield_all=True):
+...     print(note, end=' ')
+...
+A⁰ None B⁰ C¹ None D¹ >>> 
+```
+
+
+The `start_note` argument is a `Note` object that can be used to start getting notes from a specific note. This can be done even if the note is not part of the scale:
+
+```
+>>> Db1 = Note('D', 'b', 1)
+>>> for note in a_minor_scale.spell(note_count=4, yield_all=True, start_note=Db1):
+...     print(note, end=' ')
+...
+None D¹ None E¹ F¹ None G¹ >>> 
 ```
 
 

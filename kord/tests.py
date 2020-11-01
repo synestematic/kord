@@ -75,7 +75,7 @@ class ScaleValidityTest(unittest.TestCase):
                 line = Row()
                 key = Scale(*note)
                 for d in key.spell(
-                    note_count=len(key.root_intervals) +16, yield_all=False
+                    note_count=len(key.intervals) +16, yield_all=False
                 ):
                     line.append(
                         FString(
@@ -189,9 +189,9 @@ class ChromaticScalesTest(unittest.TestCase):
         self.b_flat_chromatic = ChromaticScale('B', 'b')
 
     def testIntervalsCount(self):
-        assert len(self.c_chromatic.root_intervals) == 12, self.c_chromatic.root_intervals
-        assert len(self.f_sharp_chromatic.root_intervals) == 12, self.f_sharp_chromatic.root_intervals
-        assert len(self.b_flat_chromatic.root_intervals) == 12, self.b_flat_chromatic.root_intervals
+        assert len(self.c_chromatic.intervals) == 12, self.c_chromatic.intervals
+        assert len(self.f_sharp_chromatic.intervals) == 12, self.f_sharp_chromatic.intervals
+        assert len(self.b_flat_chromatic.intervals) == 12, self.b_flat_chromatic.intervals
 
 
     def testCChromaticScaleGenerator(self):
@@ -473,9 +473,9 @@ class MajorScalesExpectedNotesTest(unittest.TestCase):
         self.d_flat_major = MajorScale('D', 'b')  # 5 flats
 
     def testIntervalsCount(self):
-        assert len(self.c_major.root_intervals) == 7, self.c_major.root_intervals
-        assert len(self.b_major.root_intervals) == 7, self.b_major.root_intervals
-        assert len(self.d_flat_major.root_intervals) == 7, self.d_flat_major.root_intervals
+        assert len(self.c_major.intervals) == 7, self.c_major.intervals
+        assert len(self.b_major.intervals) == 7, self.b_major.intervals
+        assert len(self.d_flat_major.intervals) == 7, self.d_flat_major.intervals
 
 
     def testCMajorScaleGenerator(self):
