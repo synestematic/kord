@@ -2,7 +2,7 @@ import sys
 import argparse
 
 from kord import *
-from bestia.output import echo
+from bestia.output import Row, FString
 
 import tuner
 
@@ -152,6 +152,27 @@ def parse_arguments():
 
     return args
 
+def print_title(mode, instrument, tuning):
+    Row(
+        FString(
+            '{} {}'.format(
+                str(mode.root)[:-1],
+                mode.name()
+            ),
+            fg='yellow',
+        ),
+        FString(
+            '{}: {} tuning '.format(
+                instrument.title(),
+                tuning
+            ),
+            fg='yellow',
+            fx=['faint'],
+            align='r',
+        )
+    ).echo()
+
+
 def run(args):
     
     # default mode is chord, so use scale if set
@@ -171,15 +192,8 @@ def run(args):
         )
         return -1
 
-    echo(
-        '{} {}\t\t{} ({} tuning)'.format(
-            str(key_mode.root)[:-1],
-            key_mode.name(),
-            args.instrument,
-            args.tuning
-        ),
-        'blue'
-    )
+    if args.verbosity:
+        print_title(key_mode, args.instrument, args.tuning)
 
     instrument = PluckedStringInstrument(
         *[ Note(*string_tuning) for string_tuning in TUNINGS[args.instrument][args.tuning] ]
