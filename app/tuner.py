@@ -25,15 +25,20 @@ def load_tuning_data():
 
         instrument_data = open_instrument(instrument)
         if not instrument_data:
-            print('Ignoring {}.json (failed to parse file)'.format(instrument))
+            print('WARNING: {}.json is not valid json, ignoring file...'.format(instrument))
             continue
 
         for tuning, strings_list in instrument_data.items():
             for s, string in enumerate(strings_list):
-                instrument_data[tuning][s] = (
-                    # chr    , alt         , oct
-                    string[0], string[1:-1], int(string[-1])
-                )
+                try:
+                    instrument_data[tuning][s] = (
+                        # chr    , alt         , oct
+                        string[0], string[1:-1], int(string[-1])
+                    )
+                except:
+                    print(
+                        'WARNING: "{}" is not a valid note, ignoring {}.json "{}" tuning...'.format(string, instrument, tuning)
+                    )
 
         data[instrument] = instrument_data
 
