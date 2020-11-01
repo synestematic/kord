@@ -34,9 +34,8 @@ def load_tuning_data():
             for s, string in enumerate(strings_list):
                 try:
                     # validates the note attributes
-                    note = Note(string[0], string[1:-1], string[-1])
-                    instrument_data[tuning][s] = (
-                        note.chr, note.alt, note.oct
+                    instrument_data[tuning][s] = Note(
+                        string[0], string[1:-1], string[-1]
                     )
                 except:
                     print(

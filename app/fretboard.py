@@ -196,7 +196,7 @@ def run(args):
         print_title(key_mode, args.instrument, args.tuning)
 
     instrument = PluckedStringInstrument(
-        *[ Note(*string_tuning) for string_tuning in TUNINGS[args.instrument][args.tuning] ]
+        * TUNINGS[args.instrument][args.tuning]
     )
 
     instrument.fretboard(
