@@ -156,29 +156,25 @@ def run(args):
     
     # default mode is chord, so use scale if set
     if args.scale:
-        Mode = SCALES[args.scale]
+        KeyMode = SCALES[args.scale]
     elif args.chord:
-        Mode = CHORDS[args.chord]
+        KeyMode = CHORDS[args.chord]
 
     root = Note(args.root[0], args.root[1])
-
-    # check if Mode is spellable for required root note
-    for invalid_note in Mode.invalid_root_notes():
-        if root ** invalid_note:
-            print(
-                '{} {} cannot be visualized'.format(
-                    str(root)[:-1],
-                    Mode.name(),
-                )
+    key_mode = KeyMode(*root)
+    if not key_mode.validate():
+        print(
+            '{} {} cannot be visualized'.format(
+                str(root)[:-1],
+                key_mode.name(),
             )
-            return -1
-
-    mode = Mode(*root)
+        )
+        return -1
 
     echo(
         '{} {}\t\t{} ({} tuning)'.format(
-            str(mode.root)[:-1],
-            mode.name(),
+            str(key_mode.root)[:-1],
+            key_mode.name(),
             args.instrument,
             args.tuning
         ),
@@ -190,7 +186,7 @@ def run(args):
     )
 
     instrument.fretboard(
-        display=mode,
+        display=key_mode,
         frets=args.frets,
         verbose=args.verbosity,
         limit=24

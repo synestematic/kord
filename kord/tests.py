@@ -59,6 +59,10 @@ class ScaleValidityTest(unittest.TestCase):
         # G𝄪¹ invalid HarmonicMinorScale
         # A𝄪¹ invalid HarmonicMinorScale
 
+    def testValidMethod(self):
+        for Scale in [self.major_key]:
+            assert Scale('c').validate()
+
 
     def testValidRoots(self):
 

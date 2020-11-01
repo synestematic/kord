@@ -102,6 +102,13 @@ class MusicKey(object):
             )
         return str(spell_line)
 
+    def validate(self):
+        for note in self.invalid_root_notes():
+            if note ** self.root:
+                return False
+        return True
+
+
     def degree_root_interval(self, d):
         ''' return degree's delta semitones from key's root '''
         if d > len(self.root_intervals):
