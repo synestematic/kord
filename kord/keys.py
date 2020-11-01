@@ -102,6 +102,41 @@ class MusicKey(object):
             )
         return str(spell_line)
 
+    def __getitem__(self, d):
+
+        if d < 1:
+            return
+
+        if self.degrees and d not in self.allowed_degrees():
+            return
+
+        if d == 1:
+            return self.root
+
+        # GET DEGREE's ROOT OFFSETS = OCTAVE + SPARE_STS
+        octs_from_root, spare_sts = divmod(
+            self.degree_root_interval(d), OCTAVE
+        )
+        note_oct = octs_from_root
+
+        # GET DEGREE PROPERTIES FROM ENHARMONIC MATRIX
+        next_notes = [
+            n for n in EnharmonicMatrix[
+                self.root.enharmonic_row + spare_sts
+            ] if n.chr == self.root.adjacent_chr(d - 1) # EXPECTED TONE
+        ]
+
+        if len(next_notes) == 1:
+            # AT THIS POINT DEG_OCT CAN EITHER STAY | +1
+            if self.root.oversteps_oct(next_notes[0]):
+                note_oct += 1
+
+            # RETURN NEW OBJECT, DO NOT CHANGE ENHARMONIC MATRIX ITEM!
+            return Note(next_notes[0].chr, next_notes[0].alt, note_oct)
+
+        raise InvalidNote
+
+
     def validate(self):
         for note in self.invalid_root_notes():
             if note ** self.root:
@@ -191,48 +226,11 @@ class MusicKey(object):
         )
 
 
-class DiatonicScale(MusicKey):
-
-    def __getitem__(self, d):
-
-        if d < 1:
-            return
-
-        if self.degrees and d not in self.allowed_degrees():
-            return
-
-        if d == 1:
-            return self.root
-
-        # GET DEGREE's ROOT OFFSETS = OCTAVE + SPARE_STS
-        octs_from_root, spare_sts = divmod(
-            self.degree_root_interval(d), OCTAVE
-        )
-        note_oct = octs_from_root
-
-        # GET DEGREE PROPERTIES FROM ENHARMONIC MATRIX
-        next_notes = [
-            n for n in EnharmonicMatrix[
-                self.root.enharmonic_row + spare_sts
-            ] if n.chr == self.root.adjacent_chr(d - 1) # EXPECTED TONE
-        ]
-
-        if len(next_notes) == 1:
-            # AT THIS POINT DEG_OCT CAN EITHER STAY | +1
-            if self.root.oversteps_oct(next_notes[0]):
-                note_oct += 1
-
-            # RETURN NEW OBJECT, DO NOT CHANGE ENHARMONIC MATRIX ITEM!
-            return Note(next_notes[0].chr, next_notes[0].alt, note_oct)
-
-        raise InvalidNote
-
-
 ########################
 ### MAJOR KEYS/MODES ###
 ########################
 
-class MajorScale(DiatonicScale):
+class MajorScale(MusicKey):
     root_intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -246,7 +244,7 @@ class MajorScale(DiatonicScale):
 class MajorPentatonicScale(MajorScale):
     degrees = (1, 2, 3, 5, 6)
 
-class AugmentedScale(DiatonicScale):
+class AugmentedScale(MusicKey):
     root_intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -286,7 +284,7 @@ class LydianMode(MajorScale):
 ### MINOR KEYS/MODES ###
 ########################
 
-class MinorScale(DiatonicScale):
+class MinorScale(MusicKey):
     root_intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -297,7 +295,7 @@ class MinorScale(DiatonicScale):
         MINOR_SEVENTH,
     )
 
-class DiminishedScale(DiatonicScale):
+class DiminishedScale(MusicKey):
     root_intervals = (
         UNISON,
         MAJOR_SECOND,
