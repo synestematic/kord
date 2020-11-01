@@ -5,6 +5,8 @@ this module is in charge of loading the data of the .json files in the tunings d
 import os
 import json
 
+from kord.notes import Note
+
 JSON_DIR = '{}/tunings'.format( os.path.dirname(os.path.realpath(__file__)) )
 
 def json_instruments():
@@ -31,9 +33,10 @@ def load_tuning_data():
         for tuning, strings_list in instrument_data.items():
             for s, string in enumerate(strings_list):
                 try:
+                    # validates the note attributes
+                    note = Note(string[0], string[1:-1], string[-1])
                     instrument_data[tuning][s] = (
-                        # chr    , alt         , oct
-                        string[0], string[1:-1], int(string[-1])
+                        note.chr, note.alt, note.oct
                     )
                 except:
                     print(

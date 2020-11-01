@@ -99,9 +99,12 @@ def output_alterations():
 
 class Note(object):
 
-    def __init__(self, chr, *args):
-
-        self.chr = chr.upper()
+    def __init__(self, char, *args):
+        ''' should be able to handle:
+            Note('C', 3)
+            Note('C', '#')
+        '''
+        self.chr = char.upper()
         if self.chr not in _CHARS:
             raise InvalidNote(char)
 
@@ -111,6 +114,19 @@ class Note(object):
         if len(args) >  2:
             raise InvalidNote('Too many arguments')
 
+        # with only 1 arg, decide if it's alt or oct
+        if len(args) == 1:
+            if args[0] in input_alterations():
+                self.alt = args[0]
+            else:
+                try:
+                    self.oct = int(args[0])
+                except:
+                    raise InvalidNote(
+                        'Failed to parse argument: '.format(args[0])
+                    )
+
+        # with 2 args, order must be alt, oct
         if len(args) == 2:
             if args[0] not in input_alterations():
                 raise InvalidAlteration(args[0])
@@ -121,18 +137,6 @@ class Note(object):
             except:
                 raise InvalidOctave(args[1])
 
-        if len(args) == 1:
-
-            if args[0] in input_alterations():
-                self.alt = args[0]
-
-            else:
-                try:
-                    self.oct = int(args[0])
-                except:
-                    raise InvalidNote(
-                        'Failed to parse argument: '.format(args[0])
-                    )
 
     def __iter__(self):
         ''' allows unpacking Note objects as args for other functions '''
@@ -258,7 +262,7 @@ class Note(object):
 ### indeces are used to determine:
 ###   * when to change octs
 ###   * intervals between Note instances
-### notes MUST be unique so that TonalKey[d] finds 1 exact match!
+### notes MUST be unique so that MusicKey[d] finds 1 exact match!
 EnharmonicMatrix = LoopedList(
 
     ## 2-octave enharmonic relationships
