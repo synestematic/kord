@@ -41,22 +41,14 @@ class MusicKey(object):
                 )
         return tuple(all_degrees)
 
-    def __init__(self, chr, alt='', oct=0):
-        self.root = Note(chr, alt, 0) # ignore note.oct
-
-    def __repr__(self):
-        spell_line = Row()
-        for d in self.spell(
-            note_count=len(self.root_intervals) +1, yield_all=False
-        ):
-            spell_line.append(
-                FString(d, size=5)
-            )
-        return str(spell_line)
-
-    @property
-    def name(self):
-        return self.__class__.__name__
+    @classmethod
+    def name(cls):
+        n = cls.__name__[0]
+        for c in cls.__name__[1:]:
+            if c.isupper():
+                n += ' '
+            n += c
+        return n
 
     @classmethod
     def __possible_root_notes(cls, valids=True):
@@ -68,7 +60,10 @@ class MusicKey(object):
 
             try:
                 invalid_root = False
-                for _ in cls(*note).spell(note_count=len(cls.root_intervals) +1, yield_all=0):
+                for _ in cls(*note).spell(
+                    note_count=len(cls.root_intervals) +1,
+                    yield_all=False,
+                ):
                     # if any degree fails, scale is not spellable
                     pass
 
@@ -92,6 +87,20 @@ class MusicKey(object):
     def invalid_root_notes(cls):
         ''' returns only invalid root notes for given key class '''
         return cls.__possible_root_notes(valids=False)
+
+
+    def __init__(self, chr, alt='', oct=0):
+        self.root = Note(chr, alt, 0) # ignore note.oct
+
+    def __repr__(self):
+        spell_line = Row()
+        for d in self.spell(
+            note_count=len(self.root_intervals) +1, yield_all=False
+        ):
+            spell_line.append(
+                FString(d, size=5)
+            )
+        return str(spell_line)
 
     def degree_root_interval(self, d):
         ''' return degree's delta semitones from key's root '''

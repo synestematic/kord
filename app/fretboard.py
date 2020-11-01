@@ -161,23 +161,24 @@ def run(args):
         Mode = CHORDS[args.chord]
 
     root = Note(args.root[0], args.root[1])
-    mode = Mode(*root)
 
-    # check if mode is spellable for required root note
-    for invalid_note in mode.invalid_root_notes():
+    # check if Mode is spellable for required root note
+    for invalid_note in Mode.invalid_root_notes():
         if root ** invalid_note:
             print(
                 '{} {} cannot be visualized'.format(
-                    str(mode.root)[:-1],
-                    mode.name,
+                    str(root)[:-1],
+                    Mode.name(),
                 )
             )
             return -1
 
+    mode = Mode(*root)
+
     echo(
         '{} {}\t\t{} ({} tuning)'.format(
             str(mode.root)[:-1],
-            mode.name,
+            mode.name(),
             args.instrument,
             args.tuning
         ),
