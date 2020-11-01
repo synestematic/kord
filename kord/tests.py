@@ -957,3 +957,12 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
             if i == 2:
                 assert note, note
                 assert note >> Note('C', '', 4), note
+
+
+    def testMaxOctave(self):
+        try:
+            note = Note('C', MAX_OCT + 1)
+        except InvalidOctave:
+            note = None
+        finally:
+            assert not note

@@ -1,5 +1,4 @@
 from bestia.iterate import LoopedList
-from bestia.output import echo
 
 from .errors import *
 
@@ -81,7 +80,8 @@ _OCTS = (
     '⁹',
 )
 
-MAX_OCT = len(_OCTS)
+MAX_OCT = 9
+
 
 _ALTS = {
     'bb': '𝄫',
@@ -97,12 +97,16 @@ def input_alterations():
 def output_alterations():
     return list(_ALTS.values())
 
+
 class Note(object):
 
     def __init__(self, char, *args):
-        ''' should be able to handle:
+        ''' init WITHOUT specifying argument names
+            should be able to handle:
+            Note('C')
             Note('C', 3)
             Note('C', '#')
+            Note('C', '#', 3)
         '''
         self.chr = char.upper()
         if self.chr not in _CHARS:
@@ -136,6 +140,9 @@ class Note(object):
                 self.oct = int(args[1])
             except:
                 raise InvalidOctave(args[1])
+
+        if self.oct > MAX_OCT:
+            raise InvalidOctave(self.oct)
 
 
     def __iter__(self):
