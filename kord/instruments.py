@@ -199,25 +199,20 @@ class PluckedStringInstrument(object):
         self.name = name
 
     def render_string(self, s, display, frets=12, verbose=1):
-        if not s:
-            return
-
         string_n = FString(
             s,
             fg='cyan', 
             fx=['faint' if verbose < 1 else ''],
         )
-
         string = self.strings[s-1]
-        # INIT A NEW SCALE, OTHERWISE YOU USE THE SAME OUTER OBJECT!!!
         string.display_mode = display
         string.frets = frets
         string.verbose = verbose
-
         echo(string_n + string)
 
-    def render_fretboard(self, display=None, frets=12, verbose=1, limit=MAX_FRETS):
-        if frets > limit: frets = limit
+    def render_fretboard(self, display=None, frets=12, verbose=1):
+        # if frets > max_frets_on_screen():
+        #     frets = max_frets_on_screen()
         self.render_inlays(frets, verbose)
         self.render_binding('upper', frets)
         for s, _ in enumerate(self.strings):
