@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="kord",
-    version="2.3",
+    version="2.5",
     author="Federico Rizzo",
     author_email="synestem@tic.com",
     description='a python framework for programming music applications',
@@ -20,6 +20,20 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: POSIX :: Linux",
         "Operating System :: MacOS :: MacOS X",
+    ],
+    data_files=[
+        ('fretboard', [  #  ~/.local/fretboard/
+            'app/tuner.py',
+            'app/fretboard.py',
+            ],
+        ),
+        ('fretboard/tunings', [
+            'app/tunings/guitar.json',
+            'app/tunings/banjo.json',
+            'app/tunings/bass.json',
+            'app/tunings/ukulele.json',
+            ],
+        ),
     ],
     install_requires=[
         'bestia',
