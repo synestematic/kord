@@ -14,9 +14,9 @@ def max_frets_on_screen(limit=24):
 
 class PluckedString(object):
 
-    def __init__(self, tone, alt='', oct=0, frets=0, display=None, verbose=1):
+    def __init__(self, c, alt='', oct=0, frets=0, display=None, verbose=1):
         self.__key = None
-        self.tuning = Note(tone, alt, oct)
+        self.tuning = Note(c, alt, oct)
         self.display_method = display
         self.frets = 12 if not frets else frets
         self.verbose = verbose
@@ -34,10 +34,6 @@ class PluckedString(object):
             )
         return self.__key
 
-    # USERS DO NOT SET STRING.KEY... USE STRING.DISPLAY_METHOD
-    # @key.setter
-    # def key(self, k):
-    #     self.__key = k
 
     @property
     def display_method(self):
@@ -117,10 +113,6 @@ class PluckedStringInstrument(object):
         self.strings = [ PluckedString(*n) for n in notes ]
 
 
-    def string(self, s):
-        return self.strings[s -1]
-
-
     def fretboard(self, display=None, frets=12, verbose=1, limit=24):
 
         if frets > limit:
@@ -130,7 +122,7 @@ class PluckedStringInstrument(object):
         if verbose:
             echo(self.fret_inlays(verbose=verbose, frets=frets))
 
-        echo(self.render_binding('upper', frets=frets))
+        self.render_binding('upper', frets=frets)
 
         for string in self.strings:
 
@@ -147,7 +139,7 @@ class PluckedStringInstrument(object):
 
             echo(str(string_n) + str(string))
         
-        echo(self.render_binding('lower', frets=frets))
+        self.render_binding('lower', frets=frets)
 
 
     @classmethod
@@ -257,4 +249,5 @@ class PluckedStringInstrument(object):
             # normal bind
             else:
                 fret_bind += normal[side]
-        return fret_bind
+        
+        echo(fret_bind)

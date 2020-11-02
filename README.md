@@ -214,7 +214,7 @@ A⁰ B⁰ C¹ D¹ >>>
 ```
 
 
-The `yield_all` argument is a `boolean` that will make the method yield not just Note instances, but also None instances for every non-diatonic semitone found:
+The `yield_all` argument is a `bool` that will make the method yield not just Note instances, but also None instances for every non-diatonic semitone found:
 
 ```
 >>> for note in a_minor_scale.spell(note_count=4, yield_all=True):
