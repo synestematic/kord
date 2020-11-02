@@ -16,7 +16,7 @@ class PluckedString(object):
 
     def __init__(self, c, alt='', oct=3, frets=0, display=None, verbose=1):
         self.tuning = Note(c, alt, oct)
-        self.display_method = display
+        self.display_mode = display
         self.frets = 12 if not frets else frets
         self.verbose = verbose
  
@@ -33,11 +33,10 @@ class PluckedString(object):
         ''' prints string notes matching given key '''
         string_line = Row()
 
-        if not self.display_method:
-            self.display_method = ChromaticScale(*self.tuning)
+        mode = self.display_mode if self.display_mode else ChromaticScale(*self.tuning)
 
         for fret_n, note in enumerate(
-            self.display_method.spell(
+            mode.spell(
                 note_count=self.frets,
                 start_note=self.tuning,
                 yield_all=True,
@@ -46,7 +45,7 @@ class PluckedString(object):
 
             fret_value = ''
             if note:
-                note_fg = 'green' if note ** self.display_method.root else 'magenta'
+                note_fg = 'green' if note ** mode.root else 'magenta'
                 fret_value = '{}{}{}'.format(
                     FString(note.chr, size=1, fg=note_fg, fx=['']),
                     FString(note.repr_alt, size=0, fg=note_fg, fx=['']),
@@ -195,7 +194,7 @@ class PluckedStringInstrument(object):
 
         string = self.strings[s-1]
         # INIT A NEW SCALE, OTHERWISE YOU USE THE SAME OUTER OBJECT!!!
-        string.display_method = display
+        string.display_mode = display
         string.frets = frets
         string.verbose = verbose
 
