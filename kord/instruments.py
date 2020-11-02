@@ -108,45 +108,11 @@ class PluckedString(object):
 
 class PluckedStringInstrument(object):
 
-    def __init__(self, *notes, name=''):
-        self.name = name
-        self.strings = [ PluckedString(*n) for n in notes ]
-
-
-    def fretboard(self, display=None, frets=12, verbose=1, limit=24):
-
-        if frets > limit:
-            frets = limit
-
-        # INIT A NEW SCALE, OTHERWISE YOU USE THE SAME OUTER OBJECT!!!
-        if verbose:
-            echo(self.fret_inlays(verbose=verbose, frets=frets))
-
-        self.render_binding('upper', frets=frets)
-
-        for string in self.strings:
-
-            # string numbers
-            string_n = FString(
-                self.strings.index(string) +1,
-                fg='cyan', 
-                fx=['faint' if verbose < 1 else ''],
-            )
-
-            string.display_method = display
-            string.frets = frets
-            string.verbose = verbose
-
-            echo(str(string_n) + str(string))
-        
-        self.render_binding('lower', frets=frets)
-
-
     @classmethod
-    def fret_inlays(cls, verbose=1, frets=12):
+    def render_inlays(cls, verbose=1, frets=12):
 
         if not verbose:
-            return ''
+            return
 
         inlays = (
             '',
@@ -201,7 +167,7 @@ class PluckedStringInstrument(object):
             frets -= 1
             i += 1
 
-        return inlay_row
+        echo(inlay_row)
 
 
     @staticmethod
@@ -251,3 +217,36 @@ class PluckedStringInstrument(object):
                 fret_bind += normal[side]
         
         echo(fret_bind)
+
+
+    def __init__(self, *notes, name=''):
+        self.name = name
+        self.strings = [ PluckedString(*n) for n in notes ]
+
+
+    def fretboard(self, display=None, frets=12, verbose=1, limit=24):
+
+        if frets > limit:
+            frets = limit
+
+        # INIT A NEW SCALE, OTHERWISE YOU USE THE SAME OUTER OBJECT!!!
+        self.render_inlays(verbose=verbose, frets=frets)
+
+        self.render_binding('upper', frets=frets)
+
+        for string in self.strings:
+
+            # string numbers
+            string_n = FString(
+                self.strings.index(string) +1,
+                fg='cyan', 
+                fx=['faint' if verbose < 1 else ''],
+            )
+
+            string.display_method = display
+            string.frets = frets
+            string.verbose = verbose
+
+            echo(str(string_n) + str(string))
+        
+        self.render_binding('lower', frets=frets)
