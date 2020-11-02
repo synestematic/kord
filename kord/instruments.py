@@ -153,11 +153,11 @@ class PluckedStringInstrument(object):
         normal = { 'upper': '═', 'lower': '═' }
         twelve = { 'upper': '╦', 'lower': '╩' }
         joints = { 'upper': '╤', 'lower': '╧' }
-        capo = { 'upper': '     ╔', 'lower': '     ╚' }
-        final = { 'upper': '╕', 'lower': '╛', }
-        fine = { 'upper': '╗', 'lower': '╝', }
+        capo   = { 'upper': '╔', 'lower': '╚' }
+        final  = { 'upper': '╕', 'lower': '╛' }
+        fine   = { 'upper': '╗', 'lower': '╝' }
         total_fret_width = _NOTE_WIDTH + _FRET_WIDTH
-        fret_bind = capo[side]
+        fret_bind = ' ' * _NOTE_WIDTH + capo[side]
         for f in range(1, frets * total_fret_width + 1):
             # final fret
             if f == frets * total_fret_width:
