@@ -199,11 +199,11 @@ def run(args):
         * TUNINGS[args.instrument][args.tuning]
     )
 
-    instrument.fretboard(
+    instrument.render_fretboard(
         display=key_mode,
         frets=args.frets,
         verbose=args.verbosity,
-        limit=24
+        limit=24,
     )
 
     return 0

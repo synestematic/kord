@@ -14,7 +14,7 @@ def max_frets_on_screen(limit=24):
 
 class PluckedString(object):
 
-    def __init__(self, c, alt='', oct=0, frets=0, display=None, verbose=1):
+    def __init__(self, c, alt='', oct=3, frets=0, display=None, verbose=1):
         self.__key = None
         self.tuning = Note(c, alt, oct)
         self.display_method = display
@@ -109,7 +109,7 @@ class PluckedString(object):
 class PluckedStringInstrument(object):
 
     @classmethod
-    def render_inlays(cls, verbose=1, frets=12):
+    def render_inlays(cls, frets=12, verbose=1):
 
         if not verbose:
             return
@@ -172,31 +172,14 @@ class PluckedStringInstrument(object):
 
     @staticmethod
     def render_binding(side, frets=12):
-        # https://en.wikipedia.org/wiki/Box-drawing_character
-        normal = {
-            'upper': '═',
-            'lower': '═'
-        }
-        twelve = {
-            'upper': '╦',
-            'lower': '╩'
-        }
-        joints = {
-            'upper': '╤',
-            'lower': '╧'
-        }
-        capo = {
-            'upper': '     ╔',
-            'lower': '     ╚',
-        }
-        final = {
-            'upper': '╕',
-            'lower': '╛',
-        }
-        fine = {
-            'upper': '╗',
-            'lower': '╝',
-        }
+        ''' https://en.wikipedia.org/wiki/Box-drawing_character
+        '''
+        normal = { 'upper': '═', 'lower': '═' }
+        twelve = { 'upper': '╦', 'lower': '╩' }
+        joints = { 'upper': '╤', 'lower': '╧' }
+        capo = { 'upper': '     ╔', 'lower': '     ╚' }
+        final = { 'upper': '╕', 'lower': '╛', }
+        fine = { 'upper': '╗', 'lower': '╝', }
         total_fret_width = _NOTE_WIDTH + _FRET_WIDTH
         fret_bind = capo[side]
         for f in range(1, frets * total_fret_width + 1):
@@ -220,33 +203,31 @@ class PluckedStringInstrument(object):
 
 
     def __init__(self, *notes, name=''):
-        self.name = name
         self.strings = [ PluckedString(*n) for n in notes ]
+        self.name = name
 
+    def render_string(self, s, display, frets=12, verbose=1):
+        if not s:
+            return
 
-    def fretboard(self, display=None, frets=12, verbose=1, limit=24):
+        string_n = FString(
+            s,
+            fg='cyan', 
+            fx=['faint' if verbose < 1 else ''],
+        )
 
-        if frets > limit:
-            frets = limit
-
+        string = self.strings[s-1]
         # INIT A NEW SCALE, OTHERWISE YOU USE THE SAME OUTER OBJECT!!!
-        self.render_inlays(verbose=verbose, frets=frets)
+        string.display_method = display
+        string.frets = frets
+        string.verbose = verbose
 
-        self.render_binding('upper', frets=frets)
+        echo(string_n + string)
 
-        for string in self.strings:
-
-            # string numbers
-            string_n = FString(
-                self.strings.index(string) +1,
-                fg='cyan', 
-                fx=['faint' if verbose < 1 else ''],
-            )
-
-            string.display_method = display
-            string.frets = frets
-            string.verbose = verbose
-
-            echo(str(string_n) + str(string))
-        
-        self.render_binding('lower', frets=frets)
+    def render_fretboard(self, display=None, frets=12, verbose=1, limit=24):
+        if frets > limit: frets = limit
+        self.render_inlays(frets, verbose)
+        self.render_binding('upper', frets)
+        for s, _ in enumerate(self.strings):
+            self.render_string(s+1, display, frets, verbose)
+        self.render_binding('lower', frets)
