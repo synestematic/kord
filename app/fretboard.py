@@ -96,7 +96,7 @@ def parse_arguments():
         '-f', '--frets',
         help='1, 2, .., {}'.format(MAX_FRETS),
         choices=[ f+1 for f in range(MAX_FRETS) ],
-        default=max_frets_on_screen(MAX_FRETS),
+        default=max_frets_on_screen(),
         metavar='',
         type=int,
     )

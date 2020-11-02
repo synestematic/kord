@@ -4,7 +4,6 @@ from .keys import *
 
 _NOTE_WIDTH = 5
 _FRET_WIDTH = 1
-MAX_FRETS = 36
 
 INLAYS = (
     'I',
@@ -47,12 +46,16 @@ INLAYS = (
     'XXXVI',
 )
 
+MAX_FRETS = len(INLAYS)
 
-def max_frets_on_screen(limit=24):
+def max_frets_on_screen():
+    ''' calculates how may frets can be rendered without exceeding terminal size
+        will NOT go over MAX_FRETS
+    '''
     frets = int(
         tty_cols() / ( _NOTE_WIDTH + _FRET_WIDTH )
     ) - 1
-    return frets if frets <= limit else limit
+    return frets if frets < MAX_FRETS else MAX_FRETS
 
 class PluckedString(object):
 
@@ -103,7 +106,7 @@ class PluckedString(object):
             string_line.append(
                 FString(
                     fret_value,
-                    size=_NOTE_WIDTH -1 if fret_n == 0 else _NOTE_WIDTH,
+                    size=_NOTE_WIDTH - 1 if fret_n == 0 else _NOTE_WIDTH,
                     align='cr',
                 )
             )
@@ -118,7 +121,7 @@ class PluckedString(object):
                 )
             )
 
-            if fret_n == self.frets -1:
+            if fret_n == self.frets - 1:
                 break
 
         return str(string_line)
