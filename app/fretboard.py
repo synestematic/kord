@@ -200,7 +200,7 @@ def run(args):
     )
 
     instrument.render_fretboard(
-        display=key_mode,
+        mode=key_mode,
         frets=args.frets,
         verbose=args.verbosity,
     )

@@ -59,17 +59,17 @@ def max_frets_on_screen():
 
 class PluckedString(object):
 
-    def __init__(self, c, alt='', oct=3, frets=12, display=None, verbose=1):
+    def __init__(self, c, alt='', oct=3, frets=12, mode=None, verbose=1):
         self.tuning = Note(c, alt, oct)
-        self.display_mode = display
+        self.mode = mode
         self.frets = frets
         self.verbose = verbose
- 
+
     def __repr__(self):
         ''' prints string notes matching given key '''
         string_line = Row()
 
-        mode = self.display_mode if self.display_mode else ChromaticScale(*self.tuning)
+        mode = self.mode if self.mode else ChromaticScale(*self.tuning)
 
         for f, note in enumerate(
             mode.spell(
@@ -104,7 +104,7 @@ class PluckedString(object):
 
             # APPEND FRET
             string_line.append(
-                FString(                   
+                FString(
                     '║' if f % 12 == 0 else '│',
                     size=_FRET_WIDTH,
                     # fg='blue',
@@ -147,8 +147,8 @@ class PluckedStringInstrument(object):
                     fx=['faint' if f not in dots else ''],
                 )
             )
-            frets -= 1
             f += 1
+            frets -= 1
 
         echo(inlay_row)
 
@@ -164,48 +164,47 @@ class PluckedStringInstrument(object):
         final  = { 'upper': '╕', 'lower': '╛' }
         fine   = { 'upper': '╗', 'lower': '╝' }
         total_fret_width = _NOTE_WIDTH + _FRET_WIDTH
-        fret_bind = ' ' * _NOTE_WIDTH + capo[side]
+        render = ' ' * _NOTE_WIDTH + capo[side]
         for f in range(1, frets * total_fret_width + 1):
             # final fret
             if f == frets * total_fret_width:
                 if f % (total_fret_width * 12) == 0:
-                    fret_bind += fine[side]
+                    render += fine[side]
                 else:
-                    fret_bind += final[side]
+                    render += final[side]
             # 12th, 24th
             elif f % (total_fret_width * 12) == 0:
-                fret_bind += twelve[side]
+                render += twelve[side]
             # fret bar joints
             elif f % total_fret_width == 0:
-                fret_bind += joints[side]
+                render += joints[side]
             # normal bind
             else:
-                fret_bind += normal[side]
-        
-        echo(fret_bind)
+                render += normal[side]
+        echo(render)
 
 
     def __init__(self, *notes, name=''):
         self.strings = [ PluckedString(*n) for n in notes ]
         self.name = name
 
-    def render_string(self, s, display, frets=12, verbose=1):
+    def render_string(self, s, mode, frets=12, verbose=1):
         string_n = FString(
             s,
-            fg='cyan', 
+            fg='cyan',
             fx=['faint' if verbose < 1 else ''],
         )
         string = self.strings[s-1]
-        string.display_mode = display
+        string.mode = mode
         string.frets = frets
         string.verbose = verbose
         echo(string_n + string)
 
-    def render_fretboard(self, display=None, frets=12, verbose=1):
+    def render_fretboard(self, mode=None, frets=12, verbose=1):
         # if frets > max_frets_on_screen():
         #     frets = max_frets_on_screen()
         self.render_inlays(frets, verbose)
         self.render_binding('upper', frets)
         for s, _ in enumerate(self.strings):
-            self.render_string(s+1, display, frets, verbose)
+            self.render_string(s+1, mode, frets, verbose)
         self.render_binding('lower', frets)
