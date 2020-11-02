@@ -203,7 +203,7 @@ def run(args):
         display=key_mode,
         frets=args.frets,
         verbose=args.verbosity,
-        limit=24,
+        limit=MAX_FRETS,
     )
 
     return 0

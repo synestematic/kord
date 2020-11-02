@@ -132,26 +132,25 @@ class PluckedStringInstrument(object):
         if not verbose:
             return
 
-        important = (3, 5, 7, 9, 12, 15, 17, 19, 21, 24, 27, 29, 31, 33, 36)
+        dots = (3, 5, 7, 9, 12, 15, 17, 19, 21, 24, 27, 29, 31, 33, 36)
 
         inlay_row = Row(
             FString(
-                'frets:',
+                '',
                 size=_NOTE_WIDTH + _FRET_WIDTH,
                 align='l'
             ),
-            size=6 +83 # why this??
         )
 
         i = 1
         while frets:
             inlay_row.append(
                 FString(
-                    '' if verbose == 1 and i not in important else INLAYS[i-1],
+                    '' if verbose == 1 and i not in dots else INLAYS[i-1],
                     size=_NOTE_WIDTH + _FRET_WIDTH,
-                    align='cl',
+                    align='r' if verbose == 2 else 'c', # high verbose needs more space
                     fg='cyan',
-                    fx=['faint' if i not in important else ''],
+                    fx=['faint' if i not in dots else ''],
                 )
             )
             frets -= 1
