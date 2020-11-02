@@ -59,28 +59,19 @@ def max_frets_on_screen():
 
 class PluckedString(object):
 
-    def __init__(self, c, alt='', oct=3, frets=0, display=None, verbose=1):
+    def __init__(self, c, alt='', oct=3, frets=12, display=None, verbose=1):
         self.tuning = Note(c, alt, oct)
         self.display_mode = display
-        self.frets = 12 if not frets else frets
+        self.frets = frets
         self.verbose = verbose
  
-    @property
-    def frets(self):
-        return self.__frets
-
-    @frets.setter
-    def frets(self, f):
-        self.__frets = int(f) +1
-
-
     def __repr__(self):
         ''' prints string notes matching given key '''
         string_line = Row()
 
         mode = self.display_mode if self.display_mode else ChromaticScale(*self.tuning)
 
-        for fret_n, note in enumerate(
+        for f, note in enumerate(
             mode.spell(
                 note_count=self.frets,
                 start_note=self.tuning,
@@ -106,7 +97,7 @@ class PluckedString(object):
             string_line.append(
                 FString(
                     fret_value,
-                    size=_NOTE_WIDTH - 1 if fret_n == 0 else _NOTE_WIDTH,
+                    size=_NOTE_WIDTH - 1 if f == 0 else _NOTE_WIDTH,
                     align='cr',
                 )
             )
@@ -114,14 +105,14 @@ class PluckedString(object):
             # APPEND FRET
             string_line.append(
                 FString(                   
-                    '║' if fret_n % 12 == 0 else '│',
+                    '║' if f % 12 == 0 else '│',
                     size=_FRET_WIDTH,
                     # fg='blue',
                     # fx=['faint'],
                 )
             )
 
-            if fret_n == self.frets - 1:
+            if f == self.frets:
                 break
 
         return str(string_line)
@@ -145,19 +136,19 @@ class PluckedStringInstrument(object):
             ),
         )
 
-        i = 1
+        f = 1
         while frets:
             inlay_row.append(
                 FString(
-                    '' if verbose == 1 and i not in dots else INLAYS[i-1],
+                    '' if verbose == 1 and f not in dots else INLAYS[f-1],
                     size=_NOTE_WIDTH + _FRET_WIDTH,
                     align='r' if verbose == 2 else 'c', # high verbose needs more space
                     fg='cyan',
-                    fx=['faint' if i not in dots else ''],
+                    fx=['faint' if f not in dots else ''],
                 )
             )
             frets -= 1
-            i += 1
+            f += 1
 
         echo(inlay_row)
 
