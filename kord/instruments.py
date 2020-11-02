@@ -15,37 +15,11 @@ def max_frets_on_screen(limit=24):
 class PluckedString(object):
 
     def __init__(self, c, alt='', oct=3, frets=0, display=None, verbose=1):
-        self.__key = None
         self.tuning = Note(c, alt, oct)
         self.display_method = display
         self.frets = 12 if not frets else frets
         self.verbose = verbose
  
-
-    @property
-    def key(self):
-        ''' inits an object of parent Key class from self.display_method '''
-        if not self.__key:
-            __key  = self.display_method.__self__
-            Key = __key.__class__
-            self.__key = Key(
-                __key.root.chr,
-                __key.root.alt,
-            )
-        return self.__key
-
-
-    @property
-    def display_method(self):
-        if not self.__display:
-            self.__display = ChromaticKey(*self.tuning)
-        return self.__display.spell
-
-    @display_method.setter
-    def display_method(self, dm):
-        self.__display = dm
-
-
     @property
     def frets(self):
         return self.__frets
@@ -59,8 +33,11 @@ class PluckedString(object):
         ''' prints string notes matching given key '''
         string_line = Row()
 
+        if not self.display_method:
+            self.display_method = ChromaticScale(*self.tuning)
+
         for fret_n, note in enumerate(
-            self.display_method(
+            self.display_method.spell(
                 note_count=self.frets,
                 start_note=self.tuning,
                 yield_all=True,
@@ -69,7 +46,7 @@ class PluckedString(object):
 
             fret_value = ''
             if note:
-                note_fg = 'green' if note ** self.key.root else 'magenta'
+                note_fg = 'green' if note ** self.display_method.root else 'magenta'
                 fret_value = '{}{}{}'.format(
                     FString(note.chr, size=1, fg=note_fg, fx=['']),
                     FString(note.repr_alt, size=0, fg=note_fg, fx=['']),
