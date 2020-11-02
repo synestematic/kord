@@ -6,6 +6,48 @@ _NOTE_WIDTH = 5
 _FRET_WIDTH = 1
 MAX_FRETS = 36
 
+INLAYS = (
+    'I',
+    'II',
+    'III',
+    'IV',
+    'V',
+    'VI',
+    'VII',
+    'VIII',
+    'IX',
+    'X',
+    'XI',
+
+    'XII',
+    'XIII',
+    'XIV',
+    'XV',
+    'XVI',
+    'XVII',
+    'XVIII',
+    'XIX',
+    'XX',
+    'XXI',
+    'XXII',
+    'XXIII',
+
+    'XXIV',
+    'XXV',
+    'XXVI',
+    'XXVII',
+    'XXVIII',
+    'XXIX',
+    'XXX',
+    'XXXI',
+    'XXXII',
+    'XXXIII',
+    'XXXIV',
+    'XXXV',
+    'XXXVI',
+)
+
+
 def max_frets_on_screen(limit=24):
     frets = int(
         tty_cols() / ( _NOTE_WIDTH + _FRET_WIDTH )
@@ -90,39 +132,11 @@ class PluckedStringInstrument(object):
         if not verbose:
             return
 
-        inlays = (
-            '',
-            'I' if verbose > 1 else '',
-            'II' if verbose > 1 else '',
-            'III',
-            'IV' if verbose > 1 else '',
-            'V',
-            'VI' if verbose > 1 else '',
-            'VII',
-            'VIII' if verbose > 1 else '',
-            'IX',
-            'X' if verbose > 1 else '',
-            'XI' if verbose > 1 else '',
-
-            'XII',
-            'XIII' if verbose > 1 else '',
-            'XIV' if verbose > 1 else '',
-            'XV',
-            'XVI' if verbose > 1 else '',
-            'XVII',
-            'XVIII' if verbose > 1 else '',
-            'XIX',
-            'XX' if verbose > 1 else '',
-            'XXI',
-            'XXII' if verbose > 1 else '',
-            'XXIII' if verbose > 1 else '',
-
-            'XXIV'
-        )
+        important = (3, 5, 7, 9, 12, 15, 17, 19, 21, 24, 27, 29, 31, 33, 36)
 
         inlay_row = Row(
             FString(
-                inlays[0],
+                'frets:',
                 size=_NOTE_WIDTH + _FRET_WIDTH,
                 align='l'
             ),
@@ -133,11 +147,11 @@ class PluckedStringInstrument(object):
         while frets:
             inlay_row.append(
                 FString(
-                    inlays[i],
+                    '' if verbose == 1 and i not in important else INLAYS[i-1],
                     size=_NOTE_WIDTH + _FRET_WIDTH,
                     align='cl',
                     fg='cyan',
-                    fx=['faint' if i in (1, 2, 4, 6, 8, 10, 11, 13, 14, 16, 18, 20, 22, 23) else ''],
+                    fx=['faint' if i not in important else ''],
                 )
             )
             frets -= 1
@@ -200,7 +214,7 @@ class PluckedStringInstrument(object):
 
         echo(string_n + string)
 
-    def render_fretboard(self, display=None, frets=12, verbose=1, limit=24):
+    def render_fretboard(self, display=None, frets=12, verbose=1, limit=MAX_FRETS):
         if frets > limit: frets = limit
         self.render_inlays(frets, verbose)
         self.render_binding('upper', frets)
