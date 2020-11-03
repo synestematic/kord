@@ -32,7 +32,7 @@ MusicNote instances are the building blocks of the framework and have 3 main att
 You can set these values when creating an instance and only the `chr` argument is required. Arguments `alt` and `oct` will default to `''` and `3` respectively. They are __positional__ arguments, not keyword arguments so keep that in mind when creating your objects.
 
 ```
->>> from kord.notes import Note
+>>> from kord.notes import MusicNote
 >>> e3, f3 = MusicNote('e'), MusicNote('f')
 >>> e3, f3
 (E³, F³) 
