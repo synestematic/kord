@@ -1,6 +1,7 @@
 # kord
 kord is a python framework that provides programmers with a simple api for the creation of music-based applications. While it's mainly intended for theoretical purposes, some of it's modules contain functionality specifically tailored for dealing with plucked-string instruments.
 
+![](https://github.com/synestematic/kord/blob/master/resources/chrom.png?raw=true)
 
 ## installation
 
@@ -280,5 +281,19 @@ The `--instrument` and `--tuning` options refer to the json files you will find 
 The `--frets` option let's you choose how many frets to visualize, maximum value is 36. Default value will fill your terminal screen.
 
 The `--verbosity` option let's you choose how much information to see on-screen from 0 to 2. Default value is 1.
+
+
+## screenshots
+
+Here are a couple of pics to get you excited:
+
+![](https://github.com/synestematic/kord/blob/master/resources/penta.png?raw=true)
+
+![](https://github.com/synestematic/kord/blob/master/resources/cs.png?raw=true)
+
+![](https://github.com/synestematic/kord/blob/master/resources/dim7.png?raw=true)
+
+![](https://github.com/synestematic/kord/blob/master/resources/lydian.png?raw=true)
+
 
 Keep on rocking!
