@@ -12,3 +12,4 @@ legacy/*.*
 !kord/notes.py
 !kord/errors.py
 !app/*
+!resources/*.png
