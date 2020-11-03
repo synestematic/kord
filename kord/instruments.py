@@ -89,7 +89,7 @@ class PluckedString(object):
                         note.repr_oct if self.verbose > 0 else '',
                         size=1,
                         fg=note_fg,
-                        fx=['faint' if self.verbose < 2 else ''],
+                        fx=['faint'],
                     ),
                 )
 

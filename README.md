@@ -169,7 +169,7 @@ class ChromaticScale(MusicKey):
         MAJOR_SIXTH,
         MINOR_SEVENTH,
         MAJOR_SEVENTH,
-	)
+    )
 
 class MajorScale(MusicKey):
     intervals = (
