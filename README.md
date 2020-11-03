@@ -73,11 +73,11 @@ kord.errors.InvalidOctave: 10
 
 ### Comparing MusicNote objects:
  
-The ```-   < >   <= >=   == !=   >>   ** ``` allow calculation of semitone deltas between notes as well as insights into their enharmonic relationships. Let's take a quick look at each operator separately:
+The ```-   < >   <= >=   == !=   >>   ** ```  allow calculation of semitone deltas between notes as well as insights into their enharmonic relationships. Let's take a quick look at each operator separately:
 
 #### - operator
 
-The substraction operator allows you to calculate the difference in semitones between two notes:
+The substraction operator lets you compute the difference in semitones between two notes:
 
 ```
 >>> f3 - e3
@@ -117,7 +117,7 @@ The notes F♯⁵ and G♭⁵ are NOT the same but since their interval is a uni
 
 #### >> ** operators
 
-The power and right-shift operators allow you to compare Notes for equality based not on their intervals, but on their intrinsic `chr, alt, oct` properties. The strictest operator `>>` compares all 3 attributes for equality while the looser `**` ignores `oct`: 
+The power and right-shift operators allow you to compare Notes for equality based not on their intervals, but on their intrinsic `chr`, `alt`, `oct` properties. The strictest operator `>>` compares all 3 attributes for equality while the looser `**` ignores `oct`: 
 
 ```
 >>> ab1, ab5 = MusicNote('A', 'b', 1),  MusicNote('A', 'b', 5)
@@ -214,7 +214,7 @@ C⁰ C♯⁰ D⁰ D♯⁰ E⁰ F⁰ F♯⁰ G⁰ G♯⁰ A⁰ A♯⁰ B⁰ C¹ >
 
 As seen above the method will generate the first octave of degrees of the object when called without arguments.
 
-The `note_count` argument is an `int` and it allows us to set a specific the amount of notes we want:
+The `note_count` argument is an `int` and it allows us to set a specific amount of notes to retrieve:
 
 ```
 >>> from kord.keys import MinorScale
@@ -225,7 +225,7 @@ The `note_count` argument is an `int` and it allows us to set a specific the amo
 A⁰ B⁰ C¹ D¹ >>> 
 ```
 
-Be careful, ask for too many notes and kord will throw and Exception when the oct 9 has been exceeded.
+Be careful, ask for too many notes and kord will throw and Exception when `oct` 9 has been exceeded.
 
 The `yield_all` argument is a `bool` that will make the method yield not just `MusicNote` instances, but also `None` objects for every non-diatonic semitone found:
 
@@ -237,7 +237,7 @@ A⁰ None B⁰ C¹ None D¹ >>>
 ```
 
 
-The `start_note` argument is a `MusicNote` object that can be used to start getting notes from a specific note. This can be done even if the note is not part of the scale:
+The `start_note` argument is a `MusicNote` object that can be used to start getting notes only after a specific note has been found. This can be done even if the note is not diatonic to the scale:
 
 ```
 >>> Db1 = MusicNote('D', 'b', 1)
@@ -251,7 +251,7 @@ None D¹ None E¹ F¹ None G¹ >>>
 
 ## fretboard tool
 
-A sample application `fretboard.py` comes built-in with `kord` and gives some insight into the possibilities of the framework. It displays a representation of your instrument's fretboard, tuned to your liking along with note patterns for any given mode (scale/chord) for any given root note. Installation path varies depending on your system, it's usually something like `/usr/local/fretboard` or `~/.local/fretboard`. You will also find a `tunings` directory with some pre-defined instrument tunings in the form of .json files. Feel free to modify them or add your own and they will immediately become available to the run-time.
+A sample application `fretboard.py` comes built-in with `kord` and gives some insight into the possibilities of the framework. It displays a representation of your instrument's fretboard, tuned to your liking along with note patterns for any given mode (scale/chord) for any given root note. Installation path varies depending on your system, it's usually something like `/usr/local/fretboard` or `~/.local/fretboard`. You will also find a `tunings` directory with some pre-defined instrument tunings in the form of .json files. Feel free to modify them or add your own and they should immediately become available to the run-time.
 
 ```
 $  python3 fretboard.py --help
