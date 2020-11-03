@@ -175,7 +175,7 @@ def run(args):
     elif args.chord:
         KeyMode = CHORDS[args.chord]
 
-    root = Note(args.root[0], args.root[1])
+    root = MusicNote(args.root[0], args.root[1])
     key_mode = KeyMode(*root)
     if not key_mode.validate():
         print(

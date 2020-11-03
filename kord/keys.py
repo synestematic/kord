@@ -39,6 +39,7 @@ class MusicKey(object):
                 all_degrees.append(
                     deg + len(cls.intervals) * o
                 )
+        # input(all_degrees)
         return tuple(all_degrees)
 
     @classmethod
@@ -90,7 +91,7 @@ class MusicKey(object):
 
 
     def __init__(self, chr, alt='', oct=0):
-        self.root = Note(chr, alt, 0) # ignore note.oct
+        self.root = MusicNote(chr, alt, 0) # ignore note.oct
 
     def __repr__(self):
         spell_line = Row()
@@ -132,7 +133,7 @@ class MusicKey(object):
                 note_oct += 1
 
             # RETURN NEW OBJECT, DO NOT CHANGE ENHARMONIC MATRIX ITEM!
-            return Note(next_notes[0].chr, next_notes[0].alt, note_oct)
+            return MusicNote(next_notes[0].chr, next_notes[0].alt, note_oct)
 
         raise InvalidNote
 
@@ -219,11 +220,14 @@ class MusicKey(object):
     def spell(self, note_count=None, start_note=None, yield_all=False):
         if note_count == None:
             note_count = len(self.intervals)
-        return self._count_notes(
-            note_count=note_count,
-            start_note=start_note,
-            yield_all=yield_all,
-        )
+        try:
+            return self._count_notes(
+                note_count=note_count,
+                start_note=start_note,
+                yield_all=yield_all,
+            )
+        except InvalidOctave:
+            pass
 
 
 ########################
@@ -486,6 +490,6 @@ class ChromaticScale(MusicKey):
                 note_oct += 1
 
             # RETURN NEW OBJECT, DO NOT CHANGE ENHARMONIC MATRIX ITEM!
-            return Note(next_notes[0].chr, next_notes[0].alt, note_oct)
+            return MusicNote(next_notes[0].chr, next_notes[0].alt, note_oct)
 
         raise InvalidNote

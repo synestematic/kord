@@ -103,35 +103,35 @@ class NoteEqualityTest(unittest.TestCase):
     DANGEROUS_NON_EQUALS = (
         # ''' Used mainly to test B#, Cd, etc... '''
 
-        (Note('C', 'b', 3), Note('B', '#', 3)),
+        (MusicNote('C', 'b', 3), MusicNote('B', '#', 3)),
 
-        (Note('C', 'b', 3), Note('B', '#', 3)),
+        (MusicNote('C', 'b', 3), MusicNote('B', '#', 3)),
 
-        (Note('E', 'b', 5), Note('D', '#', 4)),
+        (MusicNote('E', 'b', 5), MusicNote('D', '#', 4)),
 
-        (Note('B', '', 5), Note('C', 'b', 4)),
+        (MusicNote('B', '', 5), MusicNote('C', 'b', 4)),
 
-        (Note('E', '#', 3), Note('F', '', 4)),
+        (MusicNote('E', '#', 3), MusicNote('F', '', 4)),
 
 
-        (Note('B', 'b'), Note('C', 'bb')),
-        (Note('A', '#'), Note('C', 'bb')),
+        (MusicNote('B', 'b'), MusicNote('C', 'bb')),
+        (MusicNote('A', '#'), MusicNote('C', 'bb')),
 
-        (Note('B'     ), Note('C', 'b')),
-        (Note('A', '##'), Note('C', 'b')),
+        (MusicNote('B'     ), MusicNote('C', 'b')),
+        (MusicNote('A', '##'), MusicNote('C', 'b')),
 
-        (Note('B', '#'), Note('C', '')),
-        (Note('B', '#'), Note('D', 'bb')),
+        (MusicNote('B', '#'), MusicNote('C', '')),
+        (MusicNote('B', '#'), MusicNote('D', 'bb')),
 
-        (Note('B', '##'), Note('C', '#')),
-        (Note('B', '##'), Note('D', 'b')),
+        (MusicNote('B', '##'), MusicNote('C', '#')),
+        (MusicNote('B', '##'), MusicNote('D', 'b')),
 
 
         # these should eval False OK
-        (Note('A', '#'), Note('B', 'b', 4)),
-        (Note('A', '##'), Note('B', '', 4)),
-        (Note('C', ''), Note('D', 'bb', 4)),
-        (Note('C', '#'), Note('D', 'b', 4)),
+        (MusicNote('A', '#'), MusicNote('B', 'b', 4)),
+        (MusicNote('A', '##'), MusicNote('B', '', 4)),
+        (MusicNote('C', ''), MusicNote('D', 'bb', 4)),
+        (MusicNote('C', '#'), MusicNote('D', 'b', 4)),
     )
 
     def setUp(self):
@@ -165,9 +165,9 @@ class NoteEqualityTest(unittest.TestCase):
     def testEnharmonicOperators(self):
         ''' '''
         print('Testing enharmonic operators')
-        Cs5 = Note('C', '#', 5)
-        Db3 = Note('D', 'b', 3)
-        Cs3 = Note('C', '#', 3)
+        Cs5 = MusicNote('C', '#', 5)
+        Db3 = MusicNote('D', 'b', 3)
+        Cs3 = MusicNote('C', '#', 3)
         assert Cs3 ** Cs5      # loosest equality
         assert Db3 == Cs3      # enhamonic notes
         assert not Db3 >> Cs3  # enh note
@@ -207,109 +207,109 @@ class ChromaticScalesTest(unittest.TestCase):
         ):
             i += 1
             if i == 1:
-                assert note >> Note('C', '', 0), note
+                assert note >> MusicNote('C', '', 0), note
             elif i == 2:
-                assert note >> Note('C', '#', 0), note
+                assert note >> MusicNote('C', '#', 0), note
             elif i == 3:
-                assert note >> Note('D', '', 0), note
+                assert note >> MusicNote('D', '', 0), note
             elif i == 4:
-                assert note >> Note('D', '#', 0), note
+                assert note >> MusicNote('D', '#', 0), note
             elif i == 5:
-                assert note >> Note('E', '', 0), note
+                assert note >> MusicNote('E', '', 0), note
             elif i == 6:
-                assert note >> Note('F', '', 0), note
+                assert note >> MusicNote('F', '', 0), note
             elif i == 7:
-                assert note >> Note('F', '#', 0), note
+                assert note >> MusicNote('F', '#', 0), note
             elif i == 8:
-                assert note >> Note('G', '', 0), note
+                assert note >> MusicNote('G', '', 0), note
             elif i == 9:
-                assert note >> Note('G', '#', 0), note
+                assert note >> MusicNote('G', '#', 0), note
             elif i == 10:
-                assert note >> Note('A', '', 0), note
+                assert note >> MusicNote('A', '', 0), note
             elif i == 11:
-                assert note >> Note('A', '#', 0), note
+                assert note >> MusicNote('A', '#', 0), note
             elif i == 12:
-                assert note >> Note('B', '', 0), note
+                assert note >> MusicNote('B', '', 0), note
             elif i == 13:
-                assert note >> Note('C', '', 1), note
+                assert note >> MusicNote('C', '', 1), note
             elif i == 14:
-                assert note >> Note('C', '#', 1), note
+                assert note >> MusicNote('C', '#', 1), note
             elif i == 15:
-                assert note >> Note('D', '', 1), note
+                assert note >> MusicNote('D', '', 1), note
             elif i == 16:
-                assert note >> Note('D', '#', 1), note
+                assert note >> MusicNote('D', '#', 1), note
             elif i == 17:
-                assert note >> Note('E', '', 1), note
+                assert note >> MusicNote('E', '', 1), note
             elif i == 18:
-                assert note >> Note('F', '', 1), note
+                assert note >> MusicNote('F', '', 1), note
             elif i == 19:
-                assert note >> Note('F', '#', 1), note
+                assert note >> MusicNote('F', '#', 1), note
             elif i == 20:
-                assert note >> Note('G', '', 1), note
+                assert note >> MusicNote('G', '', 1), note
             elif i == 21:
-                assert note >> Note('G', '#', 1), note
+                assert note >> MusicNote('G', '#', 1), note
             elif i == 22:
-                assert note >> Note('A', '', 1), note
+                assert note >> MusicNote('A', '', 1), note
             elif i == 23:
-                assert note >> Note('A', '#', 1), note
+                assert note >> MusicNote('A', '#', 1), note
             elif i == 24:
-                assert note >> Note('B', '', 1), note
+                assert note >> MusicNote('B', '', 1), note
             elif i == 25:
-                assert note >> Note('C', '', 2), note
+                assert note >> MusicNote('C', '', 2), note
             # ..............................
             elif i == 97:
-                assert note >> Note('C', '', 8), note
+                assert note >> MusicNote('C', '', 8), note
             elif i == 98:
-                assert note >> Note('C', '#', 8), note
+                assert note >> MusicNote('C', '#', 8), note
             elif i == 99:
-                assert note >> Note('D', '', 8), note
+                assert note >> MusicNote('D', '', 8), note
             elif i == 100:
-                assert note >> Note('D', '#', 8), note
+                assert note >> MusicNote('D', '#', 8), note
             elif i == 101:
-                assert note >> Note('E', '', 8), note
+                assert note >> MusicNote('E', '', 8), note
             elif i == 102:
-                assert note >> Note('F', '', 8), note
+                assert note >> MusicNote('F', '', 8), note
             elif i == 103:
-                assert note >> Note('F', '#', 8), note
+                assert note >> MusicNote('F', '#', 8), note
             elif i == 104:
-                assert note >> Note('G', '', 8), note
+                assert note >> MusicNote('G', '', 8), note
             elif i == 105:
-                assert note >> Note('G', '#', 8), note
+                assert note >> MusicNote('G', '#', 8), note
             elif i == 106:
-                assert note >> Note('A', '', 8), note
+                assert note >> MusicNote('A', '', 8), note
             elif i == 107:
-                assert note >> Note('A', '#', 8), note
+                assert note >> MusicNote('A', '#', 8), note
             elif i == 108:
-                assert note >> Note('B', '', 8), note
+                assert note >> MusicNote('B', '', 8), note
             elif i == 109:
-                assert note >> Note('C', '', 9), note
+                assert note >> MusicNote('C', '', 9), note
             # ..............................
             elif i == 205:
-                assert note >> Note('C', '', 17), note
+                assert note >> MusicNote('C', '', 17), note
             elif i == 206:
-                assert note >> Note('C', '#', 17), note
+                assert note >> MusicNote('C', '#', 17), note
             elif i == 207:
-                assert note >> Note('D', '', 17), note
+                assert note >> MusicNote('D', '', 17), note
             elif i == 208:
-                assert note >> Note('D', '#', 17), note
+                assert note >> MusicNote('D', '#', 17), note
             elif i == 209:
-                assert note >> Note('E', '', 17), note
+                assert note >> MusicNote('E', '', 17), note
             elif i == 210:
-                assert note >> Note('F', '', 17), note
+                assert note >> MusicNote('F', '', 17), note
             elif i == 211:
-                assert note >> Note('F', '#', 17), note
+                assert note >> MusicNote('F', '#', 17), note
             elif i == 212:
-                assert note >> Note('G', '', 17), note
+                assert note >> MusicNote('G', '', 17), note
             elif i == 213:
-                assert note >> Note('G', '#', 17), note
+                assert note >> MusicNote('G', '#', 17), note
             elif i == 214:
-                assert note >> Note('A', '', 17), note
+                assert note >> MusicNote('A', '', 17), note
             elif i == 215:
-                assert note >> Note('A', '#', 17), note
+                assert note >> MusicNote('A', '#', 17), note
             elif i == 216:
-                assert note >> Note('B', '', 17), note
+                assert note >> MusicNote('B', '', 17), note
             elif i == 217:
-                assert note >> Note('C', '', 18), note
+                assert note >> MusicNote('C', '', 18), note
 
 
     def testFSharpChromaticScaleGenerator(self):
@@ -325,58 +325,58 @@ class ChromaticScalesTest(unittest.TestCase):
         ):
             i += 1
             if i == 1:
-                assert note >> Note('F', '#', 0), note
+                assert note >> MusicNote('F', '#', 0), note
             elif i == 2:
-                assert note >> Note('G', '', 0), note
+                assert note >> MusicNote('G', '', 0), note
             elif i == 3:
-                assert note >> Note('G', '#', 0), note
+                assert note >> MusicNote('G', '#', 0), note
             elif i == 4:
-                assert note >> Note('A', '', 0), note
+                assert note >> MusicNote('A', '', 0), note
             elif i == 5:
-                assert note >> Note('A', '#', 0), note
+                assert note >> MusicNote('A', '#', 0), note
             elif i == 6:
-                assert note >> Note('B', '', 0), note
+                assert note >> MusicNote('B', '', 0), note
             elif i == 7:
-                assert note >> Note('C', '', 1), note
+                assert note >> MusicNote('C', '', 1), note
             elif i == 8:
-                assert note >> Note('C', '#', 1), note
+                assert note >> MusicNote('C', '#', 1), note
             elif i == 9:
-                assert note >> Note('D', '', 1), note
+                assert note >> MusicNote('D', '', 1), note
             elif i == 10:
-                assert note >> Note('D', '#', 1), note
+                assert note >> MusicNote('D', '#', 1), note
             elif i == 11:
-                assert note >> Note('E', '', 1), note
+                assert note >> MusicNote('E', '', 1), note
             elif i == 12:
-                assert note >> Note('F', '', 1), note
+                assert note >> MusicNote('F', '', 1), note
             elif i == 13:
-                assert note >> Note('F', '#', 1), note
+                assert note >> MusicNote('F', '#', 1), note
             elif i == 14:
-                assert note >> Note('G', '', 1), note
+                assert note >> MusicNote('G', '', 1), note
             elif i == 15:
-                assert note >> Note('G', '#', 1), note
+                assert note >> MusicNote('G', '#', 1), note
             elif i == 16:
-                assert note >> Note('A', '', 1), note
+                assert note >> MusicNote('A', '', 1), note
             elif i == 17:
-                assert note >> Note('A', '#', 1), note
+                assert note >> MusicNote('A', '#', 1), note
             elif i == 18:
-                assert note >> Note('B', '', 1), note
+                assert note >> MusicNote('B', '', 1), note
             elif i == 19:
-                assert note >> Note('C', '', 2), note
+                assert note >> MusicNote('C', '', 2), note
             # ..............................
             elif i == 211:
-                assert note >> Note('C', '', 18), note
+                assert note >> MusicNote('C', '', 18), note
             elif i == 212:
-                assert note >> Note('C', '#', 18), note
+                assert note >> MusicNote('C', '#', 18), note
             elif i == 213:
-                assert note >> Note('D', '', 18), note
+                assert note >> MusicNote('D', '', 18), note
             elif i == 214:
-                assert note >> Note('D', '#', 18), note
+                assert note >> MusicNote('D', '#', 18), note
             elif i == 215:
-                assert note >> Note('E', '', 18), note
+                assert note >> MusicNote('E', '', 18), note
             elif i == 216:
-                assert note >> Note('F', '', 18), note
+                assert note >> MusicNote('F', '', 18), note
             elif i == 217:
-                assert note >> Note('F', '#', 18), note
+                assert note >> MusicNote('F', '#', 18), note
 
 
 
@@ -393,72 +393,72 @@ class ChromaticScalesTest(unittest.TestCase):
         ):
             i += 1
             if i == 1:
-                assert note >> Note('B', 'b', 0), note
+                assert note >> MusicNote('B', 'b', 0), note
             elif i == 2:
-                assert note >> Note('B', '', 0), note
+                assert note >> MusicNote('B', '', 0), note
             elif i == 3:
-                assert note >> Note('C', '', 1), note
+                assert note >> MusicNote('C', '', 1), note
             elif i == 4:
-                assert note >> Note('D', 'b', 1), note
+                assert note >> MusicNote('D', 'b', 1), note
             elif i == 5:
-                assert note >> Note('D', '', 1), note
+                assert note >> MusicNote('D', '', 1), note
             elif i == 6:
-                assert note >> Note('E', 'b', 1), note
+                assert note >> MusicNote('E', 'b', 1), note
             elif i == 7:
-                assert note >> Note('E', '', 1), note
+                assert note >> MusicNote('E', '', 1), note
             elif i == 8:
-                assert note >> Note('F', '', 1), note
+                assert note >> MusicNote('F', '', 1), note
             elif i == 9:
-                assert note >> Note('G', 'b', 1), note
+                assert note >> MusicNote('G', 'b', 1), note
             elif i == 10:
-                assert note >> Note('G', '', 1), note
+                assert note >> MusicNote('G', '', 1), note
             elif i == 11:
-                assert note >> Note('A', 'b', 1), note
+                assert note >> MusicNote('A', 'b', 1), note
             elif i == 12:
-                assert note >> Note('A', '', 1), note
+                assert note >> MusicNote('A', '', 1), note
             elif i == 13:
-                assert note >> Note('B', 'b', 1), note
+                assert note >> MusicNote('B', 'b', 1), note
             elif i == 14:
-                assert note >> Note('B', '', 1), note
+                assert note >> MusicNote('B', '', 1), note
             elif i == 15:
-                assert note >> Note('C', '', 2), note
+                assert note >> MusicNote('C', '', 2), note
             # ..............................
             elif i == 200:
-                assert note >> Note('F', '', 17), note
+                assert note >> MusicNote('F', '', 17), note
             elif i == 201:
-                assert note >> Note('G', 'b', 17), note
+                assert note >> MusicNote('G', 'b', 17), note
             elif i == 202:
-                assert note >> Note('G', '', 17), note
+                assert note >> MusicNote('G', '', 17), note
             elif i == 203:
-                assert note >> Note('A', 'b', 17), note
+                assert note >> MusicNote('A', 'b', 17), note
             elif i == 204:
-                assert note >> Note('A', '', 17), note
+                assert note >> MusicNote('A', '', 17), note
             elif i == 205:
-                assert note >> Note('B', 'b', 17), note
+                assert note >> MusicNote('B', 'b', 17), note
             elif i == 206:
-                assert note >> Note('B', '', 17), note
+                assert note >> MusicNote('B', '', 17), note
             elif i == 207:
-                assert note >> Note('C', '', 18), note
+                assert note >> MusicNote('C', '', 18), note
             elif i == 208:
-                assert note >> Note('D', 'b', 18), note
+                assert note >> MusicNote('D', 'b', 18), note
             elif i == 209:
-                assert note >> Note('D', '', 18), note
+                assert note >> MusicNote('D', '', 18), note
             elif i == 210:
-                assert note >> Note('E', 'b', 18), note
+                assert note >> MusicNote('E', 'b', 18), note
             elif i == 211:
-                assert note >> Note('E', '', 18), note
+                assert note >> MusicNote('E', '', 18), note
             elif i == 212:
-                assert note >> Note('F', '', 18), note
+                assert note >> MusicNote('F', '', 18), note
             elif i == 213:
-                assert note >> Note('G', 'b', 18), note
+                assert note >> MusicNote('G', 'b', 18), note
             elif i == 214:
-                assert note >> Note('G', '', 18), note
+                assert note >> MusicNote('G', '', 18), note
             elif i == 215:
-                assert note >> Note('A', 'b', 18), note
+                assert note >> MusicNote('A', 'b', 18), note
             elif i == 216:
-                assert note >> Note('A', '', 18), note
+                assert note >> MusicNote('A', '', 18), note
             elif i == 217:
-                assert note >> Note('B', 'b', 18), note
+                assert note >> MusicNote('B', 'b', 18), note
 
 
 
@@ -491,69 +491,69 @@ class MajorScalesExpectedNotesTest(unittest.TestCase):
         ):
             i += 1
             if i == 1:
-                assert note >> Note('C', '', 0), note
+                assert note >> MusicNote('C', '', 0), note
             elif i == 2:
-                assert note >> Note('D', '', 0), note
+                assert note >> MusicNote('D', '', 0), note
             elif i == 3:
-                assert note >> Note('E', '', 0), note
+                assert note >> MusicNote('E', '', 0), note
             elif i == 4:
-                assert note >> Note('F', '', 0), note
+                assert note >> MusicNote('F', '', 0), note
             elif i == 5:
-                assert note >> Note('G', '', 0), note
+                assert note >> MusicNote('G', '', 0), note
             elif i == 6:
-                assert note >> Note('A', '', 0), note
+                assert note >> MusicNote('A', '', 0), note
             elif i == 7:
-                assert note >> Note('B', '', 0), note
+                assert note >> MusicNote('B', '', 0), note
             elif i == 8:
-                assert note >> Note('C', '', 1), note
+                assert note >> MusicNote('C', '', 1), note
             elif i == 9:
-                assert note >> Note('D', '', 1), note
+                assert note >> MusicNote('D', '', 1), note
             elif i == 10:
-                assert note >> Note('E', '', 1), note
+                assert note >> MusicNote('E', '', 1), note
             elif i == 11:
-                assert note >> Note('F', '', 1), note
+                assert note >> MusicNote('F', '', 1), note
             elif i == 12:
-                assert note >> Note('G', '', 1), note
+                assert note >> MusicNote('G', '', 1), note
             elif i == 13:
-                assert note >> Note('A', '', 1), note
+                assert note >> MusicNote('A', '', 1), note
             elif i == 14:
-                assert note >> Note('B', '', 1), note
+                assert note >> MusicNote('B', '', 1), note
             elif i == 15:
-                assert note >> Note('C', '', 2), note
+                assert note >> MusicNote('C', '', 2), note
             # ..............................
             elif i == 64:
-                assert note >> Note('C', '', 9), note
+                assert note >> MusicNote('C', '', 9), note
             elif i == 65:
-                assert note >> Note('D', '', 9), note
+                assert note >> MusicNote('D', '', 9), note
             elif i == 66:
-                assert note >> Note('E', '', 9), note
+                assert note >> MusicNote('E', '', 9), note
             elif i == 67:
-                assert note >> Note('F', '', 9), note
+                assert note >> MusicNote('F', '', 9), note
             elif i == 68:
-                assert note >> Note('G', '', 9), note
+                assert note >> MusicNote('G', '', 9), note
             elif i == 69:
-                assert note >> Note('A', '', 9), note
+                assert note >> MusicNote('A', '', 9), note
             elif i == 70:
-                assert note >> Note('B', '', 9), note
+                assert note >> MusicNote('B', '', 9), note
             elif i == 71:
-                assert note >> Note('C', '', 10), note
+                assert note >> MusicNote('C', '', 10), note
             # ..............................
             elif i == 120:
-                assert note >> Note('C', '', 17), note
+                assert note >> MusicNote('C', '', 17), note
             elif i == 121:
-                assert note >> Note('D', '', 17), note
+                assert note >> MusicNote('D', '', 17), note
             elif i == 122:
-                assert note >> Note('E', '', 17), note
+                assert note >> MusicNote('E', '', 17), note
             elif i == 123:
-                assert note >> Note('F', '', 17), note
+                assert note >> MusicNote('F', '', 17), note
             elif i == 124:
-                assert note >> Note('G', '', 17), note
+                assert note >> MusicNote('G', '', 17), note
             elif i == 125:
-                assert note >> Note('A', '', 17), note
+                assert note >> MusicNote('A', '', 17), note
             elif i == 126:
-                assert note >> Note('B', '', 17), note
+                assert note >> MusicNote('B', '', 17), note
             elif i == 127:
-                assert note >> Note('C', '', 18), note
+                assert note >> MusicNote('C', '', 18), note
 
 
     def testBMajorScaleGenerator(self):
@@ -569,71 +569,71 @@ class MajorScalesExpectedNotesTest(unittest.TestCase):
         ):
             i += 1
             if i == 1:
-                assert note >> Note('B', '', 0), note
+                assert note >> MusicNote('B', '', 0), note
             elif i == 2:
-                assert note >> Note('C', '#', 1), note
+                assert note >> MusicNote('C', '#', 1), note
             elif i == 3:
-                assert note >> Note('D', '#', 1), note
+                assert note >> MusicNote('D', '#', 1), note
             elif i == 4:
-                assert note >> Note('E', '', 1), note
+                assert note >> MusicNote('E', '', 1), note
             elif i == 5:
-                assert note >> Note('F', '#', 1), note
+                assert note >> MusicNote('F', '#', 1), note
             elif i == 6:
-                assert note >> Note('G', '#', 1), note
+                assert note >> MusicNote('G', '#', 1), note
             elif i == 7:
-                assert note >> Note('A', '#', 1), note
+                assert note >> MusicNote('A', '#', 1), note
             elif i == 8:
-                assert note >> Note('B', '', 1), note
+                assert note >> MusicNote('B', '', 1), note
             elif i == 9:
-                assert note >> Note('C', '#', 2), note
+                assert note >> MusicNote('C', '#', 2), note
             elif i == 10:
-                assert note >> Note('D', '#', 2), note
+                assert note >> MusicNote('D', '#', 2), note
             elif i == 11:
-                assert note >> Note('E', '', 2), note
+                assert note >> MusicNote('E', '', 2), note
             elif i == 12:
-                assert note >> Note('F', '#', 2), note
+                assert note >> MusicNote('F', '#', 2), note
             elif i == 13:
-                assert note >> Note('G', '#', 2), note
+                assert note >> MusicNote('G', '#', 2), note
             elif i == 14:
-                assert note >> Note('A', '#', 2), note
+                assert note >> MusicNote('A', '#', 2), note
             elif i == 15:
-                assert note >> Note('B', '', 2), note
+                assert note >> MusicNote('B', '', 2), note
             elif i == 16:
-                assert note >> Note('C', '#', 3), note
+                assert note >> MusicNote('C', '#', 3), note
             # ..............................
             elif i == 64:
-                assert note >> Note('B', '', 9), note
+                assert note >> MusicNote('B', '', 9), note
             elif i == 65:
-                assert note >> Note('C', '#', 10), note
+                assert note >> MusicNote('C', '#', 10), note
             elif i == 66:
-                assert note >> Note('D', '#', 10), note
+                assert note >> MusicNote('D', '#', 10), note
             elif i == 67:
-                assert note >> Note('E', '', 10), note
+                assert note >> MusicNote('E', '', 10), note
             elif i == 68:
-                assert note >> Note('F', '#', 10), note
+                assert note >> MusicNote('F', '#', 10), note
             elif i == 69:
-                assert note >> Note('G', '#', 10), note
+                assert note >> MusicNote('G', '#', 10), note
             elif i == 70:
-                assert note >> Note('A', '#', 10), note
+                assert note >> MusicNote('A', '#', 10), note
             elif i == 71:
-                assert note >> Note('B', '', 10), note
+                assert note >> MusicNote('B', '', 10), note
             # ..............................
             elif i == 120:
-                assert note >> Note('B', '', 17), note
+                assert note >> MusicNote('B', '', 17), note
             elif i == 121:
-                assert note >> Note('C', '#', 18), note
+                assert note >> MusicNote('C', '#', 18), note
             elif i == 122:
-                assert note >> Note('D', '#', 18), note
+                assert note >> MusicNote('D', '#', 18), note
             elif i == 123:
-                assert note >> Note('E', '', 18), note
+                assert note >> MusicNote('E', '', 18), note
             elif i == 124:
-                assert note >> Note('F', '#', 18), note
+                assert note >> MusicNote('F', '#', 18), note
             elif i == 125:
-                assert note >> Note('G', '#', 18), note
+                assert note >> MusicNote('G', '#', 18), note
             elif i == 126:
-                assert note >> Note('A', '#', 18), note
+                assert note >> MusicNote('A', '#', 18), note
             elif i == 127:
-                assert note >> Note('B', '', 18), note
+                assert note >> MusicNote('B', '', 18), note
 
 
 
@@ -650,73 +650,73 @@ class MajorScalesExpectedNotesTest(unittest.TestCase):
         ):
             i += 1
             if i == 1:
-                assert note >> Note('D', 'b', 0), note
+                assert note >> MusicNote('D', 'b', 0), note
             elif i == 2:
-                assert note >> Note('E', 'b', 0), note
+                assert note >> MusicNote('E', 'b', 0), note
             elif i == 3:
-                assert note >> Note('F', '', 0), note
+                assert note >> MusicNote('F', '', 0), note
             elif i == 4:
-                assert note >> Note('G', 'b', 0), note
+                assert note >> MusicNote('G', 'b', 0), note
             elif i == 5:
-                assert note >> Note('A', 'b', 0), note
+                assert note >> MusicNote('A', 'b', 0), note
             elif i == 6:
-                assert note >> Note('B', 'b', 0), note
+                assert note >> MusicNote('B', 'b', 0), note
             elif i == 7:
-                assert note >> Note('C', '', 1), note
+                assert note >> MusicNote('C', '', 1), note
             elif i == 8:
-                assert note >> Note('D', 'b', 1), note
+                assert note >> MusicNote('D', 'b', 1), note
             elif i == 9:
-                assert note >> Note('E', 'b', 1), note
+                assert note >> MusicNote('E', 'b', 1), note
             elif i == 10:
-                assert note >> Note('F', '', 1), note
+                assert note >> MusicNote('F', '', 1), note
             elif i == 11:
-                assert note >> Note('G', 'b', 1), note
+                assert note >> MusicNote('G', 'b', 1), note
             elif i == 12:
-                assert note >> Note('A', 'b', 1), note
+                assert note >> MusicNote('A', 'b', 1), note
             elif i == 13:
-                assert note >> Note('B', 'b', 1), note
+                assert note >> MusicNote('B', 'b', 1), note
             elif i == 14:
-                assert note >> Note('C', '', 2), note
+                assert note >> MusicNote('C', '', 2), note
             elif i == 15:
-                assert note >> Note('D', 'b', 2), note
+                assert note >> MusicNote('D', 'b', 2), note
             elif i == 16:
-                assert note >> Note('E', 'b', 2), note
+                assert note >> MusicNote('E', 'b', 2), note
             # ..............................
             elif i == 64:
-                assert note >> Note('D', 'b', 9), note
+                assert note >> MusicNote('D', 'b', 9), note
             elif i == 65:
-                assert note >> Note('E', 'b', 9), note
+                assert note >> MusicNote('E', 'b', 9), note
             elif i == 66:
-                assert note >> Note('F', '', 9), note
+                assert note >> MusicNote('F', '', 9), note
             elif i == 67:
-                assert note >> Note('G', 'b', 9), note
+                assert note >> MusicNote('G', 'b', 9), note
             elif i == 68:
-                assert note >> Note('A', 'b', 9), note
+                assert note >> MusicNote('A', 'b', 9), note
             elif i == 69:
-                assert note >> Note('B', 'b', 9), note
+                assert note >> MusicNote('B', 'b', 9), note
             elif i == 70:
-                assert note >> Note('C', '', 10), note
+                assert note >> MusicNote('C', '', 10), note
             elif i == 71:
-                assert note >> Note('D', 'b', 10), note
+                assert note >> MusicNote('D', 'b', 10), note
             elif i == 72:
-                assert note >> Note('E', 'b', 10), note
+                assert note >> MusicNote('E', 'b', 10), note
             # ..............................
             elif i == 120:
-                assert note >> Note('D', 'b', 17), note
+                assert note >> MusicNote('D', 'b', 17), note
             elif i == 121:
-                assert note >> Note('E', 'b', 17), note
+                assert note >> MusicNote('E', 'b', 17), note
             elif i == 122:
-                assert note >> Note('F', '', 17), note
+                assert note >> MusicNote('F', '', 17), note
             elif i == 123:
-                assert note >> Note('G', 'b', 17), note
+                assert note >> MusicNote('G', 'b', 17), note
             elif i == 124:
-                assert note >> Note('A', 'b', 17), note
+                assert note >> MusicNote('A', 'b', 17), note
             elif i == 125:
-                assert note >> Note('B', 'b', 17), note
+                assert note >> MusicNote('B', 'b', 17), note
             elif i == 126:
-                assert note >> Note('C', '', 18), note
+                assert note >> MusicNote('C', '', 18), note
             elif i == 127:
-                assert note >> Note('D', 'b', 18), note
+                assert note >> MusicNote('D', 'b', 18), note
 
 
 
@@ -737,6 +737,7 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
         ''' tests yielded note count is what has been required '''
         for key in self.scales.values():
             max_notes = random.randint(2, 64)
+            # max_notes = 65
             print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._count_notes( note_count=1..{max_notes} ) ...')
             for count in range(max_notes):
                 count += 1
@@ -756,7 +757,7 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
             for note in key._count_notes(
                 note_count=1, start_note=key[d], yield_all=True
             ):
-                assert note >> Note(*key[d]), note
+                assert note >> MusicNote(*key[d]), note
 
 
     def testNonDiatonicStartNoteYieldNotes(self):
@@ -768,36 +769,36 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
 
             {
                 'scale': self.scales['Ab_chromatic'], 
-                'non_diatonic_note': Note('A', '#', 1), # enharmonic
-                'exp_diatonic_note': Note('B', 'b', 1), # equals
+                'non_diatonic_note': MusicNote('A', '#', 1), # enharmonic
+                'exp_diatonic_note': MusicNote('B', 'b', 1), # equals
             },
 
             {
                 'scale': self.scales['B_major'], 
-                'non_diatonic_note': Note('D', 1),      # missing note
-                'exp_diatonic_note': Note('D', '#', 1), # next note
+                'non_diatonic_note': MusicNote('D', 1),      # missing note
+                'exp_diatonic_note': MusicNote('D', '#', 1), # next note
             },
 
             {
                 'scale': self.scales['Bb_minor'], 
-                'non_diatonic_note': Note('D', '#', 1), # enharmonic
-                'exp_diatonic_note': Note('E', 'b', 1), # equals
+                'non_diatonic_note': MusicNote('D', '#', 1), # enharmonic
+                'exp_diatonic_note': MusicNote('E', 'b', 1), # equals
             },
             {
                 'scale': self.scales['C_mel_minor'], 
-                'non_diatonic_note': Note('F', '#', 0), # missing note
-                'exp_diatonic_note': Note('G', '',  0), # next note
+                'non_diatonic_note': MusicNote('F', '#', 0), # missing note
+                'exp_diatonic_note': MusicNote('G', '',  0), # next note
             },
             {
                 'scale': self.scales['F#_har_minor'], 
-                'non_diatonic_note': Note('C', 'b', 4), # enharmonic
-                'exp_diatonic_note': Note('B', '' , 3), # equals
+                'non_diatonic_note': MusicNote('C', 'b', 4), # enharmonic
+                'exp_diatonic_note': MusicNote('B', '' , 3), # equals
             },
 
             # {   # test chords too eventually
             #     'scale': self.scales['E7'], 
-            #     'non_diatonic_note': Note('A', '', 0), # missing note
-            #     'exp_diatonic_note': Note('B', '', 0), # next note
+            #     'non_diatonic_note': MusicNote('A', '', 0), # missing note
+            #     'exp_diatonic_note': MusicNote('B', '', 0), # next note
             # },
         ]
 
@@ -810,7 +811,7 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
                 note_count=1, start_note=non, yield_all=False
             ): 
                 assert note != None, type(note)         # yield all=False ensures no Nones
-                assert note >> Note(*exp), (note, exp)
+                assert note >> MusicNote(*exp), (note, exp)
 
 
     def testNonDiatonicStartNoteYieldAll(self):
@@ -821,28 +822,28 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
         test_parameters = [
             {
                 'scale': self.scales['Ab_chromatic'], 
-                'non_diatonic_note': Note('A', '#', 1), # enharmonic
-                'exp_diatonic_note': Note('B', 'b', 1), # equals
+                'non_diatonic_note': MusicNote('A', '#', 1), # enharmonic
+                'exp_diatonic_note': MusicNote('B', 'b', 1), # equals
             },
             {
                 'scale': self.scales['B_major'], 
-                'non_diatonic_note': Note('D', 1),      # missing note
+                'non_diatonic_note': MusicNote('D', 1),      # missing note
                 'exp_diatonic_note': None,              # yields a None, not D#
             },
             {
                 'scale': self.scales['Bb_minor'], 
-                'non_diatonic_note': Note('D', '#', 1), # enharmonic
-                'exp_diatonic_note': Note('E', 'b', 1), # equals
+                'non_diatonic_note': MusicNote('D', '#', 1), # enharmonic
+                'exp_diatonic_note': MusicNote('E', 'b', 1), # equals
             },
             {
                 'scale': self.scales['C_mel_minor'], 
-                'non_diatonic_note': Note('F', '#', 0), # missing note
+                'non_diatonic_note': MusicNote('F', '#', 0), # missing note
                 'exp_diatonic_note': None,              # yields a None, not G
             },
             {
                 'scale': self.scales['F#_har_minor'], 
-                'non_diatonic_note': Note('C', 'b', 4), # enharmonic
-                'exp_diatonic_note': Note('B', '' , 3), # equals
+                'non_diatonic_note': MusicNote('C', 'b', 4), # enharmonic
+                'exp_diatonic_note': MusicNote('B', '' , 3), # equals
             },
         ]
 
@@ -870,31 +871,31 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
         )):
             # echo(note, 'yellow')
             if i == 0:
-                assert note >> Note('C', '', 0), note
+                assert note >> MusicNote('C', '', 0), note
             elif i == 1:
                 assert note == None
             elif i == 2:
-                assert note >> Note('D', '', 0), note
+                assert note >> MusicNote('D', '', 0), note
             elif i == 3:
                 assert note == None
             elif i == 4:
-                assert note >> Note('E', '', 0), note
+                assert note >> MusicNote('E', '', 0), note
             elif i == 5:
-                assert note >> Note('F', '', 0), note
+                assert note >> MusicNote('F', '', 0), note
             elif i == 6:
                 assert note == None
             elif i == 7:
-                assert note >> Note('G', '', 0), note
+                assert note >> MusicNote('G', '', 0), note
             elif i == 8:
                 assert note == None
             elif i == 9:
-                assert note >> Note('A', '', 0), note
+                assert note >> MusicNote('A', '', 0), note
             elif i == 10:
                 assert note == None
             elif i == 11:
-                assert note >> Note('B', '', 0), note
+                assert note >> MusicNote('B', '', 0), note
             elif i == 12:
-                assert note >> Note('C', '', 1), note
+                assert note >> MusicNote('C', '', 1), note
 
 
     def testChromaticNoneYields(self):
@@ -914,7 +915,7 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
         )):
             i += 1
             if i == 1:
-                assert note >> Note('A', '', 0), note
+                assert note >> MusicNote('A', '', 0), note
             elif i == 2:
                 assert not note, note
             elif i == 3:
@@ -922,19 +923,19 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
             elif i == 4:
                 assert not note, note
             elif i == 5:
-                assert note >> Note('C', '#', 1), note
+                assert note >> MusicNote('C', '#', 1), note
             elif i == 6:
                 assert not note, note
             elif i == 7:
                 assert not note, note
             elif i == 8:
-                assert note >> Note('E', '', 1), note
+                assert note >> MusicNote('E', '', 1), note
             elif i == 9:
                 assert not note, note
             elif i == 10:
                 assert not note, note
             elif i == 11:
-                assert note >> Note('G', '', 1), note
+                assert note >> MusicNote('G', '', 1), note
 
 
 
@@ -947,7 +948,7 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
         for i, note in enumerate(
             MajorPentatonicScale('C').spell(
                 yield_all=1,
-                start_note=Note('B', '', 3),
+                start_note=MusicNote('B', '', 3),
                 note_count=3
             )
         ):
@@ -956,12 +957,12 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
                 assert not note, note
             if i == 2:
                 assert note, note
-                assert note >> Note('C', '', 4), note
+                assert note >> MusicNote('C', '', 4), note
 
 
     def testMaxOctave(self):
         try:
-            note = Note('C', MAX_OCT + 1)
+            note = MusicNote('C', MAX_OCT + 1)
         except InvalidOctave:
             note = None
         finally:

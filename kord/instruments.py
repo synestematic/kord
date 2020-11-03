@@ -60,7 +60,7 @@ def max_frets_on_screen():
 class PluckedString(object):
 
     def __init__(self, c, alt='', oct=3, frets=12, mode=None, verbose=1):
-        self.tuning = Note(c, alt, oct)
+        self.tuning = MusicNote(c, alt, oct)
         self.mode = mode
         self.frets = frets
         self.verbose = verbose

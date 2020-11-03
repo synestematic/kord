@@ -98,15 +98,15 @@ def output_alterations():
     return list(_ALTS.values())
 
 
-class Note(object):
+class MusicNote(object):
 
     def __init__(self, char, *args):
         ''' init WITHOUT specifying argument names
             should be able to handle:
-            Note('C')
-            Note('C', 3)
-            Note('C', '#')
-            Note('C', '#', 3)
+            MusicNote('C')
+            MusicNote('C', 3)
+            MusicNote('C', '#')
+            MusicNote('C', '#', 3)
         '''
         self.chr = char.upper()
         if self.chr not in _CHARS:
@@ -116,7 +116,7 @@ class Note(object):
         self.oct = 3
 
         if len(args) >  2:
-            raise InvalidNote('Too many arguments')
+            raise InvalidMusicNote('Too many arguments')
 
         # with only 1 arg, decide if it's alt or oct
         if len(args) == 1:
@@ -273,22 +273,22 @@ class Note(object):
 EnharmonicMatrix = LoopedList(
 
     ## 2-octave enharmonic relationships
-    (  Note('C', '' , 2), Note('B', '#' , 1), Note('D', 'bb', 2)  ), # NAH
-    (  Note('C', '#', 2), Note('D', 'b' , 2), Note('B', '##', 1)  ), # AAH
+    (  MusicNote('C', '' , 2), MusicNote('B', '#' , 1), MusicNote('D', 'bb', 2)  ), # NAH
+    (  MusicNote('C', '#', 2), MusicNote('D', 'b' , 2), MusicNote('B', '##', 1)  ), # AAH
 
     ## 1-octave enharmonic relationships
-    (  Note('D', '' , 1), Note('C', '##', 1), Note('E', 'bb', 1)  ), # NHH
-    (  Note('D', '#', 1), Note('E', 'b' , 1), Note('F', 'bb', 1)  ), # AAH
-    (  Note('E', '' , 1), Note('F', 'b' , 1), Note('D', '##', 1)  ), # NAH
-    (  Note('F', '' , 1), Note('E', '#' , 1), Note('G', 'bb', 1)  ), # NAH
-    (  Note('F', '#', 1), Note('G', 'b' , 1), Note('E', '##', 1)  ), # AAH
-    (  Note('G', '' , 1), Note('F', '##', 1), Note('A', 'bb', 1)  ), # NHH
-    (  Note('G', '#', 1), Note('A', 'b' , 1)                      ), # AA
-    (  Note('A', '' , 1), Note('G', '##', 1), Note('B', 'bb', 1)  ), # NHH
+    (  MusicNote('D', '' , 1), MusicNote('C', '##', 1), MusicNote('E', 'bb', 1)  ), # NHH
+    (  MusicNote('D', '#', 1), MusicNote('E', 'b' , 1), MusicNote('F', 'bb', 1)  ), # AAH
+    (  MusicNote('E', '' , 1), MusicNote('F', 'b' , 1), MusicNote('D', '##', 1)  ), # NAH
+    (  MusicNote('F', '' , 1), MusicNote('E', '#' , 1), MusicNote('G', 'bb', 1)  ), # NAH
+    (  MusicNote('F', '#', 1), MusicNote('G', 'b' , 1), MusicNote('E', '##', 1)  ), # AAH
+    (  MusicNote('G', '' , 1), MusicNote('F', '##', 1), MusicNote('A', 'bb', 1)  ), # NHH
+    (  MusicNote('G', '#', 1), MusicNote('A', 'b' , 1)                      ), # AA
+    (  MusicNote('A', '' , 1), MusicNote('G', '##', 1), MusicNote('B', 'bb', 1)  ), # NHH
 
     ## 2-octave enharmonic relationships
-    (  Note('A', '#', 1), Note('B', 'b' , 1), Note('C', 'bb', 2)  ), # AAH
-    (  Note('B', '' , 1), Note('C', 'b' , 2), Note('A', '##', 1)  ), # NAH
+    (  MusicNote('A', '#', 1), MusicNote('B', 'b' , 1), MusicNote('C', 'bb', 2)  ), # AAH
+    (  MusicNote('B', '' , 1), MusicNote('C', 'b' , 2), MusicNote('A', '##', 1)  ), # NAH
 
 )
 

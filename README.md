@@ -1,10 +1,10 @@
 # kord
-kord is a python framework that provides programmers with a simple api for the creation of music-based applications. While it's mainly focused for theoretical purposes, some of it's more visually oriented features are well-suited for the generation of plucked-string instruments.
+kord is a python framework that provides programmers with a simple api for the creation of music-based applications. While it's mainly intended for theoretical purposes, some of it's modules contain functionality specifically tailored for plucked-string instrument visualization.
 
 
 ## installation
 
-The only dependency for `kord` is the pip package `bestia`, my own library for creating command-line applications. It will be automatically downloaded when you install using pip:
+The only dependency for `kord` is the pip package `bestia`, my own library for creating command-line applications. Both can be automatically installed by using pip:
 
 ```
 $   python3 -m pip install kord
@@ -14,11 +14,12 @@ $   python3 -m pip install kord
 
 # api reference:
 
-First, let me say that all of the following will only make sense to you if you already have some background on music theory|harmony.
+Please expect to understand the following documentation only if you have an above basic understanding of music theory|harmony.
+
 
 ## kord.notes module:
 
-### class Note(object):
+### class MusicNote(object):
 
 Note instances are the lowest-level objects of the framework and have 3 main attributes:
 
@@ -33,25 +34,25 @@ Only the `chr` argument is required to create an instance. Arguments `alt` and `
 
 ```
 >>> from kord.notes import Note
->>> e3, f3 = Note('e'), Note('f')
+>>> e3, f3 = MusicNote('e'), MusicNote('f')
 >>> e3, f3
 (E³, F³) 
->>> Note('B', 'b', 7)
+>>> MusicNote('B', 'b', 7)
 B♭⁷
->>> Note('C', '#', 0)
+>>> MusicNote('C', '#', 0)
 C♯⁰
 ```
 
 Notes with double alterations are supported but Notes with triple (or more) alterations raise InvalidAlteration Exceptions:
 
 ```
->>> n3 = Note('A', 'bb', 1)
+>>> n3 = MusicNote('A', 'bb', 1)
 >>> n3
 A𝄫¹
->>> n4 = Note('F', '##', 1)
+>>> n4 = MusicNote('F', '##', 1)
 >>> n4
 F𝄪¹
->>> Note('G', '###')
+>>> MusicNote('G', '###')
 Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
   ...
@@ -71,11 +72,11 @@ The substraction operator allows you to calculate the difference in semitones be
 ```
 >>> f3 - e3
 1
->>> Note('a', 'b', 2) - Note('g', '#', 2)
+>>> MusicNote('a', 'b', 2) - MusicNote('g', '#', 2)
 0
->>> Note('a', 8) - Note('c', 4)
+>>> MusicNote('a', 8) - MusicNote('c', 4)
 57
->>> Note('a', 8) - Note('c', '##', 4)
+>>> MusicNote('a', 8) - MusicNote('c', '##', 4)
 55
 ```
 
@@ -94,29 +95,29 @@ True
 While the concept is seemingly straightforward, special attention needs to be taken when using `== !=` with enharmonic notes.
 
 ```
->>> n1 = Note('F', '#', 5)
->>> n2 = Note('G', 'b', 5)
+>>> n1 = MusicNote('F', '#', 5)
+>>> n2 = MusicNote('G', 'b', 5)
 >>> n1, n2
 (F♯⁵, G♭⁵)
 >>> n1 == n2
 True
 ```
 
-The notes F#5 and Gb5 are not the same but `==` checks their interval and since its a unison,  the comparison evaluates True. This might seem a bit counter-intuitive at first but `kord` uses different operators to check for exact note matches.
+The notes F#5 and Gb5 are NOT the same but since their interval is a unison, the `==` comparison evaluates True. This might seem a bit counter-intuitive at first but you can still check for exact note matches with the use of 2 other operators.
 
 #### >> ** operators
 
-The power and right-shift operators allow you to compare Notes for equality based not on their intervals, but on their internal properties. The strictest operator is `>>` which compares note, alteration and octave attributes while `**` is less strict and only compares note and alteration. 
+The power and right-shift operators allow you to compare Notes for equality based not on their intervals, but on their intrinsic `chr, alt, oct` properties. The strictest operator `>>` compares all 3 attributes for equality while the looser `**` ignores `oct`: 
 
 ```
->>> ab1, ab5 = Note('A', 'b', 1),  Note('A', 'b', 5)
+>>> ab1, ab5 = MusicNote('A', 'b', 1),  MusicNote('A', 'b', 5)
 >>> ab1 == ab5
 False
 >>> ab1 ** ab5
 True
 ```
 
-Notice that `**` evaluated True because both instances are A flat notes, even though there is a wide interval between them.
+Notice `**` evaluated True since both instances are A flat notes, even when there is a wide interval between them.
 
 ```
 >>> ab1 >> ab5
@@ -126,8 +127,7 @@ False
 True
 ```
 
-For the `>>` operator to evaluate True, the octave of the notes has to match as well.
-
+For the `>>` operator to evaluate True, the octaves of the notes must match as well.
 
 
 <hr/>
@@ -192,7 +192,7 @@ B⁰
 
 ### MusicKey.spell() method
 
-Using list index notation is fine but perhaps it is more interesting to look at a different and more dynamic way of getting the items of our MusicKey instances. The `spell()` method provides a simple interface that generates Note instances on the fly. Let's take a look at a couple of examples and the several arguments that we can use when calling this method:
+Using list index notation is fine but perhaps it is more interesting to look at a different and more dynamic way of getting the items of our MusicKey instances. The `spell()` method provides a simple interface for generating Note instances on the fly. Let's take a look at a couple of examples and the several arguments that we can use when calling this method:
 
 ```
 >>> for note in c_chromatic_scale.spell():
@@ -213,6 +213,7 @@ The `note_count` argument is an `int` that allows us to specify the amount of no
 A⁰ B⁰ C¹ D¹ >>> 
 ```
 
+Be careful, ask for too many notes and kord will throw and Exception when the oct 9 has been exceeded.
 
 The `yield_all` argument is a `bool` that will make the method yield not just Note instances, but also None instances for every non-diatonic semitone found:
 
@@ -224,15 +225,16 @@ A⁰ None B⁰ C¹ None D¹ >>>
 ```
 
 
-The `start_note` argument is a `Note` object that can be used to start getting notes from a specific note. This can be done even if the note is not part of the scale:
+The `start_note` argument is a `MusicNote` object that can be used to start getting notes from a specific note. This can be done even if the note is not part of the scale:
 
 ```
->>> Db1 = Note('D', 'b', 1)
+>>> Db1 = MusicNote('D', 'b', 1)
 >>> for note in a_minor_scale.spell(note_count=4, yield_all=True, start_note=Db1):
 ...     print(note, end=' ')
 ...
 None D¹ None E¹ F¹ None G¹ >>> 
 ```
+
 
 
 ## fretboard tool
