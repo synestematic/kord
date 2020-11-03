@@ -104,9 +104,9 @@ class MusicNote(object):
         ''' init WITHOUT specifying argument names
             should be able to handle:
             MusicNote('C')
-            MusicNote('C', 3)
+            MusicNote('C', 9)
             MusicNote('C', '#')
-            MusicNote('C', '#', 3)
+            MusicNote('C', '#', 9)
         '''
         self.chr = char.upper()
         if self.chr not in _CHARS:

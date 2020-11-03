@@ -1,5 +1,5 @@
 # kord
-kord is a python framework that provides programmers with a simple api for the creation of music-based applications. While it's mainly intended for theoretical purposes, some of it's modules contain functionality specifically tailored for plucked-string instrument visualization.
+kord is a python framework that provides programmers with a simple api for the creation of music-based applications. While it's mainly intended for theoretical purposes, some of it's modules contain functionality specifically tailored for dealing with plucked-string instruments.
 
 
 ## installation
@@ -14,43 +14,44 @@ $   python3 -m pip install kord
 
 # api reference:
 
-Please expect to understand the following documentation only if you have an above basic understanding of music theory|harmony.
+Please expect to understand the following documentation only if you have an above basic understanding of music theory|harmony. Let's dive into the first module:
 
 
 ## kord.notes module:
 
 ### class MusicNote(object):
 
-Note instances are the lowest-level objects of the framework and have 3 main attributes:
+MusicNote instances are the building blocks of the framework and have 3 main attributes:
 
 ```
-* chr: str   ('C', 'D', 'E', 'F', 'G', 'A', 'B')
-* alt: str   ('b', 'bb', '', '#', '##')
-* oct: int   (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
+* chr: str    ('C', 'D', 'E', 'F', 'G', 'A', 'B')
+* alt: str    ('b', 'bb', '', '#', '##')
+* oct: int    (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 ```
 
-
-Only the `chr` argument is required to create an instance. Arguments `alt` and `oct` will default to `''` and `3` respectively.
+You can set these values when creating an instance and only the `chr` argument is required. Arguments `alt` and `oct` will default to `''` and `3` respectively. They are __positional__ arguments, not keyword arguments so keep that in mind when creating your objects.
 
 ```
 >>> from kord.notes import Note
 >>> e3, f3 = MusicNote('e'), MusicNote('f')
 >>> e3, f3
 (E³, F³) 
+>>> MusicNote('G', 'b')
+G♭³
+>>> MusicNote('C', 9)
+C⁹
 >>> MusicNote('B', 'b', 7)
 B♭⁷
 >>> MusicNote('C', '#', 0)
 C♯⁰
 ```
 
-Notes with double alterations are supported but Notes with triple (or more) alterations raise InvalidAlteration Exceptions:
+Notes with double alterations are supported but Notes with triple (or more) alterations will raise an Exception:
 
 ```
->>> n3 = MusicNote('A', 'bb', 1)
->>> n3
+>>> MusicNote('A', 'bb', 1)
 A𝄫¹
->>> n4 = MusicNote('F', '##', 1)
->>> n4
+>>> MusicNote('F', '##', 1)
 F𝄪¹
 >>> MusicNote('G', '###')
 Traceback (most recent call last):
@@ -59,11 +60,20 @@ Traceback (most recent call last):
 kord.errors.InvalidAlteration: ###
 ```
 
+Similarly, the maximum octave value currently supported is 9.
 
+```
+>>> MusicNote('D', 10)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  ...
+kord.errors.InvalidOctave: 10
+
+```
+
+### Comparing MusicNote objects:
  
-Intervals between note objects can be evaluated using the following operators:  ```-   < >   <= >=   == !=   >>   ** ```
- 
-These allow calculation of semitone deltas between notes as well as insights into their enharmonic relationships. Let's take a quick look at each operator separately:
+The ```-   < >   <= >=   == !=   >>   ** ``` allow calculation of semitone deltas between notes as well as insights into their enharmonic relationships. Let's take a quick look at each operator separately:
 
 #### - operator
 
@@ -103,7 +113,7 @@ While the concept is seemingly straightforward, special attention needs to be ta
 True
 ```
 
-The notes F#5 and Gb5 are NOT the same but since their interval is a unison, the `==` comparison evaluates True. This might seem a bit counter-intuitive at first but you can still check for exact note matches with the use of 2 other operators.
+The notes F♯⁵ and G♭⁵ are NOT the same but since their interval is a unison, the `==` comparison evaluates True. This might seem a bit counter-intuitive at first but you can still check for exact note matches with the use of 2 other operators.
 
 #### >> ** operators
 
@@ -140,7 +150,7 @@ For the `>>` operator to evaluate True, the octaves of the notes must match as w
 
 ### class MusicKey(object):
 
-Think of MusicKey objects as generators of Note objects. You can define a new class which inherits MusicKey and use any theoretical arrangement of `intervals` from the root note in order to create chords, scales, modes. You can further restrict these child classes by restricting `degrees` to specific values.
+Think of MusicKey objects as generators of MusicNote objects. You can define a new class which inherits MusicKey and use any theoretical arrangement of `intervals` from the root note in order to create chords, scales, modes, etc. You can further taylor these child classes by restricting `degrees` to specific values, this is very useful for creating chords.
 
 These are a couple of pre-defined examples to give you an idea of how it works:
 
@@ -179,11 +189,12 @@ class MajorTriad(MajorScale):
     degrees = (1, 3, 5)
 ```
 
-When we create an instance of a MusicKey subclass, we can then access it's items using list index notation:
+Bare in mind that MusicKey objects are initialized with `chr` and `alt` attributes, `oct` values are not taken into consideration. These allows us to simply unpack MusicNote objects in order to create MusicKey instances based off of them. Once we have a MusicKey object, we can access it's single degrees using list index notation:
 
 ```
 >>> from kord.keys import ChromaticScale
->>> c_chromatic_scale = ChromaticScale('C')
+>>> c = MusicNote('C')
+>>> c_chromatic_scale = ChromaticScale(*c)
 >>> c_chromatic_scale[2]
 C♯⁰
 >>> c_chromatic_scale[12]
@@ -192,7 +203,7 @@ B⁰
 
 ### MusicKey.spell() method
 
-Using list index notation is fine but perhaps it is more interesting to look at a different and more dynamic way of getting the items of our MusicKey instances. The `spell()` method provides a simple interface for generating Note instances on the fly. Let's take a look at a couple of examples and the several arguments that we can use when calling this method:
+Individually getting degrees using list index notation is fine but it is perhaps more interesting to look at a more dynamic way of getting notes out of our MusicKey instances. The `spell()` method provides such an interface for generating MusicNote instances on the fly. Let's take a look at a couple of examples and the several arguments that we can use when calling this method:
 
 ```
 >>> for note in c_chromatic_scale.spell():
@@ -201,8 +212,9 @@ Using list index notation is fine but perhaps it is more interesting to look at 
 C⁰ C♯⁰ D⁰ D♯⁰ E⁰ F⁰ F♯⁰ G⁰ G♯⁰ A⁰ A♯⁰ B⁰ C¹ >>> 
 ```
 
+As seen above the method will generate the first octave of degrees of the object when called without arguments.
 
-The `note_count` argument is an `int` that allows us to specify the amount of notes we want:
+The `note_count` argument is an `int` and it allows us to set a specific the amount of notes we want:
 
 ```
 >>> from kord.keys import MinorScale
@@ -215,7 +227,7 @@ A⁰ B⁰ C¹ D¹ >>>
 
 Be careful, ask for too many notes and kord will throw and Exception when the oct 9 has been exceeded.
 
-The `yield_all` argument is a `bool` that will make the method yield not just Note instances, but also None instances for every non-diatonic semitone found:
+The `yield_all` argument is a `bool` that will make the method yield not just `MusicNote` instances, but also `None` objects for every non-diatonic semitone found:
 
 ```
 >>> for note in a_minor_scale.spell(note_count=4, yield_all=True):
@@ -239,10 +251,10 @@ None D¹ None E¹ F¹ None G¹ >>>
 
 ## fretboard tool
 
-A sample application `fretboard.py` comes built-in with `kord` and gives some insight into the possibilities of the framework. It displays a representation of your instrument's fretboard, tuned to your liking along with note patterns for any given mode (scale/chord) for any given root note. Installation path varies depending on your system but it's usually either `/usr/local/fretboard` or `~/.local/fretboard`. You will also find a `tunings` directory with some pre-defined instrument tunings in the form of .json files. Feel free to modify them or add your own following the correct syntax and they will immediately become available to the run-time.
+A sample application `fretboard.py` comes built-in with `kord` and gives some insight into the possibilities of the framework. It displays a representation of your instrument's fretboard, tuned to your liking along with note patterns for any given mode (scale/chord) for any given root note. Installation path varies depending on your system, it's usually something like `/usr/local/fretboard` or `~/.local/fretboard`. You will also find a `tunings` directory with some pre-defined instrument tunings in the form of .json files. Feel free to modify them or add your own and they will immediately become available to the run-time.
 
 ```
-> python3 fretboard.py --help
+$  python3 fretboard.py --help
 usage: fretboard.py [-h] [-s  | -c ] [-i] [-t] [-f] [-v] root
 
 <<< Fretboard visualizer sample tool for the kord music framework >>>
