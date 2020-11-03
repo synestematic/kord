@@ -287,11 +287,17 @@ The `--verbosity` option let's you choose how much information to see on-screen 
 
 Here are a couple of pics to get you excited:
 
+### chords
+
+![](https://github.com/synestematic/kord/blob/master/resources/e7.png?raw=true)
+
+![](https://github.com/synestematic/kord/blob/master/resources/dim7.png?raw=true)
+
+### scales
+
 ![](https://github.com/synestematic/kord/blob/master/resources/penta.png?raw=true)
 
 ![](https://github.com/synestematic/kord/blob/master/resources/cs.png?raw=true)
-
-![](https://github.com/synestematic/kord/blob/master/resources/dim7.png?raw=true)
 
 ![](https://github.com/synestematic/kord/blob/master/resources/lydian.png?raw=true)
 
