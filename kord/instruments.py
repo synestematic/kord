@@ -73,7 +73,7 @@ class PluckedString(object):
 
         for f, note in enumerate(
             mode.spell(
-                note_count=self.frets,
+                note_count=self.frets + 1,
                 start_note=self.tuning,
                 yield_all=True,
             )
