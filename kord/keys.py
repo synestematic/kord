@@ -44,12 +44,12 @@ class MusicKey(object):
 
     @classmethod
     def name(cls):
-        n = cls.__name__[0]
-        for c in cls.__name__[1:]:
+        n = ''
+        for c in cls.__name__:
             if c.isupper():
                 n += ' '
-            n += c
-        return n
+            n += c.lower()
+        return n.strip()
 
     @classmethod
     def __possible_root_notes(cls, valids=True):
