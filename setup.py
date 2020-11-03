@@ -7,7 +7,7 @@ setuptools.setup(
     name="kord",
     version="2.6",
     author="Federico Rizzo",
-    author_email="synestem@tic.com",
+    author_email="synestem@tic.com.ar",
     description='a python framework for programming music applications',
     long_description=long_description,
     long_description_content_type="text/markdown",

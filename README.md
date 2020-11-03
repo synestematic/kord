@@ -237,24 +237,24 @@ None D¹ None E¹ F¹ None G¹ >>>
 
 ## fretboard sample application
 
-A sample application `fretboard.py` comes built-in with the kord framework and gives some insight into it's possibilities. It displays a representation of the fretboard of your instrument, tuned to your preference along as where to find the notes for any given mode for any given root note.
+A sample application `fretboard.py` comes built-in with `kord` and gives some insight into the possibilities of the framework. It displays a representation of the fretboard of your instrument, tuned to your preference along as where to find the notes for any given mode (scale/chord) for any given root note.
 
 ```
-usage: fretboard.py [-h] [-m] [-i] [-t] [-f] [-v] ROOT
+usage: fretboard.py [-h] [-s  | -c ] [-i] [-t] [-f] [-v] root
 
 <<< Fretboard visualizer sample tool for the kord music framework >>>
 
 positional arguments:
-  ROOT                select a root note
+  root                select key ROOT note
 
 optional arguments:
   -h, --help          show this help message and exit
-  -m , --mode         mode to visualize: ['major', 'minor', 'natural_minor', 'melodic_minor', 'harmonic_minor', 'ionian', 'lydian', 'mixo', 'aeolian', 'dorian', 'phrygian', 'chromatic']
-  -i , --instrument   instrument fretboard to visualize: ['banjo', 'guitar', 'bass', 'ukulele']
-  -t , --tuning       instrument tuning: check your .json files for available options
-  -f , --frets        number of displayed frets: [0, 1, 2, .. , 36]
-  -v , --verbosity    application verbosity: [0, 1, 2]
-
+  -s , --scale        major, minor, melodic_minor, harmonic_minor, major_pentatonic, minor_pentatonic, ionian, lydian, mixolydian, aeolian, dorian, phrygian, locrian, chromatic
+  -c , --chord        maj, min, aug, dim, maj7, min7, 7, dim7, min7dim5, maj9, min9, 9
+  -i , --instrument   banjo, guitar, bass, ukulele
+  -t , --tuning       check .json files for available options
+  -f , --frets        1, 2, .., 36
+  -v , --verbosity    0, 1, 2
 ```
 
 You will find some pre-defined instrument tunings in the `tunings` directory in the form of .json files. Feel free to modify these or add your own following the correct syntax and they will immediately become available to the fretboard tool.
