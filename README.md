@@ -235,11 +235,12 @@ None D¹ None E¹ F¹ None G¹ >>>
 ```
 
 
-## fretboard sample application
+## fretboard tool
 
-A sample application `fretboard.py` comes built-in with `kord` and gives some insight into the possibilities of the framework. It displays a representation of the fretboard of your instrument, tuned to your preference along as where to find the notes for any given mode (scale/chord) for any given root note.
+A sample application `fretboard.py` comes built-in with `kord` and gives some insight into the possibilities of the framework. It displays a representation of your instrument's fretboard, tuned to your liking along with note patterns for any given mode (scale/chord) for any given root note. Installation path varies depending on your system but it's usually either `/usr/local/fretboard` or `~/.local/fretboard`. You will also find a `tunings` directory with some pre-defined instrument tunings in the form of .json files. Feel free to modify them or add your own following the correct syntax and they will immediately become available to the run-time.
 
 ```
+> python3 fretboard.py --help
 usage: fretboard.py [-h] [-s  | -c ] [-i] [-t] [-f] [-v] root
 
 <<< Fretboard visualizer sample tool for the kord music framework >>>
@@ -257,6 +258,14 @@ optional arguments:
   -v , --verbosity    0, 1, 2
 ```
 
-You will find some pre-defined instrument tunings in the `tunings` directory in the form of .json files. Feel free to modify these or add your own following the correct syntax and they will immediately become available to the fretboard tool.
+The only required parameter is the `root` note. 
 
-I'm pretty sure guitar/bass players may find it very handy as a means to develop their knowledge of their instrument. Have fun!
+The `--scale` and `--chord` options let you choose which note pattern to display for the selected root. They are mutually exclusive and the default value is `--chord maj` when left blank.
+
+The `--instrument` and `--tuning` options refer to the json files you will find in the tunings directory. Default values are `--instrument guitar   --tuning standard`.
+
+The `--frets` option let's you choose how many frets to visualize, maximum value is 36. Default value will fill your terminal screen.
+
+The `--verbosity` option let's you choose how much information to see on-screen from 0 to 2. Default value is 1.
+
+Keep on rocking!
