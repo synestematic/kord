@@ -10,7 +10,6 @@ class MusicKey(object):
     @classmethod
     def allowed_degrees(cls):
         ''' calculates all possible degree numbers for MusicKey
-
         '''
         if cls.degrees:
             degrees = list(cls.degrees)
@@ -94,9 +93,10 @@ class MusicKey(object):
         self.root = MusicNote(chr, alt, 0) # ignore note.oct
 
     def __repr__(self):
+        ''' prints first octave of MusicNote items '''
         spell_line = Row()
         for d in self.spell(
-            note_count=len(self.intervals) +1, yield_all=False
+            note_count=None, yield_all=False
         ):
             spell_line.append(
                 FString(d, size=5)
@@ -219,7 +219,8 @@ class MusicKey(object):
 
     def spell(self, note_count=None, start_note=None, yield_all=False):
         if note_count == None:
-            note_count = len(self.intervals)
+            note_count = len(self.degrees) if self.degrees else len(self.intervals)
+            note_count += 1  # also include next octave root note
         try:
             return self._count_notes(
                 note_count=note_count,
