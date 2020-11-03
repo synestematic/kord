@@ -54,7 +54,7 @@ def max_frets_on_screen():
     '''
     frets = int(
         tty_cols() / ( _NOTE_WIDTH + _FRET_WIDTH )
-    ) - 1
+    ) - 2
     return frets if frets < MAX_FRETS else MAX_FRETS
 
 class PluckedString(object):
@@ -93,16 +93,16 @@ class PluckedString(object):
                     ),
                 )
 
-            # APPEND NOTE_INFO
+            # APPEND MUSICNOTE DATA
             string_line.append(
                 FString(
                     fret_value,
-                    size=_NOTE_WIDTH - 1 if f == 0 else _NOTE_WIDTH,
+                    size=_NOTE_WIDTH,
                     align='cr',
                 )
             )
 
-            # APPEND FRET
+            # APPEND FRET SYMBOL
             string_line.append(
                 FString(
                     '║' if f % 12 == 0 else '│',
@@ -120,6 +120,8 @@ class PluckedString(object):
 
 class PluckedStringInstrument(object):
 
+    STRING_NUMBER_SIZE = 2  # space for instruments with more than 9 strings
+
     @classmethod
     def render_inlays(cls, frets=12, verbose=1):
 
@@ -131,8 +133,9 @@ class PluckedStringInstrument(object):
         inlay_row = Row(
             FString(
                 '',
-                size=_NOTE_WIDTH + _FRET_WIDTH,
-                align='l'
+                size=cls.STRING_NUMBER_SIZE + _NOTE_WIDTH + _FRET_WIDTH,
+                align='l',
+                # pad='*',
             ),
         )
 
@@ -153,8 +156,8 @@ class PluckedStringInstrument(object):
         echo(inlay_row)
 
 
-    @staticmethod
-    def render_binding(side, frets=12):
+    @classmethod
+    def render_binding(cls, side, frets=12):
         ''' https://en.wikipedia.org/wiki/Box-drawing_character
         '''
         normal = { 'upper': '═', 'lower': '═' }
@@ -164,7 +167,8 @@ class PluckedStringInstrument(object):
         final  = { 'upper': '╕', 'lower': '╛' }
         fine   = { 'upper': '╗', 'lower': '╝' }
         total_fret_width = _NOTE_WIDTH + _FRET_WIDTH
-        render = ' ' * _NOTE_WIDTH + capo[side]
+        render = ' ' * ( _NOTE_WIDTH + cls.STRING_NUMBER_SIZE )
+        render += capo[side]
         for f in range(1, frets * total_fret_width + 1):
             # final fret
             if f == frets * total_fret_width:
@@ -193,6 +197,7 @@ class PluckedStringInstrument(object):
             s,
             fg='cyan',
             fx=['faint' if verbose < 1 else ''],
+            size=self.STRING_NUMBER_SIZE
         )
         string = self.strings[s-1]
         string.mode = mode
