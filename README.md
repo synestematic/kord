@@ -68,7 +68,6 @@ Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
   ...
 kord.errors.InvalidOctave: 10
-
 ```
 
 ### Comparing MusicNote objects:
