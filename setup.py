@@ -5,10 +5,10 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="kord",
-    version="2.9",
+    version="3.0",
     author="Federico Rizzo",
     author_email="synestem@tic.com.ar",
-    description='a python framework for programming music applications',
+    description='a framework for programming music applications',
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/synestematic/kord",
@@ -16,7 +16,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3 :: Only",
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "License :: OSI Approved :: MIT License",
         "Operating System :: POSIX :: Linux",
         "Operating System :: MacOS :: MacOS X",
