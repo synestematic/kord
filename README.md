@@ -8,14 +8,14 @@ kord is a python framework that provides programmers with a simple api for the c
 The only dependency for `kord` is the pip package `bestia`, my own library for creating command-line applications. Both can be automatically installed by using pip:
 
 ```
-$   python3 -m pip install kord
+$  python3 -m pip install kord
 ```
 
 
 
 # api reference:
 
-Please expect to understand the following documentation only if you have an above basic understanding of music theory|harmony. Let's dive into the first module:
+Please only expect to understand the following documentation if you have an above basic understanding of music theory. With that said, let's dive into the first module:
 
 
 ## kord.notes module:
@@ -26,11 +26,11 @@ MusicNote instances are the building blocks of the framework and have 3 main att
 
 ```
 * chr: str    ('C', 'D', 'E', 'F', 'G', 'A', 'B')
-* alt: str    ('b', 'bb', '', '#', '##')
+* alt: str    ('bb', 'b', '', '#', '##')
 * oct: int    (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 ```
 
-You can set these values when creating an instance and only the `chr` argument is required. Arguments `alt` and `oct` will default to `''` and `3` respectively. They are __positional__ arguments, not keyword arguments so keep that in mind when creating your objects.
+You can set these values when creating an instance and only the `chr` argument is required. Arguments `alt` and `oct` will default to `''` and `3` respectively. These are __positional__ arguments, not keyword arguments so keep that in mind when creating your objects.
 
 ```
 >>> from kord.notes import MusicNote
@@ -47,7 +47,7 @@ B♭⁷
 C♯⁰
 ```
 
-Notes with double alterations are supported but Notes with triple (or more) alterations will raise an Exception:
+Notes with double alterations are supported but Notes with triple or more alterations will raise an exception:
 
 ```
 >>> MusicNote('A', 'bb', 1)
@@ -73,7 +73,7 @@ kord.errors.InvalidOctave: 10
 
 ### Comparing MusicNote objects:
  
-The ```-   < >   <= >=   == !=   >>   ** ```  allow calculation of semitone deltas between notes as well as insights into their enharmonic relationships. Let's take a quick look at each operator separately:
+The ```-   < >   <= >=   == !=   >>   ** ```  operators allow computation of semitone intervals between MusicNote instances and give insight into their enharmonic relationships. Let's take a quick look at each operator separately:
 
 #### - operator
 
@@ -93,7 +93,7 @@ The substraction operator lets you compute the difference in semitones between t
 
 ####  < >   <= >=   == !=  operators
 
-Comparison operators return boolean values based on the interval between 2 notes. 
+Comparison operators return boolean values based *exclusively* on the interval between the 2 objects. 
 
 ```
 >>> f3 > e3
@@ -127,7 +127,7 @@ False
 True
 ```
 
-Notice `**` evaluated True since both instances are A flat notes, even when there is a wide interval between them.
+Notice `**` evaluates True since both instances are A flat notes, even when there is a wide interval between them.
 
 ```
 >>> ab1 >> ab5
@@ -203,7 +203,7 @@ B⁰
 
 ### MusicKey.spell() method
 
-Individually getting degrees using list index notation is fine but it is perhaps more interesting to look at a more dynamic way of getting notes out of our MusicKey instances. The `spell()` method provides such an interface for generating MusicNote instances on the fly. Let's take a look at a couple of examples and the several arguments that we can use when calling this method:
+Retrieving individual degrees is good, but it is perhaps more interesting to look at a more dynamic way of getting notes out of our MusicKey instances. The `spell()` method provides such an interface for generating MusicNote instances on the fly. Let's take a look at a couple of examples and the several arguments that we can use when calling this method:
 
 ```
 >>> for note in c_chromatic_scale.spell():
@@ -263,7 +263,7 @@ positional arguments:
   root                select key ROOT note
 
 optional arguments:
-  -h, --help          show this help message and exit
+  -h , --help         show this help message and exit
   -s , --scale        major, minor, melodic_minor, harmonic_minor, major_pentatonic, minor_pentatonic, ionian, lydian, mixolydian, aeolian, dorian, phrygian, locrian, chromatic
   -c , --chord        maj, min, aug, dim, maj7, min7, 7, dim7, min7dim5, maj9, min9, 9
   -i , --instrument   banjo, guitar, bass, ukulele
