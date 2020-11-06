@@ -120,10 +120,16 @@ class PluckedString(object):
 
 class PluckedStringInstrument(object):
 
-    STRING_NUMBER_SIZE = 2  # space for instruments with more than 9 strings
+    def __init__(self, *notes, name=''):
+        self.strings = [ PluckedString(*n) for n in notes ]
+        self.name = name
 
-    @classmethod
-    def render_inlays(cls, frets=12, verbose=1):
+    @property
+    def string_n_size(self):
+        ''' does not expect more then 99 strings... '''
+        return 1 if len(self.strings) < 10 else 2
+
+    def render_inlays(self, frets=12, verbose=1):
 
         if not verbose:
             return
@@ -133,7 +139,7 @@ class PluckedStringInstrument(object):
         inlay_row = Row(
             FString(
                 '',
-                size=cls.STRING_NUMBER_SIZE + _NOTE_WIDTH + _FRET_WIDTH,
+                size=self.string_n_size + _NOTE_WIDTH + _FRET_WIDTH,
                 align='l',
                 # pad='*',
             ),
@@ -156,8 +162,7 @@ class PluckedStringInstrument(object):
         echo(inlay_row)
 
 
-    @classmethod
-    def render_binding(cls, side, frets=12):
+    def render_binding(self, side, frets=12):
         ''' https://en.wikipedia.org/wiki/Box-drawing_character
         '''
         normal = { 'upper': '═', 'lower': '═' }
@@ -167,7 +172,7 @@ class PluckedStringInstrument(object):
         final  = { 'upper': '╕', 'lower': '╛' }
         fine   = { 'upper': '╗', 'lower': '╝' }
         total_fret_width = _NOTE_WIDTH + _FRET_WIDTH
-        render = ' ' * ( _NOTE_WIDTH + cls.STRING_NUMBER_SIZE )
+        render = ' ' * ( _NOTE_WIDTH + self.string_n_size )
         render += capo[side]
         for f in range(1, frets * total_fret_width + 1):
             # final fret
@@ -187,17 +192,12 @@ class PluckedStringInstrument(object):
                 render += normal[side]
         echo(render)
 
-
-    def __init__(self, *notes, name=''):
-        self.strings = [ PluckedString(*n) for n in notes ]
-        self.name = name
-
     def render_string(self, s, mode, frets=12, verbose=1):
         string_n = FString(
             s,
             fg='cyan',
             fx=['faint' if verbose < 1 else ''],
-            size=self.STRING_NUMBER_SIZE
+            size=self.string_n_size,
         )
         string = self.strings[s-1]
         string.mode = mode
