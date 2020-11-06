@@ -116,7 +116,7 @@ class MusicNote(object):
         self.oct = 3
 
         if len(args) >  2:
-            raise InvalidMusicNote('Too many arguments')
+            raise InvalidNote('Too many arguments')
 
         # with only 1 arg, decide if it's alt or oct
         if len(args) == 1:
@@ -268,7 +268,7 @@ class MusicNote(object):
 ### This is the heart of the whole project
 ### indeces are used to determine:
 ###   * when to change octs
-###   * intervals between Note instances
+###   * intervals between MusicNote instances
 ### notes MUST be unique so that MusicKey[d] finds 1 exact match!
 EnharmonicMatrix = LoopedList(
 
@@ -283,7 +283,7 @@ EnharmonicMatrix = LoopedList(
     (  MusicNote('F', '' , 1), MusicNote('E', '#' , 1), MusicNote('G', 'bb', 1)  ), # NAH
     (  MusicNote('F', '#', 1), MusicNote('G', 'b' , 1), MusicNote('E', '##', 1)  ), # AAH
     (  MusicNote('G', '' , 1), MusicNote('F', '##', 1), MusicNote('A', 'bb', 1)  ), # NHH
-    (  MusicNote('G', '#', 1), MusicNote('A', 'b' , 1)                      ), # AA
+    (  MusicNote('G', '#', 1), MusicNote('A', 'b' , 1)                      ),      # AA
     (  MusicNote('A', '' , 1), MusicNote('G', '##', 1), MusicNote('B', 'bb', 1)  ), # NHH
 
     ## 2-octave enharmonic relationships
