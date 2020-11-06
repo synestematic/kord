@@ -56,6 +56,12 @@ def parse_arguments():
         help='select key ROOT note',
     )
 
+    parser.add_argument(
+        '-d', '--degrees',
+        help='show degree numbers instead of note pitches',
+        action='store_true',
+    )
+
     mode_group = parser.add_mutually_exclusive_group()
 
     scale_choices = list( SCALES.keys() )
@@ -197,6 +203,7 @@ def run(args):
         mode=key_mode,
         frets=args.frets,
         verbose=args.verbosity,
+        show_degrees=args.degrees,
     )
 
     if args.verbosity:
