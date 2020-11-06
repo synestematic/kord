@@ -59,11 +59,12 @@ def max_frets_on_screen():
 
 class PluckedString(object):
 
-    def __init__(self, c, alt='', oct=3, frets=12, mode=None, verbose=1):
+    def __init__(self, c, alt='', oct=3, frets=12, mode=None, verbose=1, show_degrees=0):
         self.tuning = MusicNote(c, alt, oct)
         self.mode = mode
         self.frets = frets
         self.verbose = verbose
+        self.show_degrees = show_degrees
 
     def __repr__(self):
         ''' prints string notes matching given key '''
@@ -81,17 +82,49 @@ class PluckedString(object):
 
             fret_value = ''
             if note:
+
                 note_fg = 'green' if note ** mode.root else 'magenta'
-                fret_value = '{}{}{}'.format(
-                    FString(note.chr, size=1, fg=note_fg, fx=['']),
-                    FString(note.repr_alt, size=0, fg=note_fg, fx=['']),
-                    FString(
-                        note.repr_oct if self.verbose > 0 else '',
-                        size=1,
-                        fg=note_fg,
-                        fx=['faint'],
-                    ),
-                )
+
+                if self.show_degrees:
+
+                    if mode.degrees:
+                        degrees = mode.degrees
+                    else:
+                        degrees = [ i+1 for i in range(len(mode.intervals)) ]
+
+                    for d in degrees:
+                        if note ** mode[d]:
+                            fret_value = FString(
+                                d,
+                                size=1,
+                                fg=note_fg,
+                            )
+                            break
+
+                else:
+
+                    fret_value = '{}{}{}'.format(
+                        FString(
+                            note.chr,
+                            size=1,
+                            fg=note_fg,
+                            fx=[''],
+                        ),
+                        FString(
+                            note.repr_alt,
+                            size=0,
+                            fg=note_fg,
+                            fx=[''],
+                        ),
+                        FString(
+                            note.repr_oct if self.verbose > 0 else '',
+                            size=1,
+                            fg=note_fg,
+                            fx=['faint'],
+                        ),
+                    )
+
+
 
             # APPEND MUSICNOTE DATA
             string_line.append(
@@ -192,7 +225,7 @@ class PluckedStringInstrument(object):
                 render += normal[side]
         echo(render)
 
-    def render_string(self, s, mode, frets=12, verbose=1):
+    def render_string(self, s, mode, frets=12, verbose=1, show_degrees=False):
         string_n = FString(
             s,
             fg='cyan',
@@ -203,13 +236,14 @@ class PluckedStringInstrument(object):
         string.mode = mode
         string.frets = frets
         string.verbose = verbose
+        string.show_degrees = show_degrees
         echo(string_n + string)
 
-    def render_fretboard(self, mode=None, frets=12, verbose=1):
+    def render_fretboard(self, mode=None, frets=12, verbose=1, show_degrees=False):
         # if frets > max_frets_on_screen():
         #     frets = max_frets_on_screen()
         self.render_inlays(frets, verbose)
         self.render_binding('upper', frets)
         for s, _ in enumerate(self.strings):
-            self.render_string(s+1, mode, frets, verbose)
+            self.render_string(s+1, mode, frets, verbose, show_degrees)
         self.render_binding('lower', frets)
