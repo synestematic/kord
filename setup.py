@@ -5,9 +5,9 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="kord",
-    version="3.0",
+    version="3.1",
     author="Federico Rizzo",
-    author_email="synestem@tic.com.ar",
+    author_email="synestem@ticATgmail.com",
     description='a framework for programming music applications',
     long_description=long_description,
     long_description_content_type="text/markdown",
