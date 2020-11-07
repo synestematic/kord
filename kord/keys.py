@@ -9,14 +9,15 @@ class MusicKey(object):
 
     @classmethod
     def allowed_degrees(cls):
-        ''' calculates all possible degree numbers for MusicKey
-        '''
+        ''' returns list of each degree, once '''
         if cls.degrees:
-            degrees = list(cls.degrees)
-        else:
-            degrees = [
-                n+1 for n in range( len(cls.intervals) )
-            ]
+            return list(cls.degrees)
+        return [ n+1 for n in range( len(cls.intervals) ) ]
+
+    @classmethod
+    def all_degrees(cls):
+        ''' returns list of each degree, over all octaves '''
+        degrees = cls.allowed_degrees()
 
         # floors over-octave degrees into in-octave
         for d, deg in enumerate(degrees):
@@ -108,7 +109,7 @@ class MusicKey(object):
         if d < 1:
             return
 
-        if self.degrees and d not in self.allowed_degrees():
+        if self.degrees and d not in self.all_degrees():
             return
 
         if d == 1:
@@ -181,12 +182,12 @@ class MusicKey(object):
             before yielding a note, calulates semitone
             difference with previous note and yields Nones
 
-            * yields based on allowed_degrees
+            * yields based on all_degrees
             * always yields Nones
             * changes octs by using self[d]
             * start_note (diatonic, non-diatonic)
         '''
-        degrees = self.allowed_degrees()
+        degrees = self.all_degrees()
 
         for d, _ in enumerate(degrees):
 

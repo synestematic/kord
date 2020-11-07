@@ -86,13 +86,7 @@ class PluckedString(object):
                 note_fg = 'green' if note ** mode.root else 'magenta'
 
                 if self.show_degrees:
-
-                    if mode.degrees:
-                        degrees = mode.degrees
-                    else:
-                        degrees = [ i+1 for i in range(len(mode.intervals)) ]
-
-                    for d in degrees:
+                    for d in mode.allowed_degrees():
                         if note ** mode[d]:
                             fret_value = FString(
                                 ' {}'.format(d),
@@ -103,7 +97,6 @@ class PluckedString(object):
                             break
 
                 else:
-
                     fret_value = '{}{}{}'.format(
                         FString(
                             note.chr,
@@ -124,7 +117,6 @@ class PluckedString(object):
                             fx=['faint'],
                         ),
                     )
-
 
 
             # APPEND MUSICNOTE DATA
