@@ -89,10 +89,10 @@ class PluckedString(object):
                     for d in mode.allowed_degrees():
                         if note ** mode[d]:
                             fret_value = FString(
-                                ' {}'.format(d),
+                                '{} '.format(d if d != 1 else 'R'),
                                 size=3,
                                 fg=note_fg,
-                                align='l',
+                                align='r',
                             )
                             break
 
