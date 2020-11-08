@@ -174,7 +174,7 @@ class MusicNote(object):
             chr_interval = _CHARS.index(self.chr) - _CHARS.index(other.chr)
             alt_interval = input_alterations().index(self.alt) - input_alterations().index(other.alt)
             return oct_interval + chr_interval + alt_interval
-        raise TypeError(f' - not supported with {other.__class__}')
+        raise TypeError(' - not supported with {}'.format(other.__class__))
 
     def __pow__(self, other):
         if self.__class__ == other.__class__:
@@ -182,7 +182,7 @@ class MusicNote(object):
                 if self.alt == other.alt:
                     return True
             return False
-        raise TypeError(f' ** not supported with {other.__class__}')
+        raise TypeError(' ** not supported with {}'.format(other.__class__))
 
     def __rshift__(self, other):
         if self.__class__ == other.__class__:
@@ -191,37 +191,36 @@ class MusicNote(object):
                     if self.oct == other.oct:
                         return True
             return False
-        raise TypeError(f' >> not supported with {other.__class__}')
+        raise TypeError(' >> not supported with {}'.format(other.__class__))
 
-
-    def __eq__(self, other):  # ==
+    def __eq__(self, other):
         if other.__class__ == self.__class__:
             return other - self == UNISON
 
-    def __ne__(self, other):  # !=
+    def __ne__(self, other):
         if other.__class__ == self.__class__:
             return other - self != UNISON
         return True
 
-    def __gt__(self, other):  # >
+    def __gt__(self, other):
         if self.__class__ == other.__class__:
             return self - other > UNISON
-        raise TypeError(f' > not supported with {other.__class__}')
+        raise TypeError(' > not supported with {}'.format(other.__class__))
 
-    def __ge__(self, other):  # >=
+    def __ge__(self, other):
         if self.__class__ == other.__class__:
             return self - other >= UNISON
-        raise TypeError(f' >= not supported with {other.__class__}')
+        raise TypeError(' >= not supported with {}'.format(other.__class__))
 
-    def __lt__(self, other):  # <
+    def __lt__(self, other):
         if self.__class__ == other.__class__:
             return self - other < UNISON
-        raise TypeError(f' < not supported with {other.__class__}')
+        raise TypeError(' < not supported with {}'.format(other.__class__))
 
-    def __le__(self, other):  # <=
+    def __le__(self, other):
         if self.__class__ == other.__class__:
             return self - other <= UNISON
-        raise TypeError(f' <= not supported with {other.__class__}')
+        raise TypeError(' <= not supported with {}'.format(other.__class__))
 
 
     ### CHR METHODS

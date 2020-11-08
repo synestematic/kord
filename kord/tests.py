@@ -6,7 +6,7 @@ from bestia.output import echo
 from .instruments import *
 
 def dbg(t='Waiting...', c='magenta'):
-    echo(f'** {t} **', c)
+    echo('** {} **'.format(t), c)
     input()
 
 class ScaleValidityTest(unittest.TestCase):
@@ -738,7 +738,11 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
         for key in self.scales.values():
             max_notes = random.randint(2, 64)
             # max_notes = 65
-            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._count_notes( note_count=1..{max_notes} ) ...')
+            print(
+                'Testing {}{} {}._count_notes( note_count=1..{} ) ...'.format(
+                    key.root.chr, key.root.repr_alt, key.name(), max_notes
+                )
+            )
             for count in range(max_notes):
                 count += 1
                 yielded_notes = len(
@@ -753,7 +757,11 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
         ''' tests that first yielded note == diatonic start_note '''
         for key in self.scales.values():
             d = random.randint(2, 64)
-            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._count_notes( start_note = note({d}) ) ...')
+            print(
+                'Testing {}{} {}._count_notes( start_note = note({}) ) ...'.format(
+                    key.root.chr, key.root.repr_alt, key.name(), d
+                )
+            )
             for note in key._count_notes(
                 note_count=1, start_note=key[d], yield_all=True
             ):
@@ -806,7 +814,11 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
             key = param['scale']
             non = param['non_diatonic_note']
             exp = param['exp_diatonic_note']
-            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._count_notes( start_note = non_diatonic_note , yield_all = 0 ) ...')
+            print(
+                'Testing {}{} {}._count_notes( start_note = non_diatonic_note , yield_all = 0 ) ...'.format(
+                        key.root.chr, key.root.repr_alt, key.name()
+                )
+            )
             for note in key._count_notes(
                 note_count=1, start_note=non, yield_all=False
             ): 
@@ -852,7 +864,11 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
             non = param['non_diatonic_note']
             exp = param['exp_diatonic_note']
             
-            print(f'Testing {key.root.chr}{key.root.repr_alt} {key.__class__.__name__}._count_notes( start_note = non_diatonic_note , yield_all = 1 ) ...')
+            print(
+                'Testing {}{} {}._count_notes( start_note = non_diatonic_note , yield_all = 1 ) ...'.format(
+                    key.root.chr, key.root.repr_alt, key.name()
+                )
+            )
             
             for note in key._count_notes(
                 note_count=1, start_note=non, yield_all=True
