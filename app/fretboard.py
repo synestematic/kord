@@ -1,5 +1,12 @@
 #!/usr/bin/env  python3
 
+"""
+this script displays a command-line representation of your instrument's fretboard, tuned to your liking
+note patterns will be displayed for any given mode (scale/chord) for any given root note
+the tunings directory already contains some pre-defined instrument tunings in the form of .json files
+modify them or add your own and they will automaticaly become available at runtime
+"""
+
 import sys
 import argparse
 
