@@ -255,7 +255,7 @@ A sample application `fretboard.py` comes built-in with `kord` and gives some in
 
 ```
 $  python3 fretboard.py --help
-usage: fretboard.py [-h] [-s  | -c ] [-i] [-t] [-f] [-v] root
+usage: fretboard.py [-h] [-d] [-s  | -c ] [-i] [-t] [-f] [-v] root
 
 <<< Fretboard visualizer sample tool for the kord music framework >>>
 
@@ -263,10 +263,12 @@ positional arguments:
   root                select key ROOT note
 
 optional arguments:
-  -h , --help         show this help message and exit
-  -s , --scale        major, minor, melodic_minor, harmonic_minor, major_pentatonic, minor_pentatonic, ionian, lydian, mixolydian, aeolian, dorian, phrygian, locrian, chromatic
+  -h, --help          show this help message and exit
+  -d, --degrees       show degree numbers instead of note pitches
+  -s , --scale        major, minor, melodic_minor, harmonic_minor, major_pentatonic, minor_pentatonic,
+                      ionian, lydian, mixolydian, aeolian, dorian, phrygian, locrian, chromatic
   -c , --chord        maj, min, aug, dim, maj7, min7, 7, dim7, min7dim5, maj9, min9, 9
-  -i , --instrument   banjo, guitar, bass, ukulele
+  -i , --instrument   banjo, guitar, pedal, bass, ukulele
   -t , --tuning       check .json files for available options
   -f , --frets        1, 2, .., 36
   -v , --verbosity    0, 1, 2
@@ -282,6 +284,7 @@ The `--frets` option let's you choose how many frets to visualize, maximum value
 
 The `--verbosity` option let's you choose how much information to see on-screen from 0 to 2. Default value is 1.
 
+The `--degrees` option let's you display degree numbers instead of notes. Default value is false.
 
 ## screenshots
 
