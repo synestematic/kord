@@ -5,12 +5,19 @@ kord is a python framework that provides programmers with a simple api for the c
 
 ## installation
 
-The only dependency for `kord` is the pip package `bestia`, my own library for creating command-line applications. Both can be automatically installed by using pip:
+The only dependency for `kord` is the package `bestia`, my own library for creating command-line applications. Both can be automatically installed using pip:
 
 ```
 $  python3 -m pip install kord
 ```
 
+The fretboard application component of the framework can also be run directly in a containerized form. This requires you to install 0 dependencies on your system besides docker. 
+
+```
+$  docker run -t synestematic/kord  C --scale major
+```
+
+Scroll to the bottom of the README for more information on the fretboard application.
 
 
 # api reference:
@@ -18,7 +25,7 @@ $  python3 -m pip install kord
 Please only expect to understand the following documentation if you have an above basic understanding of music theory. With that said, let's dive into the first module:
 
 
-## kord.notes module:
+## kord.notes
 
 ### class MusicNote(object):
 
@@ -145,7 +152,7 @@ For the `>>` operator to evaluate True, the octaves of the notes must match as w
 
 
 
-## kord.keys module:
+## kord.keys
 
 
 ### class MusicKey(object):
@@ -201,7 +208,7 @@ C♯⁰
 B⁰
 ```
 
-### MusicKey.spell() method
+### MusicKey.spell()
 
 Retrieving individual degrees is good, but it is perhaps more interesting to look at a more dynamic way of getting notes out of our MusicKey instances. The `spell()` method provides such an interface for generating MusicNote instances on the fly. Let's take a look at a couple of examples and the several arguments that we can use when calling this method:
 
@@ -251,7 +258,9 @@ None D¹ None E¹ F¹ None G¹ >>>
 
 ## fretboard tool
 
-A sample application `fretboard.py` comes built-in with `kord` and gives some insight into the possibilities of the framework. It displays a representation of your instrument's fretboard, tuned to your liking along with note patterns for any given mode (scale/chord) for any given root note. Installation path varies depending on your system, it's usually something like `/usr/local/fretboard` or `~/.local/fretboard`. You will also find a `tunings` directory with some pre-defined instrument tunings in the form of .json files. Feel free to modify them or add your own and they should immediately become available to the run-time.
+A sample application `fretboard.py` comes built-in with `kord` and gives some insight into the possibilities of the framework. It displays a representation of your instrument's fretboard, tuned to your liking along with note patterns for any given mode (scale/chord) for any given root note. 
+
+If you installed via pip (as opposed to cloning this repo) installation path will depend on your system, it's usually something like `/usr/local/fretboard` or `~/.local/fretboard`. You will also find a `tunings` directory with some pre-defined instrument tunings in the form of .json files. Feel free to modify them or add your own and they should immediately become available to the run-time.
 
 ```
 $  python3 fretboard.py --help
@@ -285,6 +294,7 @@ The `--frets` option let's you choose how many frets to visualize, maximum value
 The `--verbosity` option let's you choose how much information to see on-screen from 0 to 2. Default value is 1.
 
 The `--degrees` option let's you display degree numbers instead of notes. Default value is false.
+
 
 ## screenshots
 
