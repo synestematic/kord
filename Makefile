@@ -20,9 +20,6 @@ publish: dist
 	@echo "Uploading to PyPI "
 	@twine upload dist/*
 
-run:
-	python ~/repos/kord/app/fretboard.py
-
 clean: ${DISTR_DIRS}
 	@echo "Cleaning up"
 	@for dir in ${DISTR_DIRS} ; do \
