@@ -1,5 +1,6 @@
 
 from .notes import *
+from .notes import _CHARS
 
 class MusicNoteParser:
 
@@ -29,7 +30,6 @@ class MusicNoteParser:
             return octave
 
     def _parse_alts(self):
-
         self.to_parse = self.to_parse.replace('𝄫', 'bb')
         self.to_parse = self.to_parse.replace('♭', 'b')
         self.to_parse = self.to_parse.replace('𝄪', '##')
@@ -41,41 +41,6 @@ class MusicNoteParser:
         alts = self.to_parse
         self.to_parse = self.to_parse[len(self.to_parse):]
         return alts
-
-        # /////////////////////////////////////////////
-
-        # if len(self.to_parse) > 2:
-        #     raise InvalidAlteration(self.symbol)
-
-        # for k, v in _ALTS.items():
-        #     if not k: continue
-
-        #     if self.to_parse == k:
-        #         self.to_parse = self.to_parse[len(k):]
-        #         return k
-
-        #     if self.to_parse == v:
-        #         self.to_parse = self.to_parse[len(v):]
-        #         return k
-
-
-        # raise InvalidAlteration(self.symbol)
-
-        # /////////////////////////////////////////////
-
-        # alts = self.to_parse[0]
-        # self.to_parse = self.to_parse[1:]
-        # if len(self.to_parse) == 0:
-        #     return alts
-
-        # if len(self.to_parse) == 1 and self.to_parse[0] == alts:
-        #     alts += alts
-        #     self.to_parse = self.to_parse[1:]
-        #     return alts
-
-        # raise Exception('wtf')
-
-
 
     def parse(self):
         char = self._parse_char()
@@ -94,5 +59,4 @@ class MusicNoteParser:
             return MusicNote(char, alts, octave)
 
         raise InvalidNote(self.symbol)
-
 
