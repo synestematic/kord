@@ -8,7 +8,17 @@ from .errors import InvalidOctave
 
 class MusicNoteParserTest(unittest.TestCase):
 
-    ALT_TESTS = (
+    CHAR_TESTS = (
+        ['C', MusicNote('C')],
+        ['D', MusicNote('D')],
+        ['E', MusicNote('E')],
+        ['F', MusicNote('E')],
+        ['G', MusicNote('G')],
+        ['A', MusicNote('A')],
+        ['B', MusicNote('B')],
+    )
+
+    ALTS_TESTS = (
         ['D#', MusicNote('D', '#')],
         ['D♯', MusicNote('D', '#')],
 
@@ -40,6 +50,12 @@ class MusicNoteParserTest(unittest.TestCase):
     def setUp(self):
         print()
 
+    def testChars(self):
+        for symbol, expected in self.CHAR_TESTS:
+            parser = MusicNoteParser(symbol)
+            parsed_note = parser.parse()
+            self.assertEqual(parsed_note, expected)
+
     def testOctaves(self):
         for symbol, expected in self.OCTAVE_TESTS:
             parser = MusicNoteParser(symbol)
@@ -52,7 +68,7 @@ class MusicNoteParserTest(unittest.TestCase):
             self.assertRaises(InvalidOctave, parser.parse)
 
     def testAlterations(self):
-        for symbol, expected in self.ALT_TESTS:
+        for symbol, expected in self.ALTS_TESTS:
             parser = MusicNoteParser(symbol)
             parsed_note = parser.parse()
             self.assertEqual(parsed_note, expected)
