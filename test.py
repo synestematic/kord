@@ -9,6 +9,8 @@
 
 from kord.tests import *
 
+from kord.test_notes import *
+
 if __name__ == '__main__':
     try:
         unittest.main()
