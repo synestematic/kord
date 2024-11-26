@@ -6,7 +6,7 @@ from .notes import *
 class NoteEqualityTest(unittest.TestCase):
 
     DANGEROUS_NON_EQUALS = (
-        # ''' Used mainly to test B#, Cd, etc... '''
+        # ''' Used mainly to test B#, Cb, etc... '''
 
         (MusicNote('C', 'b', 3), MusicNote('B', '#', 3)),
 
