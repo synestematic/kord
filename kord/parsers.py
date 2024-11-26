@@ -1,6 +1,7 @@
 
-from .notes import *
-from .notes import _CHARS
+from .notes import MusicNote, input_alterations, _CHARS, DEFAULT_OCTAVE
+
+from .errors import InvalidNote, InvalidAlteration, InvalidOctave
 
 class MusicNoteParser:
 
@@ -8,8 +9,10 @@ class MusicNoteParser:
         self.symbol = symbol
         self.reset()
 
+
     def reset(self):
         self.to_parse = self.symbol.strip()
+
 
     def _parse_char(self):
         if len(self.to_parse) == 0 or self.to_parse[0] not in _CHARS:
@@ -18,16 +21,30 @@ class MusicNoteParser:
         self.to_parse = self.to_parse[1:]
         return char
 
+
     def _parse_oct(self):
-        # raise InvalidOctave
-        # handle F12
+        if len(self.to_parse) > 1:
+            try:
+                # this being an int means octave > MAXIMUM_OCTAVE
+                octave = int(self.to_parse[-2])
+                octave_over_max = True
+            except ValueError:
+                # probably an alt
+                octave_over_max = False
+            finally:
+                if octave_over_max:
+                    raise InvalidOctave(self.symbol)
+
         try:
+            # this being an int means this is an octave
             octave = int(self.to_parse[-1])
             self.to_parse = self.to_parse[:-1]
         except ValueError:
-            octave = 3
+            # probably an alt
+            octave = DEFAULT_OCTAVE
         finally:
             return octave
+
 
     def _parse_alts(self):
         self.to_parse = self.to_parse.replace('𝄫', 'bb')
@@ -41,6 +58,7 @@ class MusicNoteParser:
         alts = self.to_parse
         self.to_parse = self.to_parse[len(self.to_parse):]
         return alts
+
 
     def parse(self):
         char = self._parse_char()
