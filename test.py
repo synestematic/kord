@@ -7,8 +7,7 @@
     * pass test
 """
 
-from kord.tests import *
-
+from kord.test_keys import *
 from kord.test_notes import *
 
 if __name__ == '__main__':

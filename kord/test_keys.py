@@ -1,9 +1,15 @@
 import unittest
 import random
 
-from bestia.output import echo
+from bestia.output import echo, Row, FString
 
-from .instruments import *
+from .keys import ChromaticScale
+from .keys import MajorPentatonicScale, MajorScale, DominantSeventhChord
+from .keys import MinorScale, MelodicMinorScale, HarmonicMinorScale
+    
+from .notes import MusicNote, MAX_OCT
+
+from .errors import InvalidOctave
 
 def dbg(t='Waiting...', c='magenta'):
     echo('** {} **'.format(t), c)
