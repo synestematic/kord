@@ -7,7 +7,7 @@ from .keys import ChromaticScale
 from .keys import MajorPentatonicScale, MajorScale, DominantSeventhChord
 from .keys import MinorScale, MelodicMinorScale, HarmonicMinorScale
 
-from .notes import MusicNote, MAX_OCT
+from .notes import MusicNote, MAXIMUM_OCTAVE
 
 from .errors import InvalidOctave
 
@@ -894,7 +894,7 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
 
     def testMaxOctave(self):
         try:
-            note = MusicNote('C', MAX_OCT + 1)
+            note = MusicNote('C', MAXIMUM_OCTAVE + 1)
         except InvalidOctave:
             note = None
         finally:

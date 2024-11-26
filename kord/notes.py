@@ -80,7 +80,8 @@ _OCTS = (
     '⁹',
 )
 
-MAX_OCT = 9
+DEFAULT_OCTAVE = 3
+MAXIMUM_OCTAVE = 9
 
 
 _ALTS = {
@@ -113,7 +114,7 @@ class MusicNote(object):
             raise InvalidNote(char)
 
         self.alt = ''
-        self.oct = 3
+        self.oct = DEFAULT_OCTAVE
 
         if len(args) >  2:
             raise InvalidNote('Too many arguments')
@@ -141,7 +142,7 @@ class MusicNote(object):
             except:
                 raise InvalidOctave(args[1])
 
-        if self.oct > MAX_OCT:
+        if self.oct > MAXIMUM_OCTAVE:
             raise InvalidOctave(self.oct)
 
 
