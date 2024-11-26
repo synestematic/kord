@@ -6,19 +6,16 @@ from bestia.output import echo, Row, FString
 from .keys import ChromaticScale
 from .keys import MajorPentatonicScale, MajorScale, DominantSeventhChord
 from .keys import MinorScale, MelodicMinorScale, HarmonicMinorScale
-    
+
 from .notes import MusicNote, MAX_OCT
 
 from .errors import InvalidOctave
 
-def dbg(t='Waiting...', c='magenta'):
-    echo('** {} **'.format(t), c)
-    input()
 
 class ScaleValidityTest(unittest.TestCase):
 
     ''' for a given key, allows to verify:
-            * invalid roots        
+            * invalid roots
             * octave changes
     '''
 
@@ -87,7 +84,7 @@ class ScaleValidityTest(unittest.TestCase):
                         FString(
                             d,
                             size=5,
-                            fg='blue' if not (d.oct % 2) else 'white', 
+                            fg='blue' if not (d.oct % 2) else 'white',
                         )
                     )
                 line.echo()
@@ -384,9 +381,6 @@ class ChromaticScalesTest(unittest.TestCase):
                 assert note >> MusicNote('B', 'b', 18), note
 
 
-
-
-
 class MajorScalesExpectedNotesTest(unittest.TestCase):
 
     def setUp(self):
@@ -642,7 +636,6 @@ class MajorScalesExpectedNotesTest(unittest.TestCase):
                 assert note >> MusicNote('D', 'b', 18), note
 
 
-
 class TonalScaleSpellMethodTest(unittest.TestCase):
 
     def setUp(self):
@@ -699,35 +692,35 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
         test_parameters = [
 
             {
-                'scale': self.scales['Ab_chromatic'], 
+                'scale': self.scales['Ab_chromatic'],
                 'non_diatonic_note': MusicNote('A', '#', 1), # enharmonic
                 'exp_diatonic_note': MusicNote('B', 'b', 1), # equals
             },
 
             {
-                'scale': self.scales['B_major'], 
+                'scale': self.scales['B_major'],
                 'non_diatonic_note': MusicNote('D', 1),      # missing note
                 'exp_diatonic_note': MusicNote('D', '#', 1), # next note
             },
 
             {
-                'scale': self.scales['Bb_minor'], 
+                'scale': self.scales['Bb_minor'],
                 'non_diatonic_note': MusicNote('D', '#', 1), # enharmonic
                 'exp_diatonic_note': MusicNote('E', 'b', 1), # equals
             },
             {
-                'scale': self.scales['C_mel_minor'], 
+                'scale': self.scales['C_mel_minor'],
                 'non_diatonic_note': MusicNote('F', '#', 0), # missing note
                 'exp_diatonic_note': MusicNote('G', '',  0), # next note
             },
             {
-                'scale': self.scales['F#_har_minor'], 
+                'scale': self.scales['F#_har_minor'],
                 'non_diatonic_note': MusicNote('C', 'b', 4), # enharmonic
                 'exp_diatonic_note': MusicNote('B', '' , 3), # equals
             },
 
             # {   # test chords too eventually
-            #     'scale': self.scales['E7'], 
+            #     'scale': self.scales['E7'],
             #     'non_diatonic_note': MusicNote('A', '', 0), # missing note
             #     'exp_diatonic_note': MusicNote('B', '', 0), # next note
             # },
@@ -744,7 +737,7 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
             )
             for note in key._count_notes(
                 note_count=1, start_note=non, yield_all=False
-            ): 
+            ):
                 assert note != None, type(note)         # yield all=False ensures no Nones
                 assert note >> MusicNote(*exp), (note, exp)
 
@@ -756,27 +749,27 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
         '''
         test_parameters = [
             {
-                'scale': self.scales['Ab_chromatic'], 
+                'scale': self.scales['Ab_chromatic'],
                 'non_diatonic_note': MusicNote('A', '#', 1), # enharmonic
                 'exp_diatonic_note': MusicNote('B', 'b', 1), # equals
             },
             {
-                'scale': self.scales['B_major'], 
+                'scale': self.scales['B_major'],
                 'non_diatonic_note': MusicNote('D', 1),      # missing note
                 'exp_diatonic_note': None,              # yields a None, not D#
             },
             {
-                'scale': self.scales['Bb_minor'], 
+                'scale': self.scales['Bb_minor'],
                 'non_diatonic_note': MusicNote('D', '#', 1), # enharmonic
                 'exp_diatonic_note': MusicNote('E', 'b', 1), # equals
             },
             {
-                'scale': self.scales['C_mel_minor'], 
+                'scale': self.scales['C_mel_minor'],
                 'non_diatonic_note': MusicNote('F', '#', 0), # missing note
                 'exp_diatonic_note': None,              # yields a None, not G
             },
             {
-                'scale': self.scales['F#_har_minor'], 
+                'scale': self.scales['F#_har_minor'],
                 'non_diatonic_note': MusicNote('C', 'b', 4), # enharmonic
                 'exp_diatonic_note': MusicNote('B', '' , 3), # equals
             },
@@ -786,13 +779,13 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
             key = param['scale']
             non = param['non_diatonic_note']
             exp = param['exp_diatonic_note']
-            
+
             print(
                 'Testing {}{} {}._count_notes( start_note = non_diatonic_note , yield_all = 1 ) ...'.format(
                     key.root.chr, key.root.repr_alt, key.name()
                 )
             )
-            
+
             for note in key._count_notes(
                 note_count=1, start_note=non, yield_all=True
             ):
@@ -802,7 +795,7 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
                     assert note >> exp, (note, exp)
 
                 break # test only first yielded value even if not a note
-                
+
 
     def testMajorNoneYields(self):
         for i, note in enumerate(MajorScale('C')._count_notes(

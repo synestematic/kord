@@ -1,4 +1,4 @@
-from bestia.output import Row, FString, echo
+from bestia.output import Row, FString
 
 from .notes import *
 
