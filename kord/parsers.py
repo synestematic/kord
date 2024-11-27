@@ -15,11 +15,11 @@ class MusicNoteParser:
 
 
     def _parse_char(self):
-        if len(self.to_parse) == 0 or self.to_parse[0] not in _CHARS:
+        if len(self.to_parse) == 0 or self.to_parse[0].upper() not in _CHARS:
             raise InvalidNote(self.symbol)
         char = self.to_parse[0]
         self.to_parse = self.to_parse[1:]
-        return char
+        return char.upper()
 
 
     def _parse_oct(self):

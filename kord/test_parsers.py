@@ -8,7 +8,7 @@ from .errors import InvalidAlteration, InvalidOctave
 
 class MusicNoteParserTest(unittest.TestCase):
 
-    CHAR_TESTS = (
+    CHAR_WINS = (
         ['C', MusicNote('C')],
         ['D', MusicNote('D')],
         ['E', MusicNote('E')],
@@ -16,22 +16,27 @@ class MusicNoteParserTest(unittest.TestCase):
         ['G', MusicNote('G')],
         ['A', MusicNote('A')],
         ['B', MusicNote('B')],
+
+        ['c', MusicNote('C')],
+        ['d', MusicNote('D')],
+        ['e', MusicNote('E')],
+        ['f', MusicNote('F')],
+        ['g', MusicNote('G')],
+        ['a', MusicNote('A')],
+        ['b', MusicNote('B')],
     )
 
-    OCTAVE_TESTS = (
-        ['A0', MusicNote('A', 0)],
-        ['A1', MusicNote('A', 1)],
-        ['A2', MusicNote('A', 2)],
-        ['A3', MusicNote('A', 3)],
-        ['A4', MusicNote('A', 4)],
-        ['A5', MusicNote('A', 5)],
-        ['A6', MusicNote('A', 6)],
-        ['A7', MusicNote('A', 7)],
-        ['A8', MusicNote('A', 8)],
-        ['A9', MusicNote('A', MAXIMUM_OCTAVE)],
-    )
+    OCTAVE_WINS = [
+        [ f'C{octave}', MusicNote('C', octave) ] for octave
+        in range(0, MAXIMUM_OCTAVE)
+    ]
 
-    ALTS_TESTS = (
+    OCTAVE_FAILS = [
+        f'A{octave}' for octave
+        in range(MAXIMUM_OCTAVE+1, MAXIMUM_OCTAVE+500)
+    ]
+
+    ALTS_WINS = (
         ['D#', MusicNote('D', '#')],
         ['D♯', MusicNote('D', '#')],
 
@@ -59,30 +64,29 @@ class MusicNoteParserTest(unittest.TestCase):
         print()
 
     def testChars(self):
-        for symbol, expected in self.CHAR_TESTS:
+        for symbol, expected in self.CHAR_WINS:
             parser = MusicNoteParser(symbol)
             parsed_note = parser.parse()
             self.assertEqual(parsed_note, expected)
 
     def testOctaves(self):
-        for symbol, expected in self.OCTAVE_TESTS:
+        for symbol, expected in self.OCTAVE_WINS:
             parser = MusicNoteParser(symbol)
             parsed_note = parser.parse()
             self.assertEqual(parsed_note, expected)
 
     def testOctaveFails(self):
-        for octave in range(MAXIMUM_OCTAVE+1, MAXIMUM_OCTAVE+50):
-            note = f'A{octave}'
-            parser = MusicNoteParser(note)
+        for symbol in self.OCTAVE_FAILS:
+            parser = MusicNoteParser(symbol)
             self.assertRaises(InvalidOctave, parser.parse)
 
     def testAlterations(self):
-        for symbol, expected in self.ALTS_TESTS:
+        for symbol, expected in self.ALTS_WINS:
             parser = MusicNoteParser(symbol)
             parsed_note = parser.parse()
             self.assertEqual(parsed_note, expected)
 
     def testAlterationFails(self):
-        for note in self.ALTS_FAILS:
-            parser = MusicNoteParser(note)
+        for symbol in self.ALTS_FAILS:
+            parser = MusicNoteParser(symbol)
             self.assertRaises(InvalidAlteration, parser.parse)
