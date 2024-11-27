@@ -4,7 +4,7 @@ from .parsers import MusicNoteParser
 
 from .notes import MusicNote, MAXIMUM_OCTAVE
 
-from .errors import InvalidAlteration, InvalidOctave
+from .errors import InvalidNote, InvalidAlteration, InvalidOctave
 
 class MusicNoteParserTest(unittest.TestCase):
 
@@ -25,6 +25,10 @@ class MusicNoteParserTest(unittest.TestCase):
         ['a', MusicNote('A')],
         ['b', MusicNote('B')],
     )
+
+    CHAR_FAILS = [
+        'H', 'T', 'Y', 'h',
+    ]
 
     OCTAVE_WINS = [
         [ f'C{octave}', MusicNote('C', octave) ] for octave
@@ -68,6 +72,11 @@ class MusicNoteParserTest(unittest.TestCase):
             parser = MusicNoteParser(symbol)
             parsed_note = parser.parse()
             self.assertEqual(parsed_note, expected)
+
+    def testCharFails(self):
+        for symbol in self.CHAR_FAILS:
+            parser = MusicNoteParser(symbol)
+            self.assertRaises(InvalidNote, parser.parse)
 
     def testOctaves(self):
         for symbol, expected in self.OCTAVE_WINS:
