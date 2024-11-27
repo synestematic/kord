@@ -8,7 +8,7 @@ from .errors import InvalidNote, InvalidAlteration, InvalidOctave
 
 class MusicNoteParserTest(unittest.TestCase):
 
-    CHAR_WINS = (
+    CHAR_WINS = [
         ['C', MusicNote('C')],
         ['D', MusicNote('D')],
         ['E', MusicNote('E')],
@@ -24,7 +24,7 @@ class MusicNoteParserTest(unittest.TestCase):
         ['g', MusicNote('G')],
         ['a', MusicNote('A')],
         ['b', MusicNote('B')],
-    )
+    ]
 
     CHAR_FAILS = [
         'H', 'T', 'Y', 'h',
@@ -40,12 +40,14 @@ class MusicNoteParserTest(unittest.TestCase):
         in range(MAXIMUM_OCTAVE+1, MAXIMUM_OCTAVE+500)
     ]
 
-    ALTS_WINS = (
+    ALTS_WINS = [
         ['D#', MusicNote('D', '#')],
         ['D♯', MusicNote('D', '#')],
 
         ['C##', MusicNote('C', '##')],
         ['C♯♯', MusicNote('C', '##')],
+        ['C#♯', MusicNote('C', '##')],
+        ['C♯#', MusicNote('C', '##')],
         ['C𝄪', MusicNote('C', '##')],
 
         ['Eb', MusicNote('E', 'b')],
@@ -54,15 +56,22 @@ class MusicNoteParserTest(unittest.TestCase):
         ['Gbb', MusicNote('G', 'bb')],
         ['G♭♭', MusicNote('G', 'bb')],
         ['Gb♭', MusicNote('G', 'bb')],
+        ['G♭b', MusicNote('G', 'bb')],
         ['G𝄫', MusicNote('G', 'bb')],
-    )
+    ]
 
-    ALTS_FAILS = (
+    ALTS_FAILS = [
         'Abbb',
         'A###',
-        'C#e',
         'Bbr6',
-    )
+        'Ce#',
+
+        'D𝄫b',
+        'D𝄫♭',
+
+        'G𝄪#',
+        'G𝄪♯',
+    ]
 
     def setUp(self):
         print()
