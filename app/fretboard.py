@@ -10,7 +10,26 @@ modify them or add your own and they will automaticaly become available at runti
 import sys
 import argparse
 
-from kord import *
+from kord import (
+    MajorScale, MinorScale, MelodicMinorScale, HarmonicMinorScale,
+    MajorPentatonicScale, MinorPentatonicScale,
+    IonianMode, LydianMode, MixolydianMode,
+    AeolianMode, DorianMode, PhrygianMode, LocrianMode,
+    ChromaticScale
+)
+
+from kord import (
+    MajorTriad, MinorTriad, AugmentedTriad, DiminishedTriad,
+    MajorSeventhChord, MinorSeventhChord, DominantSeventhChord,
+    DiminishedSeventhChord, HalfDiminishedSeventhChord,
+    MajorNinthChord, MinorNinthChord, DominantNinthChord
+)
+
+from kord import (
+    MAX_FRETS, PluckedStringInstrument, MusicNote,
+    max_frets_on_screen, note_chars,
+)
+
 from bestia.output import echo
 
 import tuner
@@ -140,11 +159,11 @@ def parse_arguments():
 
         # validate root note
         note_chr = args.root[:1].upper()
-        if note_chr not in notes._CHARS:
+        if note_chr not in note_chars():
             raise InvalidNote(
                 "fretboard.py: error: argument ROOT: invalid note: '{}' (choose from {}) ".format(
                     note_chr,
-                    str( [ n for n in notes._CHARS if n ] ).lstrip('[').rstrip(']')
+                    str( note_chars() ).lstrip('[').rstrip(']')
                 )
             )
 
