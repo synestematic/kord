@@ -16,6 +16,9 @@ install: get_version ${DISTR_DIRS}
 	@echo "Installing ${PACKAGE} ${VERSION}"
 	@cd dist && pip3 install --ignore-installed "${PACKAGE}"-"${VERSION}"-py3-none-any.whl && cd ..
 
+test:
+	@python3 test.py
+
 publish: dist
 	@echo "Uploading to PyPI "
 	@twine upload dist/*

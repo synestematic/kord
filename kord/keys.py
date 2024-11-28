@@ -1,4 +1,4 @@
-from bestia.output import Row, FString, echo
+from bestia.output import Row, FString
 
 from .notes import *
 
@@ -34,7 +34,7 @@ class MusicKey(object):
 
         # calculate all possible octaves
         all_degrees = []
-        for o in range(MAX_OCT):
+        for o in range(MAXIMUM_OCTAVE):
             for deg in degrees:
                 all_degrees.append(
                     deg + len(cls.intervals) * o
