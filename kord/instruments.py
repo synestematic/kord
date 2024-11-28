@@ -2,10 +2,16 @@ from bestia.output import Row, FString, echo, tty_cols
 
 from .keys import *
 
+__all__ = [
+    'MAX_FRETS',
+    'PluckedStringInstrument',
+    'max_frets_on_screen',
+]
+
 _NOTE_WIDTH = 5
 _FRET_WIDTH = 1
 
-INLAYS = (
+_INLAYS = (
     'I',
     'II',
     'III',
@@ -46,7 +52,8 @@ INLAYS = (
     'XXXVI',
 )
 
-MAX_FRETS = len(INLAYS)
+MAX_FRETS = len(_INLAYS)
+
 
 def max_frets_on_screen():
     ''' calculates how may frets can be rendered without exceeding terminal size
@@ -56,6 +63,7 @@ def max_frets_on_screen():
         tty_cols() / ( _NOTE_WIDTH + _FRET_WIDTH )
     ) - 2
     return frets if frets < MAX_FRETS else MAX_FRETS
+
 
 class PluckedString(object):
 
@@ -175,7 +183,7 @@ class PluckedStringInstrument(object):
         while frets:
             inlay_row.append(
                 FString(
-                    '' if verbose == 1 and f not in dots else INLAYS[f-1],
+                    '' if verbose == 1 and f not in dots else _INLAYS[f-1],
                     size=_NOTE_WIDTH + _FRET_WIDTH,
                     align='r' if verbose == 2 else 'c', # high verbose needs more space
                     fg='cyan',
