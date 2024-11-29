@@ -47,7 +47,7 @@ __all__ = [
 ]
 
 
-class MusicKey(object):
+class MusicKey:
 
     intervals = ()
     degrees = ()

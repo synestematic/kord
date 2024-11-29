@@ -27,7 +27,7 @@ Please only expect to understand the following documentation if you have an abov
 
 ## kord.notes
 
-### class MusicNote(object):
+### class MusicNote:
 
 MusicNote instances are the building blocks of the framework and have 3 main attributes:
 
@@ -155,7 +155,7 @@ For the `>>` operator to evaluate True, the octaves of the notes must match as w
 ## kord.keys
 
 
-### class MusicKey(object):
+### class MusicKey:
 
 Think of MusicKey objects as generators of MusicNote objects. You can define a new class which inherits MusicKey and use any theoretical arrangement of `intervals` from the root note in order to create chords, scales, modes, etc. You can further taylor these child classes by restricting `degrees` to specific values, this is very useful for creating chords.
 

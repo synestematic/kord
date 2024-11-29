@@ -138,7 +138,7 @@ def note_chars():
     return [ c for c in _CHARS if c ]
 
 
-class MusicNote(object):
+class MusicNote:
 
     def __init__(self, char, *args):
         ''' init WITHOUT specifying argument names

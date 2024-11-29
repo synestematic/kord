@@ -66,7 +66,7 @@ def max_frets_on_screen():
     return frets if frets < MAXIMUM_FRETS else MAXIMUM_FRETS
 
 
-class PluckedString(object):
+class PluckedString:
 
     def __init__(self, c, alt='', oct=3, frets=12, mode=None, verbose=1, show_degrees=0):
         self.tuning = MusicNote(c, alt, oct)
@@ -153,7 +153,7 @@ class PluckedString(object):
         return str(string_line)
 
 
-class PluckedStringInstrument(object):
+class PluckedStringInstrument:
 
     def __init__(self, *notes, name=''):
         self.strings = [ PluckedString(*n) for n in notes ]
