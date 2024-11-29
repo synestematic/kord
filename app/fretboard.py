@@ -10,7 +10,28 @@ modify them or add your own and they will automaticaly become available at runti
 import sys
 import argparse
 
-from kord import *
+from kord import (
+    MajorScale, MinorScale, MelodicMinorScale, HarmonicMinorScale,
+    MajorPentatonicScale, MinorPentatonicScale,
+    IonianMode, LydianMode, MixolydianMode,
+    AeolianMode, DorianMode, PhrygianMode, LocrianMode,
+    ChromaticScale
+)
+
+from kord import (
+    MajorTriad, MinorTriad, AugmentedTriad, DiminishedTriad,
+    MajorSeventhChord, MinorSeventhChord, DominantSeventhChord,
+    DiminishedSeventhChord, HalfDiminishedSeventhChord,
+    MajorNinthChord, MinorNinthChord, DominantNinthChord
+)
+
+from kord import (
+    MAXIMUM_FRETS, PluckedStringInstrument, MusicNote,
+    max_frets_on_screen, note_chars, input_alterations
+)
+
+from kord import InvalidInstrument, InvalidNote, InvalidAlteration
+
 from bestia.output import echo
 
 import tuner
@@ -58,7 +79,7 @@ TUNINGS = tuner.load_tuning_data()
 
 def parse_arguments():
     parser = argparse.ArgumentParser(
-        description='<<< Fretboard visualizer sample tool for the kord music framework >>>',
+        description='<<< Fretboard visualizer tool for the kord framework >>>',
     )
     parser.add_argument(
         'root',
@@ -109,8 +130,8 @@ def parse_arguments():
 
     parser.add_argument(
         '-f', '--frets',
-        help='1, 2, .., {}'.format(MAX_FRETS),
-        choices=[ f+1 for f in range(MAX_FRETS) ],
+        help='1, 2, .., {}'.format(MAXIMUM_FRETS),
+        choices=[ f+1 for f in range(MAXIMUM_FRETS) ],
         default=max_frets_on_screen(),
         metavar='',
         type=int,
@@ -140,21 +161,21 @@ def parse_arguments():
 
         # validate root note
         note_chr = args.root[:1].upper()
-        if note_chr not in notes._CHARS:
+        if note_chr not in note_chars():
             raise InvalidNote(
                 "fretboard.py: error: argument ROOT: invalid note: '{}' (choose from {}) ".format(
                     note_chr,
-                    str( [ n for n in notes._CHARS if n ] ).lstrip('[').rstrip(']')
+                    str( note_chars() ).lstrip('[').rstrip(']')
                 )
             )
 
         # validate root alteration
         note_alt = args.root[1:]
-        if note_alt and note_alt not in list(notes._ALTS.keys()):
-            raise InvalidNote(
+        if note_alt and note_alt not in input_alterations():
+            raise InvalidAlteration(
                 "fretboard.py: error: argument ROOT: invalid alteration: '{}' (choose from {}) ".format(
                     note_alt,
-                    str( list(notes._ALTS.keys()) ).lstrip('[').rstrip(']')
+                    str( input_alterations() ).lstrip('[').rstrip(']')
                 )
             )
 

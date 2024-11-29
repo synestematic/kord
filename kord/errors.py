@@ -1,3 +1,14 @@
+
+__all__ = [
+    'InvalidInstrument',
+    'InvalidScale',
+    'InvalidChord',
+    'InvalidNote',
+    'InvalidAlteration',
+    'InvalidOctave',
+]
+
+
 class InvalidInstrument(Exception):
     pass
 

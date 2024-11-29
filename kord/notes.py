@@ -1,6 +1,44 @@
 from bestia.iterate import LoopedList
 
-from .errors import *
+from .errors import InvalidNote, InvalidAlteration, InvalidOctave
+
+__all__ = [
+    'UNISON',
+    'DIMINISHED_SECOND',
+    'MINOR_SECOND',
+    'AUGMENTED_UNISON',
+    'MAJOR_SECOND',
+    'DIMINISHED_THIRD',
+    'MINOR_THIRD',
+    'AUGMENTED_SECOND',
+    'DIMINISHED_FOURTH',
+    'MAJOR_THIRD',
+    'PERFECT_FOURTH',
+    'AUGMENTED_THIRD',
+    'AUGMENTED_FOURTH',
+    'DIMINISHED_FIFTH',
+    'PERFECT_FIFTH',
+    'DIMINISHED_SIXTH',
+    'MINOR_SIXTH',
+    'AUGMENTED_FIFTH',
+    'MAJOR_SIXTH',
+    'DIMINISHED_SEVENTH',
+    'MINOR_SEVENTH',
+    'AUGMENTED_SIXTH',
+    'MAJOR_SEVENTH',
+    'DIMINISHED_OCTAVE',
+    'OCTAVE',
+    'AUGMENTED_SEVENTH',
+
+    'DEFAULT_OCTAVE',
+    'MAXIMUM_OCTAVE',
+
+    'input_alterations',
+    'note_chars',
+
+    'MusicNote',
+    'notes_by_alts',
+]
 
 UNISON = 0
 DIMINISHED_SECOND = 0
@@ -57,7 +95,7 @@ _CHARS = LoopedList(
     'B',
 )
 
-_OCTS = (
+_OCTAVES = (
     # '₀',
     # '₁',
     # '₂',
@@ -95,11 +133,12 @@ _ALTS = {
 def input_alterations():
     return list(_ALTS.keys())
 
-def output_alterations():
-    return list(_ALTS.values())
+
+def note_chars():
+    return [ c for c in _CHARS if c ]
 
 
-class MusicNote(object):
+class MusicNote:
 
     def __init__(self, char, *args):
         ''' init WITHOUT specifying argument names
@@ -121,7 +160,7 @@ class MusicNote(object):
 
         # with only 1 arg, decide if it's alt or oct
         if len(args) == 1:
-            if args[0] in input_alterations():
+            if args[0] in _ALTS:
                 self.alt = args[0]
             else:
                 try:
@@ -133,7 +172,7 @@ class MusicNote(object):
 
         # with 2 args, order must be alt, oct
         if len(args) == 2:
-            if args[0] not in input_alterations():
+            if args[0] not in _ALTS:
                 raise InvalidAlteration(args[0])
             self.alt = args[0]
 
@@ -162,7 +201,7 @@ class MusicNote(object):
     def repr_oct(self):
         output = ''
         for c in str(self.oct):
-            output += _OCTS[int(c)]
+            output += _OCTAVES[int(c)]
         return output
 
     @property
@@ -173,7 +212,9 @@ class MusicNote(object):
         if self.__class__ == other.__class__:
             oct_interval = (self.oct - other.oct) * OCTAVE
             chr_interval = _CHARS.index(self.chr) - _CHARS.index(other.chr)
-            alt_interval = input_alterations().index(self.alt) - input_alterations().index(other.alt)
+            alt_interval = (
+                input_alterations().index(self.alt) - input_alterations().index(other.alt)
+            )
             return oct_interval + chr_interval + alt_interval
         raise TypeError(' - not supported with {}'.format(other.__class__))
 
@@ -259,7 +300,7 @@ class MusicNote(object):
 
     @property
     def matrix_coordinates(self):
-        for row_index, row in enumerate(EnharmonicMatrix):
+        for row_index, row in enumerate(_EnharmonicMatrix):
             for note_index, enharmonic_note in enumerate(row):
                 if self ** enharmonic_note:  # ignore oct
                     return (row_index, note_index)
@@ -270,7 +311,7 @@ class MusicNote(object):
 ###   * when to change octs
 ###   * intervals between MusicNote instances
 ### notes MUST be unique so that MusicKey[d] finds 1 exact match!
-EnharmonicMatrix = LoopedList(
+_EnharmonicMatrix = LoopedList(
 
     ## 2-octave enharmonic relationships
     (  MusicNote('C', '' , 2), MusicNote('B', '#' , 1), MusicNote('D', 'bb', 2)  ), # NAH
@@ -306,7 +347,7 @@ def notes_by_alts():
 
     # get all notes
     notes = []
-    for ehns in EnharmonicMatrix:
+    for ehns in _EnharmonicMatrix:
         for ehn in ehns:
             notes.append(ehn)
 

@@ -1,11 +1,18 @@
 from bestia.output import Row, FString, echo, tty_cols
 
-from .keys import *
+from .keys import ChromaticScale
+from .notes import MusicNote
+
+__all__ = [
+    'MAXIMUM_FRETS',
+    'PluckedStringInstrument',
+    'max_frets_on_screen',
+]
 
 _NOTE_WIDTH = 5
 _FRET_WIDTH = 1
 
-INLAYS = (
+_INLAYS = (
     'I',
     'II',
     'III',
@@ -46,18 +53,20 @@ INLAYS = (
     'XXXVI',
 )
 
-MAX_FRETS = len(INLAYS)
+MAXIMUM_FRETS = len(_INLAYS)
+
 
 def max_frets_on_screen():
     ''' calculates how may frets can be rendered without exceeding terminal size
-        will NOT go over MAX_FRETS
+        will NOT go over MAXIMUM_FRETS
     '''
     frets = int(
         tty_cols() / ( _NOTE_WIDTH + _FRET_WIDTH )
     ) - 2
-    return frets if frets < MAX_FRETS else MAX_FRETS
+    return frets if frets < MAXIMUM_FRETS else MAXIMUM_FRETS
 
-class PluckedString(object):
+
+class PluckedString:
 
     def __init__(self, c, alt='', oct=3, frets=12, mode=None, verbose=1, show_degrees=0):
         self.tuning = MusicNote(c, alt, oct)
@@ -144,7 +153,7 @@ class PluckedString(object):
         return str(string_line)
 
 
-class PluckedStringInstrument(object):
+class PluckedStringInstrument:
 
     def __init__(self, *notes, name=''):
         self.strings = [ PluckedString(*n) for n in notes ]
@@ -175,7 +184,7 @@ class PluckedStringInstrument(object):
         while frets:
             inlay_row.append(
                 FString(
-                    '' if verbose == 1 and f not in dots else INLAYS[f-1],
+                    '' if verbose == 1 and f not in dots else _INLAYS[f-1],
                     size=_NOTE_WIDTH + _FRET_WIDTH,
                     align='r' if verbose == 2 else 'c', # high verbose needs more space
                     fg='cyan',

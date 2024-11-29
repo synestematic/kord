@@ -2,9 +2,14 @@ import unittest
 
 from .parsers import MusicNoteParser
 
-from .notes import MusicNote, MAXIMUM_OCTAVE
+from .notes import MusicNote, MAXIMUM_OCTAVE, note_chars
 
 from .errors import InvalidNote, InvalidAlteration, InvalidOctave
+
+__all__ = [
+    'MusicNoteParserTest',
+]
+
 
 class MusicNoteParserTest(unittest.TestCase):
 

@@ -3,13 +3,22 @@ import random
 
 from bestia.output import echo, Row, FString
 
-from .keys import ChromaticScale
-from .keys import MajorPentatonicScale, MajorScale, DominantSeventhChord
-from .keys import MinorScale, MelodicMinorScale, HarmonicMinorScale
+from .keys import (
+    ChromaticScale,
+    MajorPentatonicScale, MajorScale, DominantSeventhChord,
+    MinorScale, MelodicMinorScale, HarmonicMinorScale
+)
 
 from .notes import MusicNote, MAXIMUM_OCTAVE
 
 from .errors import InvalidOctave
+
+__all__ = [
+    'ScaleValidityTest',
+    'ChromaticScalesTest',
+    'MajorScalesExpectedNotesTest',
+    'TonalScaleSpellMethodTest',
+]
 
 
 class ScaleValidityTest(unittest.TestCase):

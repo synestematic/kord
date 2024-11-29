@@ -1,8 +1,53 @@
 from bestia.output import Row, FString
 
-from .notes import *
+from .notes import MAXIMUM_OCTAVE, MusicNote, notes_by_alts, _EnharmonicMatrix
 
-class MusicKey(object):
+from .notes import (
+    UNISON, DIMINISHED_SECOND, MINOR_SECOND, AUGMENTED_UNISON,
+    MAJOR_SECOND, DIMINISHED_THIRD, MINOR_THIRD, AUGMENTED_SECOND,
+    DIMINISHED_FOURTH, MAJOR_THIRD, PERFECT_FOURTH, AUGMENTED_THIRD,
+    AUGMENTED_FOURTH, DIMINISHED_FIFTH,
+    PERFECT_FIFTH, DIMINISHED_SIXTH, MINOR_SIXTH, AUGMENTED_FIFTH,
+    MAJOR_SIXTH, DIMINISHED_SEVENTH, MINOR_SEVENTH, AUGMENTED_SIXTH,
+    MAJOR_SEVENTH, DIMINISHED_OCTAVE, OCTAVE, AUGMENTED_SEVENTH
+)
+
+from .errors import InvalidNote, InvalidOctave
+
+__all__ = [
+    'MusicKey',
+    'MajorScale',
+    'MajorPentatonicScale',
+    'AugmentedScale',
+    'IonianMode',
+    'MixolydianMode',
+    'LydianMode',
+    'MinorScale',
+    'DiminishedScale',
+    'MinorPentatonicScale',
+    'MelodicMinorScale',
+    'HarmonicMinorScale',
+    'AeolianMode',
+    'DorianMode',
+    'PhrygianMode',
+    'LocrianMode',
+    'MajorTriad',
+    'MinorTriad',
+    'AugmentedTriad',
+    'DiminishedTriad',
+    'MajorSeventhChord',
+    'MinorSeventhChord',
+    'DominantSeventhChord',
+    'HalfDiminishedSeventhChord',
+    'DiminishedSeventhChord',
+    'MajorNinthChord',
+    'MinorNinthChord',
+    'DominantNinthChord',
+    'ChromaticScale',
+]
+
+
+class MusicKey:
 
     intervals = ()
     degrees = ()
@@ -123,7 +168,7 @@ class MusicKey(object):
 
         # GET DEGREE PROPERTIES FROM ENHARMONIC MATRIX
         next_notes = [
-            n for n in EnharmonicMatrix[
+            n for n in _EnharmonicMatrix[
                 self.root.enharmonic_row + spare_sts
             ] if n.chr == self.root.adjacent_chr(d - 1) # EXPECTED TONE
         ]
@@ -464,7 +509,7 @@ class ChromaticScale(MusicKey):
         # DO I REALLY NEED THESE 3 CHECKS ?
         # MATCH ROOT_TONE
         next_notes = [
-            n for n in EnharmonicMatrix[
+            n for n in _EnharmonicMatrix[
                 self.root.enharmonic_row + spare_sts
             ] if n ** self.root
         ]
@@ -472,7 +517,7 @@ class ChromaticScale(MusicKey):
         if not next_notes:
             # MATCH ROOT_ALT
             next_notes = [
-                n for n in EnharmonicMatrix[
+                n for n in _EnharmonicMatrix[
                     self.root.enharmonic_row + spare_sts
                 ] if n.alt == self.root.alt[:-1]
             ]
@@ -481,7 +526,7 @@ class ChromaticScale(MusicKey):
                 # CHOOSE "#" or ""
                 chosen_alt = '#' if self.root.alt == '' else self.root.alt
                 next_notes = [
-                    n for n in EnharmonicMatrix[
+                    n for n in _EnharmonicMatrix[
                         self.root.enharmonic_row + spare_sts
                     ] if n.alt == chosen_alt
                 ]
