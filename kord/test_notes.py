@@ -1,6 +1,10 @@
 import unittest
 
-from .notes import *
+from .notes import MusicNote, EnharmonicMatrix
+
+__all__ = [
+    'NoteEqualityTest',
+]
 
 
 class NoteEqualityTest(unittest.TestCase):
