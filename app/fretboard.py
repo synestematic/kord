@@ -27,8 +27,10 @@ from kord import (
 
 from kord import (
     MAXIMUM_FRETS, PluckedStringInstrument, MusicNote,
-    max_frets_on_screen, note_chars,
+    max_frets_on_screen, note_chars, input_alterations
 )
+
+from kord import InvalidInstrument, InvalidNote, InvalidAlteration
 
 from bestia.output import echo
 
@@ -77,7 +79,7 @@ TUNINGS = tuner.load_tuning_data()
 
 def parse_arguments():
     parser = argparse.ArgumentParser(
-        description='<<< Fretboard visualizer sample tool for the kord music framework >>>',
+        description='<<< Fretboard visualizer tool for the kord framework >>>',
     )
     parser.add_argument(
         'root',
@@ -169,11 +171,11 @@ def parse_arguments():
 
         # validate root alteration
         note_alt = args.root[1:]
-        if note_alt and note_alt not in list(notes._ALTS.keys()):
-            raise InvalidNote(
+        if note_alt and note_alt not in input_alterations():
+            raise InvalidAlteration(
                 "fretboard.py: error: argument ROOT: invalid alteration: '{}' (choose from {}) ".format(
                     note_alt,
-                    str( list(notes._ALTS.keys()) ).lstrip('[').rstrip(']')
+                    str( input_alterations() ).lstrip('[').rstrip(']')
                 )
             )
 
