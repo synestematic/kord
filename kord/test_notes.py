@@ -1,6 +1,6 @@
 import unittest
 
-from .notes import MusicNote, EnharmonicMatrix
+from .notes import MusicNote, _EnharmonicMatrix
 
 __all__ = [
     'NoteEqualityTest',
@@ -54,7 +54,7 @@ class NoteEqualityTest(unittest.TestCase):
 
     def testAreEnharmonic(self):
         ''' checks note_pairs in enharmonic rows for different types of enharmonic equality '''
-        for note_pair in EnharmonicMatrix:
+        for note_pair in _EnharmonicMatrix:
 
             # PASS ENHARMONIC EQUALITY
             assert note_pair[0] == note_pair[1], (note_pair[0], note_pair[1])

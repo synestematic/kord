@@ -300,7 +300,7 @@ class MusicNote(object):
 
     @property
     def matrix_coordinates(self):
-        for row_index, row in enumerate(EnharmonicMatrix):
+        for row_index, row in enumerate(_EnharmonicMatrix):
             for note_index, enharmonic_note in enumerate(row):
                 if self ** enharmonic_note:  # ignore oct
                     return (row_index, note_index)
@@ -311,7 +311,7 @@ class MusicNote(object):
 ###   * when to change octs
 ###   * intervals between MusicNote instances
 ### notes MUST be unique so that MusicKey[d] finds 1 exact match!
-EnharmonicMatrix = LoopedList(
+_EnharmonicMatrix = LoopedList(
 
     ## 2-octave enharmonic relationships
     (  MusicNote('C', '' , 2), MusicNote('B', '#' , 1), MusicNote('D', 'bb', 2)  ), # NAH
@@ -347,7 +347,7 @@ def notes_by_alts():
 
     # get all notes
     notes = []
-    for ehns in EnharmonicMatrix:
+    for ehns in _EnharmonicMatrix:
         for ehn in ehns:
             notes.append(ehn)
 

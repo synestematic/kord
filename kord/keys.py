@@ -1,6 +1,6 @@
 from bestia.output import Row, FString
 
-from .notes import MAXIMUM_OCTAVE, MusicNote, notes_by_alts, EnharmonicMatrix
+from .notes import MAXIMUM_OCTAVE, MusicNote, notes_by_alts, _EnharmonicMatrix
 
 from .notes import (
     UNISON, DIMINISHED_SECOND, MINOR_SECOND, AUGMENTED_UNISON,
@@ -168,7 +168,7 @@ class MusicKey(object):
 
         # GET DEGREE PROPERTIES FROM ENHARMONIC MATRIX
         next_notes = [
-            n for n in EnharmonicMatrix[
+            n for n in _EnharmonicMatrix[
                 self.root.enharmonic_row + spare_sts
             ] if n.chr == self.root.adjacent_chr(d - 1) # EXPECTED TONE
         ]
@@ -509,7 +509,7 @@ class ChromaticScale(MusicKey):
         # DO I REALLY NEED THESE 3 CHECKS ?
         # MATCH ROOT_TONE
         next_notes = [
-            n for n in EnharmonicMatrix[
+            n for n in _EnharmonicMatrix[
                 self.root.enharmonic_row + spare_sts
             ] if n ** self.root
         ]
@@ -517,7 +517,7 @@ class ChromaticScale(MusicKey):
         if not next_notes:
             # MATCH ROOT_ALT
             next_notes = [
-                n for n in EnharmonicMatrix[
+                n for n in _EnharmonicMatrix[
                     self.root.enharmonic_row + spare_sts
                 ] if n.alt == self.root.alt[:-1]
             ]
@@ -526,7 +526,7 @@ class ChromaticScale(MusicKey):
                 # CHOOSE "#" or ""
                 chosen_alt = '#' if self.root.alt == '' else self.root.alt
                 next_notes = [
-                    n for n in EnharmonicMatrix[
+                    n for n in _EnharmonicMatrix[
                         self.root.enharmonic_row + spare_sts
                     ] if n.alt == chosen_alt
                 ]
