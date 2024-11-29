@@ -3,6 +3,11 @@ from .notes import MusicNote, input_alterations, note_chars, DEFAULT_OCTAVE
 
 from .errors import InvalidNote, InvalidAlteration, InvalidOctave
 
+__all__ = [
+    'MusicNoteParser',
+]
+
+
 class MusicNoteParser:
 
     def __init__(self, symbol):

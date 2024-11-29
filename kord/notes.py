@@ -2,6 +2,43 @@ from bestia.iterate import LoopedList
 
 from .errors import InvalidNote, InvalidAlteration, InvalidOctave
 
+__all__ = [
+    'UNISON',
+    'DIMINISHED_SECOND',
+    'MINOR_SECOND',
+    'AUGMENTED_UNISON',
+    'MAJOR_SECOND',
+    'DIMINISHED_THIRD',
+    'MINOR_THIRD',
+    'AUGMENTED_SECOND',
+    'DIMINISHED_FOURTH',
+    'MAJOR_THIRD',
+    'PERFECT_FOURTH',
+    'AUGMENTED_THIRD',
+    'AUGMENTED_FOURTH',
+    'DIMINISHED_FIFTH',
+    'PERFECT_FIFTH',
+    'DIMINISHED_SIXTH',
+    'MINOR_SIXTH',
+    'AUGMENTED_FIFTH',
+    'MAJOR_SIXTH',
+    'DIMINISHED_SEVENTH',
+    'MINOR_SEVENTH',
+    'AUGMENTED_SIXTH',
+    'MAJOR_SEVENTH',
+    'DIMINISHED_OCTAVE',
+    'OCTAVE',
+    'AUGMENTED_SEVENTH',
+
+    'DEFAULT_OCTAVE',
+    'MAXIMUM_OCTAVE',
+
+    'input_alterations',
+    'note_chars',
+
+    'MusicNote',
+    'notes_by_alts',
+]
 
 UNISON = 0
 DIMINISHED_SECOND = 0

@@ -1,7 +1,7 @@
 from bestia.output import Row, FString, echo, tty_cols
 
-from .notes import MusicNote
 from .keys import ChromaticScale
+from .notes import MusicNote
 
 __all__ = [
     'MAX_FRETS',

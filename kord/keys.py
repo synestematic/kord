@@ -14,6 +14,39 @@ from .notes import (
 
 from .errors import InvalidNote, InvalidOctave
 
+__all__ = [
+    'MusicKey',
+    'MajorScale',
+    'MajorPentatonicScale',
+    'AugmentedScale',
+    'IonianMode',
+    'MixolydianMode',
+    'LydianMode',
+    'MinorScale',
+    'DiminishedScale',
+    'MinorPentatonicScale',
+    'MelodicMinorScale',
+    'HarmonicMinorScale',
+    'AeolianMode',
+    'DorianMode',
+    'PhrygianMode',
+    'LocrianMode',
+    'MajorTriad',
+    'MinorTriad',
+    'AugmentedTriad',
+    'DiminishedTriad',
+    'MajorSeventhChord',
+    'MinorSeventhChord',
+    'DominantSeventhChord',
+    'HalfDiminishedSeventhChord',
+    'DiminishedSeventhChord',
+    'MajorNinthChord',
+    'MinorNinthChord',
+    'DominantNinthChord',
+    'ChromaticScale',
+]
+
+
 class MusicKey(object):
 
     intervals = ()
