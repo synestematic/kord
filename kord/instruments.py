@@ -4,7 +4,7 @@ from .keys import ChromaticScale
 from .notes import MusicNote
 
 __all__ = [
-    'MAX_FRETS',
+    'MAXIMUM_FRETS',
     'PluckedStringInstrument',
     'max_frets_on_screen',
 ]
@@ -53,17 +53,17 @@ _INLAYS = (
     'XXXVI',
 )
 
-MAX_FRETS = len(_INLAYS)
+MAXIMUM_FRETS = len(_INLAYS)
 
 
 def max_frets_on_screen():
     ''' calculates how may frets can be rendered without exceeding terminal size
-        will NOT go over MAX_FRETS
+        will NOT go over MAXIMUM_FRETS
     '''
     frets = int(
         tty_cols() / ( _NOTE_WIDTH + _FRET_WIDTH )
     ) - 2
-    return frets if frets < MAX_FRETS else MAX_FRETS
+    return frets if frets < MAXIMUM_FRETS else MAXIMUM_FRETS
 
 
 class PluckedString(object):

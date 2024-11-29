@@ -26,7 +26,7 @@ from kord import (
 )
 
 from kord import (
-    MAX_FRETS, PluckedStringInstrument, MusicNote,
+    MAXIMUM_FRETS, PluckedStringInstrument, MusicNote,
     max_frets_on_screen, note_chars,
 )
 
@@ -128,8 +128,8 @@ def parse_arguments():
 
     parser.add_argument(
         '-f', '--frets',
-        help='1, 2, .., {}'.format(MAX_FRETS),
-        choices=[ f+1 for f in range(MAX_FRETS) ],
+        help='1, 2, .., {}'.format(MAXIMUM_FRETS),
+        choices=[ f+1 for f in range(MAXIMUM_FRETS) ],
         default=max_frets_on_screen(),
         metavar='',
         type=int,
