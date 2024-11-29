@@ -1,6 +1,7 @@
 from bestia.iterate import LoopedList
 
-from .errors import *
+from .errors import InvalidNote, InvalidAlteration, InvalidOctave
+
 
 UNISON = 0
 DIMINISHED_SECOND = 0
@@ -57,7 +58,7 @@ _CHARS = LoopedList(
     'B',
 )
 
-_OCTS = (
+_OCTAVES = (
     # '₀',
     # '₁',
     # '₂',
@@ -95,8 +96,9 @@ _ALTS = {
 def input_alterations():
     return list(_ALTS.keys())
 
-def output_alterations():
-    return list(_ALTS.values())
+
+def note_chars():
+    return [ c for c in _CHARS if c ]
 
 
 class MusicNote(object):
@@ -121,7 +123,7 @@ class MusicNote(object):
 
         # with only 1 arg, decide if it's alt or oct
         if len(args) == 1:
-            if args[0] in input_alterations():
+            if args[0] in _ALTS:
                 self.alt = args[0]
             else:
                 try:
@@ -133,7 +135,7 @@ class MusicNote(object):
 
         # with 2 args, order must be alt, oct
         if len(args) == 2:
-            if args[0] not in input_alterations():
+            if args[0] not in _ALTS:
                 raise InvalidAlteration(args[0])
             self.alt = args[0]
 
@@ -162,7 +164,7 @@ class MusicNote(object):
     def repr_oct(self):
         output = ''
         for c in str(self.oct):
-            output += _OCTS[int(c)]
+            output += _OCTAVES[int(c)]
         return output
 
     @property
@@ -173,7 +175,9 @@ class MusicNote(object):
         if self.__class__ == other.__class__:
             oct_interval = (self.oct - other.oct) * OCTAVE
             chr_interval = _CHARS.index(self.chr) - _CHARS.index(other.chr)
-            alt_interval = input_alterations().index(self.alt) - input_alterations().index(other.alt)
+            alt_interval = (
+                input_alterations().index(self.alt) - input_alterations().index(other.alt)
+            )
             return oct_interval + chr_interval + alt_interval
         raise TypeError(' - not supported with {}'.format(other.__class__))
 

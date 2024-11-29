@@ -1,5 +1,5 @@
 
-from .notes import MusicNote, input_alterations, _CHARS, DEFAULT_OCTAVE
+from .notes import MusicNote, input_alterations, note_chars, DEFAULT_OCTAVE
 
 from .errors import InvalidNote, InvalidAlteration, InvalidOctave
 
@@ -15,7 +15,7 @@ class MusicNoteParser:
 
 
     def _parse_char(self):
-        if len(self.to_parse) == 0 or self.to_parse[0].upper() not in _CHARS:
+        if len(self.to_parse) == 0 or self.to_parse[0].upper() not in note_chars():
             raise InvalidNote(self.symbol)
         char = self.to_parse[0]
         self.to_parse = self.to_parse[1:]
