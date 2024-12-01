@@ -130,8 +130,13 @@ _ALTS = {
     '##': '𝄪',
 }
 
+
 def input_alterations():
     return list(_ALTS.keys())
+
+
+def output_alterations():
+    return list(_ALTS.values())
 
 
 def note_chars():
@@ -139,6 +144,13 @@ def note_chars():
 
 
 class MusicNote:
+
+    @classmethod
+    def validate_char(cls, char):
+        char = char.upper()
+        if char not in note_chars():
+            raise InvalidNote(char)
+        return char
 
     def __init__(self, char, *args):
         ''' init WITHOUT specifying argument names
@@ -148,14 +160,11 @@ class MusicNote:
             MusicNote('C', '#')
             MusicNote('C', '#', 9)
         '''
-        self.chr = char.upper()
-        if self.chr not in _CHARS:
-            raise InvalidNote(char)
-
+        self.chr = self.validate_char(char)
         self.alt = ''
         self.oct = DEFAULT_OCTAVE
 
-        if len(args) >  2:
+        if len(args) > 2:
             raise InvalidNote('Too many arguments')
 
         # with only 1 arg, decide if it's alt or oct

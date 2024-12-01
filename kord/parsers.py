@@ -1,11 +1,27 @@
 
-from .notes import MusicNote, input_alterations, note_chars, DEFAULT_OCTAVE
+from .notes import (
+    MusicNote, DEFAULT_OCTAVE,
+    input_alterations, output_alterations
+)
 
 from .errors import InvalidNote, InvalidAlteration, InvalidOctave
 
 __all__ = [
     'MusicNoteParser',
+    'MusicChordParser',
 ]
+
+
+class MusicChordParser:
+
+    def __init__(self, symbol):
+
+        possible_root = symbol[:3]
+
+        if len(possible_root) == 0:
+            raise InvalidNote(possible_root)
+
+        char = MusicNote.validate_char(possible_root[0])
 
 
 class MusicNoteParser:
@@ -20,11 +36,9 @@ class MusicNoteParser:
 
 
     def _parse_char(self):
-        if len(self.to_parse) == 0 or self.to_parse[0].upper() not in note_chars():
-            raise InvalidNote(self.symbol)
-        char = self.to_parse[0]
+        char = MusicNote.validate_char(self.to_parse[0])
         self.to_parse = self.to_parse[1:]
-        return char.upper()
+        return char
 
 
     def _parse_oct(self):
@@ -66,6 +80,9 @@ class MusicNoteParser:
 
 
     def parse(self):
+        if len(self.to_parse) == 0:
+            raise InvalidNote(self.symbol)
+
         char = self._parse_char()
         if len(self.to_parse) == 0:
             self.reset()
