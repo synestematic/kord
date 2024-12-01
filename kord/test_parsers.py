@@ -1,6 +1,6 @@
 import unittest
 
-from .parsers import MusicNoteParser
+from .parsers import MusicNoteParser, MusicChordParser
 
 from .notes import MusicNote, MAXIMUM_OCTAVE, note_chars
 
@@ -8,7 +8,30 @@ from .errors import InvalidNote, InvalidAlteration, InvalidOctave
 
 __all__ = [
     'MusicNoteParserTest',
+    'MusicChordParserTest',
 ]
+
+
+class MusicChordParserTest(unittest.TestCase):
+
+    CASES = [
+        # 'H',
+        'A',
+        'Emaj',
+        'F7',
+
+        'A#sus9',
+        'A♯♭𝄫𝄪add13',
+
+        'fdim',
+        'Bbdim',
+    ]
+
+    def testFOO(self):
+        for symbol in self.CASES:
+            parser = MusicChordParser(symbol)
+            parsed_note = parser.parse()
+            # self.assertEqual(parsed_note, expected)
 
 
 class MusicNoteParserTest(unittest.TestCase):

@@ -15,23 +15,38 @@ __all__ = [
 class MusicChordParser:
 
     def __init__(self, symbol):
-        root = self._find_root(symbol)
+        self.symbol = symbol
+        self.reset()
 
 
-    def _find_root(self, symbol):
-        possible_root = symbol[:3]
+    def reset(self):
+        self.to_parse = self.symbol.strip()
+
+
+    def _parse_root(self):
+        possible_root = self.symbol[:3]
         if len(possible_root) == 0:
             raise InvalidNote(possible_root)
 
         MusicNote.validate_char(possible_root[0])
         if len(possible_root) == 1:
-            return possible_root
+            return possible_root[:1]
 
-        if len(possible_root[1:]) == 2:
-            if possible_root[1:] in ('bb', '##', '♯♯', '♭♭'):
-                return possible_root
-            if possible_root[1] in ('b', '#', '♯', '♭', '𝄫', '𝄪'):
-                return possible_root
+        # if len(possible_root) == 3:
+        if possible_root[1:] in ('bb', '##', '♯♯', '♭♭'):
+            return possible_root[:3]
+
+        # if len(possible_root) == 2:
+        if possible_root[1] in ('b', '#', '♯', '♭', '𝄫', '𝄪'):
+            return possible_root[:2]
+
+        return possible_root[:1]
+
+
+    def parse(self):
+        root = self._parse_root()
+        self.root = MusicNoteParser(root).parse()
+        print(self.root)
 
 
 class MusicNoteParser:
