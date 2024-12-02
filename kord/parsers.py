@@ -1,10 +1,7 @@
 
-from .notes import (
-    MusicNote, DEFAULT_OCTAVE,
-    input_alterations, output_alterations
-)
+from .notes import MusicNote
 
-from .errors import InvalidNote, InvalidAlteration, InvalidOctave
+from .errors import InvalidNote, InvalidAlteration, InvalidOctave, InvalidChord
 
 __all__ = [
     'MusicNoteParser',
@@ -15,16 +12,18 @@ __all__ = [
 class MusicChordParser:
 
     def __init__(self, symbol):
-        self.symbol = symbol
+        self.symbol = symbol.strip()
         self.reset()
 
 
     def reset(self):
+        self.root = None
+        self.flavor = None
         self.to_parse = self.symbol.strip()
 
 
     def _parse_root(self):
-        possible_root = self.symbol[:3]
+        possible_root = self.to_parse[:3]
         if len(possible_root) == 0:
             raise InvalidNote(possible_root)
 
@@ -43,10 +42,18 @@ class MusicChordParser:
         return possible_root[:1]
 
 
+    def _parse_flavor(self):
+        return self.to_parse
+
+
     def parse(self):
         root = self._parse_root()
         self.root = MusicNoteParser(root).parse()
-        print(self.root)
+
+        self.to_parse = self.to_parse[len(root):]
+        self.flavor = self._parse_flavor()
+
+        print(f'{self.symbol} = {self.root} {self.flavor}')
 
 
 class MusicNoteParser:
@@ -85,7 +92,7 @@ class MusicNoteParser:
             self.to_parse = self.to_parse[:-1]
         except ValueError:
             # probably an alt
-            octave = DEFAULT_OCTAVE
+            octave = MusicNote.DEFAULT_OCTAVE
         finally:
             return octave
 
@@ -96,7 +103,7 @@ class MusicNoteParser:
         self.to_parse = self.to_parse.replace('𝄪', '##')
         self.to_parse = self.to_parse.replace('♯', '#')
 
-        if self.to_parse not in input_alterations():
+        if self.to_parse not in MusicNote.input_alterations():
             raise InvalidAlteration(self.symbol)
 
         alts = self.to_parse

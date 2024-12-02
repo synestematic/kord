@@ -26,8 +26,7 @@ from kord import (
 )
 
 from kord import (
-    MAXIMUM_FRETS, PluckedStringInstrument, MusicNote,
-    max_frets_on_screen, input_alterations
+    MAXIMUM_FRETS, PluckedStringInstrument, MusicNote, max_frets_on_screen
 )
 
 from kord import InvalidInstrument, InvalidNote, InvalidAlteration
@@ -171,11 +170,11 @@ def parse_arguments():
 
         # validate root alteration
         note_alt = args.root[1:]
-        if note_alt and note_alt not in input_alterations():
+        if note_alt and note_alt not in MusicNote.input_alterations():
             raise InvalidAlteration(
                 "fretboard.py: error: argument ROOT: invalid alteration: '{}' (choose from {}) ".format(
                     note_alt,
-                    str( input_alterations() ).lstrip('[').rstrip(']')
+                    str( MusicNote.input_alterations() ).lstrip('[').rstrip(']')
                 )
             )
 

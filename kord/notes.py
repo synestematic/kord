@@ -30,8 +30,6 @@ __all__ = [
     'OCTAVE',
     'AUGMENTED_SEVENTH',
 
-    'input_alterations',
-
     'MusicNote',
     'notes_by_alts',
 ]
@@ -74,14 +72,6 @@ DIMINISHED_OCTAVE = 11
 
 OCTAVE = 12
 AUGMENTED_SEVENTH = 12
-
-
-def input_alterations():
-    return list(_ALTS.keys())
-
-
-def output_alterations():
-    return list(_ALTS.values())
 
 
 class MusicNote:
@@ -145,6 +135,10 @@ class MusicNote:
         if char not in cls.possible_chars():
             raise InvalidNote(char)
         return char
+
+    @classmethod
+    def input_alterations(cls):
+        return list( cls._ALTS.keys() )
 
     def __init__(self, char, *args):
         ''' init WITHOUT specifying argument names
@@ -216,7 +210,7 @@ class MusicNote:
             oct_interval = (self.oct - other.oct) * OCTAVE
             chr_interval = self._CHARS.index(self.chr) - self._CHARS.index(other.chr)
             alt_interval = (
-                input_alterations().index(self.alt) - input_alterations().index(other.alt)
+                self.input_alterations().index(self.alt) - self.input_alterations().index(other.alt)
             )
             return oct_interval + chr_interval + alt_interval
         raise TypeError(' - not supported with {}'.format(other.__class__))
@@ -288,12 +282,14 @@ class MusicNote:
 
     ### OCT METHODS
     def oversteps_oct(self, other):
-        ''' evaluates whether I need to cross octave border in rder to go from self to other
+        ''' evaluates whether I need to cross octave border in order to go from self to other
             ignores octave
         '''
         if self.chr != other.chr:
             return self._CHARS.index(self.chr) > self._CHARS.index(other.chr)
-        return input_alterations().index(self.alt) > input_alterations().index(other.alt)
+        return (
+            self.input_alterations().index(self.alt) > self.input_alterations().index(other.alt)
+        )
 
 
     # ENHARMONIC ATTRIBUTES
@@ -345,7 +341,7 @@ def notes_by_alts():
         * 7 notes with alt '##'
     '''
     # sort alts
-    alts = input_alterations()
+    alts = MusicNote.input_alterations()
     alts.sort(key=len) # '', b, #, bb, ##
 
     # get all notes
