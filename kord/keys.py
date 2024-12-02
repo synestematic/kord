@@ -9,7 +9,7 @@ from .notes import (
     AUGMENTED_FOURTH, DIMINISHED_FIFTH,
     PERFECT_FIFTH, DIMINISHED_SIXTH, MINOR_SIXTH, AUGMENTED_FIFTH,
     MAJOR_SIXTH, DIMINISHED_SEVENTH, MINOR_SEVENTH, AUGMENTED_SIXTH,
-    MAJOR_SEVENTH, DIMINISHED_OCTAVE, OCTAVE, AUGMENTED_SEVENTH
+    MAJOR_SEVENTH, DIMINISHED_OCTAVE, PERFECT_OCTAVE, AUGMENTED_SEVENTH
 )
 
 from .errors import InvalidNote, InvalidOctave
@@ -160,9 +160,9 @@ class MusicKey:
         if d == 1:
             return self.root
 
-        # GET DEGREE's ROOT OFFSETS = OCTAVE + SPARE_STS
+        # GET DEGREE's ROOT OFFSETS = PERFECT_OCTAVE + SPARE_STS
         octs_from_root, spare_sts = divmod(
-            self.degree_root_interval(d), OCTAVE
+            self.degree_root_interval(d), PERFECT_OCTAVE
         )
         note_oct = octs_from_root
 
@@ -196,7 +196,7 @@ class MusicKey:
         if d > len(self.intervals):
             return self.degree_root_interval(
                 d - len(self.intervals)
-            ) + OCTAVE
+            ) + PERFECT_OCTAVE
         return self.intervals[d -1]
 
 
@@ -499,9 +499,9 @@ class ChromaticScale(MusicKey):
         if d == 1:
             return self.root
 
-        # GET DEGREE's ROOT OFFSETS = OCTAVE + SPARE_STS
+        # GET DEGREE's ROOT OFFSETS = PERFECT_OCTAVE + SPARE_STS
         octs_from_root, spare_sts = divmod(
-            self.degree_root_interval(d), OCTAVE
+            self.degree_root_interval(d), PERFECT_OCTAVE
         )
         note_oct = octs_from_root
 

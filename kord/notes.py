@@ -27,7 +27,7 @@ __all__ = [
     'AUGMENTED_SIXTH',
     'MAJOR_SEVENTH',
     'DIMINISHED_OCTAVE',
-    'OCTAVE',
+    'PERFECT_OCTAVE',
     'AUGMENTED_SEVENTH',
 
     'MusicNote',
@@ -70,7 +70,7 @@ AUGMENTED_SIXTH = 10
 MAJOR_SEVENTH = 11
 DIMINISHED_OCTAVE = 11
 
-OCTAVE = 12
+PERFECT_OCTAVE = 12
 AUGMENTED_SEVENTH = 12
 
 
@@ -207,7 +207,7 @@ class MusicNote:
 
     def __sub__(self, other):
         if self.__class__ == other.__class__:
-            oct_interval = (self.oct - other.oct) * OCTAVE
+            oct_interval = (self.oct - other.oct) * PERFECT_OCTAVE
             chr_interval = self._CHARS.index(self.chr) - self._CHARS.index(other.chr)
             alt_interval = (
                 self.input_alterations().index(self.alt) - self.input_alterations().index(other.alt)
