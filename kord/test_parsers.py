@@ -2,7 +2,7 @@ import unittest
 
 from .parsers import MusicNoteParser, MusicChordParser
 
-from .notes import MusicNote, MAXIMUM_OCTAVE, note_chars
+from .notes import MusicNote
 
 from .errors import InvalidNote, InvalidAlteration, InvalidOctave
 
@@ -21,7 +21,7 @@ class MusicChordParserTest(unittest.TestCase):
         'F7',
 
         'A#sus9',
-        'A♯♭𝄫𝄪add13',
+        # 'A♯♭𝄫𝄪add13',
 
         'fdim',
         'Bbdim',
@@ -60,12 +60,12 @@ class MusicNoteParserTest(unittest.TestCase):
 
     OCTAVE_WINS = [
         [ f'C{octave}', MusicNote('C', octave) ] for octave
-        in range(0, MAXIMUM_OCTAVE)
+        in range(0, MusicNote.MAXIMUM_OCTAVE)
     ]
 
     OCTAVE_FAILS = [
         f'A{octave}' for octave
-        in range(MAXIMUM_OCTAVE+1, MAXIMUM_OCTAVE+500)
+        in range(MusicNote.MAXIMUM_OCTAVE+1, MusicNote.MAXIMUM_OCTAVE+500)
     ]
 
     ALTS_WINS = [

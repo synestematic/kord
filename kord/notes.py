@@ -30,9 +30,6 @@ __all__ = [
     'OCTAVE',
     'AUGMENTED_SEVENTH',
 
-    'DEFAULT_OCTAVE',
-    'MAXIMUM_OCTAVE',
-
     'input_alterations',
 
     'MusicNote',
@@ -102,8 +99,6 @@ _OCTAVES = (
     '⁹',
 )
 
-DEFAULT_OCTAVE = 3
-MAXIMUM_OCTAVE = 9
 
 
 _ALTS = {
@@ -140,6 +135,9 @@ class MusicNote:
         'B',
     )
 
+    DEFAULT_OCTAVE = 3
+    MAXIMUM_OCTAVE = 9
+
     @classmethod
     def possible_chars(cls):
         return [ c for c in cls._CHARS if c ]
@@ -161,7 +159,7 @@ class MusicNote:
         '''
         self.chr = self.validate_char(char)
         self.alt = ''
-        self.oct = DEFAULT_OCTAVE
+        self.oct = self.DEFAULT_OCTAVE
 
         if len(args) > 2:
             raise InvalidNote('Too many arguments')
@@ -189,7 +187,7 @@ class MusicNote:
             except:
                 raise InvalidOctave(args[1])
 
-        if self.oct > MAXIMUM_OCTAVE:
+        if self.oct > self.MAXIMUM_OCTAVE:
             raise InvalidOctave(self.oct)
 
 
