@@ -76,40 +76,6 @@ OCTAVE = 12
 AUGMENTED_SEVENTH = 12
 
 
-_OCTAVES = (
-    # '₀',
-    # '₁',
-    # '₂',
-    # '₃',
-    # '₄',
-    # '₅',
-    # '₆',
-    # '₇',
-    # '₈',
-    # '₉',
-    '⁰',
-    '¹',
-    '²',
-    '³',
-    '⁴',
-    '⁵',
-    '⁶',
-    '⁷',
-    '⁸',
-    '⁹',
-)
-
-
-
-_ALTS = {
-    'bb': '𝄫',
-    'b': '♭',
-    '': '',
-    '#': '♯',
-    '##': '𝄪',
-}
-
-
 def input_alterations():
     return list(_ALTS.keys())
 
@@ -133,6 +99,37 @@ class MusicNote:
         'A',
         None,
         'B',
+    )
+
+    _ALTS = {
+        'bb': '𝄫',
+        'b': '♭',
+        '': '',
+        '#': '♯',
+        '##': '𝄪',
+    }
+
+    _OCTAVES = (
+        # '₀',
+        # '₁',
+        # '₂',
+        # '₃',
+        # '₄',
+        # '₅',
+        # '₆',
+        # '₇',
+        # '₈',
+        # '₉',
+        '⁰',
+        '¹',
+        '²',
+        '³',
+        '⁴',
+        '⁵',
+        '⁶',
+        '⁷',
+        '⁸',
+        '⁹',
     )
 
     DEFAULT_OCTAVE = 3
@@ -166,7 +163,7 @@ class MusicNote:
 
         # with only 1 arg, decide if it's alt or oct
         if len(args) == 1:
-            if args[0] in _ALTS:
+            if args[0] in self._ALTS:
                 self.alt = args[0]
             else:
                 try:
@@ -178,7 +175,7 @@ class MusicNote:
 
         # with 2 args, order must be alt, oct
         if len(args) == 2:
-            if args[0] not in _ALTS:
+            if args[0] not in self._ALTS:
                 raise InvalidAlteration(args[0])
             self.alt = args[0]
 
@@ -207,12 +204,12 @@ class MusicNote:
     def repr_oct(self):
         output = ''
         for c in str(self.oct):
-            output += _OCTAVES[int(c)]
+            output += self._OCTAVES[int(c)]
         return output
 
     @property
     def repr_alt(self):
-        return _ALTS[self.alt]
+        return self._ALTS[self.alt]
 
     def __sub__(self, other):
         if self.__class__ == other.__class__:
