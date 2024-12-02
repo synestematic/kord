@@ -34,7 +34,6 @@ __all__ = [
     'MAXIMUM_OCTAVE',
 
     'input_alterations',
-    'note_chars',
 
     'MusicNote',
     'notes_by_alts',
@@ -80,21 +79,6 @@ OCTAVE = 12
 AUGMENTED_SEVENTH = 12
 
 
-_CHARS = LoopedList(
-    'C',
-    None,
-    'D',
-    None,
-    'E',
-    'F',
-    None,
-    'G',
-    None,
-    'A',
-    None,
-    'B',
-)
-
 _OCTAVES = (
     # '₀',
     # '₁',
@@ -139,16 +123,31 @@ def output_alterations():
     return list(_ALTS.values())
 
 
-def note_chars():
-    return [ c for c in _CHARS if c ]
-
-
 class MusicNote:
+
+    _CHARS = LoopedList(
+        'C',
+        None,
+        'D',
+        None,
+        'E',
+        'F',
+        None,
+        'G',
+        None,
+        'A',
+        None,
+        'B',
+    )
+
+    @classmethod
+    def possible_chars(cls):
+        return [ c for c in cls._CHARS if c ]
 
     @classmethod
     def validate_char(cls, char):
         char = char.upper()
-        if char not in note_chars():
+        if char not in cls.possible_chars():
             raise InvalidNote(char)
         return char
 
@@ -220,7 +219,7 @@ class MusicNote:
     def __sub__(self, other):
         if self.__class__ == other.__class__:
             oct_interval = (self.oct - other.oct) * OCTAVE
-            chr_interval = _CHARS.index(self.chr) - _CHARS.index(other.chr)
+            chr_interval = self._CHARS.index(self.chr) - self._CHARS.index(other.chr)
             alt_interval = (
                 input_alterations().index(self.alt) - input_alterations().index(other.alt)
             )
@@ -276,8 +275,8 @@ class MusicNote:
 
     ### CHR METHODS
     def relative_chr(self, n):
-        my_index = _CHARS.index(self.chr)
-        return _CHARS[my_index +n]
+        my_index = self._CHARS.index(self.chr)
+        return self._CHARS[my_index +n]
 
     def adjacent_chr(self, n=1):
         ''' returns next adjacent chr of self
@@ -298,7 +297,7 @@ class MusicNote:
             ignores octave
         '''
         if self.chr != other.chr:
-            return _CHARS.index(self.chr) > _CHARS.index(other.chr)
+            return self._CHARS.index(self.chr) > self._CHARS.index(other.chr)
         return input_alterations().index(self.alt) > input_alterations().index(other.alt)
 
 
