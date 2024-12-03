@@ -174,7 +174,7 @@ def parse_arguments():
             raise InvalidAlteration(
                 "fretboard.py: error: argument ROOT: invalid alteration: '{}' (choose from {}) ".format(
                     note_alt,
-                    str( MusicNote.input_alterations() ).lstrip('[').rstrip(']')
+                    str( MusicNote.input_alterations() ).lstrip('(').rstrip(')')
                 )
             )
 

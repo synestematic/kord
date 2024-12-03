@@ -137,8 +137,12 @@ class MusicNote:
         return char
 
     @classmethod
-    def input_alterations(cls):
-        return list( cls._ALTS.keys() )
+    def input_alterations(cls) -> tuple:
+        return tuple( cls._ALTS.keys() )
+
+    @classmethod
+    def output_alterations(cls) -> tuple:
+        return tuple( cls._ALTS.values() )
 
     def __init__(self, char, *args):
         ''' init WITHOUT specifying argument names
@@ -341,7 +345,9 @@ def notes_by_alts():
         * 7 notes with alt '##'
     '''
     # sort alts
-    alts = MusicNote.input_alterations()
+    alts = list(
+        MusicNote.input_alterations()
+    )
     alts.sort(key=len) # '', b, #, bb, ##
 
     # get all notes
