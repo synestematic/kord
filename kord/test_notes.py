@@ -2,9 +2,20 @@ import unittest
 
 from .notes import MusicNote, _EnharmonicMatrix
 
+from .errors import InvalidNote
+
 __all__ = [
+    'TestInvalidNotes',
     'NoteEqualityTest',
 ]
+
+
+class TestInvalidNotes(unittest.TestCase):
+
+    def testInvalidChars(self):
+        self.assertRaises(
+            InvalidNote, lambda : MusicNote('Y')
+        )
 
 
 class NoteEqualityTest(unittest.TestCase):

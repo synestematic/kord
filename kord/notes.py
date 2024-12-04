@@ -27,14 +27,8 @@ __all__ = [
     'AUGMENTED_SIXTH',
     'MAJOR_SEVENTH',
     'DIMINISHED_OCTAVE',
-    'OCTAVE',
+    'PERFECT_OCTAVE',
     'AUGMENTED_SEVENTH',
-
-    'DEFAULT_OCTAVE',
-    'MAXIMUM_OCTAVE',
-
-    'input_alterations',
-    'note_chars',
 
     'MusicNote',
     'notes_by_alts',
@@ -76,69 +70,79 @@ AUGMENTED_SIXTH = 10
 MAJOR_SEVENTH = 11
 DIMINISHED_OCTAVE = 11
 
-OCTAVE = 12
+PERFECT_OCTAVE = 12
 AUGMENTED_SEVENTH = 12
 
 
-_CHARS = LoopedList(
-    'C',
-    None,
-    'D',
-    None,
-    'E',
-    'F',
-    None,
-    'G',
-    None,
-    'A',
-    None,
-    'B',
-)
-
-_OCTAVES = (
-    # '₀',
-    # '₁',
-    # '₂',
-    # '₃',
-    # '₄',
-    # '₅',
-    # '₆',
-    # '₇',
-    # '₈',
-    # '₉',
-    '⁰',
-    '¹',
-    '²',
-    '³',
-    '⁴',
-    '⁵',
-    '⁶',
-    '⁷',
-    '⁸',
-    '⁹',
-)
-
-DEFAULT_OCTAVE = 3
-MAXIMUM_OCTAVE = 9
-
-
-_ALTS = {
-    'bb': '𝄫',
-    'b': '♭',
-    '': '',
-    '#': '♯',
-    '##': '𝄪',
-}
-
-def input_alterations():
-    return list(_ALTS.keys())
-
-
-def note_chars():
-    return [ c for c in _CHARS if c ]
-
-
 class MusicNote:
+
+    _CHARS = LoopedList(
+        'C',
+        None,
+        'D',
+        None,
+        'E',
+        'F',
+        None,
+        'G',
+        None,
+        'A',
+        None,
+        'B',
+    )
+
+    _ALTS = {
+        'bb': '𝄫',
+        'b': '♭',
+        '': '',
+        '#': '♯',
+        '##': '𝄪',
+    }
+
+    _OCTAVES = (
+        # '₀',
+        # '₁',
+        # '₂',
+        # '₃',
+        # '₄',
+        # '₅',
+        # '₆',
+        # '₇',
+        # '₈',
+        # '₉',
+        '⁰',
+        '¹',
+        '²',
+        '³',
+        '⁴',
+        '⁵',
+        '⁶',
+        '⁷',
+        '⁸',
+        '⁹',
+    )
+
+    DEFAULT_OCTAVE = 3
+    MAXIMUM_OCTAVE = 9
+
+    @classmethod
+    def possible_chars(cls):
+        return [ c for c in cls._CHARS if c ]
+
+    @classmethod
+    def validate_char(cls, char):
+        char = char.upper()
+        if char not in cls.possible_chars():
+            raise InvalidNote(char)
+        return char
+
+    @classmethod
+    def input_alterations(cls) -> tuple:
+        return tuple( cls._ALTS.keys() )
+
+    @classmethod
+    def output_alterations(cls) -> tuple:
+        return tuple( cls._ALTS.values() )
 
     def __init__(self, char, *args):
         ''' init WITHOUT specifying argument names
@@ -148,19 +152,16 @@ class MusicNote:
             MusicNote('C', '#')
             MusicNote('C', '#', 9)
         '''
-        self.chr = char.upper()
-        if self.chr not in _CHARS:
-            raise InvalidNote(char)
-
+        self.chr = self.validate_char(char)
         self.alt = ''
-        self.oct = DEFAULT_OCTAVE
+        self.oct = self.DEFAULT_OCTAVE
 
-        if len(args) >  2:
+        if len(args) > 2:
             raise InvalidNote('Too many arguments')
 
         # with only 1 arg, decide if it's alt or oct
         if len(args) == 1:
-            if args[0] in _ALTS:
+            if args[0] in self._ALTS:
                 self.alt = args[0]
             else:
                 try:
@@ -172,7 +173,7 @@ class MusicNote:
 
         # with 2 args, order must be alt, oct
         if len(args) == 2:
-            if args[0] not in _ALTS:
+            if args[0] not in self._ALTS:
                 raise InvalidAlteration(args[0])
             self.alt = args[0]
 
@@ -181,7 +182,7 @@ class MusicNote:
             except:
                 raise InvalidOctave(args[1])
 
-        if self.oct > MAXIMUM_OCTAVE:
+        if self.oct > self.MAXIMUM_OCTAVE:
             raise InvalidOctave(self.oct)
 
 
@@ -201,19 +202,19 @@ class MusicNote:
     def repr_oct(self):
         output = ''
         for c in str(self.oct):
-            output += _OCTAVES[int(c)]
+            output += self._OCTAVES[int(c)]
         return output
 
     @property
     def repr_alt(self):
-        return _ALTS[self.alt]
+        return self._ALTS[self.alt]
 
     def __sub__(self, other):
         if self.__class__ == other.__class__:
-            oct_interval = (self.oct - other.oct) * OCTAVE
-            chr_interval = _CHARS.index(self.chr) - _CHARS.index(other.chr)
+            oct_interval = (self.oct - other.oct) * PERFECT_OCTAVE
+            chr_interval = self._CHARS.index(self.chr) - self._CHARS.index(other.chr)
             alt_interval = (
-                input_alterations().index(self.alt) - input_alterations().index(other.alt)
+                self.input_alterations().index(self.alt) - self.input_alterations().index(other.alt)
             )
             return oct_interval + chr_interval + alt_interval
         raise TypeError(' - not supported with {}'.format(other.__class__))
@@ -267,8 +268,8 @@ class MusicNote:
 
     ### CHR METHODS
     def relative_chr(self, n):
-        my_index = _CHARS.index(self.chr)
-        return _CHARS[my_index +n]
+        my_index = self._CHARS.index(self.chr)
+        return self._CHARS[my_index +n]
 
     def adjacent_chr(self, n=1):
         ''' returns next adjacent chr of self
@@ -285,12 +286,14 @@ class MusicNote:
 
     ### OCT METHODS
     def oversteps_oct(self, other):
-        ''' evaluates whether I need to cross octave border in rder to go from self to other
+        ''' evaluates whether I need to cross octave border in order to go from self to other
             ignores octave
         '''
         if self.chr != other.chr:
-            return _CHARS.index(self.chr) > _CHARS.index(other.chr)
-        return input_alterations().index(self.alt) > input_alterations().index(other.alt)
+            return self._CHARS.index(self.chr) > self._CHARS.index(other.chr)
+        return (
+            self.input_alterations().index(self.alt) > self.input_alterations().index(other.alt)
+        )
 
 
     # ENHARMONIC ATTRIBUTES
@@ -342,7 +345,9 @@ def notes_by_alts():
         * 7 notes with alt '##'
     '''
     # sort alts
-    alts = input_alterations()
+    alts = list(
+        MusicNote.input_alterations()
+    )
     alts.sort(key=len) # '', b, #, bb, ##
 
     # get all notes

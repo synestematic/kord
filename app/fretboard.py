@@ -26,8 +26,7 @@ from kord import (
 )
 
 from kord import (
-    MAXIMUM_FRETS, PluckedStringInstrument, MusicNote,
-    max_frets_on_screen, note_chars, input_alterations
+    MAXIMUM_FRETS, PluckedStringInstrument, MusicNote, max_frets_on_screen
 )
 
 from kord import InvalidInstrument, InvalidNote, InvalidAlteration
@@ -67,8 +66,8 @@ CHORDS = {
     'maj7': MajorSeventhChord,
     'min7': MinorSeventhChord,
     '7': DominantSeventhChord,
-    'dim7': DiminishedSeventhChord, # °7  
-    'min7dim5': HalfDiminishedSeventhChord, # ⦰7
+    'dim7': DiminishedSeventhChord, # o7
+    'min7dim5': HalfDiminishedSeventhChord, # ø7
 
     'maj9': MajorNinthChord,
     'min9': MinorNinthChord,
@@ -161,21 +160,21 @@ def parse_arguments():
 
         # validate root note
         note_chr = args.root[:1].upper()
-        if note_chr not in note_chars():
+        if note_chr not in MusicNote.possible_chars():
             raise InvalidNote(
                 "fretboard.py: error: argument ROOT: invalid note: '{}' (choose from {}) ".format(
                     note_chr,
-                    str( note_chars() ).lstrip('[').rstrip(']')
+                    str( MusicNote.possible_chars() ).lstrip('[').rstrip(']')
                 )
             )
 
         # validate root alteration
         note_alt = args.root[1:]
-        if note_alt and note_alt not in input_alterations():
+        if note_alt and note_alt not in MusicNote.input_alterations():
             raise InvalidAlteration(
                 "fretboard.py: error: argument ROOT: invalid alteration: '{}' (choose from {}) ".format(
                     note_alt,
-                    str( input_alterations() ).lstrip('[').rstrip(']')
+                    str( MusicNote.input_alterations() ).lstrip('(').rstrip(')')
                 )
             )
 
@@ -204,7 +203,6 @@ def print_instrument(instrument, tuning):
 
 
 def run(args):
-    
     # default mode is chord, so use scale if set
     if args.scale:
         KeyMode = SCALES[args.scale]
