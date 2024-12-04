@@ -90,7 +90,7 @@ class DominantSeventhChord(MixolydianMode):
 
 class DiminishedSeventhChord(DiminishedScale):
     notations = (
-        'dim7'
+        'dim7',
         'o7',
         'diminished7'
     )

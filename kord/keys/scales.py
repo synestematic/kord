@@ -283,7 +283,7 @@ class MajorScale(MusicKey):
     )
 
 class MajorPentatonicScale(MajorScale):
-    notations = ('major pentatonic', )
+    notations = ('major_pentatonic', )
     degrees = (1, 2, 3, 5, 6)
 
 class AugmentedScale(MusicKey):
@@ -354,11 +354,11 @@ class DiminishedScale(MusicKey):
     )
 
 class MinorPentatonicScale(MinorScale):
-    notations = ('minor pentatonic', )
+    notations = ('minor_pentatonic', )
     degrees = (1, 3, 4, 5, 7)
 
 class MelodicMinorScale(MinorScale):
-    notations = ('melodic minor', )
+    notations = ('melodic_minor', )
     intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -370,7 +370,7 @@ class MelodicMinorScale(MinorScale):
     )
 
 class HarmonicMinorScale(MinorScale):
-    notations = ('harmonic minor', )
+    notations = ('harmonic_minor', )
     intervals = (
         UNISON,
         MAJOR_SECOND,
