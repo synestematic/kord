@@ -15,48 +15,12 @@ __all__ = [
     'MusicChordParser',
 ]
 
+RECOGNIZED_CHORDS = (
+    MajorTriad, MinorTriad, AugmentedTriad, DiminishedTriad,
+    MajorSeventhChord, MinorSeventhChord, DominantSeventhChord,
+    HalfDiminishedSeventhChord, DiminishedSeventhChord,
+)
 
-CHORD_FLAVORS = {
-    '': MajorTriad,
-    'maj': MajorTriad,
-    'major': MajorTriad,
-
-    '-': MinorTriad,
-    'min': MinorTriad,
-    'minor': MinorTriad,
-
-    'aug': AugmentedTriad,
-    'augmented': AugmentedTriad,
-
-    'dim': DiminishedTriad,
-    'diminished': DiminishedTriad,
-
-    # 'M7': MajorSeventhChord,
-    'Δ7': MajorSeventhChord,
-    'maj7': MajorSeventhChord,
-    'major7': MajorSeventhChord,
-
-
-    # 'm7': MinorSeventhChord,
-    '-7': MinorSeventhChord,
-    'min7': MinorSeventhChord,
-    'minor7': MinorSeventhChord,
-
-    '7': DominantSeventhChord,
-    'dom7': DominantSeventhChord,
-    'dominant7': DominantSeventhChord,
-
-    'dim7': DiminishedSeventhChord,
-    'diminished7': DiminishedSeventhChord,
-    'o7': DiminishedSeventhChord,
-
-
-    'min7dim5': HalfDiminishedSeventhChord,
-    'm7b5': HalfDiminishedSeventhChord,
-    'm7(b5)': HalfDiminishedSeventhChord,
-    'ø7': HalfDiminishedSeventhChord,
-
-}
 
 class MusicChordParser:
 
@@ -107,8 +71,12 @@ class MusicChordParser:
 
 
     def _parse_flavor(self):
-        possible_flavor = CHORD_FLAVORS.get(self.to_parse)
-        return possible_flavor
+        for chord_class in RECOGNIZED_CHORDS:
+            if self.to_parse in chord_flavor.notations:
+                return chord_class
+        return None
+        # possible_flavor = CHORD_FLAVORS.get(self.to_parse)
+        # return possible_flavor
 
     def parse(self):
         try:
