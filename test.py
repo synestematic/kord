@@ -9,8 +9,8 @@
 
 import unittest
 
-# from kord.test_keys import *
-# from kord.test_notes import *
+from kord.test_keys import *
+from kord.test_notes import *
 from kord.test_parsers import *
 
 
