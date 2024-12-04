@@ -37,6 +37,7 @@ __all__ = [
 
 class MusicKey:
 
+    notations = ()
     intervals = ()
     degrees = ()
 
@@ -270,6 +271,7 @@ class MusicKey:
 ########################
 
 class MajorScale(MusicKey):
+    notations = ('major', )
     intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -281,9 +283,11 @@ class MajorScale(MusicKey):
     )
 
 class MajorPentatonicScale(MajorScale):
+    notations = ('major pentatonic', )
     degrees = (1, 2, 3, 5, 6)
 
 class AugmentedScale(MusicKey):
+    notations = ('augmented', )
     intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -295,9 +299,10 @@ class AugmentedScale(MusicKey):
     )
 
 class IonianMode(MajorScale):
-    pass
+    notations = ('ionian', )
 
 class MixolydianMode(MajorScale):
+    notations = ('mixolydian', )
     intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -309,6 +314,7 @@ class MixolydianMode(MajorScale):
     )
 
 class LydianMode(MajorScale):
+    notations = ('lydian', )
     intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -324,6 +330,7 @@ class LydianMode(MajorScale):
 ########################
 
 class MinorScale(MusicKey):
+    notations = ('minor', )
     intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -335,6 +342,7 @@ class MinorScale(MusicKey):
     )
 
 class DiminishedScale(MusicKey):
+    notations = ('diminished', )
     intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -346,9 +354,11 @@ class DiminishedScale(MusicKey):
     )
 
 class MinorPentatonicScale(MinorScale):
+    notations = ('minor pentatonic', )
     degrees = (1, 3, 4, 5, 7)
 
 class MelodicMinorScale(MinorScale):
+    notations = ('melodic minor', )
     intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -360,6 +370,7 @@ class MelodicMinorScale(MinorScale):
     )
 
 class HarmonicMinorScale(MinorScale):
+    notations = ('harmonic minor', )
     intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -371,9 +382,10 @@ class HarmonicMinorScale(MinorScale):
     )
 
 class AeolianMode(MinorScale):
-    pass
+    notations = ('aeolian', )
 
 class DorianMode(MinorScale):
+    notations = ('dorian', )
     intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -385,6 +397,7 @@ class DorianMode(MinorScale):
     )
 
 class PhrygianMode(MinorScale):
+    notations = ('phrygian', )
     intervals = (
         UNISON,
         MINOR_SECOND, # <<<
@@ -396,6 +409,7 @@ class PhrygianMode(MinorScale):
     )
 
 class LocrianMode(MinorScale):
+    notations = ('locrian', )
     intervals = (
         UNISON,
         MINOR_SECOND, # <<<
@@ -412,7 +426,7 @@ class LocrianMode(MinorScale):
 #####################
 
 class ChromaticScale(MusicKey):
-
+    notations = ('chromatic', )
     intervals = (
         UNISON,
         MINOR_SECOND,
