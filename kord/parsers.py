@@ -1,6 +1,6 @@
 
 from .notes import MusicNote
-from .keys import (
+from .keys.chords import (
     MajorTriad, MinorTriad, AugmentedTriad, DiminishedTriad,
     MajorSeventhChord, MinorSeventhChord, DominantSeventhChord,
     HalfDiminishedSeventhChord, DiminishedSeventhChord,
@@ -69,6 +69,19 @@ class MusicChordParser:
         self.root = None
         self.flavor = None
         self.to_parse = self.symbol.strip()
+
+
+    def is_inverted(self) -> bool:
+        return '/' in self.symbol
+
+
+    def bass_note(self):
+        if self.is_inverted():
+            bass_note = MusicNoteParser(
+                self.symbol.split('/')[-1]
+            ).parse()
+            return bass_note
+        return self.root
 
 
     def _parse_root(self):
