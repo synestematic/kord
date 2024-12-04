@@ -1,8 +1,8 @@
 from bestia.output import Row, FString
 
-from .notes import MusicNote, notes_by_alts, _EnharmonicMatrix
+from ..notes import MusicNote, notes_by_alts, _EnharmonicMatrix
 
-from .notes import (
+from ..notes import (
     UNISON, DIMINISHED_SECOND, MINOR_SECOND, AUGMENTED_UNISON,
     MAJOR_SECOND, DIMINISHED_THIRD, MINOR_THIRD, AUGMENTED_SECOND,
     DIMINISHED_FOURTH, MAJOR_THIRD, PERFECT_FOURTH, AUGMENTED_THIRD,
@@ -12,7 +12,7 @@ from .notes import (
     MAJOR_SEVENTH, DIMINISHED_OCTAVE, PERFECT_OCTAVE, AUGMENTED_SEVENTH
 )
 
-from .errors import InvalidNote, InvalidOctave
+from ..errors import InvalidNote, InvalidOctave
 
 __all__ = [
     'MusicKey',
@@ -31,18 +31,6 @@ __all__ = [
     'DorianMode',
     'PhrygianMode',
     'LocrianMode',
-    'MajorTriad',
-    'MinorTriad',
-    'AugmentedTriad',
-    'DiminishedTriad',
-    'MajorSeventhChord',
-    'MinorSeventhChord',
-    'DominantSeventhChord',
-    'HalfDiminishedSeventhChord',
-    'DiminishedSeventhChord',
-    'MajorNinthChord',
-    'MinorNinthChord',
-    'DominantNinthChord',
     'ChromaticScale',
 ]
 
@@ -417,57 +405,6 @@ class LocrianMode(MinorScale):
         MINOR_SIXTH,
         MINOR_SEVENTH,
     )
-
-
-####################
-### TRIAD CHORDS ###
-####################
-
-class MajorTriad(MajorScale):
-    degrees = (1, 3, 5)
-
-class MinorTriad(MinorScale):
-    degrees = (1, 3, 5)
-
-class AugmentedTriad(AugmentedScale):
-    degrees = (1, 3, 5)
-
-class DiminishedTriad(DiminishedScale):
-    degrees = (1, 3, 5)
-
-
-######################
-### SEVENTH CHORDS ###
-######################
-
-class MajorSeventhChord(IonianMode):
-    degrees = (1, 3, 5, 7)
-
-class MinorSeventhChord(AeolianMode):
-    degrees = (1, 3, 5, 7)
-
-class DominantSeventhChord(MixolydianMode):
-    degrees = (1, 3, 5, 7)
-
-class HalfDiminishedSeventhChord(LocrianMode):
-    degrees = (1, 3, 5, 7)
-
-class DiminishedSeventhChord(DiminishedScale):
-    degrees = (1, 3, 5, 7)
-
-
-####################
-### NINTH CHORDS ###
-####################
-
-class MajorNinthChord(IonianMode):
-    degrees = (1, 3, 5, 7, 9)
-
-class MinorNinthChord(AeolianMode):
-    degrees = (1, 3, 5, 7, 9)
-
-class DominantNinthChord(MixolydianMode):
-    degrees = (1, 3, 5, 7, 9)
 
 
 #####################
