@@ -4,7 +4,7 @@ from .parsers import MusicNoteParser, MusicChordParser
 
 from .notes import MusicNote
 
-from .errors import InvalidNote, InvalidAlteration, InvalidOctave
+from .errors import InvalidNote, InvalidAlteration, InvalidOctave, InvalidChord
 
 __all__ = [
     'MusicNoteParserTest',
@@ -14,24 +14,34 @@ __all__ = [
 
 class MusicChordParserTest(unittest.TestCase):
 
-    CASES = [
-        # 'H',
+    CASES = (
         'A',
         'Emaj',
         'F7',
 
         'A#sus9',
-        # 'A♯♭𝄫𝄪add13',
 
         'fdim',
         'Bbdim',
-    ]
+    )
 
-    def testFOO(self):
+    FAILS = (
+        'H',
+        # 'A♯♭𝄫𝄪add13',
+        # 'C♯♭𝄫𝄪add13',
+    )
+
+    def testWins(self):
         for symbol in self.CASES:
             parser = MusicChordParser(symbol)
             parsed_note = parser.parse()
             # self.assertEqual(parsed_note, expected)
+
+
+    def testFails(self):
+        for symbol in self.FAILS:
+            parser = MusicChordParser(symbol)
+            self.assertRaises(InvalidChord, parser.parse), symbol
 
 
 class MusicNoteParserTest(unittest.TestCase):

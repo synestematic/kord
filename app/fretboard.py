@@ -66,8 +66,8 @@ CHORDS = {
     'maj7': MajorSeventhChord,
     'min7': MinorSeventhChord,
     '7': DominantSeventhChord,
-    'dim7': DiminishedSeventhChord, # °7  
-    'min7dim5': HalfDiminishedSeventhChord, # ⦰7
+    'dim7': DiminishedSeventhChord, # o7
+    'min7dim5': HalfDiminishedSeventhChord, # ø7
 
     'maj9': MajorNinthChord,
     'min9': MinorNinthChord,
@@ -203,7 +203,6 @@ def print_instrument(instrument, tuning):
 
 
 def run(args):
-    
     # default mode is chord, so use scale if set
     if args.scale:
         KeyMode = SCALES[args.scale]

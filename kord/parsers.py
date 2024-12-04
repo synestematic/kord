@@ -1,13 +1,62 @@
 
 from .notes import MusicNote
+from .keys import (
+    MajorTriad, MinorTriad, AugmentedTriad, DiminishedTriad,
+    MajorSeventhChord, MinorSeventhChord, DominantSeventhChord,
+    HalfDiminishedSeventhChord, DiminishedSeventhChord,
+)
 
 from .errors import InvalidNote, InvalidAlteration, InvalidOctave, InvalidChord
+
+from bestia.output import echo
 
 __all__ = [
     'MusicNoteParser',
     'MusicChordParser',
 ]
 
+
+CHORD_FLAVORS = {
+    '': MajorTriad,
+    'maj': MajorTriad,
+    'major': MajorTriad,
+
+    '-': MinorTriad,
+    'min': MinorTriad,
+    'minor': MinorTriad,
+
+    'aug': AugmentedTriad,
+    'augmented': AugmentedTriad,
+
+    'dim': DiminishedTriad,
+    'diminished': DiminishedTriad,
+
+    # 'M7': MajorSeventhChord,
+    'Δ7': MajorSeventhChord,
+    'maj7': MajorSeventhChord,
+    'major7': MajorSeventhChord,
+
+
+    # 'm7': MinorSeventhChord,
+    '-7': MinorSeventhChord,
+    'min7': MinorSeventhChord,
+    'minor7': MinorSeventhChord,
+
+    '7': DominantSeventhChord,
+    'dom7': DominantSeventhChord,
+    'dominant7': DominantSeventhChord,
+
+    'dim7': DiminishedSeventhChord,
+    'diminished7': DiminishedSeventhChord,
+    'o7': DiminishedSeventhChord,
+
+
+    'min7dim5': HalfDiminishedSeventhChord,
+    'm7b5': HalfDiminishedSeventhChord,
+    'm7(b5)': HalfDiminishedSeventhChord,
+    'ø7': HalfDiminishedSeventhChord,
+
+}
 
 class MusicChordParser:
 
@@ -23,6 +72,8 @@ class MusicChordParser:
 
 
     def _parse_root(self):
+        ''' decides how many of the symbol's first 3 chars make up the chord root
+        '''
         possible_root = self.to_parse[:3]
         if len(possible_root) == 0:
             raise InvalidNote(possible_root)
@@ -43,18 +94,24 @@ class MusicChordParser:
 
 
     def _parse_flavor(self):
-        return self.to_parse
-
+        possible_flavor = CHORD_FLAVORS.get(self.to_parse)
+        return possible_flavor
 
     def parse(self):
-        root = self._parse_root()
-        self.root = MusicNoteParser(root).parse()
+        try:
+            root = self._parse_root()
+            self.root = MusicNoteParser(root).parse()
+            self.to_parse = self.to_parse[len(root):]
+            self.flavor = self._parse_flavor()
 
-        self.to_parse = self.to_parse[len(root):]
-        self.flavor = self._parse_flavor()
+        except Exception:
+            raise InvalidChord(self.symbol)
 
-        print(f'{self.symbol} = {self.root} {self.flavor}')
-
+        finally:
+            echo(f'{self.symbol} = {self.root} {self.flavor}', 'cyan')
+            if self.flavor and self.root:
+                # init instance of Chord class using Chord root
+                return self.flavor(*self.root)
 
 class MusicNoteParser:
 
