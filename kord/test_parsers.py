@@ -17,12 +17,23 @@ class MusicChordParserTest(unittest.TestCase):
     CASES = (
         'A',
         'Emaj',
-        'F7',
 
-        'A#sus9',
+        'F7',
+        # 'Am7',
+
 
         'fdim',
         'Bbdim',
+
+        'Fmaj9',
+        'Gm9',
+
+        'Bbmaj7/C',
+
+        # 'C13b9'
+
+
+        'A#sus9',
     )
 
     FAILS = (

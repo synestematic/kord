@@ -3,9 +3,9 @@ import random
 
 from bestia.output import echo, Row, FString
 
-from .keys import (
-    ChromaticScale,
-    MajorPentatonicScale, MajorScale, DominantSeventhChord,
+from .keys.chords import DominantSeventhChord
+from .keys.scales import (
+    ChromaticScale, MajorPentatonicScale, MajorScale,
     MinorScale, MelodicMinorScale, HarmonicMinorScale
 )
 

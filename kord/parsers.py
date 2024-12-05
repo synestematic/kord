@@ -1,10 +1,6 @@
 
 from .notes import MusicNote
-from .keys import (
-    MajorTriad, MinorTriad, AugmentedTriad, DiminishedTriad,
-    MajorSeventhChord, MinorSeventhChord, DominantSeventhChord,
-    HalfDiminishedSeventhChord, DiminishedSeventhChord,
-)
+from .keys.chords import *
 
 from .errors import InvalidNote, InvalidAlteration, InvalidOctave, InvalidChord
 
@@ -16,49 +12,16 @@ __all__ = [
 ]
 
 
-CHORD_FLAVORS = {
-    '': MajorTriad,
-    'maj': MajorTriad,
-    'major': MajorTriad,
-
-    '-': MinorTriad,
-    'min': MinorTriad,
-    'minor': MinorTriad,
-
-    'aug': AugmentedTriad,
-    'augmented': AugmentedTriad,
-
-    'dim': DiminishedTriad,
-    'diminished': DiminishedTriad,
-
-    # 'M7': MajorSeventhChord,
-    'Δ7': MajorSeventhChord,
-    'maj7': MajorSeventhChord,
-    'major7': MajorSeventhChord,
-
-
-    # 'm7': MinorSeventhChord,
-    '-7': MinorSeventhChord,
-    'min7': MinorSeventhChord,
-    'minor7': MinorSeventhChord,
-
-    '7': DominantSeventhChord,
-    'dom7': DominantSeventhChord,
-    'dominant7': DominantSeventhChord,
-
-    'dim7': DiminishedSeventhChord,
-    'diminished7': DiminishedSeventhChord,
-    'o7': DiminishedSeventhChord,
-
-
-    'min7dim5': HalfDiminishedSeventhChord,
-    'm7b5': HalfDiminishedSeventhChord,
-    'm7(b5)': HalfDiminishedSeventhChord,
-    'ø7': HalfDiminishedSeventhChord,
-
-}
-
 class MusicChordParser:
+
+    RECOGNIZED_CHORDS = (
+        MajorTriad, MinorTriad, AugmentedTriad, DiminishedTriad,
+        MajorSeventhChord, MinorSeventhChord, DominantSeventhChord,
+        HalfDiminishedSeventhChord, DiminishedSeventhChord,
+        MajorNinthChord, MinorNinthChord, DominantNinthChord,
+    )
+
+    BASS_NOTE_SEP = '/'
 
     def __init__(self, symbol):
         self.symbol = symbol.strip()
@@ -71,8 +34,22 @@ class MusicChordParser:
         self.to_parse = self.symbol.strip()
 
 
+    @property
+    def is_inverted(self) -> bool:
+        return self.BASS_NOTE_SEP in self.symbol
+
+    @property
+    def bass_note(self):
+        if self.is_inverted:
+            bass_note = MusicNoteParser(
+                self.symbol.split(self.BASS_NOTE_SEP)[-1]
+            ).parse()
+            return bass_note
+        return self.root
+
+
     def _parse_root(self):
-        ''' decides how many of the symbol's first 3 chars make up the chord root
+        ''' decides how many of the symbol's first 3 chars make up the root
         '''
         possible_root = self.to_parse[:3]
         if len(possible_root) == 0:
@@ -94,13 +71,23 @@ class MusicChordParser:
 
 
     def _parse_flavor(self):
-        possible_flavor = CHORD_FLAVORS.get(self.to_parse)
-        return possible_flavor
+        for chord_class in self.RECOGNIZED_CHORDS:
+            if self.to_parse in chord_class.notations:
+                return chord_class
+        return None
+
 
     def parse(self):
         try:
+            # parse root out of first 3 chars
             root = self._parse_root()
             self.root = MusicNoteParser(root).parse()
+
+            # ignore Chord/Bass notes on inverted chords
+            if self.is_inverted:
+                self.to_parse = self.to_parse.split(self.BASS_NOTE_SEP)[0]
+
+            # parse flavor out of remaining to parse
             self.to_parse = self.to_parse[len(root):]
             self.flavor = self._parse_flavor()
 
@@ -108,10 +95,14 @@ class MusicChordParser:
             raise InvalidChord(self.symbol)
 
         finally:
-            echo(f'{self.symbol} = {self.root} {self.flavor}', 'cyan')
+            echo(
+                f'{self.symbol} = {self.root} {self.flavor} {self.bass_note}',
+                'cyan',
+            )
             if self.flavor and self.root:
                 # init instance of Chord class using Chord root
                 return self.flavor(*self.root)
+
 
 class MusicNoteParser:
 

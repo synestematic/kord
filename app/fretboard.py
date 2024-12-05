@@ -10,7 +10,7 @@ modify them or add your own and they will automaticaly become available at runti
 import sys
 import argparse
 
-from kord import (
+from kord.keys.scales import (
     MajorScale, MinorScale, MelodicMinorScale, HarmonicMinorScale,
     MajorPentatonicScale, MinorPentatonicScale,
     IonianMode, LydianMode, MixolydianMode,
@@ -18,7 +18,7 @@ from kord import (
     ChromaticScale
 )
 
-from kord import (
+from kord.keys.chords import (
     MajorTriad, MinorTriad, AugmentedTriad, DiminishedTriad,
     MajorSeventhChord, MinorSeventhChord, DominantSeventhChord,
     DiminishedSeventhChord, HalfDiminishedSeventhChord,
@@ -36,42 +36,39 @@ from bestia.output import echo
 import tuner
 
 SCALES = {
-    'major': MajorScale,
-
-    'minor': MinorScale,
-    'melodic_minor': MelodicMinorScale,
-    'harmonic_minor': HarmonicMinorScale,
-
-    'major_pentatonic': MajorPentatonicScale,
-    'minor_pentatonic': MinorPentatonicScale,
-
-    'ionian': IonianMode,
-    'lydian': LydianMode,
-    'mixolydian': MixolydianMode,
-
-    'aeolian': AeolianMode,
-    'dorian': DorianMode,
-    'phrygian': PhrygianMode,
-    'locrian': LocrianMode,
-
-    'chromatic': ChromaticScale,
+    scale.notations[0]: scale for scale in (
+        MajorScale,
+        MinorScale,
+        MelodicMinorScale,
+        HarmonicMinorScale,
+        MajorPentatonicScale,
+        MinorPentatonicScale,
+        IonianMode,
+        LydianMode,
+        MixolydianMode,
+        AeolianMode,
+        DorianMode,
+        PhrygianMode,
+        LocrianMode,
+        ChromaticScale,
+    )
 }
 
 CHORDS = {
-    'maj': MajorTriad,
-    'min': MinorTriad,
-    'aug': AugmentedTriad,
-    'dim': DiminishedTriad,
-
-    'maj7': MajorSeventhChord,
-    'min7': MinorSeventhChord,
-    '7': DominantSeventhChord,
-    'dim7': DiminishedSeventhChord, # o7
-    'min7dim5': HalfDiminishedSeventhChord, # ø7
-
-    'maj9': MajorNinthChord,
-    'min9': MinorNinthChord,
-    '9': DominantNinthChord,
+    chord.notations[0]: chord for chord in (
+        MajorTriad,
+        MinorTriad,
+        AugmentedTriad,
+        DiminishedTriad,
+        MajorSeventhChord,
+        MinorSeventhChord,
+        DominantSeventhChord,
+        DiminishedSeventhChord,
+        HalfDiminishedSeventhChord,
+        MajorNinthChord,
+        MinorNinthChord,
+        DominantNinthChord,
+    )
 }
 
 TUNINGS = tuner.load_tuning_data()
@@ -94,20 +91,22 @@ def parse_arguments():
     mode_group = parser.add_mutually_exclusive_group()
 
     scale_choices = list( SCALES.keys() )
+    scale_choices.sort()
     mode_group.add_argument(
         '-s', '--scale',
         help='{}'.format(str(scale_choices).lstrip('[').rstrip(']').replace('\'', '')),
         choices=scale_choices,
-        default='',
+        default=MajorScale.notations[0],
         metavar='',
     )
 
     chord_choices = list( CHORDS.keys() )
+    chord_choices.sort()
     mode_group.add_argument(
         '-c', '--chord',
         help='{}'.format(str(chord_choices).lstrip('[').rstrip(']').replace('\'', '')),
         choices=chord_choices,
-        default='maj',
+        default=MajorTriad.notations[0],
         metavar='',
     )
 

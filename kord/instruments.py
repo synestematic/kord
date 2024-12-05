@@ -1,6 +1,6 @@
 from bestia.output import Row, FString, echo, tty_cols
 
-from .keys import ChromaticScale
+from .keys.scales import ChromaticScale
 from .notes import MusicNote
 
 __all__ = [
