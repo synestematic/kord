@@ -96,7 +96,6 @@ def parse_arguments():
         '-s', '--scale',
         help='{}'.format(str(scale_choices).lstrip('[').rstrip(']').replace('\'', '')),
         choices=scale_choices,
-        default=MajorScale.notations[0],
         metavar='',
     )
 
