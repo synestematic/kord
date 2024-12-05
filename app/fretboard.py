@@ -96,7 +96,7 @@ def parse_arguments():
         '-s', '--scale',
         help='{}'.format(str(scale_choices).lstrip('[').rstrip(']').replace('\'', '')),
         choices=scale_choices,
-        default='',
+        default=MajorScale.notations[0],
         metavar='',
     )
 
@@ -106,7 +106,7 @@ def parse_arguments():
         '-c', '--chord',
         help='{}'.format(str(chord_choices).lstrip('[').rstrip(']').replace('\'', '')),
         choices=chord_choices,
-        default='maj',
+        default=MajorTriad.notations[0],
         metavar='',
     )
 
