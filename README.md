@@ -1,11 +1,11 @@
 # kord
-kord is a python framework that provides programmers with a simple api for the creation of music-based applications. While it's mainly intended for theoretical purposes, some of it's modules contain functionality specifically tailored for dealing with plucked-string instruments.
+the kord framework provides you with a simple api for creating music-based applications. While it is mainly intended for theoretical purposes, some of it's modules contain functionality specifically tailored to plucked-string instruments.
 
 ![](https://github.com/synestematic/kord/blob/master/resources/chrom.png?raw=true)
 
 ## installation
 
-The only dependency for `kord` is the package `bestia`, my own library for creating command-line applications. Both can be automatically installed using pip:
+The only dependency for `kord` is the `bestia` package, my own library for creating command-line applications. Both can be automatically installed using pip:
 
 ```
 $  python3 -m pip install kord
@@ -82,7 +82,7 @@ kord.errors.InvalidOctave: 10
  
 The ```-   < >   <= >=   == !=   >>   ** ```  operators allow computation of semitone intervals between MusicNote instances and give insight into their enharmonic relationships. Let's take a quick look at each operator separately:
 
-#### - operator
+#### `-` operator
 
 The substraction operator lets you compute the difference in semitones between two notes:
 
@@ -98,7 +98,7 @@ The substraction operator lets you compute the difference in semitones between t
 ```
 
 
-####  < >   <= >=   == !=  operators
+#### `<` `>` `<=` `>=` `==` `!=` operators
 
 Comparison operators return boolean values based *exclusively* on the interval between the 2 objects. 
 
@@ -122,7 +122,7 @@ True
 
 The notes F♯⁵ and G♭⁵ are NOT the same but since their interval is a unison, the `==` comparison evaluates True. This might seem a bit counter-intuitive at first but you can still check for exact note matches with the use of 2 other operators.
 
-#### >> ** operators
+#### `>>` `**` operators
 
 The power and right-shift operators allow you to compare Notes for equality based not on their intervals, but on their intrinsic `chr`, `alt`, `oct` properties. The strictest operator `>>` compares all 3 attributes for equality while the looser `**` ignores `oct`: 
 
@@ -277,7 +277,7 @@ optional arguments:
   -s , --scale        major, minor, melodic_minor, harmonic_minor, major_pentatonic, minor_pentatonic,
                       ionian, lydian, mixolydian, aeolian, dorian, phrygian, locrian, chromatic
   -c , --chord        maj, min, aug, dim, maj7, min7, 7, dim7, min7dim5, maj9, min9, 9
-  -i , --instrument   banjo, guitar, pedal, bass, ukulele
+  -i , --instrument   banjo, guitar, ronroco, bass, ukulele
   -t , --tuning       check .json files for available options
   -f , --frets        1, 2, .., 36
   -v , --verbosity    0, 1, 2
@@ -302,6 +302,7 @@ Here are a couple of pics to get you excited:
 
 ### chords
 
+![](https://github.com/synestematic/kord/blob/master/resources/adim.png?raw=true)
 ![](https://github.com/synestematic/kord/blob/master/resources/e7.png?raw=true)
 
 ![](https://github.com/synestematic/kord/blob/master/resources/dim7.png?raw=true)
@@ -314,5 +315,3 @@ Here are a couple of pics to get you excited:
 
 ![](https://github.com/synestematic/kord/blob/master/resources/lydian.png?raw=true)
 
-
-Keep on rocking!
