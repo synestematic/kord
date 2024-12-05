@@ -36,36 +36,39 @@ from bestia.output import echo
 import tuner
 
 SCALES = {
-    MajorScale,
-    MinorScale,
-    MelodicMinorScale,
-    HarmonicMinorScale,
-    MajorPentatonicScale,
-    MinorPentatonicScale,
-    IonianMode,
-    LydianMode,
-    MixolydianMode,
-    AeolianMode,
-    DorianMode,
-    PhrygianMode,
-    LocrianMode,
-    ChromaticScale,
+    scale.notations[0]: scale for scale in (
+        MajorScale,
+        MinorScale,
+        MelodicMinorScale,
+        HarmonicMinorScale,
+        MajorPentatonicScale,
+        MinorPentatonicScale,
+        IonianMode,
+        LydianMode,
+        MixolydianMode,
+        AeolianMode,
+        DorianMode,
+        PhrygianMode,
+        LocrianMode,
+        ChromaticScale,
+    )
 }
 
-
 CHORDS = {
-    MajorTriad,
-    MinorTriad,
-    AugmentedTriad,
-    DiminishedTriad,
-    MajorSeventhChord,
-    MinorSeventhChord,
-    DominantSeventhChord,
-    DiminishedSeventhChord,
-    HalfDiminishedSeventhChord,
-    MajorNinthChord,
-    MinorNinthChord,
-    DominantNinthChord,
+    chord.notations[0]: chord for chord in (
+        MajorTriad,
+        MinorTriad,
+        AugmentedTriad,
+        DiminishedTriad,
+        MajorSeventhChord,
+        MinorSeventhChord,
+        DominantSeventhChord,
+        DiminishedSeventhChord,
+        HalfDiminishedSeventhChord,
+        MajorNinthChord,
+        MinorNinthChord,
+        DominantNinthChord,
+    )
 }
 
 TUNINGS = tuner.load_tuning_data()
@@ -87,7 +90,7 @@ def parse_arguments():
 
     mode_group = parser.add_mutually_exclusive_group()
 
-    scale_choices = [ scale.notations[0] for scale in SCALES ]
+    scale_choices = list( SCALES.keys() )
     scale_choices.sort()
     mode_group.add_argument(
         '-s', '--scale',
@@ -97,7 +100,7 @@ def parse_arguments():
         metavar='',
     )
 
-    chord_choices = [ chord.notations[0] for chord in CHORDS ]
+    chord_choices = list( CHORDS.keys() )
     chord_choices.sort()
     mode_group.add_argument(
         '-c', '--chord',
