@@ -65,7 +65,7 @@ class DiminishedTriad(DiminishedScale):
 class MajorSeventhChord(IonianMode):
     notations = (
         'maj7',
-        # 'M7',
+        'M7',  # careful with these 2 if ever using .lower() to compare
         'Δ7',
         'major7',
     )
@@ -74,7 +74,7 @@ class MajorSeventhChord(IonianMode):
 class MinorSeventhChord(AeolianMode):
     notations = (
         'min7',
-        # 'm7',
+        'm7',  # careful with these 2 if ever using .lower() to compare
         '-7',
         'minor7',
     )
