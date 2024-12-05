@@ -2,6 +2,12 @@ import unittest
 
 from .parsers import MusicNoteParser, MusicChordParser
 
+from kord.keys.chords import (
+    MajorTriad, MinorTriad, AugmentedTriad, DiminishedTriad,
+    MajorSeventhChord, MinorSeventhChord, DominantSeventhChord,
+    DiminishedSeventhChord, HalfDiminishedSeventhChord,
+    MajorNinthChord, MinorNinthChord, DominantNinthChord
+)
 from .notes import MusicNote
 
 from .errors import InvalidNote, InvalidAlteration, InvalidOctave, InvalidChord
@@ -14,45 +20,36 @@ __all__ = [
 
 class MusicChordParserTest(unittest.TestCase):
 
-    CASES = (
-        'A',
-        'Emaj',
+    def testMajorSeventhChordClasses(self):
+        assert isinstance(MusicChordParser('Amaj7').parse(), MajorSeventhChord)
+        assert isinstance(MusicChordParser('BM7').parse(), MajorSeventhChord)
+        assert isinstance(MusicChordParser('CΔ7').parse(), MajorSeventhChord)
+        assert isinstance(MusicChordParser('Dmajor7').parse(), MajorSeventhChord)
 
-        'F7',
-        # 'Am7',
+    def testMajorSeventhChordRoots(self):
+        C = MusicNote('C')
+        assert MusicChordParser('Cmaj7').parse().root ** C, C
+        assert MusicChordParser('CM7').parse().root ** C, C
+        assert MusicChordParser('CΔ7').parse().root ** C, C
+        assert MusicChordParser('Cmajor7').parse().root ** C, C
 
+    def testMinorSeventhChordClasses(self):
+        assert isinstance(MusicChordParser('Emin7').parse(), MinorSeventhChord)
+        assert isinstance(MusicChordParser('Fm7').parse(), MinorSeventhChord)
+        assert isinstance(MusicChordParser('G-7').parse(), MinorSeventhChord)
+        assert isinstance(MusicChordParser('Bbminor7').parse(), MinorSeventhChord)
 
-        'fdim',
-        'Bbdim',
-
-        'Fmaj9',
-        'Gm9',
-
-        'Bbmaj7/C',
-
-        # 'C13b9'
-
-
-        'A#sus9',
-    )
-
-    FAILS = (
-        'H',
-        # 'A♯♭𝄫𝄪add13',
-        # 'C♯♭𝄫𝄪add13',
-    )
-
-    def testWins(self):
-        for symbol in self.CASES:
-            parser = MusicChordParser(symbol)
-            parsed_note = parser.parse()
-            # self.assertEqual(parsed_note, expected)
-
+    def testMinorSeventhChordRoots(self):
+        A = MusicNote('A')
+        assert MusicChordParser('Amin7').parse().root ** A, A
+        assert MusicChordParser('Am7').parse().root ** A, A
+        assert MusicChordParser('A-7').parse().root ** A, A
+        assert MusicChordParser('Aminor7').parse().root ** A, A
 
     def testFails(self):
-        for symbol in self.FAILS:
-            parser = MusicChordParser(symbol)
-            self.assertRaises(InvalidChord, parser.parse), symbol
+        self.assertRaises(InvalidChord, MusicChordParser('H').parse)
+        self.assertRaises(InvalidChord, MusicChordParser('A♯♭𝄫𝄪add13').parse)
+        self.assertRaises(InvalidChord, MusicChordParser('C♯♭𝄫𝄪add13').parse)
 
 
 class MusicNoteParserTest(unittest.TestCase):
