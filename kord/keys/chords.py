@@ -113,18 +113,21 @@ class HalfDiminishedSeventhChord(LocrianMode):
 class MajorNinthChord(IonianMode):
     notations = (
         'maj9',
+        'M9',
     )
     degrees = (1, 3, 5, 7, 9)
 
 class MinorNinthChord(AeolianMode):
     notations = (
         'min9',
+        'm9',
     )
     degrees = (1, 3, 5, 7, 9)
 
 class DominantNinthChord(MixolydianMode):
     notations = (
         '9',
+        'dom9',
     )
     degrees = (1, 3, 5, 7, 9)
 
