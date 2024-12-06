@@ -5,7 +5,7 @@ the kord framework provides you with a simple api for creating music-based appli
 
 ## installation
 
-The only dependency for `kord` is the `bestia` package, my own library for creating command-line applications. Both can be automatically installed using pip:
+The only dependency for `kord` is the `bestia` package, my own library for creating command-line applications. Both are automatically installed with pip:
 
 ```
 $  python3 -m pip install kord
@@ -300,18 +300,15 @@ The `--degrees` option let's you display degree numbers instead of notes. Defaul
 
 Here are a couple of pics to get you excited:
 
-### chords
+### Chords
 
 ![](https://github.com/synestematic/kord/blob/master/resources/adim.png?raw=true)
 ![](https://github.com/synestematic/kord/blob/master/resources/e7.png?raw=true)
-
 ![](https://github.com/synestematic/kord/blob/master/resources/dim7.png?raw=true)
 
-### scales
+### Scales
 
 ![](https://github.com/synestematic/kord/blob/master/resources/penta.png?raw=true)
-
-![](https://github.com/synestematic/kord/blob/master/resources/cs.png?raw=true)
-
+![](https://github.com/synestematic/kord/blob/master/resources/locrian.png?raw=true)
 ![](https://github.com/synestematic/kord/blob/master/resources/lydian.png?raw=true)
 
