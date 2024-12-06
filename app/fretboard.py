@@ -19,6 +19,7 @@ from kord.keys.scales import (
 )
 
 from kord.keys.chords import (
+    PowerChord,
     MajorTriad, MinorTriad, AugmentedTriad, DiminishedTriad,
     MajorSeventhChord, MinorSeventhChord, DominantSeventhChord,
     DiminishedSeventhChord, HalfDiminishedSeventhChord,
@@ -56,6 +57,7 @@ SCALES = {
 
 CHORDS = {
     chord.notations[0]: chord for chord in (
+        PowerChord,
         MajorTriad,
         MinorTriad,
         AugmentedTriad,

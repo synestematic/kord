@@ -15,6 +15,8 @@ __all__ = [
 class MusicChordParser:
 
     '''
+    G5
+
     Fsus9
 
     G6
@@ -42,6 +44,7 @@ class MusicChordParser:
 
 
     RECOGNIZED_CHORDS = (
+        PowerChord,
         MajorTriad, MinorTriad, AugmentedTriad, DiminishedTriad,
         MajorSeventhChord, MinorSeventhChord, DominantSeventhChord,
         HalfDiminishedSeventhChord, DiminishedSeventhChord,
@@ -121,13 +124,13 @@ class MusicChordParser:
             raise InvalidChord(self.symbol)
 
         finally:
-            c = 'cyan'
-            if not self.symbol or not self.flavor:
-                c = 'red'
-            echo(
-                f'{self.symbol} = {self.root} {self.flavor} {self.bass}',
-                c,
-            )
+            # c = 'cyan'
+            # if not self.symbol or not self.flavor:
+            #     c = 'red'
+            # echo(
+            #     f'{self.symbol} = {self.root} {self.flavor} {self.bass}',
+            #     c,
+            # )
             if self.flavor and self.root:
                 # init instance of Chord class using Chord root
                 return self.flavor(*self.root)

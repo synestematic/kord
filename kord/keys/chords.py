@@ -6,6 +6,8 @@ from .scales import (
 
 
 __all__ = [
+    'PowerChord',
+
     'MajorTriad',
     'MinorTriad',
     'AugmentedTriad',
@@ -21,6 +23,17 @@ __all__ = [
     'MinorNinthChord',
     'DominantNinthChord',
 ]
+
+
+##################
+### NON-CHORDS ###
+##################
+
+class PowerChord(MajorScale):
+    notations = (
+        '5',
+    )
+    degrees = (1, 5)
 
 
 ####################
