@@ -1,7 +1,7 @@
 # kord
 the kord framework provides you with a simple api for creating music-based applications. While it is mainly intended for theoretical purposes, some of it's modules contain functionality specifically tailored to plucked-string instruments.
 
-![](https://github.com/synestematic/kord/blob/master/resources/chrom.png?raw=true)
+![](https://github.com/synestematic/kord/blob/master/pngs/chrom.png?raw=true)
 
 ## installation
 
@@ -302,13 +302,13 @@ Here are a couple of pics to get you excited:
 
 ### Chords
 
-![](https://github.com/synestematic/kord/blob/master/resources/adim.png?raw=true)
-![](https://github.com/synestematic/kord/blob/master/resources/e7.png?raw=true)
-![](https://github.com/synestematic/kord/blob/master/resources/dim7.png?raw=true)
+![](https://github.com/synestematic/kord/blob/master/pngs/adim.png?raw=true)
+![](https://github.com/synestematic/kord/blob/master/pngs/e7.png?raw=true)
+![](https://github.com/synestematic/kord/blob/master/pngs/dim7.png?raw=true)
 
 ### Scales
 
-![](https://github.com/synestematic/kord/blob/master/resources/penta.png?raw=true)
-![](https://github.com/synestematic/kord/blob/master/resources/locrian.png?raw=true)
-![](https://github.com/synestematic/kord/blob/master/resources/lydian.png?raw=true)
+![](https://github.com/synestematic/kord/blob/master/pngs/penta.png?raw=true)
+![](https://github.com/synestematic/kord/blob/master/pngs/locrian.png?raw=true)
+![](https://github.com/synestematic/kord/blob/master/pngs/lydian.png?raw=true)
 
