@@ -39,6 +39,7 @@ class MinorTriad(MinorScale):
     notations = (
         'min',
         '-',
+        'm',
         'minor',
     )
     degrees = (1, 3, 5)
