@@ -14,6 +14,33 @@ __all__ = [
 
 class MusicChordParser:
 
+    '''
+    Fsus9
+
+    G6
+    Am6
+   "Am11
+
+    "Asus2
+    "Esus4
+    "F#7sus
+    "E7sus4
+
+    "G13"
+    B7b9
+
+
+
+
+
+    Fadd4
+    Cadd9
+
+
+
+    '''
+
+
     RECOGNIZED_CHORDS = (
         MajorTriad, MinorTriad, AugmentedTriad, DiminishedTriad,
         MajorSeventhChord, MinorSeventhChord, DominantSeventhChord,
@@ -104,6 +131,7 @@ class MusicChordParser:
             if self.flavor and self.root:
                 # init instance of Chord class using Chord root
                 return self.flavor(*self.root)
+            return None
 
 
 class MusicNoteParser:

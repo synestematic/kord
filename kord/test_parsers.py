@@ -111,8 +111,8 @@ class MusicChordParserTest(unittest.TestCase):
     def testDomSeventhChordRoots(self):
         Csharp = MusicNote('C', '#')
         assert MusicChordParser('C#7').parse().root ** Csharp
-        assert MusicChordParser('C#dom7').parse().root ** Csharp
-        assert MusicChordParser('C#dominant7').parse().root ** Csharp
+        assert MusicChordParser('C♯dom7').parse().root ** Csharp
+        assert MusicChordParser('c#dominant7').parse().root ** Csharp
 
     def testDiminishedSeventhChordClasses(self):
         assert isinstance(MusicChordParser('fdim7').parse(), DiminishedSeventhChord)
@@ -125,9 +125,9 @@ class MusicChordParserTest(unittest.TestCase):
         assert MusicChordParser('Dbo7').parse().root ** Dflat
         assert MusicChordParser('Dbdiminished7').parse().root ** Dflat
 
-
     def testHalfDiminishedSeventhChordClasses(self):
         assert isinstance(MusicChordParser('Em7b5').parse(), HalfDiminishedSeventhChord)
+        assert isinstance(MusicChordParser('F#m7-5').parse(), HalfDiminishedSeventhChord)
         assert isinstance(MusicChordParser('Gmin7dim5').parse(), HalfDiminishedSeventhChord)
         assert isinstance(MusicChordParser('Gbm7(b5)').parse(), HalfDiminishedSeventhChord)
         assert isinstance(MusicChordParser('fø7').parse(), HalfDiminishedSeventhChord)
@@ -135,6 +135,7 @@ class MusicChordParserTest(unittest.TestCase):
     def testHalfDiminishedSeventhChordRoots(self):
         Eflat = MusicNote('E', 'b')
         assert MusicChordParser('ebm7b5').parse().root ** Eflat
+        assert MusicChordParser('E♭m7-5').parse().root ** Eflat
         assert MusicChordParser('Ebmin7dim5').parse().root ** Eflat
         assert MusicChordParser('Ebm7(b5)').parse().root ** Eflat
         assert MusicChordParser('Ebø7').parse().root ** Eflat
