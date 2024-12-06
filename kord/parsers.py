@@ -31,7 +31,7 @@ class MusicChordParser:
     def reset(self):
         self.root = None
         self.flavor = None
-        self.to_parse = self.symbol.strip()
+        self.to_parse = self.symbol.replace(' ', '')  # 'B aug7'
 
 
     @property

@@ -69,6 +69,7 @@ class MusicChordParserTest(unittest.TestCase):
         D = MusicNote('D')
         assert MusicChordParser('Ddim').parse().root ** D
         assert MusicChordParser('Ddiminished').parse().root ** D
+        assert MusicChordParser('D dim').parse().root ** D
 
 
     ######################
@@ -100,6 +101,7 @@ class MusicChordParserTest(unittest.TestCase):
         assert MusicChordParser('Am7').parse().root ** A
         assert MusicChordParser('A-7').parse().root ** A
         assert MusicChordParser('Aminor7').parse().root ** A
+        assert MusicChordParser('A minor7').parse().root ** A
 
     def testDomSeventhChordClasses(self):
         assert isinstance(MusicChordParser('F7').parse(), DominantSeventhChord)
@@ -143,9 +145,11 @@ class MusicChordParserTest(unittest.TestCase):
     ####################
 
 
+    # test 9th chords
+    # test spaced symbols
+
     def testFails(self):
         self.assertRaises(InvalidChord, MusicChordParser('H').parse)
-        self.assertRaises(InvalidChord, MusicChordParser('B m7').parse)
         # self.assertRaises(InvalidChord, MusicChordParser('Db#').parse)
 
 
