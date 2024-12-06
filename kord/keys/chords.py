@@ -92,7 +92,7 @@ class DiminishedSeventhChord(DiminishedScale):
     notations = (
         'dim7',
         'o7',
-        'diminished7'
+        'diminished7',
     )
     degrees = (1, 3, 5, 7)
 
@@ -100,7 +100,7 @@ class HalfDiminishedSeventhChord(LocrianMode):
     notations = (
         'm7b5',
         'min7dim5',
-        'm7(b5)'
+        'm7(b5)',
         'ø7',
     )
     degrees = (1, 3, 5, 7)
