@@ -39,13 +39,12 @@ class MusicChordParser:
         return self.BASS_NOTE_SEP in self.symbol
 
     @property
-    def bass_note(self):
-        if self.is_inverted:
-            bass_note = MusicNoteParser(
-                self.symbol.split(self.BASS_NOTE_SEP)[-1]
-            ).parse()
-            return bass_note
-        return self.root
+    def bass(self):
+        if not self.is_inverted:
+            return self.root
+        return MusicNoteParser(
+            self.symbol.split(self.BASS_NOTE_SEP)[-1]
+        ).parse()
 
 
     def _parse_root(self):
@@ -95,9 +94,12 @@ class MusicChordParser:
             raise InvalidChord(self.symbol)
 
         finally:
+            c = 'cyan'
+            if not self.symbol or not self.flavor:
+                c = 'red'
             echo(
-                f'{self.symbol} = {self.root} {self.flavor} {self.bass_note}',
-                'cyan',
+                f'{self.symbol} = {self.root} {self.flavor} {self.bass}',
+                c,
             )
             if self.flavor and self.root:
                 # init instance of Chord class using Chord root
