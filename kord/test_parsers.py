@@ -21,6 +21,11 @@ __all__ = [
 
 class MusicChordParserTest(unittest.TestCase):
 
+    def testInvalidChords(self):
+        self.assertRaises(InvalidChord, MusicChordParser('H').parse)
+        self.assertRaises(InvalidChord, MusicChordParser('pmin7').parse)
+
+
     ####################
     ### POWER CHORDS ###
     ####################
@@ -159,12 +164,6 @@ class MusicChordParserTest(unittest.TestCase):
     ####################
 
 
-    # test 9th chords
-    # test spaced symbols
-
-    def testFails(self):
-        self.assertRaises(InvalidChord, MusicChordParser('H').parse)
-        # self.assertRaises(InvalidChord, MusicChordParser('Db#').parse)
 
 
 class MusicNoteParserTest(unittest.TestCase):

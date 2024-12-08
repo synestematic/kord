@@ -15,9 +15,6 @@ __all__ = [
 class MusicChordParser:
 
     '''
-    G5
-
-    Fsus9
 
     G6
     Am6
@@ -27,17 +24,13 @@ class MusicChordParser:
     "Esus4
     "F#7sus
     "E7sus4
-
-    "G13"
-    B7b9
-
-
-
-
+    Fsus9
 
     Fadd4
     Cadd9
 
+    "G13"
+    B7b9
 
 
     '''
@@ -107,6 +100,10 @@ class MusicChordParser:
 
 
     def parse(self):
+        ''' - sure   chord is correct?  return MusicKey()
+            - unsure chord is correct?  return None
+            - sure   chord is wrong  ?  raise  InvalidChord()
+        '''
         try:
             # parse root out of first 3 chars
             root = self._parse_root()
@@ -121,20 +118,20 @@ class MusicChordParser:
             self.flavor = self._parse_flavor()
 
         except Exception:
+            # echo(self.symbol, 'red')
             raise InvalidChord(self.symbol)
 
-        finally:
-            # c = 'cyan'
-            # if not self.symbol or not self.flavor:
-            #     c = 'red'
-            # echo(
-            #     f'{self.symbol} = {self.root} {self.flavor} {self.bass}',
-            #     c,
-            # )
-            if self.flavor and self.root:
-                # init instance of Chord class using Chord root
-                return self.flavor(*self.root)
-            return None
+        # c = 'cyan'
+        # if not self.symbol or not self.flavor:
+        #     c = 'red'
+        # echo(
+        #     f'{self.symbol} = {self.root} {self.flavor} {self.bass}',
+        #     c,
+        # )
+        if self.flavor and self.root:
+            # init instance of Chord class using Chord root
+            return self.flavor(*self.root)
+        return None
 
 
 class MusicNoteParser:
