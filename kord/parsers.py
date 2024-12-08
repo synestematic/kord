@@ -93,6 +93,10 @@ class MusicChordParser:
 
 
     def _parse_flavor(self):
+        # shouldnt  this go in a _parse_alt() function
+        if 'sharp' in self.to_parse.lower() or 'flat' in self.to_parse.lower():
+            raise InvalidAlteration(self.symbol)
+
         for chord_class in self.RECOGNIZED_CHORDS:
             if self.to_parse in chord_class.notations:
                 return chord_class
