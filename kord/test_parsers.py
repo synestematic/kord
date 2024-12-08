@@ -3,6 +3,7 @@ import unittest
 from .parsers import MusicNoteParser, MusicChordParser
 
 from kord.keys.chords import (
+    PowerChord,
     MajorTriad, MinorTriad, AugmentedTriad, DiminishedTriad,
     MajorSeventhChord, MinorSeventhChord, DominantSeventhChord,
     DiminishedSeventhChord, HalfDiminishedSeventhChord,
@@ -19,6 +20,18 @@ __all__ = [
 
 
 class MusicChordParserTest(unittest.TestCase):
+
+    ####################
+    ### POWER CHORDS ###
+    ####################
+
+    def testPowerChordClasses(self):
+        assert isinstance(MusicChordParser('g5').parse(), PowerChord)
+
+    def testPowerChordRoots(self):
+        F = MusicNote('F')
+        assert MusicChordParser('F5').parse().root ** F
+
 
     ####################
     ### TRIAD CHORDS ###
