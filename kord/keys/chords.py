@@ -129,6 +129,7 @@ class MajorNinthChord(IonianMode):
     notations = (
         'maj9',
         'M9',
+        'major9',
     )
     degrees = (1, 3, 5, 7, 9)
 
@@ -136,6 +137,8 @@ class MinorNinthChord(AeolianMode):
     notations = (
         'min9',
         'm9',
+        '-9',
+        'minor9',
     )
     degrees = (1, 3, 5, 7, 9)
 

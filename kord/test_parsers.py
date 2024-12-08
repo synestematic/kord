@@ -22,6 +22,7 @@ __all__ = [
 class MusicChordParserTest(unittest.TestCase):
 
     def testInvalidChords(self):
+        self.assertRaises(InvalidChord, MusicChordParser('♭B').parse)
         self.assertRaises(InvalidChord, MusicChordParser('H').parse)
         self.assertRaises(InvalidChord, MusicChordParser('pmin7').parse)
 
@@ -162,6 +163,43 @@ class MusicChordParserTest(unittest.TestCase):
     ####################
     ### NINTH CHORDS ###
     ####################
+
+    def testMajorNinthChordClasses(self):
+        assert isinstance(MusicChordParser('D#maj9').parse(), MajorNinthChord)
+        assert isinstance(MusicChordParser('FM9').parse(), MajorNinthChord)
+        assert isinstance(MusicChordParser('Emajor9').parse(), MajorNinthChord)
+
+    def testMajorNinthChordRoots(self):
+        Bflat = MusicNote('B', 'b')
+        assert MusicChordParser('Bbmaj7').parse().root ** Bflat
+        assert MusicChordParser('B♭M7').parse().root ** Bflat
+        assert MusicChordParser('b♭major7').parse().root ** Bflat
+
+    def testMinorNinthChordClasses(self):
+        assert isinstance(MusicChordParser('Ebmin9').parse(), MinorNinthChord)
+        assert isinstance(MusicChordParser('Fm9').parse(), MinorNinthChord)
+        assert isinstance(MusicChordParser('G#-9').parse(), MinorNinthChord)
+        assert isinstance(MusicChordParser('Bminor9').parse(), MinorNinthChord)
+
+    def testMinorNinthChordRoots(self):
+        Asharp = MusicNote('A', '#')
+        assert MusicChordParser('A♯min9').parse().root ** Asharp
+        assert MusicChordParser('A#m9').parse().root ** Asharp
+        assert MusicChordParser('A#-9').parse().root ** Asharp
+        assert MusicChordParser('A♯minor9').parse().root ** Asharp
+        assert MusicChordParser('A# min9').parse().root ** Asharp
+
+    # def testDomNinthChordClasses(self):
+    #     assert isinstance(MusicChordParser('F7').parse(), DominantNinthChord)
+    #     assert isinstance(MusicChordParser('Bbdom7').parse(), DominantNinthChord)
+    #     assert isinstance(MusicChordParser('Dbbdominant7').parse(), DominantNinthChord)
+
+    # def testDomNinthChordRoots(self):
+    #     Csharp = MusicNote('C', '#')
+    #     assert MusicChordParser('C#7').parse().root ** Csharp
+    #     assert MusicChordParser('C♯dom7').parse().root ** Csharp
+    #     assert MusicChordParser('c#dominant7').parse().root ** Csharp
+
 
 
 
