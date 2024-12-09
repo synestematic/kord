@@ -72,26 +72,25 @@ class MusicChordParser:
 
 
     def _parse_root(self):
-        ''' decides how many of the symbol's first 3 chars make up the root
+        ''' this should NOT validate anything!
+            only guess how many of the symbol's first 3 chars make up the root
+            return value will be validated using MusicNoteParser::parse()
         '''
         possible_root = self.to_parse[:3]
-        if len(possible_root) == 0:
-            raise InvalidNote(possible_root)
+        if len(possible_root) in (0, 1,):
+            # symbol='', possible_root=''
+            # symbol='D', possible_root='D'
+            return possible_root
 
-        # why commenting this line does NOT fail my tests?
-        # MusicNote.validate_char(possible_root[0])
-
-        if len(possible_root) == 1:
-            return possible_root[:1]
-
-        # if len(possible_root) == 3:
         if possible_root[1:] in ('bb', '##', '♯♯', '♭♭'):
+            # symbol='Dbbmin7', possible_root='Dbb'
             return possible_root[:3]
 
-        # if len(possible_root) == 2:
         if possible_root[1] in ('b', '#', '♯', '♭', '𝄫', '𝄪'):
+            # symbol='Dbmin7', possible_root='Db'
             return possible_root[:2]
 
+        # symbol='Dmin7', possible_root='D'
         return possible_root[:1]
 
 
@@ -115,6 +114,7 @@ class MusicChordParser:
             # parse root out of first 3 chars
             root = self._parse_root()
             self.root = MusicNoteParser(root).parse()
+            # print(self.root)
 
             # ignore Chord/Bass notes on inverted chords
             if self.is_inverted:
