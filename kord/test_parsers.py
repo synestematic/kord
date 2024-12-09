@@ -22,6 +22,10 @@ __all__ = [
 class MusicChordParserTest(unittest.TestCase):
 
     def testInvalidChords(self):
+        self.assertRaises(InvalidChord, MusicChordParser('').parse)
+        self.assertRaises(InvalidChord, MusicChordParser('#').parse)
+        self.assertRaises(InvalidChord, MusicChordParser('♯').parse)
+        self.assertRaises(InvalidChord, MusicChordParser('♭').parse)
         self.assertRaises(InvalidChord, MusicChordParser('#F').parse)
         self.assertRaises(InvalidChord, MusicChordParser('♭B').parse)
         self.assertRaises(InvalidChord, MusicChordParser('H').parse)
@@ -228,7 +232,11 @@ class MusicNoteParserTest(unittest.TestCase):
     ]
 
     CHAR_FAILS = [
-        'H', 'T', 'Y', 'h',
+        '',
+        'H',
+        'T',
+        'Y',
+        'h',
     ]
 
     OCTAVE_WINS = [
