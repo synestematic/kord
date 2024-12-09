@@ -41,7 +41,8 @@ class MusicChordParser:
         MajorTriad, MinorTriad, AugmentedTriad, DiminishedTriad,
         MajorSeventhChord, MinorSeventhChord, DominantSeventhChord,
         HalfDiminishedSeventhChord, DiminishedSeventhChord,
-        MajorNinthChord, MinorNinthChord, DominantNinthChord,
+        DominantNinthChord, DominantMinorNinthChord,
+        MajorNinthChord, MinorNinthChord,
     )
 
     BASS_NOTE_SEP = '/'
@@ -77,7 +78,9 @@ class MusicChordParser:
         if len(possible_root) == 0:
             raise InvalidNote(possible_root)
 
-        MusicNote.validate_char(possible_root[0])
+        # why commenting this line does NOT fail my tests?
+        # MusicNote.validate_char(possible_root[0])
+
         if len(possible_root) == 1:
             return possible_root[:1]
 
