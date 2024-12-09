@@ -1,6 +1,6 @@
 import unittest
 
-from .parsers import MusicNoteParser, MusicChordParser
+from .parsers import NotePitchParser, MusicChordParser
 
 from kord.keys.chords import (
     PowerChord,
@@ -17,7 +17,7 @@ from .notes import MusicNote
 from .errors import InvalidNote, InvalidAlteration, InvalidOctave, InvalidChord
 
 __all__ = [
-    'MusicNoteParserTest',
+    'NotePitchParserTest',
     'MusicChordParserTest',
 ]
 
@@ -267,7 +267,7 @@ class MusicChordParserTest(unittest.TestCase):
 
 
 
-class MusicNoteParserTest(unittest.TestCase):
+class NotePitchParserTest(unittest.TestCase):
 
     CHAR_WINS = [
         ['C', MusicNote('C')],
@@ -351,33 +351,33 @@ class MusicNoteParserTest(unittest.TestCase):
 
     def testChars(self):
         for symbol, expected in self.CHAR_WINS:
-            parser = MusicNoteParser(symbol)
+            parser = NotePitchParser(symbol)
             parsed_note = parser.parse()
             self.assertEqual(parsed_note, expected)
 
     def testCharFails(self):
         for symbol in self.CHAR_FAILS:
-            parser = MusicNoteParser(symbol)
+            parser = NotePitchParser(symbol)
             self.assertRaises(InvalidNote, parser.parse)
 
     def testOctaves(self):
         for symbol, expected in self.OCTAVE_WINS:
-            parser = MusicNoteParser(symbol)
+            parser = NotePitchParser(symbol)
             parsed_note = parser.parse()
             self.assertEqual(parsed_note, expected)
 
     def testOctaveFails(self):
         for symbol in self.OCTAVE_FAILS:
-            parser = MusicNoteParser(symbol)
+            parser = NotePitchParser(symbol)
             self.assertRaises(InvalidOctave, parser.parse)
 
     def testAlterations(self):
         for symbol, expected in self.ALTS_WINS:
-            parser = MusicNoteParser(symbol)
+            parser = NotePitchParser(symbol)
             parsed_note = parser.parse()
             self.assertEqual(parsed_note, expected)
 
     def testAlterationFails(self):
         for symbol in self.ALTS_FAILS:
-            parser = MusicNoteParser(symbol)
+            parser = NotePitchParser(symbol)
             self.assertRaises(InvalidAlteration, parser.parse)

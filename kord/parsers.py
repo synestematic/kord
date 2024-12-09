@@ -7,7 +7,7 @@ from .errors import InvalidNote, InvalidAlteration, InvalidOctave, InvalidChord
 from bestia.output import echo
 
 __all__ = [
-    'MusicNoteParser',
+    'NotePitchParser',
     'MusicChordParser',
 ]
 
@@ -56,7 +56,7 @@ class MusicChordParser:
     def bass(self):
         if not self.is_inverted:
             return self.root
-        return MusicNoteParser(
+        return NotePitchParser(
             self.symbol.split(self.BASS_NOTE_SEP)[-1]
         ).parse()
 
@@ -64,7 +64,7 @@ class MusicChordParser:
     def _parse_root(self):
         ''' this should NOT validate anything!
             only guess how many of the symbol's first 3 chars make up the root
-            return value will be validated using MusicNoteParser::parse()
+            return value will be validated using NotePitchParser::parse()
         '''
         possible_root = self.to_parse[:3]
         if len(possible_root) in (0, 1,):
@@ -103,7 +103,7 @@ class MusicChordParser:
         try:
             # parse root out of first 3 chars
             root = self._parse_root()
-            self.root = MusicNoteParser(root).parse()
+            self.root = NotePitchParser(root).parse()
             # print(self.root)
 
             # ignore Chord/Bass notes on inverted chords
@@ -131,7 +131,7 @@ class MusicChordParser:
         return None
 
 
-class MusicNoteParser:
+class NotePitchParser:
 
     def __init__(self, symbol):
         self.symbol = symbol
