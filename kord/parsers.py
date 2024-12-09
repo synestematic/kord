@@ -13,7 +13,7 @@ __all__ = [
 
 
 class MusicChordParser:
-    ''' chord symbols stil left to implement: 
+    ''' chord symbols still left to implement:
 
         Fadd4
         Cadd9

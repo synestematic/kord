@@ -10,6 +10,7 @@ from kord.keys.chords import (
     DominantNinthChord, DominantMinorNinthChord,
     MajorNinthChord, MinorNinthChord,
     MajorSixthChord, MinorSixthChord,
+    SuspendedFourChord, SuspendedTwoChord,
 )
 from .notes import MusicNote
 
@@ -240,6 +241,30 @@ class MusicChordParserTest(unittest.TestCase):
         Asharp = MusicNote('A', '#')
         assert MusicChordParser('A♯m6').parse().root ** Asharp
         assert MusicChordParser('A#min6').parse().root ** Asharp
+
+
+    ########################
+    ### SUSPENDED CHORDS ###
+    ########################
+
+    def testSuspendedFourChordClasses(self):
+        assert isinstance(MusicChordParser('D♭♭sus4').parse(), SuspendedFourChord)
+        assert isinstance(MusicChordParser('Fsus').parse(), SuspendedFourChord)
+
+    def testSuspendedFourChordRoots(self):
+        Gflatflat = MusicNote('G', 'bb')
+        assert MusicChordParser('G𝄫sus4').parse().root ** Gflatflat
+        assert MusicChordParser('gbbsus').parse().root ** Gflatflat
+
+    def testSuspendedTwoChordClasses(self):
+        assert isinstance(MusicChordParser('A♯sus2').parse(), SuspendedTwoChord)
+        assert isinstance(MusicChordParser('Esus9').parse(), SuspendedTwoChord)
+
+    def testSuspendedFourChordRoots(self):
+        Gsharpsharp = MusicNote('G', '##')
+        assert MusicChordParser('G##sus2').parse().root ** Gsharpsharp
+        assert MusicChordParser('g𝄪sus9').parse().root ** Gsharpsharp
+
 
 
 class MusicNoteParserTest(unittest.TestCase):

@@ -235,6 +235,6 @@ class SuspendedFourChord(IonianMode):
 class SuspendedTwoChord(IonianMode):
     notations = (
         'sus2',
-        # 'sus9',
+        'sus9',
     )
     degrees = (1, 2, 5)
