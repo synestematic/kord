@@ -13,23 +13,16 @@ __all__ = [
 
 
 class MusicChordParser:
+    ''' chord symbols stil left to implement: 
 
+        Fadd4
+        Cadd9
+
+        Am11
+
+        G13
+        B7b9
     '''
-    Am11
-
-    Asus2
-    Esus4
-    F#7sus
-    E7sus4
-    Fsus9
-
-    Fadd4
-    Cadd9
-
-    G13
-    B7b9
-    '''
-
 
     RECOGNIZED_CHORDS = (
         PowerChord,
@@ -39,6 +32,7 @@ class MusicChordParser:
         DominantNinthChord, DominantMinorNinthChord,
         MajorNinthChord, MinorNinthChord,
         MajorSixthChord, MinorSixthChord,
+        SuspendedFourChord, SuspendedTwoChord,
     )
 
     BASS_NOTE_SEP = '/'
