@@ -15,7 +15,7 @@ from kord.keys.scales import (
     MajorPentatonicScale, MinorPentatonicScale,
     IonianMode, LydianMode, MixolydianMode,
     AeolianMode, DorianMode, PhrygianMode, LocrianMode,
-    ChromaticScale
+    ChromaticScale,
 )
 
 from kord.keys.chords import (
@@ -25,6 +25,8 @@ from kord.keys.chords import (
     DiminishedSeventhChord, HalfDiminishedSeventhChord,
     DominantNinthChord, DominantMinorNinthChord,
     MajorNinthChord, MinorNinthChord,
+    MajorSixthChord, MinorSixthChord,
+    SuspendedFourChord, SuspendedTwoChord,
 )
 
 from kord import (
@@ -37,7 +39,7 @@ from bestia.output import echo
 
 import tuner
 
-SCALES = {
+AVAILABLE_SCALES = {
     scale.notations[0]: scale for scale in (
         MajorScale,
         MinorScale,
@@ -56,7 +58,7 @@ SCALES = {
     )
 }
 
-CHORDS = {
+AVAILABLE_CHORDS = {
     chord.notations[0]: chord for chord in (
         PowerChord,
         MajorTriad,
@@ -72,6 +74,10 @@ CHORDS = {
         DominantMinorNinthChord,
         MajorNinthChord,
         MinorNinthChord,
+        MajorSixthChord,
+        MinorSixthChord,
+        SuspendedFourChord,
+        SuspendedTwoChord,
     )
 }
 
@@ -94,7 +100,7 @@ def parse_arguments():
 
     mode_group = parser.add_mutually_exclusive_group()
 
-    scale_choices = list( SCALES.keys() )
+    scale_choices = list( AVAILABLE_SCALES.keys() )
     scale_choices.sort()
     mode_group.add_argument(
         '-s', '--scale',
@@ -103,7 +109,7 @@ def parse_arguments():
         metavar='',
     )
 
-    chord_choices = list( CHORDS.keys() )
+    chord_choices = list( AVAILABLE_CHORDS.keys() )
     chord_choices.sort()
     mode_group.add_argument(
         '-c', '--chord',
@@ -207,9 +213,9 @@ def print_instrument(instrument, tuning):
 def run(args):
     # default mode is chord, so use scale if set
     if args.scale:
-        KeyMode = SCALES[args.scale]
+        KeyMode = AVAILABLE_SCALES[args.scale]
     elif args.chord:
-        KeyMode = CHORDS[args.chord]
+        KeyMode = AVAILABLE_CHORDS[args.chord]
 
     root = MusicNote(args.root[0], args.root[1])
     key_mode = KeyMode(*root)
