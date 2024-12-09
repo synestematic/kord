@@ -19,6 +19,9 @@ install: get_version ${DISTR_DIRS}
 test:
 	@python3 test.py
 
+dev:
+	@python3 dev.py
+
 publish: dist
 	@echo "Uploading to PyPI "
 	@twine upload dist/*
