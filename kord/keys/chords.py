@@ -42,6 +42,9 @@ __all__ = [
 
     'MajorSixthChord',
     'MinorSixthChord',
+
+    'SuspendedFourChord',
+    'SuspendedTwoChord',
 ]
 
 
@@ -205,6 +208,33 @@ class MajorSixthChord(IonianMode):
 class MinorSixthChord(DorianMode):
     notations = (
         'm6',
+        # 'madd6',
         'min6',
     )
     degrees = (1, 3, 5, 6)
+
+
+# class AddNineChord(DorianMode):
+#     notations = (
+#         'add9',
+#     )
+#     degrees = (1, 3, 5, 9)
+
+
+########################
+### SUSPENDED CHORDS ###
+########################
+
+class SuspendedFourChord(IonianMode):
+    notations = (
+        'sus4',
+        'sus',
+    )
+    degrees = (1, 4, 5)
+
+class SuspendedTwoChord(IonianMode):
+    notations = (
+        'sus2',
+        # 'sus9',
+    )
+    degrees = (1, 2, 5)
