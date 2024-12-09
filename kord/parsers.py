@@ -15,24 +15,19 @@ __all__ = [
 class MusicChordParser:
 
     '''
+    Am11
 
-    G6
-    Am6
-   "Am11
-
-    "Asus2
-    "Esus4
-    "F#7sus
-    "E7sus4
+    Asus2
+    Esus4
+    F#7sus
+    E7sus4
     Fsus9
 
     Fadd4
     Cadd9
 
-    "G13"
+    G13
     B7b9
-
-
     '''
 
 
@@ -43,6 +38,7 @@ class MusicChordParser:
         HalfDiminishedSeventhChord, DiminishedSeventhChord,
         DominantNinthChord, DominantMinorNinthChord,
         MajorNinthChord, MinorNinthChord,
+        MajorSixthChord, MinorSixthChord,
     )
 
     BASS_NOTE_SEP = '/'
