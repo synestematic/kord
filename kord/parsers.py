@@ -8,11 +8,11 @@ from bestia.output import echo
 
 __all__ = [
     'NotePitchParser',
-    'MusicChordParser',
+    'ChordParser',
 ]
 
 
-class MusicChordParser:
+class ChordParser:
     ''' chord symbols still left to implement:
 
         Fadd4
