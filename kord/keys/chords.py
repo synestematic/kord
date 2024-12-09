@@ -1,7 +1,7 @@
 
 from .scales import (
     MajorScale, MinorScale, AugmentedScale, DiminishedScale,
-    IonianMode, AeolianMode, MixolydianMode, LocrianMode
+    IonianMode, AeolianMode, MixolydianMode, LocrianMode, DorianMode,
 )
 
 from ..notes import (
@@ -39,6 +39,9 @@ __all__ = [
     'MinorNinthChord',
     'DominantNinthChord',
     'DominantMinorNinthChord',
+
+    'MajorSixthChord',
+    'MinorSixthChord',
 ]
 
 
@@ -184,3 +187,21 @@ class DominantMinorNinthChord(MixolydianMode):
     )
     degrees = (1, 3, 5, 7, 9)
 
+
+####################
+### SIXTH CHORDS ###
+####################
+
+class MajorSixthChord(IonianMode):
+    notations = (
+        '6',
+        'add6',
+    )
+    degrees = (1, 3, 5, 6)
+
+class MinorSixthChord(DorianMode):
+    notations = (
+        'm6',
+        'min6',
+    )
+    degrees = (1, 3, 5, 6)
