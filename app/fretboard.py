@@ -30,7 +30,7 @@ from kord.keys.chords import (
 )
 
 from kord import (
-    MAXIMUM_FRETS, PluckedStringInstrument, MusicNote, max_frets_on_screen
+    MAXIMUM_FRETS, PluckedStringInstrument, NotePitch, max_frets_on_screen
 )
 
 from kord import InvalidInstrument, InvalidNote, InvalidAlteration
@@ -168,21 +168,21 @@ def parse_arguments():
 
         # validate root note
         note_chr = args.root[:1].upper()
-        if note_chr not in MusicNote.possible_chars():
+        if note_chr not in NotePitch.possible_chars():
             raise InvalidNote(
                 "fretboard.py: error: argument ROOT: invalid note: '{}' (choose from {}) ".format(
                     note_chr,
-                    str( MusicNote.possible_chars() ).lstrip('[').rstrip(']')
+                    str( NotePitch.possible_chars() ).lstrip('[').rstrip(']')
                 )
             )
 
         # validate root alteration
         note_alt = args.root[1:]
-        if note_alt and note_alt not in MusicNote.input_alterations():
+        if note_alt and note_alt not in NotePitch.input_alterations():
             raise InvalidAlteration(
                 "fretboard.py: error: argument ROOT: invalid alteration: '{}' (choose from {}) ".format(
                     note_alt,
-                    str( MusicNote.input_alterations() ).lstrip('(').rstrip(')')
+                    str( NotePitch.input_alterations() ).lstrip('(').rstrip(')')
                 )
             )
 
@@ -217,7 +217,7 @@ def run(args):
     elif args.chord:
         KeyMode = AVAILABLE_CHORDS[args.chord]
 
-    root = MusicNote(args.root[0], args.root[1])
+    root = NotePitch(args.root[0], args.root[1])
     key_mode = KeyMode(*root)
     if not key_mode.validate():
         print(

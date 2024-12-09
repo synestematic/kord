@@ -1,6 +1,6 @@
 from bestia.output import Row, FString
 
-from ..notes import MusicNote, notes_by_alts, _EnharmonicMatrix
+from ..notes import NotePitch, notes_by_alts, _EnharmonicMatrix
 
 from ..notes import (
     UNISON, DIMINISHED_SECOND,          #0
@@ -74,7 +74,7 @@ class TonalKey:
 
         # calculate all possible octaves
         all_degrees = []
-        for o in range(MusicNote.MAXIMUM_OCTAVE):
+        for o in range(NotePitch.MAXIMUM_OCTAVE):
             for deg in degrees:
                 all_degrees.append(
                     deg + len(cls.intervals) * o
@@ -131,10 +131,10 @@ class TonalKey:
 
 
     def __init__(self, chr, alt='', oct=0):
-        self.root = MusicNote(chr, alt, 0) # ignore note.oct
+        self.root = NotePitch(chr, alt, 0) # ignore note.oct
 
     def __repr__(self):
-        ''' prints first octave of MusicNote items '''
+        ''' prints first octave of NotePitch items '''
         spell_line = Row()
         for d in self.spell(
             note_count=None, yield_all=False
@@ -174,7 +174,7 @@ class TonalKey:
                 note_oct += 1
 
             # RETURN NEW OBJECT, DO NOT CHANGE ENHARMONIC MATRIX ITEM!
-            return MusicNote(next_notes[0].chr, next_notes[0].alt, note_oct)
+            return NotePitch(next_notes[0].chr, next_notes[0].alt, note_oct)
 
         raise InvalidNote
 
@@ -526,6 +526,6 @@ class ChromaticScale(TonalKey):
                 note_oct += 1
 
             # RETURN NEW OBJECT, DO NOT CHANGE ENHARMONIC MATRIX ITEM!
-            return MusicNote(next_notes[0].chr, next_notes[0].alt, note_oct)
+            return NotePitch(next_notes[0].chr, next_notes[0].alt, note_oct)
 
         raise InvalidNote

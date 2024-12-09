@@ -1,7 +1,7 @@
 from bestia.output import Row, FString, echo, tty_cols
 
 from .keys.scales import ChromaticScale
-from .notes import MusicNote
+from .notes import NotePitch
 
 __all__ = [
     'MAXIMUM_FRETS',
@@ -69,7 +69,7 @@ def max_frets_on_screen():
 class PluckedString:
 
     def __init__(self, c, alt='', oct=3, frets=12, mode=None, verbose=1, show_degrees=0):
-        self.tuning = MusicNote(c, alt, oct)
+        self.tuning = NotePitch(c, alt, oct)
         self.mode = mode
         self.frets = frets
         self.verbose = verbose
@@ -128,7 +128,7 @@ class PluckedString:
                     )
 
 
-            # APPEND MUSICNOTE DATA
+            # APPEND NOTE PITCH DATA
             string_line.append(
                 FString(
                     fret_value,

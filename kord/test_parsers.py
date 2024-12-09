@@ -12,7 +12,7 @@ from kord.keys.chords import (
     MajorSixthChord, MinorSixthChord,
     SuspendedFourChord, SuspendedTwoChord,
 )
-from .notes import MusicNote
+from .notes import NotePitch
 
 from .errors import InvalidNote, InvalidAlteration, InvalidOctave, InvalidChord
 
@@ -48,7 +48,7 @@ class ChordParserTest(unittest.TestCase):
         assert isinstance(ChordParser('g5').parse(), PowerChord)
 
     def testPowerChordRoots(self):
-        F = MusicNote('F')
+        F = NotePitch('F')
         assert ChordParser('F5').parse().root ** F
 
 
@@ -62,13 +62,13 @@ class ChordParserTest(unittest.TestCase):
         assert isinstance(ChordParser('Emajor').parse(), MajorTriad)
 
     def testMajorTriadRoots(self):
-        C = MusicNote('C')
+        C = NotePitch('C')
         assert ChordParser('C').parse().root ** C
         assert ChordParser('Cmaj').parse().root ** C
         assert ChordParser('Cmajor').parse().root ** C
 
     # def testMajorTriadBass(self):
-    #     C = MusicNote('C')
+    #     C = NotePitch('C')
     #     assert ChordParser('C').parse().bass ** C
     #     assert ChordParser('Cmaj').parse().bass ** C
     #     assert ChordParser('Cmajor').parse().bass ** C
@@ -79,7 +79,7 @@ class ChordParserTest(unittest.TestCase):
         assert isinstance(ChordParser('Cminor').parse(), MinorTriad)
 
     def testMinorTriadRoots(self):
-        E = MusicNote('E')
+        E = NotePitch('E')
         assert ChordParser('Emin').parse().root ** E
         assert ChordParser('e-').parse().root ** E
         assert ChordParser('Eminor').parse().root ** E
@@ -89,7 +89,7 @@ class ChordParserTest(unittest.TestCase):
         assert isinstance(ChordParser('Bbaugmented').parse(), AugmentedTriad)
 
     def testAugTriadRoots(self):
-        A = MusicNote('A')
+        A = NotePitch('A')
         assert ChordParser('Aaug').parse().root ** A
         assert ChordParser('Aaugmented').parse().root ** A
 
@@ -98,7 +98,7 @@ class ChordParserTest(unittest.TestCase):
         assert isinstance(ChordParser('Bbdiminished').parse(), DiminishedTriad)
 
     def testDimTriadRoots(self):
-        D = MusicNote('D')
+        D = NotePitch('D')
         assert ChordParser('Ddim').parse().root ** D
         assert ChordParser('Ddiminished').parse().root ** D
         assert ChordParser('D dim').parse().root ** D
@@ -115,7 +115,7 @@ class ChordParserTest(unittest.TestCase):
         assert isinstance(ChordParser('Dmajor7').parse(), MajorSeventhChord)
 
     def testMajorSeventhChordRoots(self):
-        C = MusicNote('C')
+        C = NotePitch('C')
         assert ChordParser('Cmaj7').parse().root ** C
         assert ChordParser('CM7').parse().root ** C
         assert ChordParser('CΔ7').parse().root ** C
@@ -128,7 +128,7 @@ class ChordParserTest(unittest.TestCase):
         assert isinstance(ChordParser('Bbminor7').parse(), MinorSeventhChord)
 
     def testMinorSeventhChordRoots(self):
-        A = MusicNote('A')
+        A = NotePitch('A')
         assert ChordParser('Amin7').parse().root ** A
         assert ChordParser('Am7').parse().root ** A
         assert ChordParser('A-7').parse().root ** A
@@ -141,7 +141,7 @@ class ChordParserTest(unittest.TestCase):
         assert isinstance(ChordParser('Dbbdominant7').parse(), DominantSeventhChord)
 
     def testDomSeventhChordRoots(self):
-        Csharp = MusicNote('C', '#')
+        Csharp = NotePitch('C', '#')
         assert ChordParser('C#7').parse().root ** Csharp
         assert ChordParser('C♯dom7').parse().root ** Csharp
         assert ChordParser('c#dominant7').parse().root ** Csharp
@@ -152,7 +152,7 @@ class ChordParserTest(unittest.TestCase):
         assert isinstance(ChordParser('Cdiminished7').parse(), DiminishedSeventhChord)
 
     def testDiminishedSeventhChordRoots(self):
-        Dflat = MusicNote('D', 'b')
+        Dflat = NotePitch('D', 'b')
         assert ChordParser('Dbdim7').parse().root ** Dflat
         assert ChordParser('Dbo7').parse().root ** Dflat
         assert ChordParser('Dbdiminished7').parse().root ** Dflat
@@ -165,7 +165,7 @@ class ChordParserTest(unittest.TestCase):
         assert isinstance(ChordParser('fø7').parse(), HalfDiminishedSeventhChord)
 
     def testHalfDiminishedSeventhChordRoots(self):
-        Eflat = MusicNote('E', 'b')
+        Eflat = NotePitch('E', 'b')
         assert ChordParser('ebm7b5').parse().root ** Eflat
         assert ChordParser('E♭m7-5').parse().root ** Eflat
         assert ChordParser('Ebmin7dim5').parse().root ** Eflat
@@ -183,7 +183,7 @@ class ChordParserTest(unittest.TestCase):
         assert isinstance(ChordParser('Emajor9').parse(), MajorNinthChord)
 
     def testMajorNinthChordRoots(self):
-        Bflat = MusicNote('B', 'b')
+        Bflat = NotePitch('B', 'b')
         assert ChordParser('Bbmaj7').parse().root ** Bflat
         assert ChordParser('B♭M7').parse().root ** Bflat
         assert ChordParser('b♭major7').parse().root ** Bflat
@@ -195,7 +195,7 @@ class ChordParserTest(unittest.TestCase):
         assert isinstance(ChordParser('Bminor9').parse(), MinorNinthChord)
 
     def testMinorNinthChordRoots(self):
-        Asharp = MusicNote('A', '#')
+        Asharp = NotePitch('A', '#')
         assert ChordParser('A♯min9').parse().root ** Asharp
         assert ChordParser('A#m9').parse().root ** Asharp
         assert ChordParser('A#-9').parse().root ** Asharp
@@ -207,7 +207,7 @@ class ChordParserTest(unittest.TestCase):
         assert isinstance(ChordParser('Bbdom9').parse(), DominantNinthChord)
 
     def testDomNinthChordRoots(self):
-        Csharp = MusicNote('C', '#')
+        Csharp = NotePitch('C', '#')
         assert ChordParser('C#9').parse().root ** Csharp
         assert ChordParser('C♯dom9').parse().root ** Csharp
 
@@ -215,7 +215,7 @@ class ChordParserTest(unittest.TestCase):
         assert isinstance(ChordParser('E7b9').parse(), DominantMinorNinthChord)
 
     def testDomMinNinthChordRoots(self):
-        Eflat = MusicNote('E', 'b')
+        Eflat = NotePitch('E', 'b')
         assert ChordParser('eb7b9').parse().root ** Eflat
 
 
@@ -229,7 +229,7 @@ class ChordParserTest(unittest.TestCase):
         assert isinstance(ChordParser('Fadd6').parse(), MajorSixthChord)
 
     def testMajorSixthChordRoots(self):
-        Bflat = MusicNote('B', 'b')
+        Bflat = NotePitch('B', 'b')
         assert ChordParser('Bb6').parse().root ** Bflat
         assert ChordParser('B♭add6').parse().root ** Bflat
 
@@ -238,7 +238,7 @@ class ChordParserTest(unittest.TestCase):
         assert isinstance(ChordParser('Fmin6').parse(), MinorSixthChord)
 
     def testMinorSixthChordRoots(self):
-        Asharp = MusicNote('A', '#')
+        Asharp = NotePitch('A', '#')
         assert ChordParser('A♯m6').parse().root ** Asharp
         assert ChordParser('A#min6').parse().root ** Asharp
 
@@ -252,7 +252,7 @@ class ChordParserTest(unittest.TestCase):
         assert isinstance(ChordParser('Fsus').parse(), SuspendedFourChord)
 
     def testSuspendedFourChordRoots(self):
-        Gflatflat = MusicNote('G', 'bb')
+        Gflatflat = NotePitch('G', 'bb')
         assert ChordParser('G𝄫sus4').parse().root ** Gflatflat
         assert ChordParser('gbbsus').parse().root ** Gflatflat
 
@@ -261,7 +261,7 @@ class ChordParserTest(unittest.TestCase):
         assert isinstance(ChordParser('Esus9').parse(), SuspendedTwoChord)
 
     def testSuspendedFourChordRoots(self):
-        Gsharpsharp = MusicNote('G', '##')
+        Gsharpsharp = NotePitch('G', '##')
         assert ChordParser('G##sus2').parse().root ** Gsharpsharp
         assert ChordParser('g𝄪sus9').parse().root ** Gsharpsharp
 
@@ -270,21 +270,21 @@ class ChordParserTest(unittest.TestCase):
 class NotePitchParserTest(unittest.TestCase):
 
     CHAR_WINS = [
-        ['C', MusicNote('C')],
-        ['D', MusicNote('D')],
-        ['E', MusicNote('E')],
-        ['F', MusicNote('F')],
-        ['G', MusicNote('G')],
-        ['A', MusicNote('A')],
-        ['B', MusicNote('B')],
+        ['C', NotePitch('C')],
+        ['D', NotePitch('D')],
+        ['E', NotePitch('E')],
+        ['F', NotePitch('F')],
+        ['G', NotePitch('G')],
+        ['A', NotePitch('A')],
+        ['B', NotePitch('B')],
 
-        ['c', MusicNote('C')],
-        ['d', MusicNote('D')],
-        ['e', MusicNote('E')],
-        ['f', MusicNote('F')],
-        ['g', MusicNote('G')],
-        ['a', MusicNote('A')],
-        ['b', MusicNote('B')],
+        ['c', NotePitch('C')],
+        ['d', NotePitch('D')],
+        ['e', NotePitch('E')],
+        ['f', NotePitch('F')],
+        ['g', NotePitch('G')],
+        ['a', NotePitch('A')],
+        ['b', NotePitch('B')],
     ]
 
     CHAR_FAILS = [
@@ -296,33 +296,33 @@ class NotePitchParserTest(unittest.TestCase):
     ]
 
     OCTAVE_WINS = [
-        [ f'C{octave}', MusicNote('C', octave) ] for octave
-        in range(0, MusicNote.MAXIMUM_OCTAVE)
+        [ f'C{octave}', NotePitch('C', octave) ] for octave
+        in range(0, NotePitch.MAXIMUM_OCTAVE)
     ]
 
     OCTAVE_FAILS = [
         f'A{octave}' for octave
-        in range(MusicNote.MAXIMUM_OCTAVE+1, MusicNote.MAXIMUM_OCTAVE+500)
+        in range(NotePitch.MAXIMUM_OCTAVE+1, NotePitch.MAXIMUM_OCTAVE+500)
     ]
 
     ALTS_WINS = [
-        ['D#', MusicNote('D', '#')],
-        ['D♯', MusicNote('D', '#')],
+        ['D#', NotePitch('D', '#')],
+        ['D♯', NotePitch('D', '#')],
 
-        ['C##', MusicNote('C', '##')],
-        ['C♯♯', MusicNote('C', '##')],
-        ['C#♯', MusicNote('C', '##')],
-        ['C♯#', MusicNote('C', '##')],
-        ['C𝄪', MusicNote('C', '##')],
+        ['C##', NotePitch('C', '##')],
+        ['C♯♯', NotePitch('C', '##')],
+        ['C#♯', NotePitch('C', '##')],
+        ['C♯#', NotePitch('C', '##')],
+        ['C𝄪', NotePitch('C', '##')],
 
-        ['Eb', MusicNote('E', 'b')],
-        ['E♭', MusicNote('E', 'b')],
+        ['Eb', NotePitch('E', 'b')],
+        ['E♭', NotePitch('E', 'b')],
 
-        ['Gbb', MusicNote('G', 'bb')],
-        ['G♭♭', MusicNote('G', 'bb')],
-        ['Gb♭', MusicNote('G', 'bb')],
-        ['G♭b', MusicNote('G', 'bb')],
-        ['G𝄫', MusicNote('G', 'bb')],
+        ['Gbb', NotePitch('G', 'bb')],
+        ['G♭♭', NotePitch('G', 'bb')],
+        ['Gb♭', NotePitch('G', 'bb')],
+        ['G♭b', NotePitch('G', 'bb')],
+        ['G𝄫', NotePitch('G', 'bb')],
     ]
 
     ALTS_FAILS = [

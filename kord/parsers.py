@@ -1,5 +1,5 @@
 
-from .notes import MusicNote
+from .notes import NotePitch
 from .keys.chords import *
 
 from .errors import InvalidNote, InvalidAlteration, InvalidOctave, InvalidChord
@@ -143,7 +143,7 @@ class NotePitchParser:
 
 
     def _parse_char(self):
-        char = MusicNote.validate_char(self.to_parse[0])
+        char = NotePitch.validate_char(self.to_parse[0])
         self.to_parse = self.to_parse[1:]
         return char
 
@@ -167,7 +167,7 @@ class NotePitchParser:
             self.to_parse = self.to_parse[:-1]
         except ValueError:
             # probably an alt
-            octave = MusicNote.DEFAULT_OCTAVE
+            octave = NotePitch.DEFAULT_OCTAVE
         finally:
             return octave
 
@@ -178,7 +178,7 @@ class NotePitchParser:
         self.to_parse = self.to_parse.replace('𝄪', '##')
         self.to_parse = self.to_parse.replace('♯', '#')
 
-        if self.to_parse not in MusicNote.input_alterations():
+        if self.to_parse not in NotePitch.input_alterations():
             raise InvalidAlteration(self.symbol)
 
         alts = self.to_parse
@@ -193,17 +193,17 @@ class NotePitchParser:
         char = self._parse_char()
         if len(self.to_parse) == 0:
             self.reset()
-            return MusicNote(char)
+            return NotePitch(char)
 
         octave = self._parse_oct()
         if len(self.to_parse) == 0:
             self.reset()
-            return MusicNote(char, octave)
+            return NotePitch(char, octave)
 
         alts = self._parse_alts()
         if len(self.to_parse) == 0:
             self.reset()
-            return MusicNote(char, alts, octave)
+            return NotePitch(char, alts, octave)
 
         raise InvalidNote(self.symbol)
 
