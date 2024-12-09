@@ -30,7 +30,7 @@ __all__ = [
     'PERFECT_OCTAVE',
     'AUGMENTED_SEVENTH',
 
-    'MusicNote',
+    'NotePitch',
     'notes_by_alts',
 ]
 
@@ -74,7 +74,7 @@ PERFECT_OCTAVE = 12
 AUGMENTED_SEVENTH = 12
 
 
-class MusicNote:
+class NotePitch:
 
     _CHARS = LoopedList(
         'C',
@@ -147,10 +147,10 @@ class MusicNote:
     def __init__(self, char, *args):
         ''' init WITHOUT specifying argument names
             should be able to handle:
-            MusicNote('C')
-            MusicNote('C', 9)
-            MusicNote('C', '#')
-            MusicNote('C', '#', 9)
+            NotePitch('C')
+            NotePitch('C', 9)
+            NotePitch('C', '#')
+            NotePitch('C', '#', 9)
         '''
         self.chr = self.validate_char(char)
         self.alt = ''
@@ -312,27 +312,27 @@ class MusicNote:
 ### This is the heart of the whole project
 ### indeces are used to determine:
 ###   * when to change octs
-###   * intervals between MusicNote instances
-### notes MUST be unique so that MusicKey[d] finds 1 exact match!
+###   * intervals between NotePitch instances
+### notes MUST be unique so that TonalKey[d] finds 1 exact match!
 _EnharmonicMatrix = LoopedList(
 
     ## 2-octave enharmonic relationships
-    (  MusicNote('C', '' , 2), MusicNote('B', '#' , 1), MusicNote('D', 'bb', 2)  ), # NAH
-    (  MusicNote('C', '#', 2), MusicNote('D', 'b' , 2), MusicNote('B', '##', 1)  ), # AAH
+    (  NotePitch('C', '' , 2), NotePitch('B', '#' , 1), NotePitch('D', 'bb', 2)  ), # NAH
+    (  NotePitch('C', '#', 2), NotePitch('D', 'b' , 2), NotePitch('B', '##', 1)  ), # AAH
 
     ## 1-octave enharmonic relationships
-    (  MusicNote('D', '' , 1), MusicNote('C', '##', 1), MusicNote('E', 'bb', 1)  ), # NHH
-    (  MusicNote('D', '#', 1), MusicNote('E', 'b' , 1), MusicNote('F', 'bb', 1)  ), # AAH
-    (  MusicNote('E', '' , 1), MusicNote('F', 'b' , 1), MusicNote('D', '##', 1)  ), # NAH
-    (  MusicNote('F', '' , 1), MusicNote('E', '#' , 1), MusicNote('G', 'bb', 1)  ), # NAH
-    (  MusicNote('F', '#', 1), MusicNote('G', 'b' , 1), MusicNote('E', '##', 1)  ), # AAH
-    (  MusicNote('G', '' , 1), MusicNote('F', '##', 1), MusicNote('A', 'bb', 1)  ), # NHH
-    (  MusicNote('G', '#', 1), MusicNote('A', 'b' , 1)                      ),      # AA
-    (  MusicNote('A', '' , 1), MusicNote('G', '##', 1), MusicNote('B', 'bb', 1)  ), # NHH
+    (  NotePitch('D', '' , 1), NotePitch('C', '##', 1), NotePitch('E', 'bb', 1)  ), # NHH
+    (  NotePitch('D', '#', 1), NotePitch('E', 'b' , 1), NotePitch('F', 'bb', 1)  ), # AAH
+    (  NotePitch('E', '' , 1), NotePitch('F', 'b' , 1), NotePitch('D', '##', 1)  ), # NAH
+    (  NotePitch('F', '' , 1), NotePitch('E', '#' , 1), NotePitch('G', 'bb', 1)  ), # NAH
+    (  NotePitch('F', '#', 1), NotePitch('G', 'b' , 1), NotePitch('E', '##', 1)  ), # AAH
+    (  NotePitch('G', '' , 1), NotePitch('F', '##', 1), NotePitch('A', 'bb', 1)  ), # NHH
+    (  NotePitch('G', '#', 1), NotePitch('A', 'b' , 1)                      ),      # AA
+    (  NotePitch('A', '' , 1), NotePitch('G', '##', 1), NotePitch('B', 'bb', 1)  ), # NHH
 
     ## 2-octave enharmonic relationships
-    (  MusicNote('A', '#', 1), MusicNote('B', 'b' , 1), MusicNote('C', 'bb', 2)  ), # AAH
-    (  MusicNote('B', '' , 1), MusicNote('C', 'b' , 2), MusicNote('A', '##', 1)  ), # NAH
+    (  NotePitch('A', '#', 1), NotePitch('B', 'b' , 1), NotePitch('C', 'bb', 2)  ), # AAH
+    (  NotePitch('B', '' , 1), NotePitch('C', 'b' , 2), NotePitch('A', '##', 1)  ), # NAH
 
 )
 
@@ -346,7 +346,7 @@ def notes_by_alts():
     '''
     # sort alts
     alts = list(
-        MusicNote.input_alterations()
+        NotePitch.input_alterations()
     )
     alts.sort(key=len) # '', b, #, bb, ##
 

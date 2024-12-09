@@ -1,5 +1,5 @@
 
-from .notes import MusicNote
+from .notes import NotePitch
 from .keys.chords import *
 
 from .errors import InvalidNote, InvalidAlteration, InvalidOctave, InvalidChord
@@ -7,12 +7,12 @@ from .errors import InvalidNote, InvalidAlteration, InvalidOctave, InvalidChord
 from bestia.output import echo
 
 __all__ = [
-    'MusicNoteParser',
-    'MusicChordParser',
+    'NotePitchParser',
+    'ChordParser',
 ]
 
 
-class MusicChordParser:
+class ChordParser:
     ''' chord symbols still left to implement:
 
         Fadd4
@@ -56,7 +56,7 @@ class MusicChordParser:
     def bass(self):
         if not self.is_inverted:
             return self.root
-        return MusicNoteParser(
+        return NotePitchParser(
             self.symbol.split(self.BASS_NOTE_SEP)[-1]
         ).parse()
 
@@ -64,7 +64,7 @@ class MusicChordParser:
     def _parse_root(self):
         ''' this should NOT validate anything!
             only guess how many of the symbol's first 3 chars make up the root
-            return value will be validated using MusicNoteParser::parse()
+            return value will be validated using NotePitchParser::parse()
         '''
         possible_root = self.to_parse[:3]
         if len(possible_root) in (0, 1,):
@@ -96,14 +96,14 @@ class MusicChordParser:
 
 
     def parse(self):
-        ''' - sure   chord is correct?  return MusicKey()
+        ''' - sure   chord is correct?  return TonalKey()
             - unsure chord is correct?  return None
             - sure   chord is wrong  ?  raise  InvalidChord()
         '''
         try:
             # parse root out of first 3 chars
             root = self._parse_root()
-            self.root = MusicNoteParser(root).parse()
+            self.root = NotePitchParser(root).parse()
             # print(self.root)
 
             # ignore Chord/Bass notes on inverted chords
@@ -131,7 +131,7 @@ class MusicChordParser:
         return None
 
 
-class MusicNoteParser:
+class NotePitchParser:
 
     def __init__(self, symbol):
         self.symbol = symbol
@@ -143,7 +143,7 @@ class MusicNoteParser:
 
 
     def _parse_char(self):
-        char = MusicNote.validate_char(self.to_parse[0])
+        char = NotePitch.validate_char(self.to_parse[0])
         self.to_parse = self.to_parse[1:]
         return char
 
@@ -167,7 +167,7 @@ class MusicNoteParser:
             self.to_parse = self.to_parse[:-1]
         except ValueError:
             # probably an alt
-            octave = MusicNote.DEFAULT_OCTAVE
+            octave = NotePitch.DEFAULT_OCTAVE
         finally:
             return octave
 
@@ -178,7 +178,7 @@ class MusicNoteParser:
         self.to_parse = self.to_parse.replace('𝄪', '##')
         self.to_parse = self.to_parse.replace('♯', '#')
 
-        if self.to_parse not in MusicNote.input_alterations():
+        if self.to_parse not in NotePitch.input_alterations():
             raise InvalidAlteration(self.symbol)
 
         alts = self.to_parse
@@ -193,17 +193,17 @@ class MusicNoteParser:
         char = self._parse_char()
         if len(self.to_parse) == 0:
             self.reset()
-            return MusicNote(char)
+            return NotePitch(char)
 
         octave = self._parse_oct()
         if len(self.to_parse) == 0:
             self.reset()
-            return MusicNote(char, octave)
+            return NotePitch(char, octave)
 
         alts = self._parse_alts()
         if len(self.to_parse) == 0:
             self.reset()
-            return MusicNote(char, alts, octave)
+            return NotePitch(char, alts, octave)
 
         raise InvalidNote(self.symbol)
 

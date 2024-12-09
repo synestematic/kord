@@ -1,6 +1,6 @@
 import unittest
 
-from .notes import MusicNote, _EnharmonicMatrix
+from .notes import NotePitch, _EnharmonicMatrix
 
 from .errors import InvalidNote
 
@@ -14,7 +14,7 @@ class TestInvalidNotes(unittest.TestCase):
 
     def testInvalidChars(self):
         self.assertRaises(
-            InvalidNote, lambda : MusicNote('Y')
+            InvalidNote, lambda : NotePitch('Y')
         )
 
 
@@ -23,35 +23,35 @@ class NoteEqualityTest(unittest.TestCase):
     DANGEROUS_NON_EQUALS = (
         # ''' Used mainly to test B#, Cb, etc... '''
 
-        (MusicNote('C', 'b', 3), MusicNote('B', '#', 3)),
+        (NotePitch('C', 'b', 3), NotePitch('B', '#', 3)),
 
-        (MusicNote('C', 'b', 3), MusicNote('B', '#', 3)),
+        (NotePitch('C', 'b', 3), NotePitch('B', '#', 3)),
 
-        (MusicNote('E', 'b', 5), MusicNote('D', '#', 4)),
+        (NotePitch('E', 'b', 5), NotePitch('D', '#', 4)),
 
-        (MusicNote('B', '', 5), MusicNote('C', 'b', 4)),
+        (NotePitch('B', '', 5), NotePitch('C', 'b', 4)),
 
-        (MusicNote('E', '#', 3), MusicNote('F', '', 4)),
+        (NotePitch('E', '#', 3), NotePitch('F', '', 4)),
 
 
-        (MusicNote('B', 'b'), MusicNote('C', 'bb')),
-        (MusicNote('A', '#'), MusicNote('C', 'bb')),
+        (NotePitch('B', 'b'), NotePitch('C', 'bb')),
+        (NotePitch('A', '#'), NotePitch('C', 'bb')),
 
-        (MusicNote('B'     ), MusicNote('C', 'b')),
-        (MusicNote('A', '##'), MusicNote('C', 'b')),
+        (NotePitch('B'     ), NotePitch('C', 'b')),
+        (NotePitch('A', '##'), NotePitch('C', 'b')),
 
-        (MusicNote('B', '#'), MusicNote('C', '')),
-        (MusicNote('B', '#'), MusicNote('D', 'bb')),
+        (NotePitch('B', '#'), NotePitch('C', '')),
+        (NotePitch('B', '#'), NotePitch('D', 'bb')),
 
-        (MusicNote('B', '##'), MusicNote('C', '#')),
-        (MusicNote('B', '##'), MusicNote('D', 'b')),
+        (NotePitch('B', '##'), NotePitch('C', '#')),
+        (NotePitch('B', '##'), NotePitch('D', 'b')),
 
 
         # these should eval False OK
-        (MusicNote('A', '#'), MusicNote('B', 'b', 4)),
-        (MusicNote('A', '##'), MusicNote('B', '', 4)),
-        (MusicNote('C', ''), MusicNote('D', 'bb', 4)),
-        (MusicNote('C', '#'), MusicNote('D', 'b', 4)),
+        (NotePitch('A', '#'), NotePitch('B', 'b', 4)),
+        (NotePitch('A', '##'), NotePitch('B', '', 4)),
+        (NotePitch('C', ''), NotePitch('D', 'bb', 4)),
+        (NotePitch('C', '#'), NotePitch('D', 'b', 4)),
     )
 
     def setUp(self):
@@ -85,9 +85,9 @@ class NoteEqualityTest(unittest.TestCase):
     def testEnharmonicOperators(self):
         ''' '''
         print('Testing enharmonic operators')
-        Cs5 = MusicNote('C', '#', 5)
-        Db3 = MusicNote('D', 'b', 3)
-        Cs3 = MusicNote('C', '#', 3)
+        Cs5 = NotePitch('C', '#', 5)
+        Db3 = NotePitch('D', 'b', 3)
+        Cs3 = NotePitch('C', '#', 3)
         assert Cs3 ** Cs5      # loosest equality
         assert Db3 == Cs3      # enhamonic notes
         assert not Db3 >> Cs3  # enh note
