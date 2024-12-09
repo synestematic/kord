@@ -155,14 +155,14 @@ For the `>>` operator to evaluate True, the octaves of the notes must match as w
 ## kord.keys
 
 
-### class MusicKey:
+### class TonalKey:
 
-Think of MusicKey objects as generators of MusicNote objects. You can define a new class which inherits MusicKey and use any theoretical arrangement of `intervals` from the root note in order to create chords, scales, modes, etc. You can further taylor these child classes by restricting `degrees` to specific values, this is very useful for creating chords.
+Think of TonalKey objects as generators of MusicNote objects. You can define a new class which inherits TonalKey and use any theoretical arrangement of `intervals` from the root note in order to create chords, scales, modes, etc. You can further taylor these child classes by restricting `degrees` to specific values, this is very useful for creating chords.
 
 These are a couple of pre-defined examples to give you an idea of how it works:
 
 ```
-class ChromaticScale(MusicKey):
+class ChromaticScale(TonalKey):
     intervals = (
         UNISON,
         MINOR_SECOND,
@@ -178,7 +178,7 @@ class ChromaticScale(MusicKey):
         MAJOR_SEVENTH,
     )
 
-class MajorScale(MusicKey):
+class MajorScale(TonalKey):
     intervals = (
         UNISON,
         MAJOR_SECOND,
@@ -196,7 +196,7 @@ class MajorTriad(MajorScale):
     degrees = (1, 3, 5)
 ```
 
-Bare in mind that MusicKey objects are initialized with `chr` and `alt` attributes, `oct` values are not taken into consideration. These allows us to simply unpack MusicNote objects in order to create MusicKey instances based off of them. Once we have a MusicKey object, we can access it's single degrees using list index notation:
+Bare in mind that TonalKey objects are initialized with `chr` and `alt` attributes, `oct` values are not taken into consideration. These allows us to simply unpack MusicNote objects in order to create TonalKey instances based off of them. Once we have a TonalKey object, we can access it's single degrees using list index notation:
 
 ```
 >>> from kord.keys import ChromaticScale
@@ -208,9 +208,9 @@ C♯⁰
 B⁰
 ```
 
-### MusicKey.spell()
+### TonalKey.spell()
 
-Retrieving individual degrees is good, but it is perhaps more interesting to look at a more dynamic way of getting notes out of our MusicKey instances. The `spell()` method provides such an interface for generating MusicNote instances on the fly. Let's take a look at a couple of examples and the several arguments that we can use when calling this method:
+Retrieving individual degrees is good, but it is perhaps more interesting to look at a more dynamic way of getting notes out of our TonalKey instances. The `spell()` method provides such an interface for generating MusicNote instances on the fly. Let's take a look at a couple of examples and the several arguments that we can use when calling this method:
 
 ```
 >>> for note in c_chromatic_scale.spell():

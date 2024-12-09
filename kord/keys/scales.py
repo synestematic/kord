@@ -21,7 +21,7 @@ from ..notes import (
 from ..errors import InvalidNote, InvalidOctave
 
 __all__ = [
-    'MusicKey',
+    'TonalKey',
     'MajorScale',
     'MajorPentatonicScale',
     'AugmentedScale',
@@ -41,7 +41,7 @@ __all__ = [
 ]
 
 
-class MusicKey:
+class TonalKey:
 
     notations = ()
     intervals = ()
@@ -276,7 +276,7 @@ class MusicKey:
 ### MAJOR KEYS/MODES ###
 ########################
 
-class MajorScale(MusicKey):
+class MajorScale(TonalKey):
     notations = (
         'major',
     )
@@ -296,7 +296,7 @@ class MajorPentatonicScale(MajorScale):
     )
     degrees = (1, 2, 3, 5, 6)
 
-class AugmentedScale(MusicKey):
+class AugmentedScale(TonalKey):
     notations = (
         'augmented',
     )
@@ -347,7 +347,7 @@ class LydianMode(MajorScale):
 ### MINOR KEYS/MODES ###
 ########################
 
-class MinorScale(MusicKey):
+class MinorScale(TonalKey):
     notations = (
         'minor',
     )
@@ -361,7 +361,7 @@ class MinorScale(MusicKey):
         MINOR_SEVENTH,
     )
 
-class DiminishedScale(MusicKey):
+class DiminishedScale(TonalKey):
     notations = (
         'diminished',
     )
@@ -461,7 +461,7 @@ class LocrianMode(MinorScale):
 ### CHROMATIC KEY ###
 #####################
 
-class ChromaticScale(MusicKey):
+class ChromaticScale(TonalKey):
     notations = (
         'chromatic',
     )

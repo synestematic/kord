@@ -96,7 +96,7 @@ class ChordParser:
 
 
     def parse(self):
-        ''' - sure   chord is correct?  return MusicKey()
+        ''' - sure   chord is correct?  return TonalKey()
             - unsure chord is correct?  return None
             - sure   chord is wrong  ?  raise  InvalidChord()
         '''

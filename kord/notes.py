@@ -313,7 +313,7 @@ class MusicNote:
 ### indeces are used to determine:
 ###   * when to change octs
 ###   * intervals between MusicNote instances
-### notes MUST be unique so that MusicKey[d] finds 1 exact match!
+### notes MUST be unique so that TonalKey[d] finds 1 exact match!
 _EnharmonicMatrix = LoopedList(
 
     ## 2-octave enharmonic relationships
