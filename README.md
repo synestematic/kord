@@ -196,7 +196,7 @@ class MajorTriad(MajorScale):
     degrees = (1, 3, 5)
 ```
 
-Bare in mind that TonalKey objects are initialized with `chr` and `alt` attributes, `oct` values are not taken into consideration. These allows us to simply unpack NotePitch objects in order to create TonalKey instances based off of them. Once we have a TonalKey object, we can access it's single degrees using list index notation:
+Bare in mind that TonalKey objects are initialized with `chr` and `alt` attributes, `oct` values are not taken into consideration. This allows us to simply unpack NotePitch objects in order to create TonalKey instances based off of them. Once we have a TonalKey object, we can access it's single degrees using list index notation:
 
 ```
 >>> from kord.keys import ChromaticScale
