@@ -14,11 +14,35 @@ __all__ = [
 
 class MusicChordParser:
 
+    '''
+
+    G6
+    Am6
+   "Am11
+
+    "Asus2
+    "Esus4
+    "F#7sus
+    "E7sus4
+    Fsus9
+
+    Fadd4
+    Cadd9
+
+    "G13"
+    B7b9
+
+
+    '''
+
+
     RECOGNIZED_CHORDS = (
+        PowerChord,
         MajorTriad, MinorTriad, AugmentedTriad, DiminishedTriad,
         MajorSeventhChord, MinorSeventhChord, DominantSeventhChord,
         HalfDiminishedSeventhChord, DiminishedSeventhChord,
-        MajorNinthChord, MinorNinthChord, DominantNinthChord,
+        DominantNinthChord, DominantMinorNinthChord,
+        MajorNinthChord, MinorNinthChord,
     )
 
     BASS_NOTE_SEP = '/'
@@ -31,7 +55,7 @@ class MusicChordParser:
     def reset(self):
         self.root = None
         self.flavor = None
-        self.to_parse = self.symbol.strip()
+        self.to_parse = self.symbol.replace(' ', '')  # 'B aug7'
 
 
     @property
@@ -39,13 +63,12 @@ class MusicChordParser:
         return self.BASS_NOTE_SEP in self.symbol
 
     @property
-    def bass_note(self):
-        if self.is_inverted:
-            bass_note = MusicNoteParser(
-                self.symbol.split(self.BASS_NOTE_SEP)[-1]
-            ).parse()
-            return bass_note
-        return self.root
+    def bass(self):
+        if not self.is_inverted:
+            return self.root
+        return MusicNoteParser(
+            self.symbol.split(self.BASS_NOTE_SEP)[-1]
+        ).parse()
 
 
     def _parse_root(self):
@@ -55,7 +78,9 @@ class MusicChordParser:
         if len(possible_root) == 0:
             raise InvalidNote(possible_root)
 
-        MusicNote.validate_char(possible_root[0])
+        # why commenting this line does NOT fail my tests?
+        # MusicNote.validate_char(possible_root[0])
+
         if len(possible_root) == 1:
             return possible_root[:1]
 
@@ -71,6 +96,10 @@ class MusicChordParser:
 
 
     def _parse_flavor(self):
+        # shouldnt  this go in a _parse_alt() function
+        if 'sharp' in self.to_parse.lower() or 'flat' in self.to_parse.lower():
+            raise InvalidAlteration(self.symbol)
+
         for chord_class in self.RECOGNIZED_CHORDS:
             if self.to_parse in chord_class.notations:
                 return chord_class
@@ -78,6 +107,10 @@ class MusicChordParser:
 
 
     def parse(self):
+        ''' - sure   chord is correct?  return MusicKey()
+            - unsure chord is correct?  return None
+            - sure   chord is wrong  ?  raise  InvalidChord()
+        '''
         try:
             # parse root out of first 3 chars
             root = self._parse_root()
@@ -92,16 +125,20 @@ class MusicChordParser:
             self.flavor = self._parse_flavor()
 
         except Exception:
+            # echo(self.symbol, 'red')
             raise InvalidChord(self.symbol)
 
-        finally:
-            echo(
-                f'{self.symbol} = {self.root} {self.flavor} {self.bass_note}',
-                'cyan',
-            )
-            if self.flavor and self.root:
-                # init instance of Chord class using Chord root
-                return self.flavor(*self.root)
+        # c = 'cyan'
+        # if not self.symbol or not self.flavor:
+        #     c = 'red'
+        # echo(
+        #     f'{self.symbol} = {self.root} {self.flavor} {self.bass}',
+        #     c,
+        # )
+        if self.flavor and self.root:
+            # init instance of Chord class using Chord root
+            return self.flavor(*self.root)
+        return None
 
 
 class MusicNoteParser:
