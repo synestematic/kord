@@ -7,7 +7,8 @@ from kord.keys.chords import (
     MajorTriad, MinorTriad, AugmentedTriad, DiminishedTriad,
     MajorSeventhChord, MinorSeventhChord, DominantSeventhChord,
     DiminishedSeventhChord, HalfDiminishedSeventhChord,
-    MajorNinthChord, MinorNinthChord, DominantNinthChord
+    DominantNinthChord, DominantMinorNinthChord,
+    MajorNinthChord, MinorNinthChord,
 )
 from .notes import MusicNote
 
@@ -196,19 +197,21 @@ class MusicChordParserTest(unittest.TestCase):
         assert MusicChordParser('A♯minor9').parse().root ** Asharp
         assert MusicChordParser('A# min9').parse().root ** Asharp
 
-    # def testDomNinthChordClasses(self):
-    #     assert isinstance(MusicChordParser('F7').parse(), DominantNinthChord)
-    #     assert isinstance(MusicChordParser('Bbdom7').parse(), DominantNinthChord)
-    #     assert isinstance(MusicChordParser('Dbbdominant7').parse(), DominantNinthChord)
+    def testDomNinthChordClasses(self):
+        assert isinstance(MusicChordParser('F9').parse(), DominantNinthChord)
+        assert isinstance(MusicChordParser('Bbdom9').parse(), DominantNinthChord)
 
-    # def testDomNinthChordRoots(self):
-    #     Csharp = MusicNote('C', '#')
-    #     assert MusicChordParser('C#7').parse().root ** Csharp
-    #     assert MusicChordParser('C♯dom7').parse().root ** Csharp
-    #     assert MusicChordParser('c#dominant7').parse().root ** Csharp
+    def testDomNinthChordRoots(self):
+        Csharp = MusicNote('C', '#')
+        assert MusicChordParser('C#9').parse().root ** Csharp
+        assert MusicChordParser('C♯dom9').parse().root ** Csharp
 
+    def testDomMinNinthChordClasses(self):
+        assert isinstance(MusicChordParser('E7b9').parse(), DominantMinorNinthChord)
 
-
+    def testDomMinNinthChordRoots(self):
+        Eflat = MusicNote('E', 'b')
+        assert MusicChordParser('eb7b9').parse().root ** Eflat
 
 
 class MusicNoteParserTest(unittest.TestCase):
