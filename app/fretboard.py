@@ -25,6 +25,7 @@ from kord.keys.chords import (
     DiminishedSeventhChord, HalfDiminishedSeventhChord,
     DominantNinthChord, DominantMinorNinthChord,
     MajorNinthChord, MinorNinthChord,
+    MajorSixthChord, MinorSixthChord,
 )
 
 from kord import (
@@ -72,6 +73,8 @@ CHORDS = {
         DominantMinorNinthChord,
         MajorNinthChord,
         MinorNinthChord,
+        MajorSixthChord,
+        MinorSixthChord,
     )
 }
 
