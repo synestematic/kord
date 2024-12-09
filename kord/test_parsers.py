@@ -9,6 +9,7 @@ from kord.keys.chords import (
     DiminishedSeventhChord, HalfDiminishedSeventhChord,
     DominantNinthChord, DominantMinorNinthChord,
     MajorNinthChord, MinorNinthChord,
+    MajorSixthChord, MinorSixthChord,
 )
 from .notes import MusicNote
 
@@ -30,10 +31,13 @@ class MusicChordParserTest(unittest.TestCase):
         self.assertRaises(InvalidChord, MusicChordParser('#F').parse)
         self.assertRaises(InvalidChord, MusicChordParser('♭B').parse)
         self.assertRaises(InvalidChord, MusicChordParser('H').parse)
+
         self.assertRaises(InvalidChord, MusicChordParser('Dsharp').parse)
         self.assertRaises(InvalidChord, MusicChordParser('Eflat').parse)
         self.assertRaises(InvalidChord, MusicChordParser('pmin7').parse)
 
+        # self.assertRaises(InvalidChord, MusicChordParser('CB').parse)  # should fail...
+        # self.assertRaises(InvalidChord, MusicChordParser('Cqwe').parse)  # should fail...
 
     ####################
     ### POWER CHORDS ###
@@ -214,6 +218,30 @@ class MusicChordParserTest(unittest.TestCase):
         assert MusicChordParser('eb7b9').parse().root ** Eflat
 
 
+
+    ####################
+    ### SIXTH CHORDS ###
+    ####################
+
+    def testMajorSixthChordClasses(self):
+        assert isinstance(MusicChordParser('D#6').parse(), MajorSixthChord)
+        assert isinstance(MusicChordParser('Fadd6').parse(), MajorSixthChord)
+
+    def testMajorSixthChordRoots(self):
+        Bflat = MusicNote('B', 'b')
+        assert MusicChordParser('Bb6').parse().root ** Bflat
+        assert MusicChordParser('B♭add6').parse().root ** Bflat
+
+    def testMinorSixthChordClasses(self):
+        assert isinstance(MusicChordParser('Ebm6').parse(), MinorSixthChord)
+        assert isinstance(MusicChordParser('Fmin6').parse(), MinorSixthChord)
+
+    def testMinorSixthChordRoots(self):
+        Asharp = MusicNote('A', '#')
+        assert MusicChordParser('A♯m6').parse().root ** Asharp
+        assert MusicChordParser('A#min6').parse().root ** Asharp
+
+
 class MusicNoteParserTest(unittest.TestCase):
 
     CHAR_WINS = [
@@ -288,6 +316,9 @@ class MusicNoteParserTest(unittest.TestCase):
         'eSharp',
         'Eflat',
         'bFlat',
+
+        'CB',
+        'Cqwe',
     ]
 
     def setUp(self):

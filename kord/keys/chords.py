@@ -101,6 +101,7 @@ class MajorSeventhChord(IonianMode):
         'maj7',
         'M7',  # careful with these 2 if ever using .lower() to compare
         'Δ7',
+        'Δ',
         'major7',
     )
     degrees = (1, 3, 5, 7)
@@ -155,8 +156,8 @@ class MajorNinthChord(IonianMode):
 
 class MinorNinthChord(AeolianMode):
     notations = (
-        'min9',
         'm9',
+        'min9',
         '-9',
         'minor9',
     )
@@ -191,6 +192,8 @@ class DominantMinorNinthChord(MixolydianMode):
 ####################
 ### SIXTH CHORDS ###
 ####################
+
+# 6th is always major, 3rd can be major|minor
 
 class MajorSixthChord(IonianMode):
     notations = (
