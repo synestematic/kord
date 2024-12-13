@@ -4,66 +4,12 @@ from .keys.scales import ChromaticScale
 from .notes import NotePitch
 
 __all__ = [
-    'MAXIMUM_FRETS',
     'PluckedStringInstrument',
     'max_frets_on_screen',
 ]
 
 _NOTE_WIDTH = 5
 _FRET_WIDTH = 1
-
-_INLAYS = (
-    'I',
-    'II',
-    'III',
-    'IV',
-    'V',
-    'VI',
-    'VII',
-    'VIII',
-    'IX',
-    'X',
-    'XI',
-
-    'XII',
-    'XIII',
-    'XIV',
-    'XV',
-    'XVI',
-    'XVII',
-    'XVIII',
-    'XIX',
-    'XX',
-    'XXI',
-    'XXII',
-    'XXIII',
-
-    'XXIV',
-    'XXV',
-    'XXVI',
-    'XXVII',
-    'XXVIII',
-    'XXIX',
-    'XXX',
-    'XXXI',
-    'XXXII',
-    'XXXIII',
-    'XXXIV',
-    'XXXV',
-    'XXXVI',
-)
-
-MAXIMUM_FRETS = len(_INLAYS)
-
-
-def max_frets_on_screen():
-    ''' calculates how may frets can be rendered without exceeding terminal size
-        will NOT go over MAXIMUM_FRETS
-    '''
-    frets = int(
-        tty_cols() / ( _NOTE_WIDTH + _FRET_WIDTH )
-    ) - 2
-    return frets if frets < MAXIMUM_FRETS else MAXIMUM_FRETS
 
 
 class PluckedString:
@@ -155,14 +101,62 @@ class PluckedString:
 
 class PluckedStringInstrument:
 
+    _INLAYS = (
+        'I',
+        'II',
+        'III',
+        'IV',
+        'V',
+        'VI',
+        'VII',
+        'VIII',
+        'IX',
+        'X',
+        'XI',
+
+        'XII',
+        'XIII',
+        'XIV',
+        'XV',
+        'XVI',
+        'XVII',
+        'XVIII',
+        'XIX',
+        'XX',
+        'XXI',
+        'XXII',
+        'XXIII',
+
+        'XXIV',
+        'XXV',
+        'XXVI',
+        'XXVII',
+        'XXVIII',
+        'XXIX',
+        'XXX',
+        'XXXI',
+        'XXXII',
+        'XXXIII',
+        'XXXIV',
+        'XXXV',
+        'XXXVI',
+    )
+
+    @classmethod
+    def maximum_frets(cls):
+        return len(cls._INLAYS)
+
+
     def __init__(self, *notes, name=''):
         self.strings = [ PluckedString(*n) for n in notes ]
         self.name = name
+
 
     @property
     def string_n_size(self):
         ''' does not expect more then 99 strings... '''
         return 1 if len(self.strings) < 10 else 2
+
 
     def render_inlays(self, frets=12, verbose=1):
 
@@ -184,7 +178,7 @@ class PluckedStringInstrument:
         while frets:
             inlay_row.append(
                 FString(
-                    '' if verbose == 1 and f not in dots else _INLAYS[f-1],
+                    '' if verbose == 1 and f not in dots else self._INLAYS[f-1],
                     size=_NOTE_WIDTH + _FRET_WIDTH,
                     align='r' if verbose == 2 else 'c', # high verbose needs more space
                     fg='cyan',
@@ -227,6 +221,7 @@ class PluckedStringInstrument:
                 render += normal[side]
         echo(render)
 
+
     def render_string(self, s, mode, frets=12, verbose=1, show_degrees=False):
         string_n = FString(
             s,
@@ -241,6 +236,7 @@ class PluckedStringInstrument:
         string.show_degrees = show_degrees
         echo(string_n + string)
 
+
     def render_fretboard(self, mode=None, frets=12, verbose=1, show_degrees=False):
         # if frets > max_frets_on_screen():
         #     frets = max_frets_on_screen()
@@ -249,3 +245,16 @@ class PluckedStringInstrument:
         for s, _ in enumerate(self.strings):
             self.render_string(s+1, mode, frets, verbose, show_degrees)
         self.render_binding('lower', frets)
+
+
+def max_frets_on_screen():
+    ''' calculates how may frets can be rendered without exceeding terminal size
+        will NOT go over MAXIMUM_FRETS
+    '''
+    frets_allowed_by_tty = int(
+        tty_cols() / ( _NOTE_WIDTH + _FRET_WIDTH )
+    ) - 2
+    if frets_allowed_by_tty < PluckedStringInstrument.maximum_frets():
+        return frets_allowed_by_tty
+    return PluckedStringInstrument.maximum_frets()
+    
