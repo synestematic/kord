@@ -8,13 +8,10 @@ __all__ = [
     'max_frets_on_screen',
 ]
 
-_NOTE_WIDTH = 5
-_FRET_WIDTH = 1
-
 
 class PluckedString:
 
-    def __init__(self, c, alt='', oct=3, frets=12, mode=None, verbose=1, show_degrees=0):
+    def __init__(self, c, alt='', oct=3, frets=12, mode=None, verbose=1, show_degrees=False):
         self.tuning = NotePitch(c, alt, oct)
         self.mode = mode
         self.frets = frets
@@ -78,7 +75,7 @@ class PluckedString:
             string_line.append(
                 FString(
                     fret_value,
-                    size=_NOTE_WIDTH,
+                    size=PluckedStringInstrument.NOTE_WIDTH,
                     align='cr',
                 )
             )
@@ -87,7 +84,7 @@ class PluckedString:
             string_line.append(
                 FString(
                     '║' if f % 12 == 0 else '│',
-                    size=_FRET_WIDTH,
+                    size=PluckedStringInstrument.FRET_WIDTH,
                     # fg='blue',
                     # fx=['faint'],
                 )
@@ -100,6 +97,9 @@ class PluckedString:
 
 
 class PluckedStringInstrument:
+
+    NOTE_WIDTH = 5
+    FRET_WIDTH = 1
 
     _INLAYS = (
         'I',
@@ -147,6 +147,11 @@ class PluckedStringInstrument:
         return len(cls._INLAYS)
 
 
+    @classmethod
+    def total_fret_width(cls):
+        return cls.NOTE_WIDTH + cls.FRET_WIDTH
+
+
     def __init__(self, *notes, name=''):
         self.strings = [ PluckedString(*n) for n in notes ]
         self.name = name
@@ -168,7 +173,7 @@ class PluckedStringInstrument:
         inlay_row = Row(
             FString(
                 '',
-                size=self.string_n_size + _NOTE_WIDTH + _FRET_WIDTH,
+                size=self.string_n_size + self.total_fret_width(),
                 align='l',
                 # pad='*',
             ),
@@ -179,7 +184,7 @@ class PluckedStringInstrument:
             inlay_row.append(
                 FString(
                     '' if verbose == 1 and f not in dots else self._INLAYS[f-1],
-                    size=_NOTE_WIDTH + _FRET_WIDTH,
+                    size=self.total_fret_width(),
                     align='r' if verbose == 2 else 'c', # high verbose needs more space
                     fg='cyan',
                     fx=['faint' if f not in dots else ''],
@@ -200,8 +205,8 @@ class PluckedStringInstrument:
         capo   = { 'upper': '╔', 'lower': '╚' }
         final  = { 'upper': '╕', 'lower': '╛' }
         fine   = { 'upper': '╗', 'lower': '╝' }
-        total_fret_width = _NOTE_WIDTH + _FRET_WIDTH
-        render = ' ' * ( _NOTE_WIDTH + self.string_n_size )
+        total_fret_width = self.total_fret_width()
+        render = ' ' * ( self.NOTE_WIDTH + self.string_n_size )
         render += capo[side]
         for f in range(1, frets * total_fret_width + 1):
             # final fret
@@ -216,7 +221,7 @@ class PluckedStringInstrument:
             # fret bar joints
             elif f % total_fret_width == 0:
                 render += joints[side]
-            # normal bind
+            # normal binding
             else:
                 render += normal[side]
         echo(render)
@@ -248,11 +253,8 @@ class PluckedStringInstrument:
 
 
 def max_frets_on_screen():
-    ''' calculates how may frets can be rendered without exceeding terminal size
-        will NOT go over MAXIMUM_FRETS
-    '''
     frets_allowed_by_tty = int(
-        tty_cols() / ( _NOTE_WIDTH + _FRET_WIDTH )
+        tty_cols() / PluckedStringInstrument.total_fret_width()
     ) - 2
     if frets_allowed_by_tty < PluckedStringInstrument.maximum_frets():
         return frets_allowed_by_tty
