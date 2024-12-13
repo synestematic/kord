@@ -11,8 +11,41 @@ __all__ = [
 
 class PluckedString:
 
-    def __init__(self, c, alt='', oct=3, frets=12, mode=None, verbose=1, show_degrees=False):
-        self.tuning = NotePitch(c, alt, oct)
+    DEGREE_ICONS = (
+        '⓪',  # null degree...
+        # 'Ⓝ',
+        # '①',
+        'Ⓡ',
+        '➁',
+        '➂',
+        '➃',
+        '➄',
+        '➅',
+        '➆',
+        '➇',
+        '➈',
+        '➉',
+        '⑪',
+        '⑫',
+        '⑬',
+        '⑭',
+        '⑮',
+        '⑯',
+        '⑰',
+        '⑱',
+        '⑲',
+        '⑳',
+    )
+
+    def __init__(
+        self,
+        char, alt='', oct=NotePitch.DEFAULT_OCTAVE,
+        frets=12,
+        mode=None,
+        verbose=1,
+        show_degrees=False
+    ):
+        self.tuning = NotePitch(char, alt, oct)
         self.mode = mode
         self.frets = frets
         self.verbose = verbose
@@ -41,7 +74,12 @@ class PluckedString:
                     for d in mode.allowed_degrees():
                         if note ** mode[d]:
                             fret_value = FString(
-                                '{} '.format(d if d != 1 else 'R'),
+                                '{} '.format(
+                                    self.DEGREE_ICONS[d] if self.verbose != 0
+                                    else (
+                                        d if d != 1 else 'R'
+                                    )
+                                ),
                                 size=3,
                                 fg=note_fg,
                                 align='r',
@@ -259,4 +297,4 @@ def max_frets_on_screen():
     if frets_allowed_by_tty < PluckedStringInstrument.maximum_frets():
         return frets_allowed_by_tty
     return PluckedStringInstrument.maximum_frets()
-    
+
