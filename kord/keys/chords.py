@@ -4,6 +4,8 @@ from .scales import (
     IonianMode, AeolianMode, MixolydianMode, LocrianMode, DorianMode,
 )
 
+from .scales import TonalKey
+
 from ..notes import (
     UNISON, DIMINISHED_SECOND,          #0
     MINOR_SECOND, AUGMENTED_UNISON,     #1
@@ -46,6 +48,12 @@ __all__ = [
     'SuspendedFourChord',
     'SuspendedTwoChord',
 ]
+
+class Chord(TonalKey):
+
+    def chord_spell(self, note_count=None, start_note=None, yield_all=False):
+        r = self.spell(note_count, start_note, yield_all)
+        return r
 
 
 ##################
@@ -149,7 +157,7 @@ class HalfDiminishedSeventhChord(LocrianMode):
 ### NINTH CHORDS ###
 ####################
 
-class MajorNinthChord(IonianMode):
+class MajorNinthChord(Chord, IonianMode):
     notations = (
         'maj9',
         'M9',
