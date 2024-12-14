@@ -79,7 +79,7 @@ class TonalKey:
                 all_degrees.append(
                     deg + len(cls.intervals) * o
                 )
-        # input(all_degrees)
+
         return tuple(all_degrees)
 
     @classmethod
