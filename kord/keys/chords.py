@@ -219,7 +219,7 @@ class HalfDiminishedSeventhChord(LocrianMode):
 ### NINTH CHORDS ###
 ####################
 
-class MajorNinthChord(Chord, IonianMode):
+class MajorNinthChord(IonianMode):
     notations = (
         'maj9',
         'M9',

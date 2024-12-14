@@ -136,12 +136,11 @@ class TonalKey:
     def __repr__(self):
         ''' prints first octave of NotePitch items '''
         spell_line = Row()
-        for d in self.spell(
+        for degree in self.spell(
             note_count=None, yield_all=False
         ):
-            spell_line.append(
-                FString(d, size=5)
-            )
+            spell_line.append( FString(degree, size=5) )
+        spell_line.append( f'{type(self)} on {self.root}'[:-1] )
         return str(spell_line)
 
     def __getitem__(self, d):
