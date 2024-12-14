@@ -1,3 +1,49 @@
+'''
+㉑ ㉒ ㉓ ㉔ ㉕ ㉖ ㉗ ㉘ ㉙ ㉚
+㉛ ㉜ ㉝ ㉞ ㉟ ㊱ ㊲ ㊳ ㊴ ㊵
+㊶ ㊷ ㊸ ㊹ ㊺ ㊻ ㊼ ㊽ ㊾ ㊿
+
+These are specifically sans-serif:
+
+🄋 ➀ ➁ ➂ ➃ ➄ ➅ ➆ ➇ ➈ ➉
+
+Black Circled Number
+⓿
+❶
+❷
+❸
+❹
+❺
+❻
+❼
+❽
+❾
+❿
+
+
+Ⓐ ⓐ
+Ⓑ ⓑ
+Ⓒ ⓒ
+Ⓓ ⓓ
+Ⓔ ⓔ
+Ⓕ ⓕ
+Ⓖ ⓖ
+
+
+# NUMERALS = {
+#     'I' : 'Ⅰ',
+#     'V' : 'ⅤⅠⅤ',
+#     'X' : 'Ⅹ',
+#     'L' : 'Ⅼ',
+#     'C' : 'Ⅽ',
+#     'D' : 'Ⅾ',
+#     'M' : 'Ⅿ',
+# }
+
+https://www.unicode.org/charts/nameslist/n_2460.html
+
+'''
+
 from bestia.output import Row, FString, echo, tty_cols
 
 from .keys.scales import ChromaticScale
