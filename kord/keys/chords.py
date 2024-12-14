@@ -2,8 +2,8 @@
 from .scales import (
     MajorScale, MinorScale, AugmentedScale, DiminishedScale,
     IonianMode, AeolianMode, MixolydianMode, LocrianMode, DorianMode,
+    HarmonicMinorScale,
 )
-
 from .scales import TonalKey
 
 from ..notes import (
@@ -21,6 +21,9 @@ from ..notes import (
     MAJOR_SEVENTH, DIMINISHED_OCTAVE,   #11
     PERFECT_OCTAVE, AUGMENTED_SEVENTH,  #12
 )
+from ..notes import notes_by_alts
+
+from ..errors import InvalidNote
 
 
 __all__ = [
@@ -47,13 +50,72 @@ __all__ = [
 
     'SuspendedFourChord',
     'SuspendedTwoChord',
+
+    'Chord',
 ]
 
 class Chord(TonalKey):
+    parent_scale = MajorScale
+    parent_scale_degree = 1
+    degrees = (1, 3, 5,)
 
-    def chord_spell(self, note_count=None, start_note=None, yield_all=False):
-        r = self.spell(note_count, start_note, yield_all)
-        return r
+    @classmethod
+    def find_parent_scale_root(cls, match_note):
+        ''' finds char for which your parent_scale will match your chord's root
+            at parent_scale_degree
+        '''
+        scales_found = []
+        for n in notes_by_alts():
+            scale = cls.parent_scale(*n)
+            try:
+                if scale[cls.parent_scale_degree] ** match_note:
+                    scales_found.append(scale)
+            except InvalidNote:
+                continue
+
+        assert len(scales_found) <= 1
+        if scales_found:
+            return scales_found[0]
+        return None
+
+
+    # sure this is the method I need to overload from TonalKey???
+    # def spell(self):
+    #     pass
+
+    # def chord_spell(self, note_count=None, start_note=None, yield_all=False):
+    #     r = self.spell(note_count, start_note, yield_all)
+    #     return r
+
+# class MajorTriad(Chord):
+#     pass
+
+
+class NinthChord(Chord):
+    degrees = (1, 3, 5, 7, 9)
+
+
+class DominantMinorNinthChord(
+    NinthChord
+    # MixolydianMode
+):
+    ''' needs to be expressed as:
+        dominant 9th chord formed on 5th degree of harmonic minor scale
+    '''
+    parent_scale = HarmonicMinorScale
+    parent_scale_degree = 5
+    notations = (
+        '7b9',
+    )
+    # intervals = (
+    #     UNISON,
+    #     MINOR_SECOND, # <<<
+    #     MAJOR_THIRD,
+    #     PERFECT_FOURTH,
+    #     PERFECT_FIFTH,
+    #     MAJOR_SIXTH,
+    #     MINOR_SEVENTH,
+    # )
 
 
 ##################
@@ -181,23 +243,23 @@ class DominantNinthChord(MixolydianMode):
     )
     degrees = (1, 3, 5, 7, 9)
 
-class DominantMinorNinthChord(MixolydianMode):
-    ''' needs to be expressed as:
-        dominant 9th chord formed on 5th degree of harmonic minor scale
-    '''
-    notations = (
-        '7b9',
-    )
-    intervals = (
-        UNISON,
-        MINOR_SECOND, # <<<
-        MAJOR_THIRD,
-        PERFECT_FOURTH,
-        PERFECT_FIFTH,
-        MAJOR_SIXTH,
-        MINOR_SEVENTH,
-    )
-    degrees = (1, 3, 5, 7, 9)
+# class DominantMinorNinthChord(MixolydianMode):
+#     ''' needs to be expressed as:
+#         dominant 9th chord formed on 5th degree of harmonic minor scale
+#     '''
+#     notations = (
+#         '7b9',
+#     )
+#     intervals = (
+#         UNISON,
+#         MINOR_SECOND, # <<<
+#         MAJOR_THIRD,
+#         PERFECT_FOURTH,
+#         PERFECT_FIFTH,
+#         MAJOR_SIXTH,
+#         MINOR_SEVENTH,
+#     )
+#     degrees = (1, 3, 5, 7, 9)
 
 
 ####################
