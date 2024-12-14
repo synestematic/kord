@@ -30,7 +30,7 @@ from kord.keys.chords import (
 )
 
 from kord import (
-    MAXIMUM_FRETS, PluckedStringInstrument, NotePitch, max_frets_on_screen
+    PluckedStringInstrument, NotePitch, max_frets_on_screen
 )
 
 from kord import InvalidInstrument, InvalidNote, InvalidAlteration
@@ -137,8 +137,8 @@ def parse_arguments():
 
     parser.add_argument(
         '-f', '--frets',
-        help='1, 2, .., {}'.format(MAXIMUM_FRETS),
-        choices=[ f+1 for f in range(MAXIMUM_FRETS) ],
+        help='1, 2, .., {}'.format(PluckedStringInstrument.maximum_frets()),
+        choices=[ f+1 for f in range(PluckedStringInstrument.maximum_frets()) ],
         default=max_frets_on_screen(),
         metavar='',
         type=int,
