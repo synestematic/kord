@@ -21,7 +21,6 @@ from ..notes import (
     MAJOR_SEVENTH, DIMINISHED_OCTAVE,   #11
     PERFECT_OCTAVE, AUGMENTED_SEVENTH,  #12
 )
-from ..notes import notes_by_alts
 
 from ..errors import InvalidNote
 
@@ -76,13 +75,26 @@ class Chord(TonalKey):
         return None
 
 
-    # sure this is the method I need to overload from TonalKey???
-    # def spell(self):
-    #     pass
+    def __init__(self, chr, alt='', oct=0):
+        super().__init__(chr, alt)
+        self.intervals = tuple(self._calc_intervals())
 
-    # def chord_spell(self, note_count=None, start_note=None, yield_all=False):
-    #     r = self.spell(note_count, start_note, yield_all)
-    #     return r
+
+    def root_to_parent_scale_degree_offset(self):
+        return self.parent_scale.intervals[self.parent_scale_degree - 1]
+
+
+    def _calc_intervals(self):
+        offset_from_root = self.root_to_parent_scale_degree_offset()
+        arranged_intervals = []
+        for parent_scale_interval in self.parent_scale.intervals:
+            new_interval = parent_scale_interval - offset_from_root
+            if new_interval < 0:
+                new_interval += PERFECT_OCTAVE
+            arranged_intervals.append(new_interval)
+        arranged_intervals.sort()
+        return arranged_intervals
+
 
 class TriadChord(Chord):
     degrees = (1, 3, 5, )
@@ -94,16 +106,10 @@ class SixthChord(Chord):
     degrees = (1, 3, 5, 6, )
 
 class NinthChord(Chord):
+    # degrees = ()
     degrees = (1, 3, 5, 7, 9, )
 
-
-class DominantMinorNinthChord(
-    NinthChord
-    # MixolydianMode
-):
-    ''' needs to be expressed as:
-        dominant 9th chord formed on 5th degree of harmonic minor scale
-    '''
+class DominantMinorNinthChord(NinthChord):
     parent_scale = HarmonicMinorScale
     parent_scale_degree = 5
     notations = (
