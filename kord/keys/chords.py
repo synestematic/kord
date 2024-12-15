@@ -65,13 +65,10 @@ class Chord(TonalKey):
             at parent_scale_degree
         '''
         scales_found = []
-        for n in notes_by_alts():
+        for n in cls.parent_scale.valid_root_notes():
             scale = cls.parent_scale(*n)
-            try:
-                if scale[cls.parent_scale_degree] ** match_note:
-                    scales_found.append(scale)
-            except InvalidNote:
-                continue
+            if scale[cls.parent_scale_degree] ** match_note:
+                scales_found.append(scale)
 
         assert len(scales_found) <= 1
         if scales_found:
@@ -87,12 +84,17 @@ class Chord(TonalKey):
     #     r = self.spell(note_count, start_note, yield_all)
     #     return r
 
-# class MajorTriad(Chord):
-#     pass
+class TriadChord(Chord):
+    degrees = (1, 3, 5, )
 
+class SeventhChord(Chord):
+    degrees = (1, 3, 5, 7, )
+
+class SixthChord(Chord):
+    degrees = (1, 3, 5, 6, )
 
 class NinthChord(Chord):
-    degrees = (1, 3, 5, 7, 9)
+    degrees = (1, 3, 5, 7, 9, )
 
 
 class DominantMinorNinthChord(
