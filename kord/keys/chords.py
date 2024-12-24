@@ -75,21 +75,17 @@ class Chord(TonalKey):
         return None
 
 
-    def __init__(self, chr, alt='', oct=0):
-        super().__init__(chr, alt)
-        self.intervals = tuple(self._calc_intervals())
-
-
     @classmethod
     def root_to_parent_scale_degree_offset(cls):
-        return cls.parent_scale.intervals[cls.parent_scale_degree - 1]
+        return cls.parent_scale._calc_intervals()[cls.parent_scale_degree - 1]
 
 
     @classmethod
     def _calc_intervals(cls):
+        # intervals is an empty tuple for chords
         offset_from_root = cls.root_to_parent_scale_degree_offset()
         arranged_intervals = []
-        for parent_scale_interval in cls.parent_scale.intervals:
+        for parent_scale_interval in cls.parent_scale._calc_intervals():
             new_interval = parent_scale_interval - offset_from_root
             if new_interval < 0:
                 new_interval += PERFECT_OCTAVE
