@@ -1,3 +1,15 @@
+'''
+degrees tuple is not explicitly defined anymore but is inherited from parent class:
+
+    class TriadChord(Chord):
+    class SeventhChord(Chord):
+    class SixthChord(Chord):
+    class NinthChord(Chord):
+
+
+parent scale is now a separate class atrribute
+
+'''
 
 from .scales import (
     MajorScale, MinorScale, AugmentedScale, DiminishedScale,
@@ -107,7 +119,6 @@ class SixthChord(Chord):
     degrees = (1, 3, 5, 6, )
 
 class NinthChord(Chord):
-    # degrees = ()
     degrees = (1, 3, 5, 7, 9, )
 
 class DominantMinorNinthChord(NinthChord):
@@ -150,14 +161,14 @@ class MajorTriad(TriadChord):
         'major',
     )
 
-class MinorTriad(MinorScale):
+class MinorTriad(TriadChord):
+    parent_scale = MinorScale
     notations = (
         'min',
         '-',
         'm',
         'minor',
     )
-    degrees = (1, 3, 5)
 
 class AugmentedTriad(AugmentedScale):
     notations = (
