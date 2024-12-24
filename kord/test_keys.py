@@ -810,7 +810,6 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
         for i, note in enumerate(MajorScale('C')._count_notes(
             note_count=64, start_note=None, yield_all=True
         )):
-            # echo(note, 'yellow')
             if i == 0:
                 assert note >> NotePitch('C', '', 0), note
             elif i == 1:

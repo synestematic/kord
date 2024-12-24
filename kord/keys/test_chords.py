@@ -29,24 +29,59 @@ G = NotePitch('G')
 
 class ChordTest(unittest.TestCase):
 
+    def testMajorChordDegrees(self):
+        chord = MajorTriad(*C)
+        # print(chord.all_degrees())
+        # print(chord.intervals)
+        assert not chord[0] , chord[0]
+        assert chord[1] >> NotePitch('C', '', 0), chord[1]
+        assert not chord[2] , chord[2]
+        assert chord[3] >> NotePitch('E', '', 0), chord[3]
+        assert not chord[4] , chord[4]
+        assert chord[5] >> NotePitch('G', '', 0), chord[5]
+        assert not chord[6] , chord[6]
+        assert not chord[7] , chord[7]
+        assert chord[8] >> NotePitch('C', '', 1), chord[8]
+        assert not chord[9] , chord[9]
+        assert chord[10] >> NotePitch('E', '', 1), chord[10]
+        assert not chord[11] , chord[11]
+        assert chord[12] >> NotePitch('G', '', 1), chord[12]
+        assert not chord[13] , chord[13]
+        assert not chord[14] , chord[14]
+        assert chord[15] >> NotePitch('C', '', 2), chord[15]
+
+
+    def testChordDegrees(self):
+        chord = Chord(*C)
+        # print(chord.all_degrees())
+        # print(chord.intervals)
+        assert not chord[0] , chord[0]
+        assert chord[1] >> NotePitch('C', '', 0), chord[1]
+        assert not chord[2] , chord[2]
+        assert chord[3] >> NotePitch('E', '', 0), chord[3]
+        assert not chord[4] , chord[4]
+        assert chord[5] >> NotePitch('G', '', 0), chord[5]
+        assert not chord[6] , chord[6]
+        assert not chord[7] , chord[7]
+        assert chord[8] >> NotePitch('C', '', 1), chord[8]
+        assert not chord[9] , chord[9]
+        assert chord[10] >> NotePitch('E', '', 1), chord[10]
+        assert not chord[11] , chord[11]
+        assert chord[12] >> NotePitch('G', '', 1), chord[12]
+        assert not chord[13] , chord[13]
+        assert not chord[14] , chord[14]
+        assert chord[15] >> NotePitch('C', '', 2), chord[15]
+
+
     def testChordNotes(self):
-        c_chord = MajorTriad(*C)
-        print(c_chord.all_degrees())
-        print(c_chord.intervals)
+        chord = DominantMinorNinthChord(*C)
+        print(chord._parent_scale_root_offset())
+        # print(chord[1])
+        # print(chord[3])
+        # print(chord[5])
+        # print(chord[7])
+        # print(chord[9])
 
-        # THSE 2 KEEP ITERATING NONES...
-        c_chord = Chord(*C)
-        print(c_chord.all_degrees())
-        print(c_chord.intervals)
-
-        c_chord = DominantMinorNinthChord(*C)
-        print(c_chord._parent_scale_root_offset())
-        # print(c_chord[1])
-        # print(c_chord[3])
-        # print(c_chord[5])
-        # print(c_chord[7])
-        # print(c_chord[9])
-
-        # for n in c_chord:
+        # for n in chord:
         #     print(n)
             # input('----')

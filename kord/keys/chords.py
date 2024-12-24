@@ -142,13 +142,13 @@ class PowerChord(MajorScale):
 ### TRIAD CHORDS ###
 ####################
 
-class MajorTriad(MajorScale):
+class MajorTriad(TriadChord):
+    parent_scale = MajorScale
     notations = (
         'maj',
         '',
         'major',
     )
-    degrees = (1, 3, 5)
 
 class MinorTriad(MinorScale):
     notations = (
