@@ -39,4 +39,14 @@ class ChordTest(unittest.TestCase):
         print(c_chord.all_degrees())
         print(c_chord.intervals)
 
-        # c_chord = DominantMinorNinthChord(*C)
+        c_chord = DominantMinorNinthChord(*C)
+        print(c_chord._parent_scale_root_offset())
+        # print(c_chord[1])
+        # print(c_chord[3])
+        # print(c_chord[5])
+        # print(c_chord[7])
+        # print(c_chord[9])
+
+        # for n in c_chord:
+        #     print(n)
+            # input('----')
