@@ -3,7 +3,6 @@ import random
 
 from bestia.output import echo, Row, FString
 
-from .keys.chords import DominantSeventhChord
 from .keys.scales import (
     ChromaticScale, MajorPentatonicScale, MajorScale,
     MinorScale, MelodicMinorScale, HarmonicMinorScale
@@ -655,7 +654,6 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
             'Bb_minor': MinorScale('B', 'b'),
             'C_mel_minor': MelodicMinorScale('C'),
             'F#_har_minor': HarmonicMinorScale('F', '#'),
-            # 'E7': DominantSeventhChord('E'),   # test chords too eventually
         }
 
     def testNoteCount(self):
@@ -728,11 +726,6 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
                 'exp_diatonic_note': NotePitch('B', '' , 3), # equals
             },
 
-            # {   # test chords too eventually
-            #     'scale': self.scales['E7'],
-            #     'non_diatonic_note': NotePitch('A', '', 0), # missing note
-            #     'exp_diatonic_note': NotePitch('B', '', 0), # next note
-            # },
         ]
 
         for param in test_parameters:
@@ -848,7 +841,7 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
 
     def testDegreeOrderOverOct(self):
         for i, note in enumerate(
-            DominantSeventhChord('A').spell(
+            MajorScale('A').spell(
             note_count=6,
             start_note=None,
             yield_all=True,
@@ -859,23 +852,17 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
             elif i == 2:
                 assert not note, note
             elif i == 3:
-                assert not note, note
+                assert note >> NotePitch('B', '', 0), note
             elif i == 4:
                 assert not note, note
             elif i == 5:
                 assert note >> NotePitch('C', '#', 1), note
             elif i == 6:
-                assert not note, note
+                assert note >> NotePitch('D', '', 1), note
             elif i == 7:
                 assert not note, note
             elif i == 8:
                 assert note >> NotePitch('E', '', 1), note
-            elif i == 9:
-                assert not note, note
-            elif i == 10:
-                assert not note, note
-            elif i == 11:
-                assert note >> NotePitch('G', '', 1), note
 
 
 
