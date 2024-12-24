@@ -121,22 +121,6 @@ class SixthChord(Chord):
 class NinthChord(Chord):
     degrees = (1, 3, 5, 7, 9, )
 
-class DominantMinorNinthChord(NinthChord):
-    parent_scale = HarmonicMinorScale
-    parent_scale_degree = 5
-    notations = (
-        '7b9',
-    )
-    # intervals = (
-    #     UNISON,
-    #     MINOR_SECOND, # <<<
-    #     MAJOR_THIRD,
-    #     PERFECT_FOURTH,
-    #     PERFECT_FIFTH,
-    #     MAJOR_SIXTH,
-    #     MINOR_SEVENTH,
-    # )
-
 
 ##################
 ### NON-CHORDS ###
@@ -239,29 +223,36 @@ class HalfDiminishedSeventhChord(LocrianMode):
 ### NINTH CHORDS ###
 ####################
 
-class MajorNinthChord(IonianMode):
+class MajorNinthChord(NinthChord):
+    parent_scale = IonianMode
     notations = (
         'maj9',
         'M9',
         'major9',
     )
-    degrees = (1, 3, 5, 7, 9)
 
-class MinorNinthChord(AeolianMode):
+class MinorNinthChord(NinthChord):
+    parent_scale = AeolianMode
     notations = (
         'm9',
         'min9',
         '-9',
         'minor9',
     )
-    degrees = (1, 3, 5, 7, 9)
 
-class DominantNinthChord(MixolydianMode):
+class DominantNinthChord(NinthChord):
+    parent_scale = MixolydianMode
     notations = (
         '9',
         'dom9',
     )
-    degrees = (1, 3, 5, 7, 9)
+
+class DominantMinorNinthChord(NinthChord):
+    parent_scale = HarmonicMinorScale
+    parent_scale_degree = 5
+    notations = (
+        '7b9',
+    )
 
 
 ####################
