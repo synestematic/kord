@@ -8,6 +8,8 @@ degrees tuple is not explicitly defined anymore but is inherited from parent cla
 
 
 parent scale is now a separate class atrribute
+parent_scale_degree allows to form chords from degrees other than I
+
 
 '''
 
@@ -125,8 +127,7 @@ class NinthChord(Chord):
 ##################
 ### NON-CHORDS ###
 ##################
-
-class PowerChord(MajorScale):
+class PowerChord(Chord):
     notations = (
         '5',
     )
@@ -161,12 +162,13 @@ class AugmentedTriad(AugmentedScale):
     )
     degrees = (1, 3, 5)
 
-class DiminishedTriad(DiminishedScale):
+class DiminishedTriad(TriadChord):
+    parent_scale = MajorScale
+    parent_scale_degree = 7
     notations = (
         'dim',
         'diminished',
     )
-    degrees = (1, 3, 5)
 
 
 ######################
