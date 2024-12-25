@@ -301,14 +301,15 @@ class AugmentedScale(TonalKey):
         'augmented',
     )
     intervals = (
-        UNISON,
-        MAJOR_SECOND,
-        MAJOR_THIRD,
-        PERFECT_FOURTH,
-        AUGMENTED_FIFTH, # <<<
-        MAJOR_SIXTH,
-        MAJOR_SEVENTH,
+        UNISON,  # C
+        AUGMENTED_SECOND,  # D#
+        MAJOR_THIRD,  # E
+        PERFECT_FOURTH, # F  exclude this interval using degrees...
+        PERFECT_FIFTH,  # G
+        MINOR_SIXTH,  # Ab
+        MAJOR_SEVENTH,  # B
     )
+    degrees = (1, 2, 3,  5, 6, 7)
 
 class IonianMode(MajorScale):
     notations = (
