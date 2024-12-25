@@ -362,20 +362,6 @@ class MinorScale(TonalKey):
         MINOR_SEVENTH,
     )
 
-class DiminishedScale(TonalKey):
-    notations = (
-        'diminished',
-    )
-    intervals = (
-        UNISON,
-        MAJOR_SECOND,
-        MINOR_THIRD,
-        PERFECT_FOURTH,
-        DIMINISHED_FIFTH, # <<<
-        MINOR_SIXTH,
-        DIMINISHED_SEVENTH, # <<<
-    )
-
 class MinorPentatonicScale(MinorScale):
     notations = (
         'minor_pentatonic',
@@ -530,3 +516,10 @@ class ChromaticScale(TonalKey):
             return NotePitch(next_notes[0].chr, next_notes[0].alt, note_oct)
 
         raise InvalidNote
+
+
+class DiminishedScale(ChromaticScale):
+    notations = (
+        'diminished',
+    )
+    degrees = (1, 3, 4, 6, 7, 9, 10, 12)
