@@ -273,7 +273,8 @@ class HalfDiminishedSeventhChord(SeventhChord):
 
 class DiminishedSeventhChord(SeventhChord):
     ''' C  Eb Gb Bbb'''
-    parent_scale = DiminishedScale
+    parent_scale = HarmonicMinorScale
+    parent_scale_degree = 7
     notations = (
         'dim7',
         'o7',
