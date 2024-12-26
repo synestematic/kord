@@ -13,6 +13,7 @@ import argparse
 from kord.keys.scales import (
     MajorScale, MinorScale, MelodicMinorScale, HarmonicMinorScale,
     MajorPentatonicScale, MinorPentatonicScale,
+    AugmentedScale, DiminishedScale,
     IonianMode, LydianMode, MixolydianMode,
     AeolianMode, DorianMode, PhrygianMode, LocrianMode,
     ChromaticScale,
@@ -47,6 +48,8 @@ AVAILABLE_SCALES = {
         HarmonicMinorScale,
         MajorPentatonicScale,
         MinorPentatonicScale,
+        AugmentedScale,
+        DiminishedScale,
         IonianMode,
         LydianMode,
         MixolydianMode,
