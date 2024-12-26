@@ -40,14 +40,15 @@ from ..errors import InvalidNote
 
 
 __all__ = [
-    'Chord',
-
     'PowerChord',
 
     'MajorTriad',
     'MinorTriad',
     'AugmentedTriad',
     'DiminishedTriad',
+
+    'MajorSixthChord',
+    'MinorSixthChord',
 
     'MajorSeventhChord',
     'MinorSeventhChord',
@@ -60,13 +61,10 @@ __all__ = [
     'DominantNinthChord',
     'DominantMinorNinthChord',
 
-    'MajorSixthChord',
-    'MinorSixthChord',
-
     'SuspendedFourChord',
     'SuspendedTwoChord',
-
 ]
+
 
 class Chord(TonalKey):
     parent_scale = MajorScale
