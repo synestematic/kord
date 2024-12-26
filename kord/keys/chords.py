@@ -41,6 +41,8 @@ from ..errors import InvalidNote
 
 __all__ = [
     'PowerChord',
+    'SuspendedFourChord',
+    'SuspendedTwoChord',
 
     'MajorTriad',
     'MinorTriad',
@@ -60,9 +62,6 @@ __all__ = [
     'MinorNinthChord',
     'DominantNinthChord',
     'DominantMinorNinthChord',
-
-    'SuspendedFourChord',
-    'SuspendedTwoChord',
 ]
 
 

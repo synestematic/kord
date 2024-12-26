@@ -64,10 +64,14 @@ AVAILABLE_SCALES = {
 AVAILABLE_CHORDS = {
     chord.notations[0]: chord for chord in (
         PowerChord,
+        SuspendedFourChord,
+        SuspendedTwoChord,
         MajorTriad,
         MinorTriad,
         AugmentedTriad,
         DiminishedTriad,
+        MajorSixthChord,
+        MinorSixthChord,
         MajorSeventhChord,
         MinorSeventhChord,
         DominantSeventhChord,
@@ -77,10 +81,6 @@ AVAILABLE_CHORDS = {
         DominantMinorNinthChord,
         MajorNinthChord,
         MinorNinthChord,
-        MajorSixthChord,
-        MinorSixthChord,
-        SuspendedFourChord,
-        SuspendedTwoChord,
     )
 }
 
