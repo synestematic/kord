@@ -110,6 +110,19 @@ class Chord(TonalKey):
         return arranged_intervals
 
 
+class PowerChord(Chord):
+    ''' C  G  '''
+    notations = (
+        '5',
+    )
+    degrees = (1, 5, )
+
+class Sus4Chord(Chord):
+    degrees = (1, 4, 5, )
+
+class Sus2Chord(Chord):
+    degrees = (1, 2, 5, )
+
 class TriadChord(Chord):
     degrees = (1, 3, 5, )
 
@@ -122,22 +135,26 @@ class SeventhChord(Chord):
 class NinthChord(Chord):
     degrees = (1, 3, 5, 7, 9, )
 
-class Sus4Chord(Chord):
-    degrees = (1, 4, 5, )
 
-class Sus2Chord(Chord):
-    degrees = (1, 2, 5, )
+########################
+### SUSPENDED CHORDS ###
+########################
 
-
-##################
-### NON-CHORDS ###
-##################
-class PowerChord(Chord):
-    ''' C  G  '''
+class SuspendedFourChord(Sus4Chord):
+    ''' C  F  G '''
+    parent_scale = IonianMode
     notations = (
-        '5',
+        'sus4',
+        'sus',
     )
-    degrees = (1, 5, )
+
+class SuspendedTwoChord(Sus2Chord):
+    ''' C  D  G '''
+    parent_scale = IonianMode
+    notations = (
+        'sus2',
+        'sus9',
+    )
 
 
 ####################
@@ -180,6 +197,34 @@ class DiminishedTriad(TriadChord):
         'dim',
         'diminished',
     )
+
+
+####################
+### SIXTH CHORDS ###
+####################
+
+class MajorSixthChord(SixthChord):
+    ''' C  E  G  A '''
+    parent_scale = IonianMode
+    notations = (
+        '6',
+        'add6',
+    )
+
+class MinorSixthChord(SixthChord):
+    ''' C  Eb G  A '''
+    parent_scale = DorianMode
+    notations = (
+        'm6',
+        # 'madd6',
+        'min6',
+    )
+
+# class AddNineChord(DorianMode):
+#     notations = (
+#         'add9',
+#     )
+#     degrees = (1, 3, 5, 9)
 
 
 ######################
@@ -269,57 +314,5 @@ class DominantMinorNinthChord(NinthChord):
     parent_scale_degree = 5
     notations = (
         '7b9',
-    )
-
-
-####################
-### SIXTH CHORDS ###
-####################
-
-# 6th is always major, 3rd can be major|minor
-
-class MajorSixthChord(SixthChord):
-    ''' C  E  G  A '''
-    parent_scale = IonianMode
-    notations = (
-        '6',
-        'add6',
-    )
-
-class MinorSixthChord(SixthChord):
-    ''' C  Eb G  A '''
-    parent_scale = DorianMode
-    notations = (
-        'm6',
-        # 'madd6',
-        'min6',
-    )
-
-
-# class AddNineChord(DorianMode):
-#     notations = (
-#         'add9',
-#     )
-#     degrees = (1, 3, 5, 9)
-
-
-########################
-### SUSPENDED CHORDS ###
-########################
-
-class SuspendedFourChord(Sus4Chord):
-    ''' C  F  G '''
-    parent_scale = IonianMode
-    notations = (
-        'sus4',
-        'sus',
-    )
-
-class SuspendedTwoChord(Sus2Chord):
-    ''' C  D  G '''
-    parent_scale = IonianMode
-    notations = (
-        'sus2',
-        'sus9',
     )
 
