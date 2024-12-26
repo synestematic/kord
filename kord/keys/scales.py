@@ -296,20 +296,6 @@ class MajorPentatonicScale(MajorScale):
     )
     degrees = (1, 2, 3, 5, 6)
 
-class AugmentedScale(TonalKey):
-    notations = (
-        'augmented',
-    )
-    intervals = (
-        UNISON,
-        MAJOR_SECOND,
-        MAJOR_THIRD,
-        PERFECT_FOURTH,
-        AUGMENTED_FIFTH, # <<<
-        MAJOR_SIXTH,
-        MAJOR_SEVENTH,
-    )
-
 class IonianMode(MajorScale):
     notations = (
         'ionian',
@@ -359,20 +345,6 @@ class MinorScale(TonalKey):
         PERFECT_FIFTH,
         MINOR_SIXTH,
         MINOR_SEVENTH,
-    )
-
-class DiminishedScale(TonalKey):
-    notations = (
-        'diminished',
-    )
-    intervals = (
-        UNISON,
-        MAJOR_SECOND,
-        MINOR_THIRD,
-        PERFECT_FOURTH,
-        DIMINISHED_FIFTH, # <<<
-        MINOR_SIXTH,
-        DIMINISHED_SEVENTH, # <<<
     )
 
 class MinorPentatonicScale(MinorScale):
@@ -529,3 +501,37 @@ class ChromaticScale(TonalKey):
             return NotePitch(next_notes[0].chr, next_notes[0].alt, note_oct)
 
         raise InvalidNote
+
+
+class DiminishedScale(ChromaticScale):
+    notations = (
+        'diminished',
+    )
+    degrees = (1, 3, 4, 6, 7, 9, 10, 12)
+
+# TODO: decide which AugmentedScale definition works best
+
+class AugmentedScale(ChromaticScale):
+    ''' chromatic scale as parent enables augmented scales for __any__ root
+    '''
+    notations = (
+        'augmented',
+    )
+    degrees = (1, 4, 5, 8, 9, 12)
+
+# class AugmentedScale(TonalKey):
+#     ''' tonal scale as parent allows for combination of flats and sharps
+#     '''
+#     notations = (
+#         'augmented',
+#     )
+#     intervals = (
+#         UNISON,  # C
+#         AUGMENTED_SECOND,  # D#
+#         MAJOR_THIRD,  # E
+#         PERFECT_FOURTH, # F  exclude this interval using degrees...
+#         PERFECT_FIFTH,  # G
+#         MINOR_SIXTH,  # Ab
+#         MAJOR_SEVENTH,  # B
+#     )
+#     degrees = (1, 2, 3,  5, 6, 7)
