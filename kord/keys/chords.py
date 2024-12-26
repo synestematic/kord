@@ -140,6 +140,7 @@ class PowerChord(Chord):
 ####################
 
 class MajorTriad(TriadChord):
+    ''' C  E  G  '''
     parent_scale = MajorScale
     notations = (
         'maj',
@@ -148,6 +149,7 @@ class MajorTriad(TriadChord):
     )
 
 class MinorTriad(TriadChord):
+    ''' C  Eb G  '''
     parent_scale = MinorScale
     notations = (
         'min',
@@ -157,6 +159,7 @@ class MinorTriad(TriadChord):
     )
 
 class AugmentedTriad(TriadChord):
+    ''' C  E  G#  '''
     parent_scale = HarmonicMinorScale
     parent_scale_degree = 3
     notations = (
@@ -165,6 +168,7 @@ class AugmentedTriad(TriadChord):
     )
 
 class DiminishedTriad(TriadChord):
+    ''' C  Eb Gb  '''
     parent_scale = MajorScale
     parent_scale_degree = 7
     notations = (
@@ -228,6 +232,7 @@ class HalfDiminishedSeventhChord(LocrianMode):
 ####################
 
 class MajorNinthChord(NinthChord):
+    ''' C  E  G  B  D  '''
     parent_scale = IonianMode
     notations = (
         'maj9',
@@ -236,6 +241,7 @@ class MajorNinthChord(NinthChord):
     )
 
 class MinorNinthChord(NinthChord):
+    ''' C  Eb G  Bb D  '''
     parent_scale = AeolianMode
     notations = (
         'm9',
@@ -245,6 +251,7 @@ class MinorNinthChord(NinthChord):
     )
 
 class DominantNinthChord(NinthChord):
+    ''' C  E  G  Bb D  '''
     parent_scale = MixolydianMode
     notations = (
         '9',
@@ -252,6 +259,7 @@ class DominantNinthChord(NinthChord):
     )
 
 class DominantMinorNinthChord(NinthChord):
+    ''' C  E  G  Bb Db '''
     parent_scale = HarmonicMinorScale
     parent_scale_degree = 5
     notations = (
@@ -266,6 +274,7 @@ class DominantMinorNinthChord(NinthChord):
 # 6th is always major, 3rd can be major|minor
 
 class MajorSixthChord(SixthChord):
+    ''' C  E  G  A '''
     parent_scale = IonianMode
     notations = (
         '6',
@@ -273,6 +282,7 @@ class MajorSixthChord(SixthChord):
     )
 
 class MinorSixthChord(SixthChord):
+    ''' C  Eb G  A '''
     parent_scale = DorianMode
     notations = (
         'm6',
