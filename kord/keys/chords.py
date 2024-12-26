@@ -115,24 +115,31 @@ class Chord(TonalKey):
 class TriadChord(Chord):
     degrees = (1, 3, 5, )
 
-class SeventhChord(Chord):
-    degrees = (1, 3, 5, 7, )
-
 class SixthChord(Chord):
     degrees = (1, 3, 5, 6, )
 
+class SeventhChord(Chord):
+    degrees = (1, 3, 5, 7, )
+
 class NinthChord(Chord):
     degrees = (1, 3, 5, 7, 9, )
+
+class Sus4Chord(Chord):
+    degrees = (1, 4, 5, )
+
+class Sus2Chord(Chord):
+    degrees = (1, 2, 5, )
 
 
 ##################
 ### NON-CHORDS ###
 ##################
 class PowerChord(Chord):
+    ''' C  G  '''
     notations = (
         '5',
     )
-    degrees = (1, 5)
+    degrees = (1, 5, )
 
 
 ####################
@@ -302,16 +309,19 @@ class MinorSixthChord(SixthChord):
 ### SUSPENDED CHORDS ###
 ########################
 
-class SuspendedFourChord(IonianMode):
+class SuspendedFourChord(Sus4Chord):
+    ''' C  F  G '''
+    parent_scale = IonianMode
     notations = (
         'sus4',
         'sus',
     )
-    degrees = (1, 4, 5)
 
-class SuspendedTwoChord(IonianMode):
+class SuspendedTwoChord(Sus2Chord):
+    ''' C  D  G '''
+    parent_scale = IonianMode
     notations = (
         'sus2',
         'sus9',
     )
-    degrees = (1, 2, 5)
+
