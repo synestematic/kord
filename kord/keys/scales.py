@@ -467,7 +467,7 @@ class ChromaticScale(TonalKey):
     def __getitem__(self, d):
 
         if d < 1:
-            return
+            return False
 
         if d == 1:
             return self.root

@@ -51,7 +51,7 @@ class ChordTest(unittest.TestCase):
         assert chord[15] >> NotePitch('C', '', 2), chord[15]
 
 
-    def testMajorChordDegrees(self):
+    def testMajorTriadDegrees(self):
         chord = MajorTriad(*C)
         # print(chord.all_degrees())
         # print(chord.intervals)
@@ -73,7 +73,7 @@ class ChordTest(unittest.TestCase):
         assert chord[15] >> NotePitch('C', '', 2), chord[15]
 
 
-    def testMinorChordDegrees(self):
+    def testMinorTriadDegrees(self):
         chord = MinorTriad(*C)
         # print(chord.all_degrees())
         # print(chord.intervals)
@@ -90,6 +90,28 @@ class ChordTest(unittest.TestCase):
         assert chord[10] >> NotePitch('E', 'b', 1), chord[10]
         assert not chord[11] , chord[11]
         assert chord[12] >> NotePitch('G', '', 1), chord[12]
+        assert not chord[13] , chord[13]
+        assert not chord[14] , chord[14]
+        assert chord[15] >> NotePitch('C', '', 2), chord[15]
+
+
+    def testDiminishedTriadDegrees(self):
+        chord = DiminishedTriad(*C)
+        # print(chord.all_degrees())
+        # print(chord.intervals)
+        assert not chord[0] , chord[0]
+        assert chord[1] >> NotePitch('C', '', 0), chord[1]
+        assert not chord[2] , chord[2]
+        assert chord[3] >> NotePitch('E', 'b', 0), chord[3]
+        assert not chord[4] , chord[4]
+        assert chord[5] >> NotePitch('G', 'b', 0), chord[5]
+        assert not chord[6] , chord[6]
+        assert not chord[7] , chord[7]
+        assert chord[8] >> NotePitch('C', '', 1), chord[8]
+        assert not chord[9] , chord[9]
+        assert chord[10] >> NotePitch('E', 'b', 1), chord[10]
+        assert not chord[11] , chord[11]
+        assert chord[12] >> NotePitch('G', 'b', 1), chord[12]
         assert not chord[13] , chord[13]
         assert not chord[14] , chord[14]
         assert chord[15] >> NotePitch('C', '', 2), chord[15]
