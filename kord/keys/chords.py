@@ -40,6 +40,8 @@ from ..errors import InvalidNote
 
 
 __all__ = [
+    'Chord',
+
     'PowerChord',
 
     'MajorTriad',
@@ -64,7 +66,6 @@ __all__ = [
     'SuspendedFourChord',
     'SuspendedTwoChord',
 
-    'Chord',
 ]
 
 class Chord(TonalKey):
@@ -264,20 +265,20 @@ class DominantMinorNinthChord(NinthChord):
 
 # 6th is always major, 3rd can be major|minor
 
-class MajorSixthChord(IonianMode):
+class MajorSixthChord(SixthChord):
+    parent_scale = IonianMode
     notations = (
         '6',
         'add6',
     )
-    degrees = (1, 3, 5, 6)
 
-class MinorSixthChord(DorianMode):
+class MinorSixthChord(SixthChord):
+    parent_scale = DorianMode
     notations = (
         'm6',
         # 'madd6',
         'min6',
     )
-    degrees = (1, 3, 5, 6)
 
 
 # class AddNineChord(DorianMode):
