@@ -44,6 +44,9 @@ __all__ = [
     'HalfDiminishedSeventhChord',
     'DiminishedSeventhChord',
 
+    'MajorAdd9Chord',
+    'MinorAdd9Chord',
+
     'MajorNinthChord',
     'MinorNinthChord',
     'DominantNinthChord',
@@ -102,10 +105,10 @@ class PowerChord(Chord):
     )
     degrees = (1, 5, )
 
-class Sus4Chord(Chord):
+class SusFourChord(Chord):
     degrees = (1, 4, 5, )
 
-class Sus2Chord(Chord):
+class SusTwoChord(Chord):
     degrees = (1, 2, 5, )
 
 class TriadChord(Chord):
@@ -117,6 +120,9 @@ class SixthChord(Chord):
 class SeventhChord(Chord):
     degrees = (1, 3, 5, 7, )
 
+class AddNineChord(Chord):
+    degrees = (1, 3, 5, 9, )
+
 class NinthChord(Chord):
     degrees = (1, 3, 5, 7, 9, )
 
@@ -125,7 +131,7 @@ class NinthChord(Chord):
 ### SUSPENDED CHORDS ###
 ########################
 
-class SuspendedFourChord(Sus4Chord):
+class SuspendedFourChord(SusFourChord):
     ''' C  F  G '''
     parent_scale = IonianMode
     notations = (
@@ -133,7 +139,7 @@ class SuspendedFourChord(Sus4Chord):
         'sus',
     )
 
-class SuspendedTwoChord(Sus2Chord):
+class SuspendedTwoChord(SusTwoChord):
     ''' C  D  G '''
     parent_scale = IonianMode
     notations = (
@@ -205,12 +211,6 @@ class MinorSixthChord(SixthChord):
         'min6',
     )
 
-# class AddNineChord(DorianMode):
-#     notations = (
-#         'add9',
-#     )
-#     degrees = (1, 3, 5, 9)
-
 
 ######################
 ### SEVENTH CHORDS ###
@@ -265,6 +265,25 @@ class DiminishedSeventhChord(SeventhChord):
         'dim7',
         'o7',
         'diminished7',
+    )
+
+
+###################
+### ADD9 CHORDS ###
+###################
+
+class MajorAdd9Chord(AddNineChord):
+    ''' C  E  G  D '''
+    parent_scale = IonianMode
+    notations = (
+        'add9',
+    )
+
+class MinorAdd9Chord(AddNineChord):
+    ''' C  Eb G  D '''
+    parent_scale = AeolianMode
+    notations = (
+        'madd9',
     )
 
 

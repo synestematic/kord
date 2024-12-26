@@ -7,6 +7,9 @@ from .chords import (
     MajorSixthChord, MinorSixthChord,
     MajorSeventhChord, MinorSeventhChord, DominantSeventhChord,
     DiminishedSeventhChord, HalfDiminishedSeventhChord,
+
+    MajorAdd9Chord, MinorAdd9Chord,
+
     MajorNinthChord, MinorNinthChord,
     DominantNinthChord, DominantMinorNinthChord,
 )
@@ -333,6 +336,46 @@ class ChordTest(unittest.TestCase):
         assert chord[12] >> NotePitch('G', 'b', 1), chord[12]
         assert not chord[13] , chord[13]
         assert chord[14] >> NotePitch('B', 'bb', 1), chord[14]
+        assert chord[15] >> NotePitch('C', '', 2), chord[15]
+
+
+    def testMajorAdd9Chord(self):
+        chord = MajorAdd9Chord(*C)
+        assert not chord[0] , chord[0]
+        assert chord[1] >> NotePitch('C', '', 0), chord[1]
+        assert chord[2] >> NotePitch('D', '', 0), chord[2]
+        assert chord[3] >> NotePitch('E', '', 0), chord[3]
+        assert not chord[4] , chord[4]
+        assert chord[5] >> NotePitch('G', '', 0), chord[5]
+        assert not chord[6] , chord[6]
+        assert not chord[7] , chord[7]
+        assert chord[8] >> NotePitch('C', '', 1), chord[8]
+        assert chord[9] >> NotePitch('D', '', 1), chord[9]
+        assert chord[10] >> NotePitch('E', '', 1), chord[10]
+        assert not chord[11] , chord[11]
+        assert chord[12] >> NotePitch('G', '', 1), chord[12]
+        assert not chord[13] , chord[13]
+        assert not chord[14] , chord[14]
+        assert chord[15] >> NotePitch('C', '', 2), chord[15]
+
+
+    def testMinorAdd9Chord(self):
+        chord = MinorAdd9Chord(*C)
+        assert not chord[0] , chord[0]
+        assert chord[1] >> NotePitch('C', '', 0), chord[1]
+        assert chord[2] >> NotePitch('D', '', 0), chord[2]
+        assert chord[3] >> NotePitch('E', 'b', 0), chord[3]
+        assert not chord[4] , chord[4]
+        assert chord[5] >> NotePitch('G', '', 0), chord[5]
+        assert not chord[6] , chord[6]
+        assert not chord[7] , chord[7]
+        assert chord[8] >> NotePitch('C', '', 1), chord[8]
+        assert chord[9] >> NotePitch('D', '', 1), chord[9]
+        assert chord[10] >> NotePitch('E', 'b', 1), chord[10]
+        assert not chord[11] , chord[11]
+        assert chord[12] >> NotePitch('G', '', 1), chord[12]
+        assert not chord[13] , chord[13]
+        assert not chord[14] , chord[14]
         assert chord[15] >> NotePitch('C', '', 2), chord[15]
 
 
