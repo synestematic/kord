@@ -230,7 +230,8 @@ class MinorSixthChord(SixthChord):
 ### SEVENTH CHORDS ###
 ######################
 
-class MajorSeventhChord(IonianMode):
+class MajorSeventhChord(SeventhChord):
+    parent_scale = IonianMode
     notations = (
         'maj7',
         'M7',  # careful with these 2 if ever using .lower() to compare
@@ -238,34 +239,34 @@ class MajorSeventhChord(IonianMode):
         'Δ',
         'major7',
     )
-    degrees = (1, 3, 5, 7)
 
-class MinorSeventhChord(AeolianMode):
+class MinorSeventhChord(SeventhChord):
+    parent_scale = AeolianMode
     notations = (
         'min7',
         'm7',  # careful with these 2 if ever using .lower() to compare
         '-7',
         'minor7',
     )
-    degrees = (1, 3, 5, 7)
 
-class DominantSeventhChord(MixolydianMode):
+class DominantSeventhChord(SeventhChord):
+    parent_scale = MixolydianMode
     notations = (
         '7',
         'dom7',
         'dominant7',
     )
-    degrees = (1, 3, 5, 7)
 
-class DiminishedSeventhChord(DiminishedScale):
+class DiminishedSeventhChord(SeventhChord):
+    parent_scale = DiminishedScale
     notations = (
         'dim7',
         'o7',
         'diminished7',
     )
-    degrees = (1, 3, 5, 7)
 
-class HalfDiminishedSeventhChord(LocrianMode):
+class HalfDiminishedSeventhChord(SeventhChord):
+    parent_scale = LocrianMode
     notations = (
         'm7b5',
         'm7-5',
@@ -273,7 +274,6 @@ class HalfDiminishedSeventhChord(LocrianMode):
         'm7(b5)',
         'ø7',
     )
-    degrees = (1, 3, 5, 7)
 
 
 ####################
