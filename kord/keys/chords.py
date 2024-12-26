@@ -155,12 +155,13 @@ class MinorTriad(TriadChord):
         'minor',
     )
 
-class AugmentedTriad(AugmentedScale):
+class AugmentedTriad(TriadChord):
+    parent_scale = HarmonicMinorScale
+    parent_scale_degree = 3
     notations = (
         'aug',
         'augmented',
     )
-    degrees = (1, 3, 5)
 
 class DiminishedTriad(TriadChord):
     parent_scale = MajorScale
