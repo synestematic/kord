@@ -231,6 +231,7 @@ class MinorSixthChord(SixthChord):
 ######################
 
 class MajorSeventhChord(SeventhChord):
+    ''' C  E  G  B  '''
     parent_scale = IonianMode
     notations = (
         'maj7',
@@ -241,6 +242,7 @@ class MajorSeventhChord(SeventhChord):
     )
 
 class MinorSeventhChord(SeventhChord):
+    ''' C  Eb G  Bb '''
     parent_scale = AeolianMode
     notations = (
         'min7',
@@ -250,6 +252,7 @@ class MinorSeventhChord(SeventhChord):
     )
 
 class DominantSeventhChord(SeventhChord):
+    ''' C  E  G  Bb '''
     parent_scale = MixolydianMode
     notations = (
         '7',
@@ -257,15 +260,8 @@ class DominantSeventhChord(SeventhChord):
         'dominant7',
     )
 
-class DiminishedSeventhChord(SeventhChord):
-    parent_scale = DiminishedScale
-    notations = (
-        'dim7',
-        'o7',
-        'diminished7',
-    )
-
 class HalfDiminishedSeventhChord(SeventhChord):
+    ''' C  Eb Gb Bb '''
     parent_scale = LocrianMode
     notations = (
         'm7b5',
@@ -273,6 +269,15 @@ class HalfDiminishedSeventhChord(SeventhChord):
         'min7dim5',
         'm7(b5)',
         'ø7',
+    )
+
+class DiminishedSeventhChord(SeventhChord):
+    ''' C  Eb Gb Bbb'''
+    parent_scale = DiminishedScale
+    notations = (
+        'dim7',
+        'o7',
+        'diminished7',
     )
 
 
