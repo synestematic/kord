@@ -23,14 +23,15 @@ setuptools.setup(
     ],
     data_files=[
         ('fretboard', [  #  ~/.local/fretboard/
-            'app/tuner.py',
             'app/fretboard.py',
+            'app/tuner.py',
             ],
         ),
         ('fretboard/tunings', [
-            'app/tunings/guitar.json',
             'app/tunings/banjo.json',
             'app/tunings/bass.json',
+            'app/tunings/guitar.json',
+            'app/tunings/ronroco.json',
             'app/tunings/ukulele.json',
             ],
         ),
