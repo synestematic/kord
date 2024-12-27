@@ -19,14 +19,14 @@ class Intervals(IntEnum):
     MINOR_THIRD = 3
     AUGMENTED_SECOND = 3
 
-    DIMINISHED_FOURTH = 4
     MAJOR_THIRD = 4
+    DIMINISHED_FOURTH = 4
 
     PERFECT_FOURTH = 5
     AUGMENTED_THIRD = 5
 
-    AUGMENTED_FOURTH = 6
     DIMINISHED_FIFTH = 6
+    AUGMENTED_FOURTH = 6
 
     PERFECT_FIFTH = 7
     DIMINISHED_SIXTH = 7
@@ -46,10 +46,4 @@ class Intervals(IntEnum):
     PERFECT_OCTAVE = 12
     AUGMENTED_SEVENTH = 12
 
-a = Intervals.PERFECT_OCTAVE
-b = Intervals.AUGMENTED_SEVENTH
 
-print(a + b)
-
-print(Intervals.PERFECT_FIFTH)
-print(Intervals(2))

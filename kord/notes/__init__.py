@@ -1,50 +1,13 @@
 from bestia.iterate import LoopedList
 
-from .errors import InvalidNote, InvalidAlteration, InvalidOctave
+from .intervals import Intervals
+
+from ..errors import InvalidNote, InvalidAlteration, InvalidOctave
 
 __all__ = [
     'NotePitch',
     'notes_by_alts',
 ]
-
-UNISON = 0
-DIMINISHED_SECOND = 0
-
-MINOR_SECOND = 1
-AUGMENTED_UNISON = 1
-
-MAJOR_SECOND = 2
-DIMINISHED_THIRD = 2
-
-MINOR_THIRD = 3
-AUGMENTED_SECOND = 3
-
-DIMINISHED_FOURTH = 4
-MAJOR_THIRD = 4
-
-PERFECT_FOURTH = 5
-AUGMENTED_THIRD = 5
-
-AUGMENTED_FOURTH = 6
-DIMINISHED_FIFTH = 6
-
-PERFECT_FIFTH = 7
-DIMINISHED_SIXTH = 7
-
-MINOR_SIXTH = 8
-AUGMENTED_FIFTH = 8
-
-MAJOR_SIXTH = 9
-DIMINISHED_SEVENTH = 9
-
-MINOR_SEVENTH = 10
-AUGMENTED_SIXTH = 10
-
-MAJOR_SEVENTH = 11
-DIMINISHED_OCTAVE = 11
-
-PERFECT_OCTAVE = 12
-AUGMENTED_SEVENTH = 12
 
 
 class NotePitch:
@@ -184,7 +147,7 @@ class NotePitch:
 
     def __sub__(self, other):
         if self.__class__ == other.__class__:
-            oct_interval = (self.oct - other.oct) * PERFECT_OCTAVE
+            oct_interval = (self.oct - other.oct) * Intervals.PERFECT_OCTAVE
             chr_interval = self._CHARS.index(self.chr) - self._CHARS.index(other.chr)
             alt_interval = (
                 self.input_alterations().index(self.alt) - self.input_alterations().index(other.alt)
@@ -211,31 +174,31 @@ class NotePitch:
 
     def __eq__(self, other):
         if other.__class__ == self.__class__:
-            return other - self == UNISON
+            return other - self == Intervals.UNISON
 
     def __ne__(self, other):
         if other.__class__ == self.__class__:
-            return other - self != UNISON
+            return other - self != Intervals.UNISON
         return True
 
     def __gt__(self, other):
         if self.__class__ == other.__class__:
-            return self - other > UNISON
+            return self - other > Intervals.UNISON
         raise TypeError(' > not supported with {}'.format(other.__class__))
 
     def __ge__(self, other):
         if self.__class__ == other.__class__:
-            return self - other >= UNISON
+            return self - other >= Intervals.UNISON
         raise TypeError(' >= not supported with {}'.format(other.__class__))
 
     def __lt__(self, other):
         if self.__class__ == other.__class__:
-            return self - other < UNISON
+            return self - other < Intervals.UNISON
         raise TypeError(' < not supported with {}'.format(other.__class__))
 
     def __le__(self, other):
         if self.__class__ == other.__class__:
-            return self - other <= UNISON
+            return self - other <= Intervals.UNISON
         raise TypeError(' <= not supported with {}'.format(other.__class__))
 
 
