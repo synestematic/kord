@@ -31,8 +31,6 @@ class ChordTest(unittest.TestCase):
 
     def testPowerChord(self):
         chord = PowerChord(*C)
-        # print(chord.all_degrees())
-        # print(chord.intervals)
         assert not chord[0] , chord[0]
         assert chord[1] >> NotePitch('C', '', 0), chord[1]
         assert not chord[2] , chord[2]
@@ -53,8 +51,6 @@ class ChordTest(unittest.TestCase):
 
     def testSuspended4Chord(self):
         chord = Suspended4Chord(*C)
-        # print(chord.all_degrees())
-        # print(chord.intervals)
         assert not chord[0] , chord[0]
         assert chord[1] >> NotePitch('C', '', 0), chord[1]
         assert not chord[2] , chord[2]
@@ -75,8 +71,6 @@ class ChordTest(unittest.TestCase):
 
     def testSuspended2Chord(self):
         chord = Suspended2Chord(*C)
-        # print(chord.all_degrees())
-        # print(chord.intervals)
         assert not chord[0] , chord[0]
         assert chord[1] >> NotePitch('C', '', 0), chord[1]
         assert chord[2] >> NotePitch('D', '', 0), chord[2]
@@ -97,8 +91,6 @@ class ChordTest(unittest.TestCase):
 
     def testMajorTriad(self):
         chord = MajorTriad(*C)
-        # print(chord.all_degrees())
-        # print(chord.intervals)
         assert not chord[0] , chord[0]
         assert chord[1] >> NotePitch('C', '', 0), chord[1]
         assert not chord[2] , chord[2]
@@ -119,8 +111,6 @@ class ChordTest(unittest.TestCase):
 
     def testMinorTriad(self):
         chord = MinorTriad(*C)
-        # print(chord.all_degrees())
-        # print(chord.intervals)
         assert not chord[0] , chord[0]
         assert chord[1] >> NotePitch('C', '', 0), chord[1]
         assert not chord[2] , chord[2]
@@ -141,8 +131,6 @@ class ChordTest(unittest.TestCase):
 
     def testAugmentedTriad(self):
         chord = AugmentedTriad(*C)
-        # print(chord.all_degrees())
-        # print(chord.intervals)
         assert not chord[0] , chord[0]
         assert chord[1] >> NotePitch('C', '', 0), chord[1]
         assert not chord[2] , chord[2]
@@ -163,8 +151,6 @@ class ChordTest(unittest.TestCase):
 
     def testDiminishedTriad(self):
         chord = DiminishedTriad(*C)
-        # print(chord.all_degrees())
-        # print(chord.intervals)
         assert not chord[0] , chord[0]
         assert chord[1] >> NotePitch('C', '', 0), chord[1]
         assert not chord[2] , chord[2]
@@ -185,8 +171,6 @@ class ChordTest(unittest.TestCase):
 
     def testMajorSixthChordChord(self):
         chord = MajorSixthChord(*C)
-        # print(chord.all_degrees())
-        # print(chord.intervals)
         assert not chord[0] , chord[0]
         assert chord[1] >> NotePitch('C', '', 0), chord[1]
         assert not chord[2] , chord[2]
@@ -207,8 +191,6 @@ class ChordTest(unittest.TestCase):
 
     def testMinorSixthChord(self):
         chord = MinorSixthChord(*C)
-        # print(chord.all_degrees())
-        # print(chord.intervals)
         assert not chord[0] , chord[0]
         assert chord[1] >> NotePitch('C', '', 0), chord[1]
         assert not chord[2] , chord[2]
@@ -229,8 +211,6 @@ class ChordTest(unittest.TestCase):
 
     def testMajorSeventhChord(self):
         chord = MajorSeventhChord(*C)
-        # print(chord.all_degrees())
-        # print(chord.intervals)
         assert not chord[0] , chord[0]
         assert chord[1] >> NotePitch('C', '', 0), chord[1]
         assert not chord[2] , chord[2]
@@ -251,8 +231,6 @@ class ChordTest(unittest.TestCase):
 
     def testMinorSeventhChord(self):
         chord = MinorSeventhChord(*C)
-        # print(chord.all_degrees())
-        # print(chord.intervals)
         assert not chord[0] , chord[0]
         assert chord[1] >> NotePitch('C', '', 0), chord[1]
         assert not chord[2] , chord[2]
@@ -273,8 +251,6 @@ class ChordTest(unittest.TestCase):
 
     def testDominantSeventhChord(self):
         chord = DominantSeventhChord(*C)
-        # print(chord.all_degrees())
-        # print(chord.intervals)
         assert not chord[0] , chord[0]
         assert chord[1] >> NotePitch('C', '', 0), chord[1]
         assert not chord[2] , chord[2]
@@ -295,8 +271,6 @@ class ChordTest(unittest.TestCase):
 
     def testHalfDiminishedSeventhChord(self):
         chord = HalfDiminishedSeventhChord(*C)
-        # print(chord.all_degrees())
-        # print(chord.intervals)
         assert not chord[0] , chord[0]
         assert chord[1] >> NotePitch('C', '', 0), chord[1]
         assert not chord[2] , chord[2]
@@ -317,8 +291,6 @@ class ChordTest(unittest.TestCase):
 
     def testDiminishedSeventhChord(self):
         chord = DiminishedSeventhChord(*C)
-        # print(chord.all_degrees())
-        # print(chord.intervals)
         assert not chord[0] , chord[0]
         assert chord[1] >> NotePitch('C', '', 0), chord[1]
         assert not chord[2] , chord[2]
@@ -419,8 +391,6 @@ class ChordTest(unittest.TestCase):
 
     def testMajorNinthChord(self):
         chord = MajorNinthChord(*C)
-        # print(chord.all_degrees())
-        # print(chord.intervals)
         assert not chord[0] , chord[0]
         assert chord[1] >> NotePitch('C', '', 0), chord[1]
         assert chord[2] >> NotePitch('D', '', 0), chord[2]
@@ -441,8 +411,6 @@ class ChordTest(unittest.TestCase):
 
     def testMinorNinthChord(self):
         chord = MinorNinthChord(*C)
-        # print(chord.all_degrees())
-        # print(chord.intervals)
         assert not chord[0] , chord[0]
         assert chord[1] >> NotePitch('C', '', 0), chord[1]
         assert chord[2] >> NotePitch('D', '', 0), chord[2]
@@ -463,8 +431,6 @@ class ChordTest(unittest.TestCase):
 
     def testDominantNinthChord(self):
         chord = DominantNinthChord(*C)
-        # print(chord.all_degrees())
-        # print(chord.intervals)
         assert not chord[0] , chord[0]
         assert chord[1] >> NotePitch('C', '', 0), chord[1]
         assert chord[2] >> NotePitch('D', '', 0), chord[2]
@@ -485,8 +451,6 @@ class ChordTest(unittest.TestCase):
 
     def testDominantMinorNinthChord(self):
         chord = DominantMinorNinthChord(*C)
-        # print(chord.all_degrees())
-        # print(chord.intervals)
         assert not chord[0] , chord[0]
         assert chord[1] >> NotePitch('C', '', 0), chord[1]
         assert chord[2] >> NotePitch('D', 'b', 0), chord[2]
