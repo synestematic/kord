@@ -9,11 +9,13 @@
 
 import unittest
 
-from kord.test_keys import *
 from kord.test_notes import *
-from kord.test_parsers import *
-
+from kord.test_keys import *
 from kord.keys.test_chords import *
+
+from kord.parsers.test_chord_parser import *
+from kord.parsers.test_pitch_parser import *
+
 
 if __name__ == '__main__':
     try:

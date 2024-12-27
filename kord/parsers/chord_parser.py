@@ -1,8 +1,10 @@
 
-from .notes import NotePitch
-from .keys.chords import *
+from .pitch_parser import NotePitchParser
 
-from .errors import InvalidNote, InvalidAlteration, InvalidOctave, InvalidChord
+from ..notes import NotePitch
+from ..keys.chords import *
+
+from ..errors import InvalidNote, InvalidAlteration, InvalidOctave, InvalidChord
 
 from bestia.output import echo
 

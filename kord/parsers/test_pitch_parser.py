@@ -1,8 +1,8 @@
 import unittest
 
-from .parsers import NotePitchParser
+from .pitch_parser import NotePitchParser
 
-from kord.keys.chords import (
+from ..keys.chords import (
     PowerChord,
     MajorTriad, MinorTriad, AugmentedTriad, DiminishedTriad,
     MajorSeventhChord, MinorSeventhChord, DominantSeventhChord,
@@ -12,9 +12,9 @@ from kord.keys.chords import (
     MajorSixthChord, MinorSixthChord,
     Suspended4Chord, Suspended2Chord,
 )
-from .notes import NotePitch
+from ..notes import NotePitch
 
-from .errors import InvalidNote, InvalidAlteration, InvalidOctave, InvalidChord
+from ..errors import InvalidNote, InvalidAlteration, InvalidOctave, InvalidChord
 
 __all__ = [
     'NotePitchParserTest',
