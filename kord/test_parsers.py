@@ -10,7 +10,7 @@ from kord.keys.chords import (
     DominantNinthChord, DominantMinorNinthChord,
     MajorNinthChord, MinorNinthChord,
     MajorSixthChord, MinorSixthChord,
-    SuspendedFourChord, SuspendedTwoChord,
+    Suspended4Chord, Suspended2Chord,
 )
 from .notes import NotePitch
 
@@ -247,20 +247,20 @@ class ChordParserTest(unittest.TestCase):
     ### SUSPENDED CHORDS ###
     ########################
 
-    def testSuspendedFourChordClasses(self):
-        assert isinstance(ChordParser('D♭♭sus4').parse(), SuspendedFourChord)
-        assert isinstance(ChordParser('Fsus').parse(), SuspendedFourChord)
+    def testSuspended4ChordClasses(self):
+        assert isinstance(ChordParser('D♭♭sus4').parse(), Suspended4Chord)
+        assert isinstance(ChordParser('Fsus').parse(), Suspended4Chord)
 
-    def testSuspendedFourChordRoots(self):
+    def testSuspended4ChordRoots(self):
         Gflatflat = NotePitch('G', 'bb')
         assert ChordParser('G𝄫sus4').parse().root ** Gflatflat
         assert ChordParser('gbbsus').parse().root ** Gflatflat
 
-    def testSuspendedTwoChordClasses(self):
-        assert isinstance(ChordParser('A♯sus2').parse(), SuspendedTwoChord)
-        assert isinstance(ChordParser('Esus9').parse(), SuspendedTwoChord)
+    def testSuspended2ChordClasses(self):
+        assert isinstance(ChordParser('A♯sus2').parse(), Suspended2Chord)
+        assert isinstance(ChordParser('Esus9').parse(), Suspended2Chord)
 
-    def testSuspendedFourChordRoots(self):
+    def testSuspended4ChordRoots(self):
         Gsharpsharp = NotePitch('G', '##')
         assert ChordParser('G##sus2').parse().root ** Gsharpsharp
         assert ChordParser('g𝄪sus9').parse().root ** Gsharpsharp

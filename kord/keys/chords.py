@@ -27,8 +27,8 @@ from ..errors import InvalidNote
 
 __all__ = [
     'PowerChord',
-    'SuspendedFourChord',
-    'SuspendedTwoChord',
+    'Suspended4Chord',
+    'Suspended2Chord',
 
     'MajorTriad',
     'MinorTriad',
@@ -133,7 +133,7 @@ class NinthChord(Chord):
 ### SUSPENDED CHORDS ###
 ########################
 
-class SuspendedFourChord(SusFourChord):
+class Suspended4Chord(SusFourChord):
     ''' C  F  G '''
     parent_scale = IonianMode
     notations = (
@@ -141,7 +141,7 @@ class SuspendedFourChord(SusFourChord):
         'sus',
     )
 
-class SuspendedTwoChord(SusTwoChord):
+class Suspended2Chord(SusTwoChord):
     ''' C  D  G '''
     parent_scale = IonianMode
     notations = (

@@ -2,7 +2,7 @@ import unittest
 
 from .chords import (
     PowerChord,
-    SuspendedFourChord, SuspendedTwoChord,
+    Suspended4Chord, Suspended2Chord,
     MajorTriad, MinorTriad, AugmentedTriad, DiminishedTriad,
     MajorSixthChord, MinorSixthChord,
     MajorSeventhChord, MinorSeventhChord, DominantSeventhChord,
@@ -51,8 +51,8 @@ class ChordTest(unittest.TestCase):
         assert chord[15] >> NotePitch('C', '', 2), chord[15]
 
 
-    def testSuspendedFourChord(self):
-        chord = SuspendedFourChord(*C)
+    def testSuspended4Chord(self):
+        chord = Suspended4Chord(*C)
         # print(chord.all_degrees())
         # print(chord.intervals)
         assert not chord[0] , chord[0]
@@ -73,8 +73,8 @@ class ChordTest(unittest.TestCase):
         assert chord[15] >> NotePitch('C', '', 2), chord[15]
 
 
-    def testSuspendedTwoChord(self):
-        chord = SuspendedTwoChord(*C)
+    def testSuspended2Chord(self):
+        chord = Suspended2Chord(*C)
         # print(chord.all_degrees())
         # print(chord.intervals)
         assert not chord[0] , chord[0]

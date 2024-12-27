@@ -32,7 +32,7 @@ class ChordParser:
         DominantNinthChord, DominantMinorNinthChord,
         MajorNinthChord, MinorNinthChord,
         MajorSixthChord, MinorSixthChord,
-        SuspendedFourChord, SuspendedTwoChord,
+        Suspended4Chord, Suspended2Chord,
     )
 
     BASS_NOTE_SEP = '/'
