@@ -27,7 +27,7 @@ from kord.keys.chords import (
     DominantNinthChord, DominantMinorNinthChord,
     MajorNinthChord, MinorNinthChord,
     MajorSixthChord, MinorSixthChord,
-    SuspendedFourChord, SuspendedTwoChord,
+    Suspended4Chord, Suspended2Chord,
 )
 
 from kord import (
@@ -64,10 +64,14 @@ AVAILABLE_SCALES = {
 AVAILABLE_CHORDS = {
     chord.notations[0]: chord for chord in (
         PowerChord,
+        Suspended4Chord,
+        Suspended2Chord,
         MajorTriad,
         MinorTriad,
         AugmentedTriad,
         DiminishedTriad,
+        MajorSixthChord,
+        MinorSixthChord,
         MajorSeventhChord,
         MinorSeventhChord,
         DominantSeventhChord,
@@ -77,10 +81,6 @@ AVAILABLE_CHORDS = {
         DominantMinorNinthChord,
         MajorNinthChord,
         MinorNinthChord,
-        MajorSixthChord,
-        MinorSixthChord,
-        SuspendedFourChord,
-        SuspendedTwoChord,
     )
 }
 

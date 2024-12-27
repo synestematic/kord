@@ -48,11 +48,17 @@ class TonalKey:
     degrees = ()
 
     @classmethod
+    def _calc_intervals(cls):
+        return cls.intervals
+
+
+    @classmethod
     def allowed_degrees(cls):
         ''' returns list of each degree, once '''
         if cls.degrees:
             return list(cls.degrees)
-        return [ n+1 for n in range( len(cls.intervals) ) ]
+        return [ n+1 for n in range( len(cls._calc_intervals()) ) ]
+
 
     @classmethod
     def all_degrees(cls):
@@ -61,8 +67,8 @@ class TonalKey:
 
         # floors over-octave degrees into in-octave
         for d, deg in enumerate(degrees):
-            if deg > len(cls.intervals):
-                degrees[d] -= len(cls.intervals)
+            if deg > len(cls._calc_intervals()):
+                degrees[d] -= len(cls._calc_intervals())
                 # ie.  9th  => 2nd
                 # ie.  11th => 4th
 
@@ -77,10 +83,11 @@ class TonalKey:
         for o in range(NotePitch.MAXIMUM_OCTAVE):
             for deg in degrees:
                 all_degrees.append(
-                    deg + len(cls.intervals) * o
+                    deg + len(cls._calc_intervals()) * o
                 )
-        # input(all_degrees)
+
         return tuple(all_degrees)
+
 
     @classmethod
     def name(cls):
@@ -90,6 +97,7 @@ class TonalKey:
                 n += ' '
             n += c.lower()
         return n.strip()
+
 
     @classmethod
     def __possible_root_notes(cls, valids=True):
@@ -102,7 +110,7 @@ class TonalKey:
             try:
                 invalid_root = False
                 for _ in cls(*note).spell(
-                    note_count=len(cls.intervals) +1,
+                    note_count=len(cls._calc_intervals()) +1,
                     yield_all=False,
                 ):
                     # if any degree fails, scale is not spellable
@@ -119,10 +127,12 @@ class TonalKey:
 
         return valid_roots if valids else invalid_roots
 
+
     @classmethod
     def valid_root_notes(cls):
         ''' returns only valid root notes for given key class '''
         return cls.__possible_root_notes(valids=True)
+
 
     @classmethod
     def invalid_root_notes(cls):
@@ -133,24 +143,25 @@ class TonalKey:
     def __init__(self, chr, alt='', oct=0):
         self.root = NotePitch(chr, alt, 0) # ignore note.oct
 
+
     def __repr__(self):
         ''' prints first octave of NotePitch items '''
         spell_line = Row()
-        for d in self.spell(
+        for degree in self.spell(
             note_count=None, yield_all=False
         ):
-            spell_line.append(
-                FString(d, size=5)
-            )
+            spell_line.append( FString(degree, size=5) )
+        spell_line.append( f'{type(self)} on {self.root}'[:-1] )
         return str(spell_line)
+
 
     def __getitem__(self, d):
 
         if d < 1:
-            return
+            return False
 
         if self.degrees and d not in self.all_degrees():
-            return
+            return None
 
         if d == 1:
             return self.root
@@ -188,11 +199,11 @@ class TonalKey:
 
     def degree_root_interval(self, d):
         ''' return degree's delta semitones from key's root '''
-        if d > len(self.intervals):
+        if d > len(self._calc_intervals()):
             return self.degree_root_interval(
-                d - len(self.intervals)
+                d - len(self._calc_intervals())
             ) + PERFECT_OCTAVE
-        return self.intervals[d -1]
+        return self._calc_intervals()[d -1]
 
 
     def _count_notes(self, note_count=-1, start_note=None, yield_all=True):
@@ -260,8 +271,9 @@ class TonalKey:
 
     def spell(self, note_count=None, start_note=None, yield_all=False):
         if note_count == None:
-            note_count = len(self.degrees) if self.degrees else len(self.intervals)
-            note_count += 1  # also include next octave root note
+            note_count = len(
+                self.degrees if self.degrees else self._calc_intervals()
+            ) + 1  # also include next octave root note
         try:
             return self._count_notes(
                 note_count=note_count,
@@ -455,7 +467,7 @@ class ChromaticScale(TonalKey):
     def __getitem__(self, d):
 
         if d < 1:
-            return
+            return False
 
         if d == 1:
             return self.root

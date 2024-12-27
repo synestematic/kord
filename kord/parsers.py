@@ -13,10 +13,9 @@ __all__ = [
 
 
 class ChordParser:
-    ''' chord symbols still left to implement:
+    ''' chord symbols still left to add:
 
         Fadd4
-        Cadd9
 
         Am11
 
@@ -25,14 +24,14 @@ class ChordParser:
     '''
 
     RECOGNIZED_CHORDS = (
-        PowerChord,
+        PowerChord, Suspended4Chord, Suspended2Chord,
         MajorTriad, MinorTriad, AugmentedTriad, DiminishedTriad,
+        MajorSixthChord, MinorSixthChord,
         MajorSeventhChord, MinorSeventhChord, DominantSeventhChord,
         HalfDiminishedSeventhChord, DiminishedSeventhChord,
+        MajorAdd9Chord, MinorAdd9Chord, AugmentedAdd9Chord, DiminishedAdd9Chord,
         DominantNinthChord, DominantMinorNinthChord,
         MajorNinthChord, MinorNinthChord,
-        MajorSixthChord, MinorSixthChord,
-        SuspendedFourChord, SuspendedTwoChord,
     )
 
     BASS_NOTE_SEP = '/'
