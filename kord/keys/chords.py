@@ -20,7 +20,7 @@ from .scales import (
 )
 from .scales import TonalKey
 
-from ..notes import PERFECT_OCTAVE
+from ..notes.intervals import Intervals
 
 from ..errors import InvalidNote
 
@@ -94,7 +94,7 @@ class Chord(TonalKey):
         for parent_scale_interval in cls.parent_scale._calc_intervals():
             new_interval = parent_scale_interval - offset_from_root
             if new_interval < 0:
-                new_interval += PERFECT_OCTAVE
+                new_interval += Intervals.PERFECT_OCTAVE
             arranged_intervals.append(new_interval)
         arranged_intervals.sort()
         return arranged_intervals

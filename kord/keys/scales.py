@@ -1,22 +1,7 @@
 from bestia.output import Row, FString
 
 from ..notes import NotePitch, notes_by_alts, _EnharmonicMatrix
-
-from ..notes import (
-    UNISON, DIMINISHED_SECOND,          #0
-    MINOR_SECOND, AUGMENTED_UNISON,     #1
-    MAJOR_SECOND, DIMINISHED_THIRD,     #2
-    MINOR_THIRD, AUGMENTED_SECOND,      #3
-    DIMINISHED_FOURTH, MAJOR_THIRD,     #4
-    PERFECT_FOURTH, AUGMENTED_THIRD,    #5
-    AUGMENTED_FOURTH, DIMINISHED_FIFTH, #6
-    PERFECT_FIFTH, DIMINISHED_SIXTH,    #7
-    MINOR_SIXTH, AUGMENTED_FIFTH,       #8
-    MAJOR_SIXTH, DIMINISHED_SEVENTH,    #9
-    MINOR_SEVENTH, AUGMENTED_SIXTH,     #10
-    MAJOR_SEVENTH, DIMINISHED_OCTAVE,   #11
-    PERFECT_OCTAVE, AUGMENTED_SEVENTH,  #12
-)
+from ..notes.intervals import Intervals
 
 from ..errors import InvalidNote, InvalidOctave
 
@@ -168,7 +153,7 @@ class TonalKey:
 
         # GET DEGREE's ROOT OFFSETS = PERFECT_OCTAVE + SPARE_STS
         octs_from_root, spare_sts = divmod(
-            self.degree_root_interval(d), PERFECT_OCTAVE
+            self.degree_root_interval(d), Intervals.PERFECT_OCTAVE
         )
         note_oct = octs_from_root
 
@@ -202,7 +187,7 @@ class TonalKey:
         if d > len(self._calc_intervals()):
             return self.degree_root_interval(
                 d - len(self._calc_intervals())
-            ) + PERFECT_OCTAVE
+            ) + Intervals.PERFECT_OCTAVE
         return self._calc_intervals()[d -1]
 
 
@@ -293,13 +278,13 @@ class MajorScale(TonalKey):
         'major',
     )
     intervals = (
-        UNISON,
-        MAJOR_SECOND,
-        MAJOR_THIRD,
-        PERFECT_FOURTH,
-        PERFECT_FIFTH,
-        MAJOR_SIXTH,
-        MAJOR_SEVENTH,
+        Intervals.UNISON,
+        Intervals.MAJOR_SECOND,
+        Intervals.MAJOR_THIRD,
+        Intervals.PERFECT_FOURTH,
+        Intervals.PERFECT_FIFTH,
+        Intervals.MAJOR_SIXTH,
+        Intervals.MAJOR_SEVENTH,
     )
 
 class MajorPentatonicScale(MajorScale):
@@ -318,13 +303,13 @@ class MixolydianMode(MajorScale):
         'mixolydian',
     )
     intervals = (
-        UNISON,
-        MAJOR_SECOND,
-        MAJOR_THIRD,
-        PERFECT_FOURTH,
-        PERFECT_FIFTH,
-        MAJOR_SIXTH,
-        MINOR_SEVENTH, # <<<
+        Intervals.UNISON,
+        Intervals.MAJOR_SECOND,
+        Intervals.MAJOR_THIRD,
+        Intervals.PERFECT_FOURTH,
+        Intervals.PERFECT_FIFTH,
+        Intervals.MAJOR_SIXTH,
+        Intervals.MINOR_SEVENTH, # <<<
     )
 
 class LydianMode(MajorScale):
@@ -332,13 +317,13 @@ class LydianMode(MajorScale):
         'lydian',
     )
     intervals = (
-        UNISON,
-        MAJOR_SECOND,
-        MAJOR_THIRD,
-        AUGMENTED_FOURTH, # <<<
-        PERFECT_FIFTH,
-        MAJOR_SIXTH,
-        MAJOR_SEVENTH,
+        Intervals.UNISON,
+        Intervals.MAJOR_SECOND,
+        Intervals.MAJOR_THIRD,
+        Intervals.AUGMENTED_FOURTH, # <<<
+        Intervals.PERFECT_FIFTH,
+        Intervals.MAJOR_SIXTH,
+        Intervals.MAJOR_SEVENTH,
     )
 
 ########################
@@ -350,13 +335,13 @@ class MinorScale(TonalKey):
         'minor',
     )
     intervals = (
-        UNISON,
-        MAJOR_SECOND,
-        MINOR_THIRD,
-        PERFECT_FOURTH,
-        PERFECT_FIFTH,
-        MINOR_SIXTH,
-        MINOR_SEVENTH,
+        Intervals.UNISON,
+        Intervals.MAJOR_SECOND,
+        Intervals.MINOR_THIRD,
+        Intervals.PERFECT_FOURTH,
+        Intervals.PERFECT_FIFTH,
+        Intervals.MINOR_SIXTH,
+        Intervals.MINOR_SEVENTH,
     )
 
 class MinorPentatonicScale(MinorScale):
@@ -370,13 +355,13 @@ class MelodicMinorScale(MinorScale):
         'melodic_minor',
     )
     intervals = (
-        UNISON,
-        MAJOR_SECOND,
-        MINOR_THIRD,
-        PERFECT_FOURTH,
-        PERFECT_FIFTH,
-        MAJOR_SIXTH, # <<<
-        MAJOR_SEVENTH, # <<<
+        Intervals.UNISON,
+        Intervals.MAJOR_SECOND,
+        Intervals.MINOR_THIRD,
+        Intervals.PERFECT_FOURTH,
+        Intervals.PERFECT_FIFTH,
+        Intervals.MAJOR_SIXTH, # <<<
+        Intervals.MAJOR_SEVENTH, # <<<
     )
 
 class HarmonicMinorScale(MinorScale):
@@ -384,13 +369,13 @@ class HarmonicMinorScale(MinorScale):
         'harmonic_minor',
     )
     intervals = (
-        UNISON,
-        MAJOR_SECOND,
-        MINOR_THIRD,
-        PERFECT_FOURTH,
-        PERFECT_FIFTH,
-        MINOR_SIXTH,
-        MAJOR_SEVENTH, # <<<
+        Intervals.UNISON,
+        Intervals.MAJOR_SECOND,
+        Intervals.MINOR_THIRD,
+        Intervals.PERFECT_FOURTH,
+        Intervals.PERFECT_FIFTH,
+        Intervals.MINOR_SIXTH,
+        Intervals.MAJOR_SEVENTH, # <<<
     )
 
 class AeolianMode(MinorScale):
@@ -403,13 +388,13 @@ class DorianMode(MinorScale):
         'dorian',
     )
     intervals = (
-        UNISON,
-        MAJOR_SECOND,
-        MINOR_THIRD,
-        PERFECT_FOURTH,
-        PERFECT_FIFTH,
-        MAJOR_SIXTH, # <<<
-        MINOR_SEVENTH,
+        Intervals.UNISON,
+        Intervals.MAJOR_SECOND,
+        Intervals.MINOR_THIRD,
+        Intervals.PERFECT_FOURTH,
+        Intervals.PERFECT_FIFTH,
+        Intervals.MAJOR_SIXTH, # <<<
+        Intervals.MINOR_SEVENTH,
     )
 
 class PhrygianMode(MinorScale):
@@ -417,13 +402,13 @@ class PhrygianMode(MinorScale):
         'phrygian',
     )
     intervals = (
-        UNISON,
-        MINOR_SECOND, # <<<
-        MINOR_THIRD,
-        PERFECT_FOURTH,
-        PERFECT_FIFTH,
-        MINOR_SIXTH,
-        MINOR_SEVENTH,
+        Intervals.UNISON,
+        Intervals.MINOR_SECOND, # <<<
+        Intervals.MINOR_THIRD,
+        Intervals.PERFECT_FOURTH,
+        Intervals.PERFECT_FIFTH,
+        Intervals.MINOR_SIXTH,
+        Intervals.MINOR_SEVENTH,
     )
 
 class LocrianMode(MinorScale):
@@ -431,13 +416,13 @@ class LocrianMode(MinorScale):
         'locrian',
     )
     intervals = (
-        UNISON,
-        MINOR_SECOND, # <<<
-        MINOR_THIRD,
-        PERFECT_FOURTH,
-        DIMINISHED_FIFTH, # <<<
-        MINOR_SIXTH,
-        MINOR_SEVENTH,
+        Intervals.UNISON,
+        Intervals.MINOR_SECOND, # <<<
+        Intervals.MINOR_THIRD,
+        Intervals.PERFECT_FOURTH,
+        Intervals.DIMINISHED_FIFTH, # <<<
+        Intervals.MINOR_SIXTH,
+        Intervals.MINOR_SEVENTH,
     )
 
 
@@ -450,18 +435,18 @@ class ChromaticScale(TonalKey):
         'chromatic',
     )
     intervals = (
-        UNISON,
-        MINOR_SECOND,
-        MAJOR_SECOND,
-        MINOR_THIRD,
-        MAJOR_THIRD,
-        PERFECT_FOURTH,
-        AUGMENTED_FOURTH,
-        PERFECT_FIFTH,
-        MINOR_SIXTH,
-        MAJOR_SIXTH,
-        MINOR_SEVENTH,
-        MAJOR_SEVENTH,
+        Intervals.UNISON,
+        Intervals.MINOR_SECOND,
+        Intervals.MAJOR_SECOND,
+        Intervals.MINOR_THIRD,
+        Intervals.MAJOR_THIRD,
+        Intervals.PERFECT_FOURTH,
+        Intervals.AUGMENTED_FOURTH,
+        Intervals.PERFECT_FIFTH,
+        Intervals.MINOR_SIXTH,
+        Intervals.MAJOR_SIXTH,
+        Intervals.MINOR_SEVENTH,
+        Intervals.MAJOR_SEVENTH,
     )
 
     def __getitem__(self, d):
@@ -474,7 +459,7 @@ class ChromaticScale(TonalKey):
 
         # GET DEGREE's ROOT OFFSETS = PERFECT_OCTAVE + SPARE_STS
         octs_from_root, spare_sts = divmod(
-            self.degree_root_interval(d), PERFECT_OCTAVE
+            self.degree_root_interval(d), Intervals.PERFECT_OCTAVE
         )
         note_oct = octs_from_root
 
@@ -538,12 +523,12 @@ class AugmentedScale(ChromaticScale):
 #         'augmented',
 #     )
 #     intervals = (
-#         UNISON,  # C
-#         AUGMENTED_SECOND,  # D#
-#         MAJOR_THIRD,  # E
-#         PERFECT_FOURTH, # F  exclude this interval using degrees...
-#         PERFECT_FIFTH,  # G
-#         MINOR_SIXTH,  # Ab
-#         MAJOR_SEVENTH,  # B
+#         Intervals.UNISON,  # C
+#         Intervals.AUGMENTED_SECOND,  # D#
+#         Intervals.MAJOR_THIRD,  # E
+#         Intervals.PERFECT_FOURTH, # F  exclude this interval using degrees...
+#         Intervals.PERFECT_FIFTH,  # G
+#         Intervals.MINOR_SIXTH,  # Ab
+#         Intervals.MAJOR_SEVENTH,  # B
 #     )
 #     degrees = (1, 2, 3,  5, 6, 7)
