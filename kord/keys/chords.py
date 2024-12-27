@@ -16,7 +16,7 @@ parent_scale_degree allows to form chords from degrees other than I
 from .scales import (
     MajorScale, MinorScale, AugmentedScale, DiminishedScale,
     IonianMode, AeolianMode, MixolydianMode, LocrianMode, DorianMode,
-    HarmonicMinorScale,
+    HarmonicMinorScale, MelodicMinorScale
 )
 from .scales import TonalKey
 
@@ -46,6 +46,8 @@ __all__ = [
 
     'MajorAdd9Chord',
     'MinorAdd9Chord',
+    'AugmentedAdd9Chord',
+    'DiminishedAdd9Chord',
 
     'MajorNinthChord',
     'MinorNinthChord',
@@ -277,6 +279,7 @@ class MajorAdd9Chord(AddNineChord):
     parent_scale = IonianMode
     notations = (
         'add9',
+        'Add9',
     )
 
 class MinorAdd9Chord(AddNineChord):
@@ -284,6 +287,25 @@ class MinorAdd9Chord(AddNineChord):
     parent_scale = AeolianMode
     notations = (
         'madd9',
+        'mAdd9',
+    )
+
+class AugmentedAdd9Chord(AddNineChord):
+    ''' C  E  G# D '''
+    parent_scale = HarmonicMinorScale
+    parent_scale_degree = 3
+    notations = (
+        'augadd9',
+        'augAdd9',
+    )
+
+class DiminishedAdd9Chord(AddNineChord):
+    ''' C  Eb Gb D '''
+    parent_scale = MelodicMinorScale
+    parent_scale_degree = 6
+    notations = (
+        'dimadd9',
+        'dimAdd9',
     )
 
 
