@@ -2,6 +2,8 @@ import unittest
 
 from .notes import NotePitch
 
+from .notes.constants import D_FLAT_3, C_SHARP_5, C_SHARP_3
+
 from .errors import InvalidNote
 
 __all__ = [
@@ -85,17 +87,13 @@ class NoteEqualityTest(unittest.TestCase):
     def testEnharmonicOperators(self):
         ''' '''
         print('Testing enharmonic operators')
-        Cs5 = NotePitch('C', '#', 5)
-        Db3 = NotePitch('D', 'b', 3)
-        Cs3 = NotePitch('C', '#', 3)
-        assert Cs3 ** Cs5      # loosest equality
-        assert Db3 == Cs3      # enhamonic notes
-        assert not Db3 >> Cs3  # enh note
-        assert not Cs3 >> Db3  # enh note
+        assert C_SHARP_3 ** C_SHARP_5     # loosest equality
+        assert C_SHARP_3 == D_FLAT_3      # enhamonic notes
+        assert not D_FLAT_3 >> C_SHARP_3  # enh note
+        assert not C_SHARP_3 >> D_FLAT_3  # enh note
 
         # ** same note, ignr oct
         # == enhr note, same oct
         # >> same note, same oct
 
         # // enhr note, ignr oct   do I need to implement this operator ?
-
