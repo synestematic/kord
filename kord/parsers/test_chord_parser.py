@@ -13,7 +13,13 @@ from ..keys.chords import (
     MajorNinthChord, MinorNinthChord,
 )
 
-from ..notes import NotePitch
+from ..notes.constants import (
+    C_3, F_3, E_3, A_3, D_3,
+    B_FLAT_3, E_FLAT_3, D_FLAT_3, C_FLAT_3, B_FLAT_3,
+    A_SHARP_3, C_SHARP_3, E_SHARP_3,
+    G_DOUBLE_FLAT_3,
+    G_DOUBLE_SHARP_3,
+)
 
 from ..errors import InvalidChord
 
@@ -54,8 +60,7 @@ class NonThirdChordsTest(unittest.TestCase):
         assert isinstance(ChordParser('g5').parse(), PowerChord)
 
     def testPowerChordRoots(self):
-        F = NotePitch('F')
-        assert ChordParser('F5').parse().root ** F
+        assert ChordParser('F5').parse().root ** F_3
 
 
     def testSuspended4ChordClasses(self):
@@ -63,9 +68,8 @@ class NonThirdChordsTest(unittest.TestCase):
         assert isinstance(ChordParser('Fsus').parse(), Suspended4Chord)
 
     def testSuspended4ChordRoots(self):
-        Gflatflat = NotePitch('G', 'bb')
-        assert ChordParser('G𝄫sus4').parse().root ** Gflatflat
-        assert ChordParser('gbbsus').parse().root ** Gflatflat
+        assert ChordParser('G𝄫sus4').parse().root ** G_DOUBLE_FLAT_3
+        assert ChordParser('gbbsus').parse().root ** G_DOUBLE_FLAT_3
 
 
     def testSuspended2ChordClasses(self):
@@ -73,9 +77,8 @@ class NonThirdChordsTest(unittest.TestCase):
         assert isinstance(ChordParser('Esus9').parse(), Suspended2Chord)
 
     def testSuspended4ChordRoots(self):
-        Gsharpsharp = NotePitch('G', '##')
-        assert ChordParser('G##sus2').parse().root ** Gsharpsharp
-        assert ChordParser('g𝄪sus9').parse().root ** Gsharpsharp
+        assert ChordParser('G##sus2').parse().root ** G_DOUBLE_SHARP_3
+        assert ChordParser('g𝄪sus9').parse().root ** G_DOUBLE_SHARP_3
 
 
 
@@ -88,16 +91,14 @@ class TriadChordsTest(unittest.TestCase):
         assert isinstance(ChordParser('Emajor').parse(), MajorTriad)
 
     def testMajorTriadRoots(self):
-        C = NotePitch('C')
-        assert ChordParser('C').parse().root ** C
-        assert ChordParser('Cmaj').parse().root ** C
-        assert ChordParser('Cmajor').parse().root ** C
+        assert ChordParser('C').parse().root ** C_3
+        assert ChordParser('Cmaj').parse().root ** C_3
+        assert ChordParser('Cmajor').parse().root ** C_3
 
     # def testMajorTriadBass(self):
-    #     C = NotePitch('C')
-    #     assert ChordParser('C').parse().bass ** C
-    #     assert ChordParser('Cmaj').parse().bass ** C
-    #     assert ChordParser('Cmajor').parse().bass ** C
+    #     assert ChordParser('C').parse().bass ** C_3
+    #     assert ChordParser('Cmaj').parse().bass ** C_3
+    #     assert ChordParser('Cmajor').parse().bass ** C_3
 
 
     def testMinorTriadClasses(self):
@@ -106,10 +107,9 @@ class TriadChordsTest(unittest.TestCase):
         assert isinstance(ChordParser('Cminor').parse(), MinorTriad)
 
     def testMinorTriadRoots(self):
-        E = NotePitch('E')
-        assert ChordParser('Emin').parse().root ** E
-        assert ChordParser('e-').parse().root ** E
-        assert ChordParser('Eminor').parse().root ** E
+        assert ChordParser('Emin').parse().root ** E_3
+        assert ChordParser('e-').parse().root ** E_3
+        assert ChordParser('Eminor').parse().root ** E_3
 
 
     def testAugTriadClasses(self):
@@ -117,9 +117,8 @@ class TriadChordsTest(unittest.TestCase):
         assert isinstance(ChordParser('Bbaugmented').parse(), AugmentedTriad)
 
     def testAugTriadRoots(self):
-        A = NotePitch('A')
-        assert ChordParser('Aaug').parse().root ** A
-        assert ChordParser('Aaugmented').parse().root ** A
+        assert ChordParser('Aaug').parse().root ** A_3
+        assert ChordParser('Aaugmented').parse().root ** A_3
 
 
     def testDimTriadClasses(self):
@@ -127,10 +126,9 @@ class TriadChordsTest(unittest.TestCase):
         assert isinstance(ChordParser('Bbdiminished').parse(), DiminishedTriad)
 
     def testDimTriadRoots(self):
-        D = NotePitch('D')
-        assert ChordParser('Ddim').parse().root ** D
-        assert ChordParser('Ddiminished').parse().root ** D
-        assert ChordParser('D dim').parse().root ** D
+        assert ChordParser('Ddim').parse().root ** D_3
+        assert ChordParser('Ddiminished').parse().root ** D_3
+        assert ChordParser('D dim').parse().root ** D_3
 
 
 class SixthChordsTest(unittest.TestCase):
@@ -140,9 +138,8 @@ class SixthChordsTest(unittest.TestCase):
         assert isinstance(ChordParser('Fadd6').parse(), MajorSixthChord)
 
     def testMajorSixthChordRoots(self):
-        Bflat = NotePitch('B', 'b')
-        assert ChordParser('Bb6').parse().root ** Bflat
-        assert ChordParser('B♭add6').parse().root ** Bflat
+        assert ChordParser('Bb6').parse().root ** B_FLAT_3
+        assert ChordParser('B♭add6').parse().root ** B_FLAT_3
 
 
     def testMinorSixthChordClasses(self):
@@ -150,9 +147,8 @@ class SixthChordsTest(unittest.TestCase):
         assert isinstance(ChordParser('Fmin6').parse(), MinorSixthChord)
 
     def testMinorSixthChordRoots(self):
-        Asharp = NotePitch('A', '#')
-        assert ChordParser('A♯m6').parse().root ** Asharp
-        assert ChordParser('A#min6').parse().root ** Asharp
+        assert ChordParser('A♯m6').parse().root ** A_SHARP_3
+        assert ChordParser('A#min6').parse().root ** A_SHARP_3
 
 
 class SeventhChordsTest(unittest.TestCase):
@@ -164,11 +160,10 @@ class SeventhChordsTest(unittest.TestCase):
         assert isinstance(ChordParser('Dmajor7').parse(), MajorSeventhChord)
 
     def testMajorSeventhChordRoots(self):
-        C = NotePitch('C')
-        assert ChordParser('Cmaj7').parse().root ** C
-        assert ChordParser('CM7').parse().root ** C
-        assert ChordParser('CΔ7').parse().root ** C
-        assert ChordParser('Cmajor7').parse().root ** C
+        assert ChordParser('Cmaj7').parse().root ** C_3
+        assert ChordParser('CM7').parse().root ** C_3
+        assert ChordParser('CΔ7').parse().root ** C_3
+        assert ChordParser('Cmajor7').parse().root ** C_3
 
 
     def testMinorSeventhChordClasses(self):
@@ -178,12 +173,11 @@ class SeventhChordsTest(unittest.TestCase):
         assert isinstance(ChordParser('Bbminor7').parse(), MinorSeventhChord)
 
     def testMinorSeventhChordRoots(self):
-        A = NotePitch('A')
-        assert ChordParser('Amin7').parse().root ** A
-        assert ChordParser('Am7').parse().root ** A
-        assert ChordParser('A-7').parse().root ** A
-        assert ChordParser('Aminor7').parse().root ** A
-        assert ChordParser('A minor7').parse().root ** A
+        assert ChordParser('Amin7').parse().root ** A_3
+        assert ChordParser('Am7').parse().root ** A_3
+        assert ChordParser('A-7').parse().root ** A_3
+        assert ChordParser('Aminor7').parse().root ** A_3
+        assert ChordParser('A minor7').parse().root ** A_3
 
 
     def testDomSeventhChordClasses(self):
@@ -192,10 +186,9 @@ class SeventhChordsTest(unittest.TestCase):
         assert isinstance(ChordParser('Dbbdominant7').parse(), DominantSeventhChord)
 
     def testDomSeventhChordRoots(self):
-        Csharp = NotePitch('C', '#')
-        assert ChordParser('C#7').parse().root ** Csharp
-        assert ChordParser('C♯dom7').parse().root ** Csharp
-        assert ChordParser('c#dominant7').parse().root ** Csharp
+        assert ChordParser('C#7').parse().root ** C_SHARP_3
+        assert ChordParser('C♯dom7').parse().root ** C_SHARP_3
+        assert ChordParser('c#dominant7').parse().root ** C_SHARP_3
 
 
     def testHalfDiminishedSeventhChordClasses(self):
@@ -206,12 +199,11 @@ class SeventhChordsTest(unittest.TestCase):
         assert isinstance(ChordParser('fø7').parse(), HalfDiminishedSeventhChord)
 
     def testHalfDiminishedSeventhChordRoots(self):
-        Eflat = NotePitch('E', 'b')
-        assert ChordParser('ebm7b5').parse().root ** Eflat
-        assert ChordParser('E♭m7-5').parse().root ** Eflat
-        assert ChordParser('Ebmin7dim5').parse().root ** Eflat
-        assert ChordParser('Ebm7(b5)').parse().root ** Eflat
-        assert ChordParser('Ebø7').parse().root ** Eflat
+        assert ChordParser('ebm7b5').parse().root ** E_FLAT_3
+        assert ChordParser('E♭m7-5').parse().root ** E_FLAT_3
+        assert ChordParser('Ebmin7dim5').parse().root ** E_FLAT_3
+        assert ChordParser('Ebm7(b5)').parse().root ** E_FLAT_3
+        assert ChordParser('Ebø7').parse().root ** E_FLAT_3
 
 
     def testDiminishedSeventhChordClasses(self):
@@ -220,10 +212,9 @@ class SeventhChordsTest(unittest.TestCase):
         assert isinstance(ChordParser('Cdiminished7').parse(), DiminishedSeventhChord)
 
     def testDiminishedSeventhChordRoots(self):
-        Dflat = NotePitch('D', 'b')
-        assert ChordParser('Dbdim7').parse().root ** Dflat
-        assert ChordParser('Dbo7').parse().root ** Dflat
-        assert ChordParser('Dbdiminished7').parse().root ** Dflat
+        assert ChordParser('Dbdim7').parse().root ** D_FLAT_3
+        assert ChordParser('Dbo7').parse().root ** D_FLAT_3
+        assert ChordParser('Dbdiminished7').parse().root ** D_FLAT_3
 
 
 class Add9ChordsTest(unittest.TestCase):
@@ -233,9 +224,8 @@ class Add9ChordsTest(unittest.TestCase):
         assert isinstance(ChordParser('Aadd9').parse(), MajorAdd9Chord)
 
     def testMajorAdd9ChordRoots(self):
-        Dflat = NotePitch('D', 'b')
-        assert ChordParser('Dbadd9').parse().root ** Dflat
-        assert ChordParser('d♭Add9').parse().root ** Dflat
+        assert ChordParser('Dbadd9').parse().root ** D_FLAT_3
+        assert ChordParser('d♭Add9').parse().root ** D_FLAT_3
 
 
     def testMinorAdd9ChordClasses(self):
@@ -243,9 +233,8 @@ class Add9ChordsTest(unittest.TestCase):
         assert isinstance(ChordParser('GmAdd9').parse(), MinorAdd9Chord)
 
     def testMinorAdd9ChordRoots(self):
-        Cflat = NotePitch('C', 'b')
-        assert ChordParser('Cbmadd9').parse().root ** Cflat
-        assert ChordParser('C♭mAdd9').parse().root ** Cflat
+        assert ChordParser('Cbmadd9').parse().root ** C_FLAT_3
+        assert ChordParser('C♭mAdd9').parse().root ** C_FLAT_3
 
 
     def testAugmentedAdd9ChordClasses(self):
@@ -253,9 +242,8 @@ class Add9ChordsTest(unittest.TestCase):
         assert isinstance(ChordParser('D#augAdd9').parse(), AugmentedAdd9Chord)
 
     def testAugmentedAdd9ChordRoots(self):
-        Esharp = NotePitch('e', '#')
-        assert ChordParser('E♯augadd9').parse().root ** Esharp
-        assert ChordParser('E#augAdd9').parse().root ** Esharp
+        assert ChordParser('E♯augadd9').parse().root ** E_SHARP_3
+        assert ChordParser('E#augAdd9').parse().root ** E_SHARP_3
 
 
     def testDiminishedAdd9ChordClasses(self):
@@ -263,9 +251,8 @@ class Add9ChordsTest(unittest.TestCase):
         assert isinstance(ChordParser('F#dimAdd9').parse(), DiminishedAdd9Chord)
 
     def testDiminishedAdd9ChordRoots(self):
-        Esharp = NotePitch('e', '#')
-        assert ChordParser('E♯dimadd9').parse().root ** Esharp
-        assert ChordParser('E#dimAdd9').parse().root ** Esharp
+        assert ChordParser('E♯dimadd9').parse().root ** E_SHARP_3
+        assert ChordParser('E#dimAdd9').parse().root ** E_SHARP_3
 
 
 class NinthChordsTest(unittest.TestCase):
@@ -276,10 +263,9 @@ class NinthChordsTest(unittest.TestCase):
         assert isinstance(ChordParser('Emajor9').parse(), MajorNinthChord)
 
     def testMajorNinthChordRoots(self):
-        Bflat = NotePitch('B', 'b')
-        assert ChordParser('Bbmaj7').parse().root ** Bflat
-        assert ChordParser('B♭M7').parse().root ** Bflat
-        assert ChordParser('b♭major7').parse().root ** Bflat
+        assert ChordParser('Bbmaj7').parse().root ** B_FLAT_3
+        assert ChordParser('B♭M7').parse().root ** B_FLAT_3
+        assert ChordParser('b♭major7').parse().root ** B_FLAT_3
 
 
     def testMinorNinthChordClasses(self):
@@ -289,12 +275,11 @@ class NinthChordsTest(unittest.TestCase):
         assert isinstance(ChordParser('Bminor9').parse(), MinorNinthChord)
 
     def testMinorNinthChordRoots(self):
-        Asharp = NotePitch('A', '#')
-        assert ChordParser('A♯min9').parse().root ** Asharp
-        assert ChordParser('A#m9').parse().root ** Asharp
-        assert ChordParser('A#-9').parse().root ** Asharp
-        assert ChordParser('A♯minor9').parse().root ** Asharp
-        assert ChordParser('A# min9').parse().root ** Asharp
+        assert ChordParser('A♯min9').parse().root ** A_SHARP_3
+        assert ChordParser('A#m9').parse().root ** A_SHARP_3
+        assert ChordParser('A#-9').parse().root ** A_SHARP_3
+        assert ChordParser('A♯minor9').parse().root ** A_SHARP_3
+        assert ChordParser('A# min9').parse().root ** A_SHARP_3
 
 
     def testDomNinthChordClasses(self):
@@ -302,16 +287,14 @@ class NinthChordsTest(unittest.TestCase):
         assert isinstance(ChordParser('Bbdom9').parse(), DominantNinthChord)
 
     def testDomNinthChordRoots(self):
-        Csharp = NotePitch('C', '#')
-        assert ChordParser('C#9').parse().root ** Csharp
-        assert ChordParser('C♯dom9').parse().root ** Csharp
+        assert ChordParser('C#9').parse().root ** C_SHARP_3
+        assert ChordParser('C♯dom9').parse().root ** C_SHARP_3
 
 
     def testDomMinNinthChordClasses(self):
         assert isinstance(ChordParser('E7b9').parse(), DominantMinorNinthChord)
 
     def testDomMinNinthChordRoots(self):
-        Eflat = NotePitch('E', 'b')
-        assert ChordParser('eb7b9').parse().root ** Eflat
+        assert ChordParser('eb7b9').parse().root ** E_FLAT_3
 
 
