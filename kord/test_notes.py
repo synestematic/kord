@@ -2,7 +2,12 @@ import unittest
 
 from .notes import NotePitch
 
-from .notes.constants import D_FLAT_3, C_SHARP_5, C_SHARP_3
+from .notes.constants import (
+    F_4, B_4, B_5,
+    C_FLAT_3, C_FLAT_4, D_FLAT_4, B_FLAT_4, E_FLAT_5, D_FLAT_3, 
+    E_SHARP_3, B_SHARP_3, D_SHARP_4, C_SHARP_5, C_SHARP_3,
+    D_DOUBLE_FLAT_4,
+)
 
 from .errors import InvalidNote
 
@@ -25,15 +30,12 @@ class NoteEqualityTest(unittest.TestCase):
     DANGEROUS_NON_EQUALS = (
         # ''' Used mainly to test B#, Cb, etc... '''
 
-        (NotePitch('C', 'b', 3), NotePitch('B', '#', 3)),
+        (C_FLAT_3, B_SHARP_3),
+        (E_FLAT_5, D_SHARP_4),
 
-        (NotePitch('C', 'b', 3), NotePitch('B', '#', 3)),
+        (B_5, C_FLAT_4),
 
-        (NotePitch('E', 'b', 5), NotePitch('D', '#', 4)),
-
-        (NotePitch('B', '', 5), NotePitch('C', 'b', 4)),
-
-        (NotePitch('E', '#', 3), NotePitch('F', '', 4)),
+        (E_SHARP_3, F_4),
 
 
         (NotePitch('B', 'b'), NotePitch('C', 'bb')),
@@ -50,10 +52,10 @@ class NoteEqualityTest(unittest.TestCase):
 
 
         # these should eval False OK
-        (NotePitch('A', '#'), NotePitch('B', 'b', 4)),
-        (NotePitch('A', '##'), NotePitch('B', '', 4)),
-        (NotePitch('C', ''), NotePitch('D', 'bb', 4)),
-        (NotePitch('C', '#'), NotePitch('D', 'b', 4)),
+        (NotePitch('A', '#'), B_FLAT_4),
+        (NotePitch('A', '##'), B_4),
+        (NotePitch('C', ''), D_DOUBLE_FLAT_4),
+        (NotePitch('C', '#'), D_FLAT_4),
     )
 
     def setUp(self):
