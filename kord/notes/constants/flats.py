@@ -1,5 +1,5 @@
 
-from .pitch import NotePitch
+from ..pitch import NotePitch
 
 
 C_FLAT_0 = NotePitch('C', 'b' , 0)
