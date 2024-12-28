@@ -29,6 +29,7 @@ class NotePitch:
     _ALTS = {
         'bb': '𝄫',
         'b': '♭',
+        # '♮': '',
         '': '',
         '#': '♯',
         '##': '𝄪',
@@ -80,7 +81,7 @@ class NotePitch:
             (  cls('F', '' , 1), cls('E', '#' , 1), cls('G', 'bb', 1)  ), # NAH
             (  cls('F', '#', 1), cls('G', 'b' , 1), cls('E', '##', 1)  ), # AAH
             (  cls('G', '' , 1), cls('F', '##', 1), cls('A', 'bb', 1)  ), # NHH
-            (  cls('G', '#', 1), cls('A', 'b' , 1)                      ),# AA
+            (  cls('G', '#', 1), cls('A', 'b' , 1)                     ), # AA
             (  cls('A', '' , 1), cls('G', '##', 1), cls('B', 'bb', 1)  ), # NHH
 
             ## 2-octave enharmonic relationships
