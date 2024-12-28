@@ -1,77 +1,12 @@
 from bestia.iterate import LoopedList
 
-from .errors import InvalidNote, InvalidAlteration, InvalidOctave
+from .intervals import Intervals
+
+from ..errors import InvalidNote, InvalidAlteration, InvalidOctave
 
 __all__ = [
-    'UNISON',
-    'DIMINISHED_SECOND',
-    'MINOR_SECOND',
-    'AUGMENTED_UNISON',
-    'MAJOR_SECOND',
-    'DIMINISHED_THIRD',
-    'MINOR_THIRD',
-    'AUGMENTED_SECOND',
-    'DIMINISHED_FOURTH',
-    'MAJOR_THIRD',
-    'PERFECT_FOURTH',
-    'AUGMENTED_THIRD',
-    'AUGMENTED_FOURTH',
-    'DIMINISHED_FIFTH',
-    'PERFECT_FIFTH',
-    'DIMINISHED_SIXTH',
-    'MINOR_SIXTH',
-    'AUGMENTED_FIFTH',
-    'MAJOR_SIXTH',
-    'DIMINISHED_SEVENTH',
-    'MINOR_SEVENTH',
-    'AUGMENTED_SIXTH',
-    'MAJOR_SEVENTH',
-    'DIMINISHED_OCTAVE',
-    'PERFECT_OCTAVE',
-    'AUGMENTED_SEVENTH',
-
     'NotePitch',
-    'notes_by_alts',
 ]
-
-UNISON = 0
-DIMINISHED_SECOND = 0
-
-MINOR_SECOND = 1
-AUGMENTED_UNISON = 1
-
-MAJOR_SECOND = 2
-DIMINISHED_THIRD = 2
-
-MINOR_THIRD = 3
-AUGMENTED_SECOND = 3
-
-DIMINISHED_FOURTH = 4
-MAJOR_THIRD = 4
-
-PERFECT_FOURTH = 5
-AUGMENTED_THIRD = 5
-
-AUGMENTED_FOURTH = 6
-DIMINISHED_FIFTH = 6
-
-PERFECT_FIFTH = 7
-DIMINISHED_SIXTH = 7
-
-MINOR_SIXTH = 8
-AUGMENTED_FIFTH = 8
-
-MAJOR_SIXTH = 9
-DIMINISHED_SEVENTH = 9
-
-MINOR_SEVENTH = 10
-AUGMENTED_SIXTH = 10
-
-MAJOR_SEVENTH = 11
-DIMINISHED_OCTAVE = 11
-
-PERFECT_OCTAVE = 12
-AUGMENTED_SEVENTH = 12
 
 
 class NotePitch:
@@ -94,6 +29,7 @@ class NotePitch:
     _ALTS = {
         'bb': '𝄫',
         'b': '♭',
+        # '♮': '',
         '': '',
         '#': '♯',
         '##': '𝄪',
@@ -126,6 +62,34 @@ class NotePitch:
     MAXIMUM_OCTAVE = 9
 
     @classmethod
+    def EnharmonicMatrix(cls):
+        ''' This is the heart of the whole project
+            indeces are used to determine:
+            * when to change octs
+            * intervals between NotePitch instances
+            notes MUST be unique so that TonalKey[d] finds 1 exact match!
+        '''
+        return LoopedList(
+            ## 2-octave enharmonic relationships
+            (  cls('C', '' , 2), cls('B', '#' , 1), cls('D', 'bb', 2)  ), # NAH
+            (  cls('C', '#', 2), cls('D', 'b' , 2), cls('B', '##', 1)  ), # AAH
+
+            ## 1-octave enharmonic relationships
+            (  cls('D', '' , 1), cls('C', '##', 1), cls('E', 'bb', 1)  ), # NHH
+            (  cls('D', '#', 1), cls('E', 'b' , 1), cls('F', 'bb', 1)  ), # AAH
+            (  cls('E', '' , 1), cls('F', 'b' , 1), cls('D', '##', 1)  ), # NAH
+            (  cls('F', '' , 1), cls('E', '#' , 1), cls('G', 'bb', 1)  ), # NAH
+            (  cls('F', '#', 1), cls('G', 'b' , 1), cls('E', '##', 1)  ), # AAH
+            (  cls('G', '' , 1), cls('F', '##', 1), cls('A', 'bb', 1)  ), # NHH
+            (  cls('G', '#', 1), cls('A', 'b' , 1)                     ), # AA
+            (  cls('A', '' , 1), cls('G', '##', 1), cls('B', 'bb', 1)  ), # NHH
+
+            ## 2-octave enharmonic relationships
+            (  cls('A', '#', 1), cls('B', 'b' , 1), cls('C', 'bb', 2)  ), # AAH
+            (  cls('B', '' , 1), cls('C', 'b' , 2), cls('A', '##', 1)  ), # NAH
+        )
+
+    @classmethod
     def possible_chars(cls):
         return [ c for c in cls._CHARS if c ]
 
@@ -143,6 +107,33 @@ class NotePitch:
     @classmethod
     def output_alterations(cls) -> tuple:
         return tuple( cls._ALTS.values() )
+
+    @classmethod
+    def notes_by_alts(cls):
+        ''' yields all 35 possible notes in following order:
+            * 7 notes with alt ''
+            * 7 notes with alt 'b'
+            * 7 notes with alt '#'
+            * 7 notes with alt 'bb'
+            * 7 notes with alt '##'
+        '''
+        # sort alts
+        alts = list( cls.input_alterations() )
+        alts.sort(key=len) # '', b, #, bb, ##
+
+        # get all notes
+        notes = []
+        for ehns in cls.EnharmonicMatrix():
+            for ehn in ehns:
+                notes.append(ehn)
+
+        # yield notes
+        for alt in alts:
+            for note in notes:
+                if note.alt == alt:
+                    # note.oct = 3
+                    yield note
+
 
     def __init__(self, char, *args):
         ''' init WITHOUT specifying argument names
@@ -211,7 +202,7 @@ class NotePitch:
 
     def __sub__(self, other):
         if self.__class__ == other.__class__:
-            oct_interval = (self.oct - other.oct) * PERFECT_OCTAVE
+            oct_interval = (self.oct - other.oct) * Intervals.PERFECT_OCTAVE
             chr_interval = self._CHARS.index(self.chr) - self._CHARS.index(other.chr)
             alt_interval = (
                 self.input_alterations().index(self.alt) - self.input_alterations().index(other.alt)
@@ -238,31 +229,31 @@ class NotePitch:
 
     def __eq__(self, other):
         if other.__class__ == self.__class__:
-            return other - self == UNISON
+            return other - self == Intervals.UNISON
 
     def __ne__(self, other):
         if other.__class__ == self.__class__:
-            return other - self != UNISON
+            return other - self != Intervals.UNISON
         return True
 
     def __gt__(self, other):
         if self.__class__ == other.__class__:
-            return self - other > UNISON
+            return self - other > Intervals.UNISON
         raise TypeError(' > not supported with {}'.format(other.__class__))
 
     def __ge__(self, other):
         if self.__class__ == other.__class__:
-            return self - other >= UNISON
+            return self - other >= Intervals.UNISON
         raise TypeError(' >= not supported with {}'.format(other.__class__))
 
     def __lt__(self, other):
         if self.__class__ == other.__class__:
-            return self - other < UNISON
+            return self - other < Intervals.UNISON
         raise TypeError(' < not supported with {}'.format(other.__class__))
 
     def __le__(self, other):
         if self.__class__ == other.__class__:
-            return self - other <= UNISON
+            return self - other <= Intervals.UNISON
         raise TypeError(' <= not supported with {}'.format(other.__class__))
 
 
@@ -303,62 +294,8 @@ class NotePitch:
 
     @property
     def matrix_coordinates(self):
-        for row_index, row in enumerate(_EnharmonicMatrix):
+        for row_index, row in enumerate( self.EnharmonicMatrix() ):
             for note_index, enharmonic_note in enumerate(row):
                 if self ** enharmonic_note:  # ignore oct
                     return (row_index, note_index)
 
-
-### This is the heart of the whole project
-### indeces are used to determine:
-###   * when to change octs
-###   * intervals between NotePitch instances
-### notes MUST be unique so that TonalKey[d] finds 1 exact match!
-_EnharmonicMatrix = LoopedList(
-
-    ## 2-octave enharmonic relationships
-    (  NotePitch('C', '' , 2), NotePitch('B', '#' , 1), NotePitch('D', 'bb', 2)  ), # NAH
-    (  NotePitch('C', '#', 2), NotePitch('D', 'b' , 2), NotePitch('B', '##', 1)  ), # AAH
-
-    ## 1-octave enharmonic relationships
-    (  NotePitch('D', '' , 1), NotePitch('C', '##', 1), NotePitch('E', 'bb', 1)  ), # NHH
-    (  NotePitch('D', '#', 1), NotePitch('E', 'b' , 1), NotePitch('F', 'bb', 1)  ), # AAH
-    (  NotePitch('E', '' , 1), NotePitch('F', 'b' , 1), NotePitch('D', '##', 1)  ), # NAH
-    (  NotePitch('F', '' , 1), NotePitch('E', '#' , 1), NotePitch('G', 'bb', 1)  ), # NAH
-    (  NotePitch('F', '#', 1), NotePitch('G', 'b' , 1), NotePitch('E', '##', 1)  ), # AAH
-    (  NotePitch('G', '' , 1), NotePitch('F', '##', 1), NotePitch('A', 'bb', 1)  ), # NHH
-    (  NotePitch('G', '#', 1), NotePitch('A', 'b' , 1)                      ),      # AA
-    (  NotePitch('A', '' , 1), NotePitch('G', '##', 1), NotePitch('B', 'bb', 1)  ), # NHH
-
-    ## 2-octave enharmonic relationships
-    (  NotePitch('A', '#', 1), NotePitch('B', 'b' , 1), NotePitch('C', 'bb', 2)  ), # AAH
-    (  NotePitch('B', '' , 1), NotePitch('C', 'b' , 2), NotePitch('A', '##', 1)  ), # NAH
-
-)
-
-def notes_by_alts():
-    ''' yields all 35 possible notes in following order:
-        * 7 notes with alt ''
-        * 7 notes with alt 'b'
-        * 7 notes with alt '#'
-        * 7 notes with alt 'bb'
-        * 7 notes with alt '##'
-    '''
-    # sort alts
-    alts = list(
-        NotePitch.input_alterations()
-    )
-    alts.sort(key=len) # '', b, #, bb, ##
-
-    # get all notes
-    notes = []
-    for ehns in _EnharmonicMatrix:
-        for ehn in ehns:
-            notes.append(ehn)
-
-    # yield notes
-    for alt in alts:
-        for note in notes:
-            if note.alt == alt:
-                # note.oct = 3
-                yield note

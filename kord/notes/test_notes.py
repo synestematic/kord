@@ -1,8 +1,15 @@
 import unittest
 
-from .notes import NotePitch, _EnharmonicMatrix
+from . import NotePitch
 
-from .errors import InvalidNote
+from .constants import (
+    F_4, B_4, B_5,
+    C_FLAT_3, C_FLAT_4, D_FLAT_4, B_FLAT_4, E_FLAT_5, D_FLAT_3, 
+    E_SHARP_3, B_SHARP_3, D_SHARP_4, C_SHARP_5, C_SHARP_3,
+    D_DOUBLE_FLAT_4,
+)
+
+from ..errors import InvalidNote
 
 __all__ = [
     'TestInvalidNotes',
@@ -23,15 +30,12 @@ class NoteEqualityTest(unittest.TestCase):
     DANGEROUS_NON_EQUALS = (
         # ''' Used mainly to test B#, Cb, etc... '''
 
-        (NotePitch('C', 'b', 3), NotePitch('B', '#', 3)),
+        (C_FLAT_3, B_SHARP_3),
+        (E_FLAT_5, D_SHARP_4),
 
-        (NotePitch('C', 'b', 3), NotePitch('B', '#', 3)),
+        (B_5, C_FLAT_4),
 
-        (NotePitch('E', 'b', 5), NotePitch('D', '#', 4)),
-
-        (NotePitch('B', '', 5), NotePitch('C', 'b', 4)),
-
-        (NotePitch('E', '#', 3), NotePitch('F', '', 4)),
+        (E_SHARP_3, F_4),
 
 
         (NotePitch('B', 'b'), NotePitch('C', 'bb')),
@@ -48,10 +52,10 @@ class NoteEqualityTest(unittest.TestCase):
 
 
         # these should eval False OK
-        (NotePitch('A', '#'), NotePitch('B', 'b', 4)),
-        (NotePitch('A', '##'), NotePitch('B', '', 4)),
-        (NotePitch('C', ''), NotePitch('D', 'bb', 4)),
-        (NotePitch('C', '#'), NotePitch('D', 'b', 4)),
+        (NotePitch('A', '#'), B_FLAT_4),
+        (NotePitch('A', '##'), B_4),
+        (NotePitch('C', ''), D_DOUBLE_FLAT_4),
+        (NotePitch('C', '#'), D_FLAT_4),
     )
 
     def setUp(self):
@@ -65,7 +69,7 @@ class NoteEqualityTest(unittest.TestCase):
 
     def testAreEnharmonic(self):
         ''' checks note_pairs in enharmonic rows for different types of enharmonic equality '''
-        for note_pair in _EnharmonicMatrix:
+        for note_pair in NotePitch.EnharmonicMatrix():
 
             # PASS ENHARMONIC EQUALITY
             assert note_pair[0] == note_pair[1], (note_pair[0], note_pair[1])
@@ -85,17 +89,13 @@ class NoteEqualityTest(unittest.TestCase):
     def testEnharmonicOperators(self):
         ''' '''
         print('Testing enharmonic operators')
-        Cs5 = NotePitch('C', '#', 5)
-        Db3 = NotePitch('D', 'b', 3)
-        Cs3 = NotePitch('C', '#', 3)
-        assert Cs3 ** Cs5      # loosest equality
-        assert Db3 == Cs3      # enhamonic notes
-        assert not Db3 >> Cs3  # enh note
-        assert not Cs3 >> Db3  # enh note
+        assert C_SHARP_3 ** C_SHARP_5     # loosest equality
+        assert C_SHARP_3 == D_FLAT_3      # enhamonic notes
+        assert not D_FLAT_3 >> C_SHARP_3  # enh note
+        assert not C_SHARP_3 >> D_FLAT_3  # enh note
 
         # ** same note, ignr oct
         # == enhr note, same oct
         # >> same note, same oct
 
         # // enhr note, ignr oct   do I need to implement this operator ?
-

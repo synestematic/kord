@@ -30,11 +30,12 @@ from kord.keys.chords import (
     Suspended4Chord, Suspended2Chord,
 )
 
-from kord import (
-    PluckedStringInstrument, NotePitch, max_frets_on_screen
-)
 
-from kord import InvalidInstrument, InvalidNote, InvalidAlteration
+from kord.notes import NotePitch
+
+from kord.instruments import PluckedStringInstrument, max_frets_on_screen
+
+from kord.errors import InvalidInstrument, InvalidNote, InvalidAlteration
 
 from bestia.output import echo
 

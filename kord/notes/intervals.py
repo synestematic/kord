@@ -1,0 +1,49 @@
+
+from enum import IntEnum
+
+__all__ = [
+    'Intervals',
+]
+
+class Intervals(IntEnum):
+
+    UNISON = 0
+    DIMINISHED_SECOND = 0
+
+    MINOR_SECOND = 1
+    AUGMENTED_UNISON = 1
+
+    MAJOR_SECOND = 2
+    DIMINISHED_THIRD = 2
+
+    MINOR_THIRD = 3
+    AUGMENTED_SECOND = 3
+
+    MAJOR_THIRD = 4
+    DIMINISHED_FOURTH = 4
+
+    PERFECT_FOURTH = 5
+    AUGMENTED_THIRD = 5
+
+    DIMINISHED_FIFTH = 6
+    AUGMENTED_FOURTH = 6
+
+    PERFECT_FIFTH = 7
+    DIMINISHED_SIXTH = 7
+
+    MINOR_SIXTH = 8
+    AUGMENTED_FIFTH = 8
+
+    MAJOR_SIXTH = 9
+    DIMINISHED_SEVENTH = 9
+
+    MINOR_SEVENTH = 10
+    AUGMENTED_SIXTH = 10
+
+    MAJOR_SEVENTH = 11
+    DIMINISHED_OCTAVE = 11
+
+    PERFECT_OCTAVE = 12
+    AUGMENTED_SEVENTH = 12
+
+

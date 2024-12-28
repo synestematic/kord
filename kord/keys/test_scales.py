@@ -3,14 +3,15 @@ import random
 
 from bestia.output import echo, Row, FString
 
-from .keys.scales import (
+from .scales import (
     ChromaticScale, MajorPentatonicScale, MajorScale,
     MinorScale, MelodicMinorScale, HarmonicMinorScale
 )
 
-from .notes import NotePitch
+from ..notes import NotePitch
+from ..notes.constants import *
 
-from .errors import InvalidOctave
+from ..errors import InvalidOctave
 
 __all__ = [
     'ScaleValidityTest',
@@ -70,6 +71,7 @@ class ScaleValidityTest(unittest.TestCase):
         # G𝄪¹ invalid HarmonicMinorScale
         # A𝄪¹ invalid HarmonicMinorScale
 
+
     def testValidMethod(self):
         for Scale in [self.major_key]:
             assert Scale('c').validate()
@@ -98,7 +100,6 @@ class ScaleValidityTest(unittest.TestCase):
                 line.echo()
 
 
-
     def testInvalidRoots(self):
         echo('\nInvalid {}s'.format(self.major_key.__name__), 'underline')
         for note in self.major_key.invalid_root_notes():
@@ -115,6 +116,7 @@ class ChromaticScalesTest(unittest.TestCase):
         self.c_chromatic = ChromaticScale('C')
         self.f_sharp_chromatic = ChromaticScale('F', '#')
         self.b_flat_chromatic = ChromaticScale('B', 'b')
+
 
     def testIntervalsCount(self):
         assert len(self.c_chromatic.intervals) == 12, self.c_chromatic.intervals
@@ -134,110 +136,87 @@ class ChromaticScalesTest(unittest.TestCase):
             )
         ):
             i += 1
+            print(i)
             if i == 1:
-                assert note >> NotePitch('C', '', 0), note
+                assert note >> C_0, note
             elif i == 2:
-                assert note >> NotePitch('C', '#', 0), note
+                assert note >> C_SHARP_0, note
             elif i == 3:
-                assert note >> NotePitch('D', '', 0), note
+                assert note >> D_0, note
             elif i == 4:
-                assert note >> NotePitch('D', '#', 0), note
+                assert note >> D_SHARP_0, note
             elif i == 5:
-                assert note >> NotePitch('E', '', 0), note
+                assert note >> E_0, note
             elif i == 6:
-                assert note >> NotePitch('F', '', 0), note
+                assert note >> F_0, note
             elif i == 7:
-                assert note >> NotePitch('F', '#', 0), note
+                assert note >> F_SHARP_0, note
             elif i == 8:
-                assert note >> NotePitch('G', '', 0), note
+                assert note >> G_0, note
             elif i == 9:
-                assert note >> NotePitch('G', '#', 0), note
+                assert note >> G_SHARP_0, note
             elif i == 10:
-                assert note >> NotePitch('A', '', 0), note
+                assert note >> A_0, note
             elif i == 11:
-                assert note >> NotePitch('A', '#', 0), note
+                assert note >> A_SHARP_0, note
             elif i == 12:
-                assert note >> NotePitch('B', '', 0), note
+                assert note >> B_0, note
             elif i == 13:
-                assert note >> NotePitch('C', '', 1), note
+                assert note >> C_1, note
             elif i == 14:
-                assert note >> NotePitch('C', '#', 1), note
+                assert note >> C_SHARP_1, note
             elif i == 15:
-                assert note >> NotePitch('D', '', 1), note
+                assert note >> D_1, note
             elif i == 16:
-                assert note >> NotePitch('D', '#', 1), note
+                assert note >> D_SHARP_1, note
             elif i == 17:
-                assert note >> NotePitch('E', '', 1), note
+                assert note >> E_1, note
             elif i == 18:
-                assert note >> NotePitch('F', '', 1), note
+                assert note >> F_1, note
             elif i == 19:
-                assert note >> NotePitch('F', '#', 1), note
+                assert note >> F_SHARP_1, note
             elif i == 20:
-                assert note >> NotePitch('G', '', 1), note
+                assert note >> G_1, note
             elif i == 21:
-                assert note >> NotePitch('G', '#', 1), note
+                assert note >> G_SHARP_1, note
             elif i == 22:
-                assert note >> NotePitch('A', '', 1), note
+                assert note >> A_1, note
             elif i == 23:
-                assert note >> NotePitch('A', '#', 1), note
+                assert note >> A_SHARP_1, note
             elif i == 24:
-                assert note >> NotePitch('B', '', 1), note
+                assert note >> B_1, note
             elif i == 25:
-                assert note >> NotePitch('C', '', 2), note
+                assert note >> C_2, note
             # ..............................
             elif i == 97:
-                assert note >> NotePitch('C', '', 8), note
+                assert note >> C_8, note
             elif i == 98:
-                assert note >> NotePitch('C', '#', 8), note
+                assert note >> C_SHARP_8, note
             elif i == 99:
-                assert note >> NotePitch('D', '', 8), note
+                assert note >> D_8, note
             elif i == 100:
-                assert note >> NotePitch('D', '#', 8), note
+                assert note >> D_SHARP_8, note
             elif i == 101:
-                assert note >> NotePitch('E', '', 8), note
+                assert note >> E_8, note
             elif i == 102:
-                assert note >> NotePitch('F', '', 8), note
+                assert note >> F_8, note
             elif i == 103:
-                assert note >> NotePitch('F', '#', 8), note
+                assert note >> F_SHARP_8, note
             elif i == 104:
-                assert note >> NotePitch('G', '', 8), note
+                assert note >> G_8, note
             elif i == 105:
-                assert note >> NotePitch('G', '#', 8), note
+                assert note >> G_SHARP_8, note
             elif i == 106:
-                assert note >> NotePitch('A', '', 8), note
+                assert note >> A_8, note
             elif i == 107:
-                assert note >> NotePitch('A', '#', 8), note
+                assert note >> A_SHARP_8, note
             elif i == 108:
-                assert note >> NotePitch('B', '', 8), note
+                assert note >> B_8, note
             elif i == 109:
-                assert note >> NotePitch('C', '', 9), note
+                assert note >> C_9, note
             # ..............................
             elif i == 205:
                 assert note >> NotePitch('C', '', 17), note
-            elif i == 206:
-                assert note >> NotePitch('C', '#', 17), note
-            elif i == 207:
-                assert note >> NotePitch('D', '', 17), note
-            elif i == 208:
-                assert note >> NotePitch('D', '#', 17), note
-            elif i == 209:
-                assert note >> NotePitch('E', '', 17), note
-            elif i == 210:
-                assert note >> NotePitch('F', '', 17), note
-            elif i == 211:
-                assert note >> NotePitch('F', '#', 17), note
-            elif i == 212:
-                assert note >> NotePitch('G', '', 17), note
-            elif i == 213:
-                assert note >> NotePitch('G', '#', 17), note
-            elif i == 214:
-                assert note >> NotePitch('A', '', 17), note
-            elif i == 215:
-                assert note >> NotePitch('A', '#', 17), note
-            elif i == 216:
-                assert note >> NotePitch('B', '', 17), note
-            elif i == 217:
-                assert note >> NotePitch('C', '', 18), note
 
 
     def testFSharpChromaticScaleGenerator(self):
@@ -253,59 +232,46 @@ class ChromaticScalesTest(unittest.TestCase):
         ):
             i += 1
             if i == 1:
-                assert note >> NotePitch('F', '#', 0), note
+                assert note >> F_SHARP_0, note
             elif i == 2:
-                assert note >> NotePitch('G', '', 0), note
+                assert note >> G_0, note
             elif i == 3:
-                assert note >> NotePitch('G', '#', 0), note
+                assert note >> G_SHARP_0, note
             elif i == 4:
-                assert note >> NotePitch('A', '', 0), note
+                assert note >> A_0, note
             elif i == 5:
-                assert note >> NotePitch('A', '#', 0), note
+                assert note >> A_SHARP_0, note
             elif i == 6:
-                assert note >> NotePitch('B', '', 0), note
+                assert note >> B_0, note
             elif i == 7:
-                assert note >> NotePitch('C', '', 1), note
+                assert note >> C_1, note
             elif i == 8:
-                assert note >> NotePitch('C', '#', 1), note
+                assert note >> C_SHARP_1, note
             elif i == 9:
-                assert note >> NotePitch('D', '', 1), note
+                assert note >> D_1, note
             elif i == 10:
-                assert note >> NotePitch('D', '#', 1), note
+                assert note >> D_SHARP_1, note
             elif i == 11:
-                assert note >> NotePitch('E', '', 1), note
+                assert note >> E_1, note
             elif i == 12:
-                assert note >> NotePitch('F', '', 1), note
+                assert note >> F_1, note
             elif i == 13:
-                assert note >> NotePitch('F', '#', 1), note
+                assert note >> F_SHARP_1, note
             elif i == 14:
-                assert note >> NotePitch('G', '', 1), note
+                assert note >> G_1, note
             elif i == 15:
-                assert note >> NotePitch('G', '#', 1), note
+                assert note >> G_SHARP_1, note
             elif i == 16:
-                assert note >> NotePitch('A', '', 1), note
+                assert note >> A_1, note
             elif i == 17:
-                assert note >> NotePitch('A', '#', 1), note
+                assert note >> A_SHARP_1, note
             elif i == 18:
-                assert note >> NotePitch('B', '', 1), note
+                assert note >> B_1, note
             elif i == 19:
-                assert note >> NotePitch('C', '', 2), note
+                assert note >> C_2, note
             # ..............................
             elif i == 211:
                 assert note >> NotePitch('C', '', 18), note
-            elif i == 212:
-                assert note >> NotePitch('C', '#', 18), note
-            elif i == 213:
-                assert note >> NotePitch('D', '', 18), note
-            elif i == 214:
-                assert note >> NotePitch('D', '#', 18), note
-            elif i == 215:
-                assert note >> NotePitch('E', '', 18), note
-            elif i == 216:
-                assert note >> NotePitch('F', '', 18), note
-            elif i == 217:
-                assert note >> NotePitch('F', '#', 18), note
-
 
 
     def testBFlatChromaticScaleGenerator(self):
@@ -321,72 +287,38 @@ class ChromaticScalesTest(unittest.TestCase):
         ):
             i += 1
             if i == 1:
-                assert note >> NotePitch('B', 'b', 0), note
+                assert note >> B_FLAT_0, note
             elif i == 2:
-                assert note >> NotePitch('B', '', 0), note
+                assert note >> B_0, note
             elif i == 3:
-                assert note >> NotePitch('C', '', 1), note
+                assert note >> C_1, note
             elif i == 4:
-                assert note >> NotePitch('D', 'b', 1), note
+                assert note >> D_FLAT_1, note
             elif i == 5:
-                assert note >> NotePitch('D', '', 1), note
+                assert note >> D_1, note
             elif i == 6:
-                assert note >> NotePitch('E', 'b', 1), note
+                assert note >> E_FLAT_1, note
             elif i == 7:
-                assert note >> NotePitch('E', '', 1), note
+                assert note >> E_1, note
             elif i == 8:
-                assert note >> NotePitch('F', '', 1), note
+                assert note >> F_1, note
             elif i == 9:
-                assert note >> NotePitch('G', 'b', 1), note
+                assert note >> G_FLAT_1, note
             elif i == 10:
-                assert note >> NotePitch('G', '', 1), note
+                assert note >> G_1, note
             elif i == 11:
-                assert note >> NotePitch('A', 'b', 1), note
+                assert note >> A_FLAT_1, note
             elif i == 12:
-                assert note >> NotePitch('A', '', 1), note
+                assert note >> A_1, note
             elif i == 13:
-                assert note >> NotePitch('B', 'b', 1), note
+                assert note >> B_FLAT_1, note
             elif i == 14:
-                assert note >> NotePitch('B', '', 1), note
+                assert note >> B_1, note
             elif i == 15:
-                assert note >> NotePitch('C', '', 2), note
+                assert note >> C_2, note
             # ..............................
             elif i == 200:
                 assert note >> NotePitch('F', '', 17), note
-            elif i == 201:
-                assert note >> NotePitch('G', 'b', 17), note
-            elif i == 202:
-                assert note >> NotePitch('G', '', 17), note
-            elif i == 203:
-                assert note >> NotePitch('A', 'b', 17), note
-            elif i == 204:
-                assert note >> NotePitch('A', '', 17), note
-            elif i == 205:
-                assert note >> NotePitch('B', 'b', 17), note
-            elif i == 206:
-                assert note >> NotePitch('B', '', 17), note
-            elif i == 207:
-                assert note >> NotePitch('C', '', 18), note
-            elif i == 208:
-                assert note >> NotePitch('D', 'b', 18), note
-            elif i == 209:
-                assert note >> NotePitch('D', '', 18), note
-            elif i == 210:
-                assert note >> NotePitch('E', 'b', 18), note
-            elif i == 211:
-                assert note >> NotePitch('E', '', 18), note
-            elif i == 212:
-                assert note >> NotePitch('F', '', 18), note
-            elif i == 213:
-                assert note >> NotePitch('G', 'b', 18), note
-            elif i == 214:
-                assert note >> NotePitch('G', '', 18), note
-            elif i == 215:
-                assert note >> NotePitch('A', 'b', 18), note
-            elif i == 216:
-                assert note >> NotePitch('A', '', 18), note
-            elif i == 217:
-                assert note >> NotePitch('B', 'b', 18), note
 
 
 class MajorScalesExpectedNotesTest(unittest.TestCase):
@@ -416,69 +348,52 @@ class MajorScalesExpectedNotesTest(unittest.TestCase):
         ):
             i += 1
             if i == 1:
-                assert note >> NotePitch('C', '', 0), note
+                assert note >> C_0, note
             elif i == 2:
-                assert note >> NotePitch('D', '', 0), note
+                assert note >> D_0, note
             elif i == 3:
-                assert note >> NotePitch('E', '', 0), note
+                assert note >> E_0, note
             elif i == 4:
-                assert note >> NotePitch('F', '', 0), note
+                assert note >> F_0, note
             elif i == 5:
-                assert note >> NotePitch('G', '', 0), note
+                assert note >> G_0, note
             elif i == 6:
-                assert note >> NotePitch('A', '', 0), note
+                assert note >> A_0, note
             elif i == 7:
-                assert note >> NotePitch('B', '', 0), note
+                assert note >> B_0, note
             elif i == 8:
-                assert note >> NotePitch('C', '', 1), note
+                assert note >> C_1, note
             elif i == 9:
-                assert note >> NotePitch('D', '', 1), note
+                assert note >> D_1, note
             elif i == 10:
-                assert note >> NotePitch('E', '', 1), note
+                assert note >> E_1, note
             elif i == 11:
-                assert note >> NotePitch('F', '', 1), note
+                assert note >> F_1, note
             elif i == 12:
-                assert note >> NotePitch('G', '', 1), note
+                assert note >> G_1, note
             elif i == 13:
-                assert note >> NotePitch('A', '', 1), note
+                assert note >> A_1, note
             elif i == 14:
-                assert note >> NotePitch('B', '', 1), note
+                assert note >> B_1, note
             elif i == 15:
-                assert note >> NotePitch('C', '', 2), note
+                assert note >> C_2, note
             # ..............................
             elif i == 64:
-                assert note >> NotePitch('C', '', 9), note
+                assert note >> C_9, note
             elif i == 65:
-                assert note >> NotePitch('D', '', 9), note
+                assert note >> D_9, note
             elif i == 66:
-                assert note >> NotePitch('E', '', 9), note
+                assert note >> E_9, note
             elif i == 67:
-                assert note >> NotePitch('F', '', 9), note
+                assert note >> F_9, note
             elif i == 68:
-                assert note >> NotePitch('G', '', 9), note
+                assert note >> G_9, note
             elif i == 69:
-                assert note >> NotePitch('A', '', 9), note
+                assert note >> A_9, note
             elif i == 70:
-                assert note >> NotePitch('B', '', 9), note
+                assert note >> B_9, note
             elif i == 71:
                 assert note >> NotePitch('C', '', 10), note
-            # ..............................
-            elif i == 120:
-                assert note >> NotePitch('C', '', 17), note
-            elif i == 121:
-                assert note >> NotePitch('D', '', 17), note
-            elif i == 122:
-                assert note >> NotePitch('E', '', 17), note
-            elif i == 123:
-                assert note >> NotePitch('F', '', 17), note
-            elif i == 124:
-                assert note >> NotePitch('G', '', 17), note
-            elif i == 125:
-                assert note >> NotePitch('A', '', 17), note
-            elif i == 126:
-                assert note >> NotePitch('B', '', 17), note
-            elif i == 127:
-                assert note >> NotePitch('C', '', 18), note
 
 
     def testBMajorScaleGenerator(self):
@@ -494,72 +409,42 @@ class MajorScalesExpectedNotesTest(unittest.TestCase):
         ):
             i += 1
             if i == 1:
-                assert note >> NotePitch('B', '', 0), note
+                assert note >> B_0, note
             elif i == 2:
-                assert note >> NotePitch('C', '#', 1), note
+                assert note >> C_SHARP_1, note
             elif i == 3:
-                assert note >> NotePitch('D', '#', 1), note
+                assert note >> D_SHARP_1, note
             elif i == 4:
-                assert note >> NotePitch('E', '', 1), note
+                assert note >> E_1, note
             elif i == 5:
-                assert note >> NotePitch('F', '#', 1), note
+                assert note >> F_SHARP_1, note
             elif i == 6:
-                assert note >> NotePitch('G', '#', 1), note
+                assert note >> G_SHARP_1, note
             elif i == 7:
-                assert note >> NotePitch('A', '#', 1), note
+                assert note >> A_SHARP_1, note
             elif i == 8:
-                assert note >> NotePitch('B', '', 1), note
+                assert note >> B_1, note
             elif i == 9:
-                assert note >> NotePitch('C', '#', 2), note
+                assert note >> C_SHARP_2, note
             elif i == 10:
-                assert note >> NotePitch('D', '#', 2), note
+                assert note >> D_SHARP_2, note
             elif i == 11:
-                assert note >> NotePitch('E', '', 2), note
+                assert note >> E_2, note
             elif i == 12:
-                assert note >> NotePitch('F', '#', 2), note
+                assert note >> F_SHARP_2, note
             elif i == 13:
-                assert note >> NotePitch('G', '#', 2), note
+                assert note >> G_SHARP_2, note
             elif i == 14:
-                assert note >> NotePitch('A', '#', 2), note
+                assert note >> A_SHARP_2, note
             elif i == 15:
-                assert note >> NotePitch('B', '', 2), note
+                assert note >> B_2, note
             elif i == 16:
-                assert note >> NotePitch('C', '#', 3), note
+                assert note >> C_SHARP_3, note
             # ..............................
             elif i == 64:
-                assert note >> NotePitch('B', '', 9), note
+                assert note >> B_9, note
             elif i == 65:
                 assert note >> NotePitch('C', '#', 10), note
-            elif i == 66:
-                assert note >> NotePitch('D', '#', 10), note
-            elif i == 67:
-                assert note >> NotePitch('E', '', 10), note
-            elif i == 68:
-                assert note >> NotePitch('F', '#', 10), note
-            elif i == 69:
-                assert note >> NotePitch('G', '#', 10), note
-            elif i == 70:
-                assert note >> NotePitch('A', '#', 10), note
-            elif i == 71:
-                assert note >> NotePitch('B', '', 10), note
-            # ..............................
-            elif i == 120:
-                assert note >> NotePitch('B', '', 17), note
-            elif i == 121:
-                assert note >> NotePitch('C', '#', 18), note
-            elif i == 122:
-                assert note >> NotePitch('D', '#', 18), note
-            elif i == 123:
-                assert note >> NotePitch('E', '', 18), note
-            elif i == 124:
-                assert note >> NotePitch('F', '#', 18), note
-            elif i == 125:
-                assert note >> NotePitch('G', '#', 18), note
-            elif i == 126:
-                assert note >> NotePitch('A', '#', 18), note
-            elif i == 127:
-                assert note >> NotePitch('B', '', 18), note
-
 
 
     def testDFlatMajorScaleGenerator(self):
@@ -575,73 +460,52 @@ class MajorScalesExpectedNotesTest(unittest.TestCase):
         ):
             i += 1
             if i == 1:
-                assert note >> NotePitch('D', 'b', 0), note
+                assert note >> D_FLAT_0, note
             elif i == 2:
-                assert note >> NotePitch('E', 'b', 0), note
+                assert note >> E_FLAT_0, note
             elif i == 3:
-                assert note >> NotePitch('F', '', 0), note
+                assert note >> F_0, note
             elif i == 4:
-                assert note >> NotePitch('G', 'b', 0), note
+                assert note >> G_FLAT_0, note
             elif i == 5:
-                assert note >> NotePitch('A', 'b', 0), note
+                assert note >> A_FLAT_0, note
             elif i == 6:
-                assert note >> NotePitch('B', 'b', 0), note
+                assert note >> B_FLAT_0, note
             elif i == 7:
-                assert note >> NotePitch('C', '', 1), note
+                assert note >> C_1, note
             elif i == 8:
-                assert note >> NotePitch('D', 'b', 1), note
+                assert note >> D_FLAT_1, note
             elif i == 9:
-                assert note >> NotePitch('E', 'b', 1), note
+                assert note >> E_FLAT_1, note
             elif i == 10:
-                assert note >> NotePitch('F', '', 1), note
+                assert note >> F_1, note
             elif i == 11:
-                assert note >> NotePitch('G', 'b', 1), note
+                assert note >> G_FLAT_1, note
             elif i == 12:
-                assert note >> NotePitch('A', 'b', 1), note
+                assert note >> A_FLAT_1, note
             elif i == 13:
-                assert note >> NotePitch('B', 'b', 1), note
+                assert note >> B_FLAT_1, note
             elif i == 14:
-                assert note >> NotePitch('C', '', 2), note
+                assert note >> C_2, note
             elif i == 15:
-                assert note >> NotePitch('D', 'b', 2), note
+                assert note >> D_FLAT_2, note
             elif i == 16:
-                assert note >> NotePitch('E', 'b', 2), note
+                assert note >> E_FLAT_2, note
             # ..............................
             elif i == 64:
-                assert note >> NotePitch('D', 'b', 9), note
+                assert note >> D_FLAT_9, note
             elif i == 65:
-                assert note >> NotePitch('E', 'b', 9), note
+                assert note >> E_FLAT_9, note
             elif i == 66:
-                assert note >> NotePitch('F', '', 9), note
+                assert note >> F_9, note
             elif i == 67:
-                assert note >> NotePitch('G', 'b', 9), note
+                assert note >> G_FLAT_9, note
             elif i == 68:
-                assert note >> NotePitch('A', 'b', 9), note
+                assert note >> A_FLAT_9, note
             elif i == 69:
-                assert note >> NotePitch('B', 'b', 9), note
+                assert note >> B_FLAT_9, note
             elif i == 70:
                 assert note >> NotePitch('C', '', 10), note
-            elif i == 71:
-                assert note >> NotePitch('D', 'b', 10), note
-            elif i == 72:
-                assert note >> NotePitch('E', 'b', 10), note
-            # ..............................
-            elif i == 120:
-                assert note >> NotePitch('D', 'b', 17), note
-            elif i == 121:
-                assert note >> NotePitch('E', 'b', 17), note
-            elif i == 122:
-                assert note >> NotePitch('F', '', 17), note
-            elif i == 123:
-                assert note >> NotePitch('G', 'b', 17), note
-            elif i == 124:
-                assert note >> NotePitch('A', 'b', 17), note
-            elif i == 125:
-                assert note >> NotePitch('B', 'b', 17), note
-            elif i == 126:
-                assert note >> NotePitch('C', '', 18), note
-            elif i == 127:
-                assert note >> NotePitch('D', 'b', 18), note
 
 
 class TonalScaleSpellMethodTest(unittest.TestCase):
@@ -700,30 +564,30 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
 
             {
                 'scale': self.scales['Ab_chromatic'],
-                'non_diatonic_note': NotePitch('A', '#', 1), # enharmonic
-                'exp_diatonic_note': NotePitch('B', 'b', 1), # equals
+                'non_diatonic_note': A_SHARP_1, # enharmonic
+                'exp_diatonic_note': B_FLAT_1, # equals
             },
 
             {
                 'scale': self.scales['B_major'],
-                'non_diatonic_note': NotePitch('D', 1),      # missing note
-                'exp_diatonic_note': NotePitch('D', '#', 1), # next note
+                'non_diatonic_note': D_1,      # missing note
+                'exp_diatonic_note': D_SHARP_1, # next note
             },
 
             {
                 'scale': self.scales['Bb_minor'],
-                'non_diatonic_note': NotePitch('D', '#', 1), # enharmonic
-                'exp_diatonic_note': NotePitch('E', 'b', 1), # equals
+                'non_diatonic_note': D_SHARP_1, # enharmonic
+                'exp_diatonic_note': E_FLAT_1, # equals
             },
             {
                 'scale': self.scales['C_mel_minor'],
-                'non_diatonic_note': NotePitch('F', '#', 0), # missing note
-                'exp_diatonic_note': NotePitch('G', '',  0), # next note
+                'non_diatonic_note': F_SHARP_0, # missing note
+                'exp_diatonic_note': G_0, # next note
             },
             {
                 'scale': self.scales['F#_har_minor'],
-                'non_diatonic_note': NotePitch('C', 'b', 4), # enharmonic
-                'exp_diatonic_note': NotePitch('B', '' , 3), # equals
+                'non_diatonic_note': C_FLAT_4, # enharmonic
+                'exp_diatonic_note': B_3, # equals
             },
 
         ]
@@ -752,28 +616,28 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
         test_parameters = [
             {
                 'scale': self.scales['Ab_chromatic'],
-                'non_diatonic_note': NotePitch('A', '#', 1), # enharmonic
-                'exp_diatonic_note': NotePitch('B', 'b', 1), # equals
+                'non_diatonic_note': A_SHARP_1, # enharmonic
+                'exp_diatonic_note': B_FLAT_1, # equals
             },
             {
                 'scale': self.scales['B_major'],
-                'non_diatonic_note': NotePitch('D', 1),      # missing note
+                'non_diatonic_note': D_1,      # missing note
                 'exp_diatonic_note': None,              # yields a None, not D#
             },
             {
                 'scale': self.scales['Bb_minor'],
-                'non_diatonic_note': NotePitch('D', '#', 1), # enharmonic
-                'exp_diatonic_note': NotePitch('E', 'b', 1), # equals
+                'non_diatonic_note': D_SHARP_1, # enharmonic
+                'exp_diatonic_note': E_FLAT_1, # equals
             },
             {
                 'scale': self.scales['C_mel_minor'],
-                'non_diatonic_note': NotePitch('F', '#', 0), # missing note
+                'non_diatonic_note': F_SHARP_0, # missing note
                 'exp_diatonic_note': None,              # yields a None, not G
             },
             {
                 'scale': self.scales['F#_har_minor'],
-                'non_diatonic_note': NotePitch('C', 'b', 4), # enharmonic
-                'exp_diatonic_note': NotePitch('B', '' , 3), # equals
+                'non_diatonic_note': C_FLAT_4, # enharmonic
+                'exp_diatonic_note': B_3, # equals
             },
         ]
 
@@ -804,31 +668,31 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
             note_count=64, start_note=None, yield_all=True
         )):
             if i == 0:
-                assert note >> NotePitch('C', '', 0), note
+                assert note >> C_0, note
             elif i == 1:
                 assert note == None
             elif i == 2:
-                assert note >> NotePitch('D', '', 0), note
+                assert note >> D_0, note
             elif i == 3:
                 assert note == None
             elif i == 4:
-                assert note >> NotePitch('E', '', 0), note
+                assert note >> E_0, note
             elif i == 5:
-                assert note >> NotePitch('F', '', 0), note
+                assert note >> F_0, note
             elif i == 6:
                 assert note == None
             elif i == 7:
-                assert note >> NotePitch('G', '', 0), note
+                assert note >> G_0, note
             elif i == 8:
                 assert note == None
             elif i == 9:
-                assert note >> NotePitch('A', '', 0), note
+                assert note >> A_0, note
             elif i == 10:
                 assert note == None
             elif i == 11:
-                assert note >> NotePitch('B', '', 0), note
+                assert note >> B_0, note
             elif i == 12:
-                assert note >> NotePitch('C', '', 1), note
+                assert note >> C_1, note
 
 
     def testChromaticNoneYields(self):
@@ -848,21 +712,21 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
         )):
             i += 1
             if i == 1:
-                assert note >> NotePitch('A', '', 0), note
+                assert note >> A_0, note
             elif i == 2:
                 assert not note, note
             elif i == 3:
-                assert note >> NotePitch('B', '', 0), note
+                assert note >> B_0, note
             elif i == 4:
                 assert not note, note
             elif i == 5:
-                assert note >> NotePitch('C', '#', 1), note
+                assert note >> C_SHARP_1, note
             elif i == 6:
-                assert note >> NotePitch('D', '', 1), note
+                assert note >> D_1, note
             elif i == 7:
                 assert not note, note
             elif i == 8:
-                assert note >> NotePitch('E', '', 1), note
+                assert note >> E_1, note
 
 
 
@@ -875,7 +739,7 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
         for i, note in enumerate(
             MajorPentatonicScale('C').spell(
                 yield_all=1,
-                start_note=NotePitch('B', '', 3),
+                start_note=B_3,
                 note_count=3
             )
         ):
@@ -884,7 +748,7 @@ class TonalScaleSpellMethodTest(unittest.TestCase):
                 assert not note, note
             if i == 2:
                 assert note, note
-                assert note >> NotePitch('C', '', 4), note
+                assert note >> C_4, note
 
 
     def testMaxOctave(self):

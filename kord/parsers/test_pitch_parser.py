@@ -4,6 +4,11 @@ from .pitch_parser import NotePitchParser
 
 from ..notes import NotePitch
 
+from ..notes.constants import (
+    C_3, F_3, E_3, A_3, D_3, G_3, B_3,
+    D_SHARP_3, E_FLAT_3, C_DOUBLE_SHARP_3, G_DOUBLE_FLAT_3,
+)
+
 from ..errors import InvalidNote, InvalidAlteration, InvalidOctave
 
 __all__ = [
@@ -13,21 +18,21 @@ __all__ = [
 class NotePitchParserTest(unittest.TestCase):
 
     CHAR_WINS = [
-        ['C', NotePitch('C')],
-        ['D', NotePitch('D')],
-        ['E', NotePitch('E')],
-        ['F', NotePitch('F')],
-        ['G', NotePitch('G')],
-        ['A', NotePitch('A')],
-        ['B', NotePitch('B')],
+        ['C', C_3],
+        ['D', D_3],
+        ['E', E_3],
+        ['F', F_3],
+        ['G', G_3],
+        ['A', A_3],
+        ['B', B_3],
 
-        ['c', NotePitch('C')],
-        ['d', NotePitch('D')],
-        ['e', NotePitch('E')],
-        ['f', NotePitch('F')],
-        ['g', NotePitch('G')],
-        ['a', NotePitch('A')],
-        ['b', NotePitch('B')],
+        ['c', C_3],
+        ['d', D_3],
+        ['e', E_3],
+        ['f', F_3],
+        ['g', G_3],
+        ['a', A_3],
+        ['b', B_3],
     ]
 
     CHAR_FAILS = [
@@ -49,23 +54,23 @@ class NotePitchParserTest(unittest.TestCase):
     ]
 
     ALTS_WINS = [
-        ['D#', NotePitch('D', '#')],
-        ['D♯', NotePitch('D', '#')],
+        ['D#', D_SHARP_3],
+        ['D♯', D_SHARP_3],
 
-        ['C##', NotePitch('C', '##')],
-        ['C♯♯', NotePitch('C', '##')],
-        ['C#♯', NotePitch('C', '##')],
-        ['C♯#', NotePitch('C', '##')],
-        ['C𝄪', NotePitch('C', '##')],
+        ['C##', C_DOUBLE_SHARP_3],
+        ['C♯♯', C_DOUBLE_SHARP_3],
+        ['C#♯', C_DOUBLE_SHARP_3],
+        ['C♯#', C_DOUBLE_SHARP_3],
+        ['C𝄪',  C_DOUBLE_SHARP_3],
 
-        ['Eb', NotePitch('E', 'b')],
-        ['E♭', NotePitch('E', 'b')],
+        ['Eb', E_FLAT_3],
+        ['E♭', E_FLAT_3],
 
-        ['Gbb', NotePitch('G', 'bb')],
-        ['G♭♭', NotePitch('G', 'bb')],
-        ['Gb♭', NotePitch('G', 'bb')],
-        ['G♭b', NotePitch('G', 'bb')],
-        ['G𝄫', NotePitch('G', 'bb')],
+        ['Gbb', G_DOUBLE_FLAT_3],
+        ['G♭♭', G_DOUBLE_FLAT_3],
+        ['Gb♭', G_DOUBLE_FLAT_3],
+        ['G♭b', G_DOUBLE_FLAT_3],
+        ['G𝄫',  G_DOUBLE_FLAT_3],
     ]
 
     ALTS_FAILS = [

@@ -30,6 +30,7 @@ class NotePitchParser:
 
     def _parse_oct(self):
         if len(self.to_parse) > 1:
+            # use str.isdigit()
             try:
                 # this being an int means octave > MAXIMUM_OCTAVE
                 octave = int(self.to_parse[-2])
