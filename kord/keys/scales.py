@@ -1,6 +1,6 @@
 from bestia.output import Row, FString
 
-from ..notes import NotePitch, _EnharmonicMatrix
+from ..notes import NotePitch
 from ..notes.intervals import Intervals
 
 from ..errors import InvalidNote, InvalidOctave
@@ -159,7 +159,7 @@ class TonalKey:
 
         # GET DEGREE PROPERTIES FROM ENHARMONIC MATRIX
         next_notes = [
-            n for n in _EnharmonicMatrix[
+            n for n in NotePitch.EnharmonicMatrix()[
                 self.root.enharmonic_row + spare_sts
             ] if n.chr == self.root.adjacent_chr(d - 1) # EXPECTED TONE
         ]
@@ -467,7 +467,7 @@ class ChromaticScale(TonalKey):
         # DO I REALLY NEED THESE 3 CHECKS ?
         # MATCH ROOT_TONE
         next_notes = [
-            n for n in _EnharmonicMatrix[
+            n for n in NotePitch.EnharmonicMatrix()[
                 self.root.enharmonic_row + spare_sts
             ] if n ** self.root
         ]
@@ -475,7 +475,7 @@ class ChromaticScale(TonalKey):
         if not next_notes:
             # MATCH ROOT_ALT
             next_notes = [
-                n for n in _EnharmonicMatrix[
+                n for n in NotePitch.EnharmonicMatrix()[
                     self.root.enharmonic_row + spare_sts
                 ] if n.alt == self.root.alt[:-1]
             ]
@@ -484,7 +484,7 @@ class ChromaticScale(TonalKey):
                 # CHOOSE "#" or ""
                 chosen_alt = '#' if self.root.alt == '' else self.root.alt
                 next_notes = [
-                    n for n in _EnharmonicMatrix[
+                    n for n in NotePitch.EnharmonicMatrix()[
                         self.root.enharmonic_row + spare_sts
                     ] if n.alt == chosen_alt
                 ]

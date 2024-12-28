@@ -61,6 +61,34 @@ class NotePitch:
     MAXIMUM_OCTAVE = 9
 
     @classmethod
+    def EnharmonicMatrix(cls):
+        ''' This is the heart of the whole project
+            indeces are used to determine:
+            * when to change octs
+            * intervals between NotePitch instances
+            notes MUST be unique so that TonalKey[d] finds 1 exact match!
+        '''
+        return LoopedList(
+            ## 2-octave enharmonic relationships
+            (  cls('C', '' , 2), cls('B', '#' , 1), cls('D', 'bb', 2)  ), # NAH
+            (  cls('C', '#', 2), cls('D', 'b' , 2), cls('B', '##', 1)  ), # AAH
+
+            ## 1-octave enharmonic relationships
+            (  cls('D', '' , 1), cls('C', '##', 1), cls('E', 'bb', 1)  ), # NHH
+            (  cls('D', '#', 1), cls('E', 'b' , 1), cls('F', 'bb', 1)  ), # AAH
+            (  cls('E', '' , 1), cls('F', 'b' , 1), cls('D', '##', 1)  ), # NAH
+            (  cls('F', '' , 1), cls('E', '#' , 1), cls('G', 'bb', 1)  ), # NAH
+            (  cls('F', '#', 1), cls('G', 'b' , 1), cls('E', '##', 1)  ), # AAH
+            (  cls('G', '' , 1), cls('F', '##', 1), cls('A', 'bb', 1)  ), # NHH
+            (  cls('G', '#', 1), cls('A', 'b' , 1)                      ),# AA
+            (  cls('A', '' , 1), cls('G', '##', 1), cls('B', 'bb', 1)  ), # NHH
+
+            ## 2-octave enharmonic relationships
+            (  cls('A', '#', 1), cls('B', 'b' , 1), cls('C', 'bb', 2)  ), # AAH
+            (  cls('B', '' , 1), cls('C', 'b' , 2), cls('A', '##', 1)  ), # NAH
+        )
+
+    @classmethod
     def possible_chars(cls):
         return [ c for c in cls._CHARS if c ]
 
@@ -94,7 +122,7 @@ class NotePitch:
 
         # get all notes
         notes = []
-        for ehns in _EnharmonicMatrix:
+        for ehns in cls.EnharmonicMatrix():
             for ehn in ehns:
                 notes.append(ehn)
 
@@ -265,33 +293,8 @@ class NotePitch:
 
     @property
     def matrix_coordinates(self):
-        for row_index, row in enumerate(_EnharmonicMatrix):
+        for row_index, row in enumerate( self.EnharmonicMatrix() ):
             for note_index, enharmonic_note in enumerate(row):
                 if self ** enharmonic_note:  # ignore oct
                     return (row_index, note_index)
 
-
-### This is the heart of the whole project
-### indeces are used to determine:
-###   * when to change octs
-###   * intervals between NotePitch instances
-### notes MUST be unique so that TonalKey[d] finds 1 exact match!
-_EnharmonicMatrix = LoopedList(
-    ## 2-octave enharmonic relationships
-    (  NotePitch('C', '' , 2), NotePitch('B', '#' , 1), NotePitch('D', 'bb', 2)  ), # NAH
-    (  NotePitch('C', '#', 2), NotePitch('D', 'b' , 2), NotePitch('B', '##', 1)  ), # AAH
-
-    ## 1-octave enharmonic relationships
-    (  NotePitch('D', '' , 1), NotePitch('C', '##', 1), NotePitch('E', 'bb', 1)  ), # NHH
-    (  NotePitch('D', '#', 1), NotePitch('E', 'b' , 1), NotePitch('F', 'bb', 1)  ), # AAH
-    (  NotePitch('E', '' , 1), NotePitch('F', 'b' , 1), NotePitch('D', '##', 1)  ), # NAH
-    (  NotePitch('F', '' , 1), NotePitch('E', '#' , 1), NotePitch('G', 'bb', 1)  ), # NAH
-    (  NotePitch('F', '#', 1), NotePitch('G', 'b' , 1), NotePitch('E', '##', 1)  ), # AAH
-    (  NotePitch('G', '' , 1), NotePitch('F', '##', 1), NotePitch('A', 'bb', 1)  ), # NHH
-    (  NotePitch('G', '#', 1), NotePitch('A', 'b' , 1)                      ),      # AA
-    (  NotePitch('A', '' , 1), NotePitch('G', '##', 1), NotePitch('B', 'bb', 1)  ), # NHH
-
-    ## 2-octave enharmonic relationships
-    (  NotePitch('A', '#', 1), NotePitch('B', 'b' , 1), NotePitch('C', 'bb', 2)  ), # AAH
-    (  NotePitch('B', '' , 1), NotePitch('C', 'b' , 2), NotePitch('A', '##', 1)  ), # NAH
-)

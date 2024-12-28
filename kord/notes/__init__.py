@@ -9,10 +9,6 @@ __all__ = [
     'NotePitch',
 ]
 
-# put enharmonic matrix and note bya lts inside note pitch class
-
-# PRELEVARE SOLDI X TAXI
-
 # C3 = NotePitch('C', '' , 3)
 # D3 = NotePitch('D', '' , 3)
 # E3 = NotePitch('E', '' , 3)
