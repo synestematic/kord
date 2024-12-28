@@ -71,6 +71,7 @@ class ScaleValidityTest(unittest.TestCase):
         # G𝄪¹ invalid HarmonicMinorScale
         # A𝄪¹ invalid HarmonicMinorScale
 
+
     def testValidMethod(self):
         for Scale in [self.major_key]:
             assert Scale('c').validate()
@@ -99,7 +100,6 @@ class ScaleValidityTest(unittest.TestCase):
                 line.echo()
 
 
-
     def testInvalidRoots(self):
         echo('\nInvalid {}s'.format(self.major_key.__name__), 'underline')
         for note in self.major_key.invalid_root_notes():
@@ -116,6 +116,7 @@ class ChromaticScalesTest(unittest.TestCase):
         self.c_chromatic = ChromaticScale('C')
         self.f_sharp_chromatic = ChromaticScale('F', '#')
         self.b_flat_chromatic = ChromaticScale('B', 'b')
+
 
     def testIntervalsCount(self):
         assert len(self.c_chromatic.intervals) == 12, self.c_chromatic.intervals
@@ -216,30 +217,6 @@ class ChromaticScalesTest(unittest.TestCase):
             # ..............................
             elif i == 205:
                 assert note >> NotePitch('C', '', 17), note
-            elif i == 206:
-                assert note >> NotePitch('C', '#', 17), note
-            elif i == 207:
-                assert note >> NotePitch('D', '', 17), note
-            elif i == 208:
-                assert note >> NotePitch('D', '#', 17), note
-            elif i == 209:
-                assert note >> NotePitch('E', '', 17), note
-            elif i == 210:
-                assert note >> NotePitch('F', '', 17), note
-            elif i == 211:
-                assert note >> NotePitch('F', '#', 17), note
-            elif i == 212:
-                assert note >> NotePitch('G', '', 17), note
-            elif i == 213:
-                assert note >> NotePitch('G', '#', 17), note
-            elif i == 214:
-                assert note >> NotePitch('A', '', 17), note
-            elif i == 215:
-                assert note >> NotePitch('A', '#', 17), note
-            elif i == 216:
-                assert note >> NotePitch('B', '', 17), note
-            elif i == 217:
-                assert note >> NotePitch('C', '', 18), note
 
 
     def testFSharpChromaticScaleGenerator(self):
@@ -295,19 +272,6 @@ class ChromaticScalesTest(unittest.TestCase):
             # ..............................
             elif i == 211:
                 assert note >> NotePitch('C', '', 18), note
-            elif i == 212:
-                assert note >> NotePitch('C', '#', 18), note
-            elif i == 213:
-                assert note >> NotePitch('D', '', 18), note
-            elif i == 214:
-                assert note >> NotePitch('D', '#', 18), note
-            elif i == 215:
-                assert note >> NotePitch('E', '', 18), note
-            elif i == 216:
-                assert note >> NotePitch('F', '', 18), note
-            elif i == 217:
-                assert note >> NotePitch('F', '#', 18), note
-
 
 
     def testBFlatChromaticScaleGenerator(self):
@@ -355,40 +319,6 @@ class ChromaticScalesTest(unittest.TestCase):
             # ..............................
             elif i == 200:
                 assert note >> NotePitch('F', '', 17), note
-            elif i == 201:
-                assert note >> NotePitch('G', 'b', 17), note
-            elif i == 202:
-                assert note >> NotePitch('G', '', 17), note
-            elif i == 203:
-                assert note >> NotePitch('A', 'b', 17), note
-            elif i == 204:
-                assert note >> NotePitch('A', '', 17), note
-            elif i == 205:
-                assert note >> NotePitch('B', 'b', 17), note
-            elif i == 206:
-                assert note >> NotePitch('B', '', 17), note
-            elif i == 207:
-                assert note >> NotePitch('C', '', 18), note
-            elif i == 208:
-                assert note >> NotePitch('D', 'b', 18), note
-            elif i == 209:
-                assert note >> NotePitch('D', '', 18), note
-            elif i == 210:
-                assert note >> NotePitch('E', 'b', 18), note
-            elif i == 211:
-                assert note >> NotePitch('E', '', 18), note
-            elif i == 212:
-                assert note >> NotePitch('F', '', 18), note
-            elif i == 213:
-                assert note >> NotePitch('G', 'b', 18), note
-            elif i == 214:
-                assert note >> NotePitch('G', '', 18), note
-            elif i == 215:
-                assert note >> NotePitch('A', 'b', 18), note
-            elif i == 216:
-                assert note >> NotePitch('A', '', 18), note
-            elif i == 217:
-                assert note >> NotePitch('B', 'b', 18), note
 
 
 class MajorScalesExpectedNotesTest(unittest.TestCase):
@@ -464,23 +394,6 @@ class MajorScalesExpectedNotesTest(unittest.TestCase):
                 assert note >> B_9, note
             elif i == 71:
                 assert note >> NotePitch('C', '', 10), note
-            # ..............................
-            elif i == 120:
-                assert note >> NotePitch('C', '', 17), note
-            elif i == 121:
-                assert note >> NotePitch('D', '', 17), note
-            elif i == 122:
-                assert note >> NotePitch('E', '', 17), note
-            elif i == 123:
-                assert note >> NotePitch('F', '', 17), note
-            elif i == 124:
-                assert note >> NotePitch('G', '', 17), note
-            elif i == 125:
-                assert note >> NotePitch('A', '', 17), note
-            elif i == 126:
-                assert note >> NotePitch('B', '', 17), note
-            elif i == 127:
-                assert note >> NotePitch('C', '', 18), note
 
 
     def testBMajorScaleGenerator(self):
@@ -532,36 +445,6 @@ class MajorScalesExpectedNotesTest(unittest.TestCase):
                 assert note >> B_9, note
             elif i == 65:
                 assert note >> NotePitch('C', '#', 10), note
-            elif i == 66:
-                assert note >> NotePitch('D', '#', 10), note
-            elif i == 67:
-                assert note >> NotePitch('E', '', 10), note
-            elif i == 68:
-                assert note >> NotePitch('F', '#', 10), note
-            elif i == 69:
-                assert note >> NotePitch('G', '#', 10), note
-            elif i == 70:
-                assert note >> NotePitch('A', '#', 10), note
-            elif i == 71:
-                assert note >> NotePitch('B', '', 10), note
-            # ..............................
-            elif i == 120:
-                assert note >> NotePitch('B', '', 17), note
-            elif i == 121:
-                assert note >> NotePitch('C', '#', 18), note
-            elif i == 122:
-                assert note >> NotePitch('D', '#', 18), note
-            elif i == 123:
-                assert note >> NotePitch('E', '', 18), note
-            elif i == 124:
-                assert note >> NotePitch('F', '#', 18), note
-            elif i == 125:
-                assert note >> NotePitch('G', '#', 18), note
-            elif i == 126:
-                assert note >> NotePitch('A', '#', 18), note
-            elif i == 127:
-                assert note >> NotePitch('B', '', 18), note
-
 
 
     def testDFlatMajorScaleGenerator(self):
@@ -623,27 +506,6 @@ class MajorScalesExpectedNotesTest(unittest.TestCase):
                 assert note >> B_FLAT_9, note
             elif i == 70:
                 assert note >> NotePitch('C', '', 10), note
-            elif i == 71:
-                assert note >> NotePitch('D', 'b', 10), note
-            elif i == 72:
-                assert note >> NotePitch('E', 'b', 10), note
-            # ..............................
-            elif i == 120:
-                assert note >> NotePitch('D', 'b', 17), note
-            elif i == 121:
-                assert note >> NotePitch('E', 'b', 17), note
-            elif i == 122:
-                assert note >> NotePitch('F', '', 17), note
-            elif i == 123:
-                assert note >> NotePitch('G', 'b', 17), note
-            elif i == 124:
-                assert note >> NotePitch('A', 'b', 17), note
-            elif i == 125:
-                assert note >> NotePitch('B', 'b', 17), note
-            elif i == 126:
-                assert note >> NotePitch('C', '', 18), note
-            elif i == 127:
-                assert note >> NotePitch('D', 'b', 18), note
 
 
 class TonalScaleSpellMethodTest(unittest.TestCase):
