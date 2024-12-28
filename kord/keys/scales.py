@@ -1,6 +1,6 @@
 from bestia.output import Row, FString
 
-from ..notes import NotePitch, notes_by_alts, _EnharmonicMatrix
+from ..notes import NotePitch, _EnharmonicMatrix
 from ..notes.intervals import Intervals
 
 from ..errors import InvalidNote, InvalidOctave
@@ -90,7 +90,7 @@ class TonalKey:
         valid_roots = []
         invalid_roots = []
 
-        for note in notes_by_alts():
+        for note in NotePitch.notes_by_alts():
 
             try:
                 invalid_root = False

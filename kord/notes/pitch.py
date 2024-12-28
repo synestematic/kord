@@ -79,6 +79,33 @@ class NotePitch:
     def output_alterations(cls) -> tuple:
         return tuple( cls._ALTS.values() )
 
+    @classmethod
+    def notes_by_alts(cls):
+        ''' yields all 35 possible notes in following order:
+            * 7 notes with alt ''
+            * 7 notes with alt 'b'
+            * 7 notes with alt '#'
+            * 7 notes with alt 'bb'
+            * 7 notes with alt '##'
+        '''
+        # sort alts
+        alts = list( cls.input_alterations() )
+        alts.sort(key=len) # '', b, #, bb, ##
+
+        # get all notes
+        notes = []
+        for ehns in _EnharmonicMatrix:
+            for ehn in ehns:
+                notes.append(ehn)
+
+        # yield notes
+        for alt in alts:
+            for note in notes:
+                if note.alt == alt:
+                    # note.oct = 3
+                    yield note
+
+
     def __init__(self, char, *args):
         ''' init WITHOUT specifying argument names
             should be able to handle:
@@ -244,14 +271,12 @@ class NotePitch:
                     return (row_index, note_index)
 
 
-
 ### This is the heart of the whole project
 ### indeces are used to determine:
 ###   * when to change octs
 ###   * intervals between NotePitch instances
 ### notes MUST be unique so that TonalKey[d] finds 1 exact match!
 _EnharmonicMatrix = LoopedList(
-
     ## 2-octave enharmonic relationships
     (  NotePitch('C', '' , 2), NotePitch('B', '#' , 1), NotePitch('D', 'bb', 2)  ), # NAH
     (  NotePitch('C', '#', 2), NotePitch('D', 'b' , 2), NotePitch('B', '##', 1)  ), # AAH
@@ -269,5 +294,4 @@ _EnharmonicMatrix = LoopedList(
     ## 2-octave enharmonic relationships
     (  NotePitch('A', '#', 1), NotePitch('B', 'b' , 1), NotePitch('C', 'bb', 2)  ), # AAH
     (  NotePitch('B', '' , 1), NotePitch('C', 'b' , 2), NotePitch('A', '##', 1)  ), # NAH
-
 )
