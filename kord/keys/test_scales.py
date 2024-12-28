@@ -3,14 +3,14 @@ import random
 
 from bestia.output import echo, Row, FString
 
-from .keys.scales import (
+from .scales import (
     ChromaticScale, MajorPentatonicScale, MajorScale,
     MinorScale, MelodicMinorScale, HarmonicMinorScale
 )
 
-from .notes import NotePitch
+from ..notes import NotePitch
 
-from .errors import InvalidOctave
+from ..errors import InvalidOctave
 
 __all__ = [
     'ScaleValidityTest',
