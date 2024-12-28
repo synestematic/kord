@@ -1,15 +1,15 @@
 import unittest
 
-from .notes import NotePitch
+from . import NotePitch
 
-from .notes.constants import (
+from .constants import (
     F_4, B_4, B_5,
     C_FLAT_3, C_FLAT_4, D_FLAT_4, B_FLAT_4, E_FLAT_5, D_FLAT_3, 
     E_SHARP_3, B_SHARP_3, D_SHARP_4, C_SHARP_5, C_SHARP_3,
     D_DOUBLE_FLAT_4,
 )
 
-from .errors import InvalidNote
+from ..errors import InvalidNote
 
 __all__ = [
     'TestInvalidNotes',
