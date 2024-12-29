@@ -1,8 +1,8 @@
-PACKAGE = kord
+PKG = kord
 
 DISTR_DIRS = dist \
 	build \
-	${PACKAGE}.egg-info
+	${PKG}.egg-info
 
 CLEAN_DIRS = kord/__pycache__ \
        kord/keys/__pycache__ \
@@ -15,25 +15,23 @@ CLEAN_DIRS = kord/__pycache__ \
 default: build install clean
 
 get_version: setup.py
-	@$(eval VERSION := $(shell cat setup.py | grep version | cut -d'=' -f 2 | cut -d',' -f 1))
+	@$(eval VER := $(shell cat setup.py | grep version | cut -d'=' -f 2 | cut -d',' -f 1))
 
-build: get_version setup.py ${PACKAGE}
-	@echo "Building ${PACKAGE} ${VERSION}..."
-	@python3 setup.py sdist bdist_wheel && echo "Success" || exit
+build: get_version setup.py ${PKG}
+	@python3 setup.py sdist bdist_wheel && echo "done building ${PKG} ${VER}, bye!" || exit
 
 install: get_version ${DISTR_DIRS}
-	@echo "Installing ${PACKAGE} ${VERSION}"
+	@echo "Installing ${PKG} ${VER}"
 	@cd dist && \
-	source ~/.pyenv/versions/"${PACKAGE}"/bin/activate && pip install --ignore-installed "${PACKAGE}"-"${VERSION}"-py3-none-any.whl && \
+	source ~/.pyenv/versions/"${PKG}"/bin/activate && pip install --ignore-installed "${PKG}"-"${VER}"-py3-none-any.whl && \
 	cd ..
 
 clean:
-	@echo "Cleaning up"
 	-@for dir in ${DISTR_DIRS} ; do \
-		[ -d "$${dir}" ] && rm -rf "$${dir}" && echo "Deleted $${dir} directory" \ ; \
+		[ -d "$${dir}" ] && rm -rf "$${dir}" && echo "Deleted dir:  $${dir}" \ ; \
 	done
 	-@for dir in ${CLEAN_DIRS} ; do \
-		[ -d "$${dir}" ] && rm -rf "$${dir}" && echo "Deleted $${dir} directory" \ ; \
+		[ -d "$${dir}" ] && rm -rf "$${dir}" && echo "Deleted dir:  $${dir}" \ ; \
 	done
 
 publish: build
@@ -41,7 +39,7 @@ publish: build
 	@twine upload dist/*
 
 test:
-	@source ~/.pyenv/versions/"${PACKAGE}"/bin/activate && python test.py || python3 test.py
+	@source ~/.pyenv/versions/"${PKG}"/bin/activate && python test.py || python3 test.py
 
 dev:
-	@source ~/.pyenv/versions/"${PACKAGE}"/bin/activate && python dev.py  || python3 dev.py
+	@source ~/.pyenv/versions/"${PKG}"/bin/activate && python dev.py  || python3 dev.py
