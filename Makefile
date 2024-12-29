@@ -1,5 +1,5 @@
 PACKAGE = kord
-DISTR_DIRS = dist build ${PACKAGE}.egg-info
+DISTR_DIRS = dist   build   ${PACKAGE}.egg-info
 CLEAN_DIRS = kord/__pycache__/ kord/keys/__pycache__/ kord/notes/__pycache__/ kord/notes/constants/__pycache__/ kord/parsers/__pycache__/
 
 default: build install clean
@@ -21,9 +21,9 @@ test:
 	@source ~/.pyenv/versions/"${PACKAGE}"/bin/activate && python test.py || python3 test.py
 
 dev:
-	@source ~/.pyenv/versions/"${PACKAGE}"/bin/activate && python dev.py  || python3 test.py
+	@source ~/.pyenv/versions/"${PACKAGE}"/bin/activate && python dev.py  || python3 dev.py
 
-publish: dist
+publish: build
 	@echo "Uploading to PyPI "
 	@twine upload dist/*
 
