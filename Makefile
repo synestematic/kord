@@ -18,10 +18,10 @@ install: get_version ${DISTR_DIRS}
 	@cd dist && pip3 install --ignore-installed "${PACKAGE}"-"${VERSION}"-py3-none-any.whl && cd ..
 
 test:
-	source ~/.pyenv/versions/kord/bin/activate && python test.py
+	@source ~/.pyenv/versions/"${PACKAGE}"/bin/activate && python test.py || python3 test.py
 
 dev:
-	source ~/.pyenv/versions/kord/bin/activate && python dev.py
+	@source ~/.pyenv/versions/"${PACKAGE}"/bin/activate && python dev.py  || python3 test.py
 
 publish: dist
 	@echo "Uploading to PyPI "
