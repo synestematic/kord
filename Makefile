@@ -1,5 +1,6 @@
 PACKAGE = kord
 DISTR_DIRS = dist build ${PACKAGE}.egg-info
+CLEAN_DIRS = kord/__pycache__/ kord/keys/__pycache__/ kord/notes/__pycache__/ kord/notes/constants/__pycache__/ kord/parsers/__pycache__/
 
 default: build install clean
 
@@ -26,8 +27,11 @@ publish: dist
 	@echo "Uploading to PyPI "
 	@twine upload dist/*
 
-clean: ${DISTR_DIRS}
+clean:
 	@echo "Cleaning up"
-	@for dir in ${DISTR_DIRS} ; do \
+	-@for dir in ${DISTR_DIRS} ; do \
+		[ -d "$${dir}" ] && rm -rf "$${dir}" && echo "Deleted $${dir} directory" \ ; \
+	done
+	-@for dir in ${CLEAN_DIRS} ; do \
 		[ -d "$${dir}" ] && rm -rf "$${dir}" && echo "Deleted $${dir} directory" \ ; \
 	done
