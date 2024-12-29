@@ -13,7 +13,9 @@ build: get_version setup.py ${PACKAGE}
 
 install: get_version ${DISTR_DIRS}
 	@echo "Installing ${PACKAGE} ${VERSION}"
-	@cd dist && pip3 install --ignore-installed "${PACKAGE}"-"${VERSION}"-py3-none-any.whl && cd ..
+	@cd dist && \
+	source ~/.pyenv/versions/"${PACKAGE}"/bin/activate && pip install --ignore-installed "${PACKAGE}"-"${VERSION}"-py3-none-any.whl && \
+	cd ..
 
 clean:
 	@echo "Cleaning up"
