@@ -226,6 +226,8 @@ class PluckedStringInstrument:
         'XXXVI',
     )
 
+    _INLAY_DOTS = (3, 5, 7, 9, 12, 15, 17, 19, 21, 24, 27, 29, 31, 33, 36, )
+
     @classmethod
     def maximum_frets(cls):
         return len(cls._INLAYS)
@@ -252,8 +254,6 @@ class PluckedStringInstrument:
         if not verbose:
             return
 
-        dots = (3, 5, 7, 9, 12, 15, 17, 19, 21, 24, 27, 29, 31, 33, 36)
-
         inlay_row = Row(
             FString(
                 '',
@@ -267,11 +267,11 @@ class PluckedStringInstrument:
         while frets:
             inlay_row.append(
                 FString(
-                    '' if verbose == 1 and f not in dots else self._INLAYS[f-1],
+                    '' if verbose == 1 and f not in self._INLAY_DOTS else self._INLAYS[f-1],
                     size=self.total_fret_width(),
                     align='r' if verbose == 2 else 'c', # high verbose needs more space
                     fg='cyan',
-                    fx=['faint' if f not in dots else ''],
+                    fx=['faint' if f not in self._INLAY_DOTS else ''],
                 )
             )
             f += 1
