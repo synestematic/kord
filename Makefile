@@ -1,6 +1,16 @@
 PACKAGE = kord
-DISTR_DIRS = dist   build   ${PACKAGE}.egg-info
-CLEAN_DIRS = kord/__pycache__/ kord/keys/__pycache__/ kord/notes/__pycache__/ kord/notes/constants/__pycache__/ kord/parsers/__pycache__/
+
+DISTR_DIRS = dist \
+	build \
+	${PACKAGE}.egg-info
+
+CLEAN_DIRS = kord/__pycache__ \
+       kord/keys/__pycache__ \
+       kord/notes/__pycache__ \
+       kord/notes/constants/__pycache__ \
+       kord/parsers/__pycache__ \
+       app/__pycache__
+
 
 default: build install clean
 
