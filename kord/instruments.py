@@ -292,18 +292,18 @@ class PluckedStringInstrument:
         total_fret_width = self.total_fret_width()
         render = ' ' * ( self.NOTE_WIDTH + self.string_n_size )
         render += capo[side]
-        for f in range(1, frets * total_fret_width + 1):
+        for f in range(frets * total_fret_width):
+            f += 1
+            is_12th_fret = f % (total_fret_width * 12) == 0
+            is_fret = f % total_fret_width == 0
             # final fret
             if f == frets * total_fret_width:
-                if f % (total_fret_width * 12) == 0:
-                    render += fine[side]
-                else:
-                    render += final[side]
+                render += fine[side] if is_12th_fret else final[side]
             # 12th, 24th
-            elif f % (total_fret_width * 12) == 0:
+            elif is_12th_fret:
                 render += twelve[side]
             # fret bar joints
-            elif f % total_fret_width == 0:
+            elif is_fret:
                 render += joints[side]
             # normal binding
             else:
