@@ -41,7 +41,7 @@ publish: build
 
 run:
 	@source ~/.pyenv/versions/"${PKG}"/bin/activate \
-	&& python  app/fretboard.py  C
+	&& python  app/fretboard.py  C  -f9
 
 test:
 	@source ~/.pyenv/versions/"${PKG}"/bin/activate \

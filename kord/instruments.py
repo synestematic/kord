@@ -228,6 +228,15 @@ class PluckedStringInstrument:
 
     _INLAY_DOTS = (3, 5, 7, 9, 12, 15, 17, 19, 21, 24, 27, 29, 31, 33, 36, )
 
+    _BINDING = {
+        'default': '═',
+        'capo'  : { 'hi': '╔', 'lo': '╚' },
+        '1224'  : { 'hi': '╦', 'lo': '╩' },
+        'fret'  : { 'hi': '╤', 'lo': '╧' },
+        'end'   : { 'hi': '╕', 'lo': '╛' },
+        'end12' : { 'hi': '╗', 'lo': '╝' },
+    }
+
     @classmethod
     def maximum_frets(cls):
         return len(cls._INLAYS)
@@ -283,31 +292,28 @@ class PluckedStringInstrument:
     def render_binding(self, side, frets=12):
         ''' https://en.wikipedia.org/wiki/Box-drawing_character
         '''
-        normal = { 'upper': '═', 'lower': '═' }
-        twelve = { 'upper': '╦', 'lower': '╩' }
-        joints = { 'upper': '╤', 'lower': '╧' }
-        capo   = { 'upper': '╔', 'lower': '╚' }
-        final  = { 'upper': '╕', 'lower': '╛' }
-        fine   = { 'upper': '╗', 'lower': '╝' }
         total_fret_width = self.total_fret_width()
         render = ' ' * ( self.NOTE_WIDTH + self.string_n_size )
-        render += capo[side]
+        render += self._BINDING['capo'][side]
         for f in range(frets * total_fret_width):
             f += 1
             is_12th_fret = f % (total_fret_width * 12) == 0
             is_fret = f % total_fret_width == 0
-            # final fret
             if f == frets * total_fret_width:
-                render += fine[side] if is_12th_fret else final[side]
-            # 12th, 24th
+                # final fret
+                render += (
+                    self._BINDING['end12'][side] if is_12th_fret
+                    else self._BINDING['end'][side]
+                )
             elif is_12th_fret:
-                render += twelve[side]
-            # fret bar joints
+                # 12th, 24th
+                render += self._BINDING['1224'][side]
             elif is_fret:
-                render += joints[side]
-            # normal binding
+                # fret bar joints
+                render += self._BINDING['fret'][side]
             else:
-                render += normal[side]
+                # normal binding
+                render += self._BINDING['default']
         echo(render)
 
 
@@ -330,10 +336,10 @@ class PluckedStringInstrument:
         # if frets > max_frets_on_screen():
         #     frets = max_frets_on_screen()
         self.render_inlays(frets, verbose)
-        self.render_binding('upper', frets)
+        self.render_binding('hi', frets)
         for s, _ in enumerate(self.strings):
             self.render_string(s+1, mode, frets, verbose, show_degrees)
-        self.render_binding('lower', frets)
+        self.render_binding('lo', frets)
 
 
 def max_frets_on_screen():
