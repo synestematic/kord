@@ -41,7 +41,7 @@ publish: build
 
 run:
 	@source ~/.pyenv/versions/"${PKG}"/bin/activate \
-	&& python  app/fretboard.py  C  -f9
+	&& python  app/fretboard.py  Abb -s lydian -i bass -t 5string -v 2
 
 test:
 	@source ~/.pyenv/versions/"${PKG}"/bin/activate \
