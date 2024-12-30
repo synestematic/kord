@@ -338,8 +338,6 @@ class PluckedStringInstrument:
 
 
     def render_fretboard(self, mode=None, frets=12, verbose=1, show_degrees=False):
-        # if frets > max_frets_on_screen():
-        #     frets = max_frets_on_screen()
         self.render_inlays(frets, verbose)
         self.render_binding(frets, is_lower=False)
         for s, _ in enumerate(self.strings):
