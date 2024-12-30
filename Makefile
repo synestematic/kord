@@ -11,6 +11,7 @@ CLEAN_DIRS = kord/__pycache__ \
 		kord/parsers/__pycache__ \
 		app/__pycache__
 
+.PHONY: run
 
 default: build install clean
 
@@ -28,20 +29,16 @@ install: get_version ${DISTR_DIRS}
 	|| pip3 install --ignore-installed "${PKG}"-"${VER}"-py3-none-any.whl
 
 clean:
-	-@for dir in ${DISTR_DIRS} ; do \
-		[ -d "$${dir}" ] && rm -rf "$${dir}" && echo "Deleted dir:  $${dir}" \ ; \
-	done
-	-@for dir in ${CLEAN_DIRS} ; do \
-		[ -d "$${dir}" ] && rm -rf "$${dir}" && echo "Deleted dir:  $${dir}" \ ; \
+	-@for dir in ${DISTR_DIRS} ${CLEAN_DIRS} ; do \
+		[ -d "$${dir}" ] && rm -rf "$${dir}" && echo "Deleted dir:  $${dir}" ; \
 	done
 
 publish: build
-	@echo "Uploading to pypi.org/project/"${PKG}"/ >>>"
 	@twine upload dist/*
 
-run:
+run:  ./app/fretboard.py
 	@source ~/.pyenv/versions/"${PKG}"/bin/activate \
-	&& python  app/fretboard.py  Abb -s lydian -i bass -t 5string -v 2
+	&& python  app/fretboard.py  $(ARGS)
 
 test:
 	@source ~/.pyenv/versions/"${PKG}"/bin/activate \
