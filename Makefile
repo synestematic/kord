@@ -12,7 +12,7 @@ CLEAN_DIRS = kord/__pycache__ \
 		app/__pycache__
 
 
-default: build install
+default: build install clean
 
 get_version: setup.py
 	@$(eval VER := $(shell cat setup.py | grep version | cut -d'=' -f 2 | cut -d',' -f 1))
@@ -38,6 +38,10 @@ clean:
 publish: build
 	@echo "Uploading to pypi.org/project/"${PKG}"/ >>>"
 	@twine upload dist/*
+
+run:
+	@source ~/.pyenv/versions/"${PKG}"/bin/activate \
+	&& python  app/fretboard.py  C
 
 test:
 	@source ~/.pyenv/versions/"${PKG}"/bin/activate \
