@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="kord",
-    version="5.3",
+    version="5.4",
     author="Federico Rizzo",
     author_email="synestem@ticATgmail.com",
     description='programming framework for developing music applications',
@@ -37,6 +37,6 @@ setuptools.setup(
         ),
     ],
     install_requires=[
-        'bestia',
+        'bestia>=5.0',
     ],
 )
