@@ -46,8 +46,8 @@ https://www.unicode.org/charts/nameslist/n_2460.html
 
 from bestia.output import Row, FString, echo, tty_cols
 
-from .keys.scales import ChromaticScale
-from .notes import NotePitch
+from ..keys.scales import ChromaticScale
+from ..notes import NotePitch
 
 __all__ = [
     'PluckedStringInstrument',
