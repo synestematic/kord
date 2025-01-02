@@ -33,7 +33,9 @@ from kord.keys.chords import (
 
 from kord.notes import NotePitch
 
-from kord.instruments import PluckedStringInstrument, max_frets_on_screen
+from kord.instruments import (
+    AsciiInstrument, PluckedStringInstrument, max_frets_on_screen
+)
 
 from kord.errors import InvalidInstrument, InvalidNote, InvalidAlteration
 
@@ -157,6 +159,12 @@ def parse_arguments():
         type=int,
     )
 
+    parser.add_argument(
+        '--ascii',
+        help='old school display',
+        action='store_true'
+    )
+
     args = parser.parse_args()
 
     # some args require extra validation than what argparse can offer, let's do that here...
@@ -207,7 +215,7 @@ def print_mode(mode):
     )
     echo(mode, clr)
 
-def print_instrument(instrument, tuning):
+def print_instrument_title(instrument, tuning):
     clr = 'yellow'
     echo(instrument.title(), clr, 'underline', mode='raw')
     echo(': ', clr, mode='raw')
@@ -233,9 +241,11 @@ def run(args):
         return -1
 
     if args.verbosity:
-        print_instrument(args.instrument, args.tuning)
+        print_instrument_title(args.instrument, args.tuning)
 
-    instrument = PluckedStringInstrument(
+    asd = PluckedStringInstrument if not args.ascii else AsciiInstrument
+
+    instrument = asd(
         * TUNINGS[args.instrument][args.tuning]
     )
 
