@@ -34,16 +34,6 @@ clean:
 publish: build
 	@twine upload dist/*
 
-awe:
-	@source ~/.pyenv/versions/"${PKG}"/bin/activate \
-	&& python  test.py \
-	|| python3 test.py
-
-qwe:
-	@source ~/.pyenv/versions/"${PKG}"/bin/activate \
-	&& python  test.py \
-	|| python3 test.py
-
 test:
 	@(source ~/.pyenv/versions/"${PKG}"/bin/activate && \
 	python  test.py) || \
