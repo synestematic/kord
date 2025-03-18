@@ -11,8 +11,6 @@ CLEAN_DIRS = kord/__pycache__ \
 		kord/parsers/__pycache__ \
 		app/__pycache__
 
-.PHONY: run
-
 default: build install clean
 
 get_version: setup.py
@@ -24,9 +22,9 @@ build: get_version setup.py ${PKG}
 install: get_version ${DISTR_DIRS}
 	@echo "Installing ${PKG} ${VER}"
 	@cd dist && \
-	source ~/.pyenv/versions/"${PKG}"/bin/activate \
-	&& pip  install --ignore-installed "${PKG}"-"${VER}"-py3-none-any.whl \
-	|| pip3 install --ignore-installed "${PKG}"-"${VER}"-py3-none-any.whl
+	(source ~/.pyenv/versions/"${PKG}"/bin/activate && \
+	pip install --ignore-installed "${PKG}"-"${VER}"-py3-none-any.whl 2>/dev/null) || \
+	pip3 install --ignore-installed "${PKG}"-"${VER}"-py3-none-any.whl
 
 clean:
 	-@for dir in ${DISTR_DIRS} ${CLEAN_DIRS} ; do \
@@ -36,16 +34,22 @@ clean:
 publish: build
 	@twine upload dist/*
 
-run:  ./app/fretboard.py
-	@source ~/.pyenv/versions/"${PKG}"/bin/activate \
-	&& python  app/fretboard.py  $(ARGS)
-
-test:
+awe:
 	@source ~/.pyenv/versions/"${PKG}"/bin/activate \
 	&& python  test.py \
 	|| python3 test.py
 
-dev:
+qwe:
 	@source ~/.pyenv/versions/"${PKG}"/bin/activate \
-	&& python  dev.py \
-	|| python3 dev.py
+	&& python  test.py \
+	|| python3 test.py
+
+test:
+	@(source ~/.pyenv/versions/"${PKG}"/bin/activate && \
+	python  test.py) || \
+	python3 test.py
+
+dev:
+	@(source ~/.pyenv/versions/"${PKG}"/bin/activate && \
+	python  dev.py) || \
+	python3 dev.py
